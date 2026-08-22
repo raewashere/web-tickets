@@ -1,1 +1,9 @@
-export * from './lib/shared-ui/shared-ui';
+export { ButtonComponent } from './lib/button/button';
+export type { ButtonVariant, ButtonSize } from './lib/button/button';
+export { BadgeComponent } from './lib/badge/badge';
+export type { BadgeVariant } from './lib/badge/badge';
+export { CardComponent } from './lib/card/card';
+export { InputComponent } from './lib/input/input';
+export { StatCardComponent } from './lib/stat-card/stat-card';
+export { FileUploadComponent } from './lib/file-upload/file-upload';
+export { SpinnerComponent } from './lib/spinner/spinner';

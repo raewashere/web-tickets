@@ -1,0 +1,175 @@
+// Auto-generated types matching the Supabase/PostgreSQL schema
+
+export type RoleType = 'admin' | 'artist' | 'customer';
+export type EventStatus = 'draft' | 'published' | 'cancelled' | 'completed';
+export type CouponType = 'courtesy' | 'percentage' | 'fixed';
+export type OrderStatus = 'pending' | 'confirmed' | 'cancelled' | 'refunded';
+
+export interface ArtistType {
+  id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+export interface EventType {
+  id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+export interface PlatformSetting {
+  key: string;
+  value: unknown;
+  description: string | null;
+  updated_at: string;
+}
+
+export interface Profile {
+  id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserRole {
+  id: string;
+  user_id: string;
+  role: RoleType;
+  created_at: string;
+}
+
+export interface Artist {
+  id: string;
+  user_id: string | null;
+  name: string;
+  photo_url: string | null;
+  description: string | null;
+  artist_type_id: string | null;
+  tax_id: string | null;
+  legal_name: string | null;
+  postal_code: string | null;
+  email: string | null;
+  phone_number: string | null;
+  created_at: string;
+  created_by: string | null;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface Venue {
+  id: string;
+  name: string;
+  latitude: number | null;
+  longitude: number | null;
+  map_url: string | null;
+  verified: boolean;
+  created_at: string;
+  created_by: string | null;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface VenueConfiguration {
+  id: string;
+  venue_id: string;
+  name: string;
+  description: string | null;
+  capacity: number | null;
+  is_default: boolean;
+  created_at: string;
+  created_by: string | null;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface Event {
+  id: string;
+  artist_id: string;
+  name: string;
+  flyer_url: string | null;
+  description: string | null;
+  event_type_id: string | null;
+  venue_id: string | null;
+  venue_configuration_id: string | null;
+  event_date: string | null;
+  doors_open: string | null;
+  shared: boolean;
+  status: EventStatus;
+  created_at: string;
+  created_by: string | null;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface TicketType {
+  id: string;
+  event_id: string;
+  sku: string;
+  name: string;
+  description: string | null;
+  price: number;
+  stock: number;
+  reserved: number;
+  sold: number;
+  is_active: boolean;
+  created_at: string;
+  created_by: string | null;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface Coupon {
+  id: string;
+  event_id: string | null;
+  code: string;
+  type: CouponType;
+  value: number | null;
+  max_uses: number | null;
+  uses_count: number;
+  valid_from: string;
+  valid_until: string | null;
+  is_active: boolean;
+  created_at: string;
+  created_by: string | null;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface Order {
+  id: string;
+  customer_id: string | null;
+  event_id: string;
+  status: OrderStatus;
+  coupon_id: string | null;
+  subtotal: number;
+  discount_amount: number;
+  commission_amount: number;
+  total: number;
+  payment_provider: string;
+  payment_reference: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  ticket_type_id: string;
+  quantity: number;
+  unit_price: number;
+  commission_rate: number;
+  commission_amount: number;
+  total: number;
+}
+
+export interface TicketLock {
+  id: string;
+  ticket_type_id: string;
+  session_id: string;
+  quantity: number;
+  locked_until: string;
+  created_at: string;
+}

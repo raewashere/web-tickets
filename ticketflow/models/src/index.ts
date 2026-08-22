@@ -1,1 +1,2 @@
-export * from './lib/models/models';
+export * from './lib/database.types';
+export * from './lib/models';
