@@ -51,9 +51,9 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'events',
-        loadComponent: () =>
-          import('./features/events/event-list/event-list.component').then(
-            (m) => m.EventListComponent
+        loadChildren: () =>
+          import('./features/events/events.routes').then(
+            (m) => m.eventRoutes
           ),
       },
       {
