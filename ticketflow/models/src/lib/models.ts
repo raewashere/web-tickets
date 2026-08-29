@@ -27,6 +27,11 @@ export interface EventWithRelations extends Event {
   venue_configurations: Pick<VenueConfiguration, 'id' | 'name' | 'capacity'> | null;
 }
 
+// Venue with configurations
+export interface VenueWithConfigurations extends Venue {
+  venue_configurations: VenueConfiguration[];
+}
+
 // Ticket type with available stock computed
 export interface TicketTypeWithAvailability extends TicketType {
   /** stock - sold - reserved */

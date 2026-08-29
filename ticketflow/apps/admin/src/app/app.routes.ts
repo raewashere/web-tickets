@@ -58,9 +58,9 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'venues',
-        loadComponent: () =>
-          import('./features/venues/venue-list/venue-list.component').then(
-            (m) => m.VenueListComponent
+        loadChildren: () =>
+          import('./features/venues/venues.routes').then(
+            (m) => m.venueRoutes
           ),
       },
     ],
