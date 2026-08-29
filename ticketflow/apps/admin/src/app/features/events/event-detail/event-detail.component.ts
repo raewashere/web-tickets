@@ -208,7 +208,7 @@ import {
           </div>
         </div>
 
-        <!-- Two Columns: Ticket Types & Coupons (Fase 5 Ready) -->
+        <!-- Two Columns: Ticket Types & Coupons (Fase 5) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Ticket Types Section -->
           <tf-card>
@@ -217,9 +217,11 @@ import {
                 <h3 class="text-lg font-bold text-dark">Tipos de Boletos</h3>
                 <p class="text-xs text-dark/60 mt-0.5">Precios, stock y distribución de localidades.</p>
               </div>
-              <span class="text-xs font-bold text-dark bg-dark/5 px-2.5 py-1 rounded-lg">
-                {{ event()!.ticket_types?.length || 0 }} tipos
-              </span>
+              <a [routerLink]="['/events', event()!.id, 'tickets']">
+                <tf-button variant="primary" size="sm">
+                  ⚙️ Gestionar Boletos
+                </tf-button>
+              </a>
             </div>
 
             <!-- List of tickets -->
@@ -247,7 +249,11 @@ import {
             <div *ngIf="!event()!.ticket_types || event()!.ticket_types!.length === 0" class="py-8 text-center text-dark/50">
               <span class="text-3xl block mb-2">🎫</span>
               <p class="text-xs">Aún no se han configurado tipos de boletos para este show.</p>
-              <p class="text-xs text-dark/40 mt-1">Se configurarán en la Fase 5.</p>
+              <a [routerLink]="['/events', event()!.id, 'tickets']" class="inline-block mt-3">
+                <tf-button variant="primary" size="sm">
+                  + Crear Primer Boleto
+                </tf-button>
+              </a>
             </div>
           </tf-card>
 
@@ -258,9 +264,11 @@ import {
                 <h3 class="text-lg font-bold text-dark">Cupones & Cortesías</h3>
                 <p class="text-xs text-dark/60 mt-0.5">Descuentos promocionales y pases de prensa.</p>
               </div>
-              <span class="text-xs font-bold text-dark bg-dark/5 px-2.5 py-1 rounded-lg">
-                {{ event()!.coupons?.length || 0 }} cupones
-              </span>
+              <a [routerLink]="['/events', event()!.id, 'coupons']">
+                <tf-button variant="secondary" size="sm">
+                  ⚙️ Gestionar Cupones
+                </tf-button>
+              </a>
             </div>
 
             <!-- List of coupons -->
@@ -287,7 +295,11 @@ import {
             <div *ngIf="!event()!.coupons || event()!.coupons!.length === 0" class="py-8 text-center text-dark/50">
               <span class="text-3xl block mb-2">🏷️</span>
               <p class="text-xs">No hay cupones de descuento activos para este show.</p>
-              <p class="text-xs text-dark/40 mt-1">Se configurarán en la Fase 5.</p>
+              <a [routerLink]="['/events', event()!.id, 'coupons']" class="inline-block mt-3">
+                <tf-button variant="secondary" size="sm">
+                  + Crear Primer Cupón
+                </tf-button>
+              </a>
             </div>
           </tf-card>
         </div>

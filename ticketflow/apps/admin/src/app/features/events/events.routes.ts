@@ -29,4 +29,18 @@ export const eventRoutes: Route[] = [
         (m) => m.EventFormComponent
       ),
   },
+  {
+    path: ':id/tickets',
+    loadComponent: () =>
+      import('../tickets/ticket-type-list/ticket-type-list.component').then(
+        (m) => m.TicketTypeListComponent
+      ),
+  },
+  {
+    path: ':id/coupons',
+    loadComponent: () =>
+      import('../tickets/coupon-list/coupon-list.component').then(
+        (m) => m.CouponListComponent
+      ),
+  },
 ];
