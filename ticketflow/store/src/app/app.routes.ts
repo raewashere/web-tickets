@@ -38,6 +38,40 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'checkout',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./features/checkout/cart-summary.component').then(
+            (m) => m.CartSummaryComponent
+          ),
+      },
+      {
+        path: 'payment',
+        loadComponent: () =>
+          import('./features/checkout/payment.component').then(
+            (m) => m.PaymentComponent
+          ),
+      },
+      {
+        path: 'confirmation/:orderId',
+        loadComponent: () =>
+          import('./features/checkout/order-confirmation.component').then(
+            (m) => m.OrderConfirmationComponent
+          ),
+      },
+    ],
+  },
+  {
+    path: 'my-tickets',
+    loadComponent: () =>
+      import('./features/my-tickets/my-tickets.component').then(
+        (m) => m.MyTicketsComponent
+      ),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

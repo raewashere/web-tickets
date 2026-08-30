@@ -38,12 +38,25 @@ export interface TicketTypeWithAvailability extends TicketType {
   available: number;
 }
 
+// Order item with joined ticket type
+export interface OrderItemWithTicketType extends OrderItem {
+  ticket_types: Pick<TicketType, 'id' | 'name' | 'sku' | 'price'> | null;
+}
+
 // Order with items and joined relations
 export interface OrderWithItems extends Order {
-  order_items: (OrderItem & {
-    ticket_types: Pick<TicketType, 'id' | 'name' | 'sku' | 'price'> | null;
-  })[];
+  order_items: OrderItemWithTicketType[];
   events: Pick<Event, 'id' | 'name' | 'event_date'> | null;
+}
+
+// Full order with relations for Store App
+export interface OrderWithRelations extends Order {
+  events: (Event & {
+    venues: Venue | null;
+    artists: Artist | null;
+  }) | null;
+  order_items: OrderItemWithTicketType[];
+  coupons: Coupon | null;
 }
 
 // Coupon validation result
