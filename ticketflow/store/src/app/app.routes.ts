@@ -24,6 +24,20 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'search',
+    loadComponent: () =>
+      import('./features/search/search-results.component').then(
+        (m) => m.SearchResultsComponent
+      ),
+  },
+  {
+    path: 'events/:id',
+    loadComponent: () =>
+      import('./features/event-detail/event-detail.component').then(
+        (m) => m.EventDetailComponent
+      ),
+  },
+  {
     path: '**',
     redirectTo: '',
   },
