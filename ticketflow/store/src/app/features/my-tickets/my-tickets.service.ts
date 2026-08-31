@@ -14,6 +14,7 @@ export class MyTicketsService {
       .from('orders')
       .select('*, events(*, venues(*), artists(*)), order_items(*, ticket_types(*)), coupons(*)')
       .eq('customer_id', customerId)
+      .eq('status', 'confirmed')
       .order('created_at', { ascending: false });
 
     if (error) {

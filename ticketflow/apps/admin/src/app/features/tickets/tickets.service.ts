@@ -368,4 +368,38 @@ export class TicketsService {
     }
     return `${prefix}-${code}`;
   }
+
+  /**
+   * Fetch a single ticket type by its ID.
+   */
+  async getTicketTypeById(id: string): Promise<TicketType> {
+    const { data, error } = await this.supabase
+      .from('ticket_types')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      console.error(`Error fetching ticket type ${id}:`, error);
+      throw error || new Error('Ticket type not found');
+    }
+    return data as TicketType;
+  }
+
+  /**
+   * Fetch a single coupon by its ID.
+   */
+  async getCouponById(id: string): Promise<Coupon> {
+    const { data, error } = await this.supabase
+      .from('coupons')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      console.error(`Error fetching coupon ${id}:`, error);
+      throw error || new Error('Coupon not found');
+    }
+    return data as Coupon;
+  }
 }

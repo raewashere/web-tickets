@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -39,6 +40,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'checkout',
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -66,6 +68,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'my-tickets',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./features/my-tickets/my-tickets.component').then(
         (m) => m.MyTicketsComponent

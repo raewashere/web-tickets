@@ -50,6 +50,13 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'artist/profile/edit',
+        loadComponent: () =>
+          import('./features/artists/artist-form/artist-form.component').then(
+            (m) => m.ArtistFormComponent
+          ),
+      },
+      {
         path: 'events',
         loadChildren: () =>
           import('./features/events/events.routes').then(

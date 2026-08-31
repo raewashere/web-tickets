@@ -24,6 +24,7 @@ import {
   FileUploadComponent,
   SpinnerComponent,
 } from '@ticketflow/shared-ui';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-artist-form',
@@ -35,6 +36,7 @@ import {
     CardComponent,
     InputComponent,
     FileUploadComponent,
+    RouterModule,
   ],
 
   template: `
@@ -186,6 +188,7 @@ export class ArtistFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly artistsService = inject(ArtistsService);
   private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
   @Input() initialArtist?: ArtistWithType | null;
   @Input() showCancel = true;
@@ -315,6 +318,8 @@ export class ArtistFormComponent implements OnInit {
       }
 
       this.saved.emit(savedArtist);
+      // Navigate to profile view after saving (works both as page and modal)
+      this.router.navigate(['/artist/profile']);
     } catch (err: unknown) {
       const e = err as Error;
       this.errorMessage.set(e.message || 'Error al guardar el perfil del artista.');

@@ -34,13 +34,17 @@ export class SupabaseService {
       globalObj?.['window'] as { __ENV__?: Record<string, string> } | undefined
     )?.__ENV__;
 
+    const DEFAULT_URL = 'https://tyohkooarijtnnyheoex.supabase.co';
+    const DEFAULT_ANON_KEY =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5b2hrb29hcmlqdG5ueWhlb2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczNTQ1OTUsImV4cCI6MjEwMjkzMDU5NX0.11-Zz0qe00-ZhAgO6PzEAjlHNAsenCShyQxw5V1cx80';
+
     const url =
       customConfig?.supabaseUrl ||
       metaEnv?.['VITE_SUPABASE_URL'] ||
       procEnv?.['SUPABASE_URL'] ||
       procEnv?.['VITE_SUPABASE_URL'] ||
       winEnv?.['SUPABASE_URL'] ||
-      'https://tyohkooarijtnnyheoex.supabase.co';
+      DEFAULT_URL;
 
     const key =
       customConfig?.supabaseAnonKey ||
@@ -48,8 +52,8 @@ export class SupabaseService {
       procEnv?.['SUPABASE_ANON_KEY'] ||
       procEnv?.['VITE_SUPABASE_ANON_KEY'] ||
       winEnv?.['SUPABASE_ANON_KEY'] ||
-      '';
+      DEFAULT_ANON_KEY;
 
-    this.client = createClient(url, key || 'dummy-anon-key');
+    this.client = createClient(url, key);
   }
 }

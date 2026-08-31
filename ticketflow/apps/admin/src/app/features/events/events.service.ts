@@ -228,8 +228,44 @@ export class EventsService {
 
   /**
    * Delete a draft event.
+   * Validates: no confirmed orders exist and event is in draft/cancelled state.
    */
   async deleteEvent(id: string): Promise<void> {
+    // Check for confirmed orders
+    const { count, error: countError } = await this.supabase
+      .from('orders')
+      .select('id', { count: 'exact', head: true })
+      .eq('event_id', id)
+      .eq('status', 'confirmed');
+
+    if (countError) {
+      console.error(`Error checking orders for event ${id}:`, countError);
+      throw countError;
+    }
+
+    if (count && count > 0) {
+      throw new Error(
+        `No se puede eliminar el evento: tiene ${count} orden(es) confirmada(s). Cancela el evento en su lugar.`
+      );
+    }
+
+    // Only allow deleting draft or cancelled events
+    const { data: eventData, error: fetchError } = await this.supabase
+      .from('events')
+      .select('status')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !eventData) {
+      throw fetchError || new Error('Evento no encontrado.');
+    }
+
+    if (!['draft', 'cancelled'].includes(eventData.status)) {
+      throw new Error(
+        `Solo se pueden eliminar eventos en borrador o cancelados. Estado actual: "${eventData.status}".`
+      );
+    }
+
     const { error } = await this.supabase
       .from('events')
       .delete()

@@ -23,6 +23,7 @@ import {
   ButtonComponent,
   SpinnerComponent,
 } from '@ticketflow/shared-ui';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-coupon-form',
@@ -32,6 +33,7 @@ import {
     ReactiveFormsModule,
     ButtonComponent,
     SpinnerComponent,
+    RouterModule,
   ],
   template: `
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/60 backdrop-blur-sm">
@@ -219,7 +221,7 @@ import {
   `,
 })
 export class CouponFormComponent implements OnInit, OnChanges {
-  @Input({ required: true }) eventId!: string;
+  @Input({ required: false }) eventId!: string;
   @Input() coupon: Coupon | null = null;
 
   @Output() saved = new EventEmitter<Coupon>();
@@ -228,14 +230,42 @@ export class CouponFormComponent implements OnInit, OnChanges {
   private readonly fb = inject(FormBuilder);
   private readonly ticketsService = inject(TicketsService);
   private readonly authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
+  /** true when rendered as a routed page (not as a modal @Input component) */
+  readonly isPageMode = signal(false);
 
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  readonly isLoadingCoupon = signal(false);
 
   couponForm: FormGroup = this.initForm();
 
   ngOnInit(): void {
-    this.populateForm();
+    const routeEventId = this.route.snapshot.paramMap.get('id');
+    const routeCid = this.route.snapshot.paramMap.get('cid');
+
+    if (routeEventId && !this.eventId) {
+      this.eventId = routeEventId;
+      this.isPageMode.set(true);
+
+      if (routeCid) {
+        this.isLoadingCoupon.set(true);
+        this.ticketsService.getCouponById(routeCid).then((c) => {
+          this.coupon = c;
+          this.populateForm();
+          this.isLoadingCoupon.set(false);
+        }).catch(() => {
+          this.errorMessage.set('No se pudo cargar el cupón.');
+          this.isLoadingCoupon.set(false);
+        });
+      } else {
+        this.populateForm();
+      }
+    } else {
+      this.populateForm();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -243,6 +273,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
       this.populateForm();
     }
   }
+
 
   private initForm(): FormGroup {
     return this.fb.group({
@@ -312,7 +343,11 @@ export class CouponFormComponent implements OnInit, OnChanges {
   }
 
   onCancel(): void {
-    this.cancelled.emit();
+    if (this.isPageMode()) {
+      this.router.navigate(['/events', this.eventId, 'coupons']);
+    } else {
+      this.cancelled.emit();
+    }
   }
 
   async onSubmit(): Promise<void> {
@@ -340,7 +375,11 @@ export class CouponFormComponent implements OnInit, OnChanges {
           },
           userId
         );
-        this.saved.emit(updated);
+        if (this.isPageMode()) {
+          this.router.navigate(['/events', this.eventId, 'coupons']);
+        } else {
+          this.saved.emit(updated);
+        }
       } else {
         const created = await this.ticketsService.createCoupon(
           {
@@ -355,7 +394,11 @@ export class CouponFormComponent implements OnInit, OnChanges {
           },
           userId
         );
-        this.saved.emit(created);
+        if (this.isPageMode()) {
+          this.router.navigate(['/events', this.eventId, 'coupons']);
+        } else {
+          this.saved.emit(created);
+        }
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al guardar el cupón';

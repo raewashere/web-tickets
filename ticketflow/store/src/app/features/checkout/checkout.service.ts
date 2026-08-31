@@ -53,8 +53,14 @@ export class CheckoutService {
     return 0;
   });
 
+  readonly commission = computed(() => {
+    const tot = this.subtotal() - this.discount();
+    if (tot <= 0) return 0;
+    return Math.round(tot * 0.20 * 100) / 100;
+  });
+
   readonly total = computed(() => {
-    return Math.max(0, this.subtotal() - this.discount());
+    return Math.max(0, this.subtotal() - this.discount() + this.commission());
   });
 
   constructor() {
@@ -146,11 +152,12 @@ export class CheckoutService {
 
     const sub = this.subtotal();
     const disc = this.discount();
+    const comm = this.commission();
     const tot = this.total();
     const coup = this.appliedCoupon();
 
-    // 20% platform commission calculation
-    const commissionAmount = Math.round(tot * 0.20 * 100) / 100;
+    // 20% platform commission (already reflected in total)
+    const commissionAmount = comm;
 
     // 1. Create order
     const { data: orderData, error: orderError } = await this.supabase
@@ -189,7 +196,7 @@ export class CheckoutService {
         unit_price: item.price,
         commission_rate: 0.20,
         commission_amount: itemCommission,
-        total: itemTotal,
+        total: itemTotal + itemCommission, // buyer pays subtotal + commission
       };
     });
 
