@@ -232,7 +232,7 @@ export class CartSummaryComponent implements OnInit {
 
     try {
       const res = await this.checkout.applyCoupon(this.couponCodeInput);
-      if (!res.success) {
+      if (!res.valid) {
         this.couponError.set(res.message || 'Cupón no válido');
       } else {
         this.couponCodeInput = '';
@@ -242,9 +242,8 @@ export class CartSummaryComponent implements OnInit {
     }
   }
 
-  onTimerExpired(): void {
-    alert('Tu tiempo de reserva ha expirado. Por favor, selecciona tus boletos nuevamente.');
-    this.checkout.clearCart();
+  async onTimerExpired(): Promise<void> {
+    await this.checkout.cancelCheckout();
     this.router.navigate(['/search']);
   }
 }

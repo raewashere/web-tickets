@@ -174,11 +174,28 @@ import {
         <div class="lg:col-span-1">
           <div class="sticky top-24 space-y-6">
             <div class="p-6 sm:p-8 rounded-3xl border border-dark/10 bg-surface shadow-lg">
+              <!-- Reserve error feedback -->
+              <div
+                *ngIf="reserveError()"
+                class="mb-4 p-3 rounded-2xl bg-contrast/10 border border-contrast/20 text-contrast text-xs flex items-start gap-2"
+              >
+                <span class="shrink-0 mt-0.5">⚠️</span>
+                <span>{{ reserveError() }}</span>
+              </div>
+
+              <!-- Reserving spinner -->
+              <div *ngIf="isReserving()" class="flex items-center justify-center py-8 gap-3">
+                <tf-spinner size="sm" color="primary"></tf-spinner>
+                <span class="text-xs font-bold text-dark/60">Reservando boletos...</span>
+              </div>
+
               <store-ticket-selector
+                *ngIf="!isReserving()"
                 [ticketTypes]="event()!.ticket_types"
                 (checkoutRequested)="onCheckoutRequested($event)"
               ></store-ticket-selector>
             </div>
+
 
             <!-- Guarantee Box -->
             <div class="p-5 rounded-2xl bg-dark/5 border border-dark/10 space-y-2 text-xs text-dark/70">
@@ -232,32 +249,71 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  onCheckoutRequested(items: CartTicketItem[]): void {
+  readonly isReserving = signal(false);
+  readonly reserveError = signal<string | null>(null);
+
+  async onCheckoutRequested(items: CartTicketItem[]): Promise<void> {
     if (!this.event() || items.length === 0) return;
 
-    // Save cart to sessionStorage
-    const cartData = {
-      eventId: this.event()!.id,
-      eventName: this.event()!.name,
-      eventDate: this.event()!.event_date,
-      venueName: this.event()!.venues?.name,
-      items: items.map((i) => ({
-        ticketTypeId: i.ticketType.id,
-        name: i.ticketType.name,
-        sku: i.ticketType.sku,
-        price: Number(i.ticketType.price),
-        quantity: i.quantity,
-      })),
-      createdAt: Date.now(),
-    };
-
-    sessionStorage.setItem('tf_cart', JSON.stringify(cartData));
-
-    // Redirect to checkout
+    // If user not authenticated, redirect to login first
     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
-    } else {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: `/event/${this.event()!.id}` } });
+      return;
+    }
+
+    this.isReserving.set(true);
+    this.reserveError.set(null);
+
+    try {
+      const sessionId = this.eventDetailService.getOrCreateSessionId();
+      const cartItems = [];
+
+      // Reserve each ticket type and collect lock IDs
+      for (const item of items) {
+        const result = await this.eventDetailService.reserveTickets(
+          item.ticketType.id,
+          item.quantity,
+          sessionId,
+        );
+
+        if (!result.success) {
+          const available = (result as unknown as { available?: number }).available;
+          const availMsg = available !== undefined ? ` (disponibles: ${available})` : '';
+          this.reserveError.set(
+            `No hay suficiente stock para "${item.ticketType.name}"${availMsg}. Por favor ajusta la cantidad.`,
+          );
+          this.isReserving.set(false);
+          return;
+        }
+
+        cartItems.push({
+          ticketTypeId: item.ticketType.id,
+          lockId:       (result as unknown as { lock_id?: string }).lock_id ?? '',
+          name:         item.ticketType.name,
+          sku:          item.ticketType.sku,
+          price:        Number(item.ticketType.price),
+          quantity:     item.quantity,
+        });
+      }
+
+      // Save cart with sessionId and lockIds to sessionStorage
+      const cartData = {
+        eventId:   this.event()!.id,
+        eventName: this.event()!.name,
+        eventDate: this.event()!.event_date,
+        venueName: this.event()!.venues?.name,
+        sessionId,
+        items:     cartItems,
+        createdAt: Date.now(),
+      };
+
+      sessionStorage.setItem('tf_cart', JSON.stringify(cartData));
       this.router.navigate(['/checkout']);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Error al reservar boletos.';
+      this.reserveError.set(msg);
+    } finally {
+      this.isReserving.set(false);
     }
   }
 }
