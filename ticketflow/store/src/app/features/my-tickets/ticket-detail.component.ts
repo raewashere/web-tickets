@@ -17,70 +17,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MyTicketsService } from './my-tickets.service';
 import { AuthService } from '@ticketflow/data-access';
 import type { OrderWithRelations } from '@ticketflow/models';
+import { generateQrDataUrl } from '../../shared/utils/qr.utils';
 import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/shared-ui';
-
-// ─── Minimal QR generation (pure TypeScript, no external dependency) ─────────
-// Uses the qr-code-generator algorithm embedded inline.
-// We include a minimal Canvas-based renderer to avoid needing the qrserver.com API.
-
-function generateQrDataUrl(text: string, size = 220): string {
-  // Build a simple data matrix pattern using a seeded hash approach
-  // This is a deterministic visual representation, NOT a scannable QR.
-  // For production, replace with a proper QR library like 'qrcode' from npm.
-  const canvas = document.createElement('canvas');
-  canvas.width  = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
-
-  // White background
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, size, size);
-
-  // Draw a simple deterministic matrix based on text hash
-  const modules = 21; // standard QR module count for small data
-  const cellSize = Math.floor(size / (modules + 4));
-  const offset = Math.floor((size - modules * cellSize) / 2);
-
-  // Hash the text deterministically
-  const bytes: number[] = [];
-  for (let i = 0; i < text.length; i++) bytes.push(text.charCodeAt(i));
-
-  ctx.fillStyle = '#000000';
-
-  // Finder patterns (top-left, top-right, bottom-left) — always present in QR
-  const drawFinder = (r: number, c: number) => {
-    // Outer 7x7 black
-    ctx.fillRect(offset + c * cellSize, offset + r * cellSize, 7 * cellSize, 7 * cellSize);
-    // Inner white
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(offset + (c + 1) * cellSize, offset + (r + 1) * cellSize, 5 * cellSize, 5 * cellSize);
-    // Centre black
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(offset + (c + 2) * cellSize, offset + (r + 2) * cellSize, 3 * cellSize, 3 * cellSize);
-    ctx.fillStyle = '#000000';
-  };
-  drawFinder(0, 0);
-  drawFinder(0, modules - 7);
-  drawFinder(modules - 7, 0);
-
-  // Data cells — deterministic based on hash
-  for (let row = 0; row < modules; row++) {
-    for (let col = 0; col < modules; col++) {
-      // Skip finder pattern areas
-      if ((row < 8 && col < 8) || (row < 8 && col >= modules - 8) || (row >= modules - 8 && col < 8)) continue;
-      const byteIdx = (row * modules + col) % bytes.length;
-      const bit     = (bytes[byteIdx] >> ((row + col) % 8)) & 1;
-      if (bit) {
-        ctx.fillRect(offset + col * cellSize, offset + row * cellSize, cellSize, cellSize);
-      }
-    }
-  }
-
-  return canvas.toDataURL('image/png');
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 @Component({
   selector: 'store-ticket-detail',

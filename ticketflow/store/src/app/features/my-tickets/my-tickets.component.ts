@@ -4,12 +4,14 @@ import {
   inject,
   signal,
   computed,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MyTicketsService } from './my-tickets.service';
 import { AuthService } from '@ticketflow/data-access';
 import type { OrderWithRelations, OrderItemWithTicketType } from '@ticketflow/models';
+import { generateQrDataUrl } from '../../shared/utils/qr.utils';
 import {
   ButtonComponent,
   BadgeComponent,
@@ -191,13 +193,17 @@ import {
             </p>
           </div>
 
-          <!-- QR Code Canvas / Image -->
+          <!-- QR Code — generado localmente sin dependencia externa -->
           <div class="p-4 bg-white rounded-2xl border-2 border-dark/10 shadow-inner flex flex-col items-center justify-center space-y-2">
             <img
-              [src]="'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=TICKETFLOW-AUTH-' + selectedOrderForQr()!.id"
+              *ngIf="qrDataUrl()"
+              [src]="qrDataUrl()"
               alt="QR Code Boleto"
               class="w-48 h-48 rounded-lg"
             />
+            <div *ngIf="!qrDataUrl()" class="w-48 h-48 flex items-center justify-center">
+              <tf-spinner size="md" color="primary"></tf-spinner>
+            </div>
             <span class="font-mono text-[10px] text-dark/50 tracking-widest font-bold">
               AUTH: {{ selectedOrderForQr()!.id.substring(0, 16).toUpperCase() }}
             </span>
@@ -225,11 +231,13 @@ import {
 })
 export class MyTicketsComponent implements OnInit {
   private readonly myTicketsService = inject(MyTicketsService);
+  private readonly platformId = inject(PLATFORM_ID);
   readonly auth = inject(AuthService);
 
   readonly isLoading = signal(true);
   readonly orders = signal<OrderWithRelations[]>([]);
   readonly selectedOrderForQr = signal<OrderWithRelations | null>(null);
+  readonly qrDataUrl = signal<string | null>(null);
 
   async ngOnInit(): Promise<void> {
     const user = this.auth.user();
@@ -252,9 +260,13 @@ export class MyTicketsComponent implements OnInit {
 
   openQrModal(order: OrderWithRelations): void {
     this.selectedOrderForQr.set(order);
+    if (isPlatformBrowser(this.platformId)) {
+      this.qrDataUrl.set(generateQrDataUrl(`TICKETFLOW-AUTH-${order.id}`, 220));
+    }
   }
 
   closeQrModal(): void {
     this.selectedOrderForQr.set(null);
+    this.qrDataUrl.set(null);
   }
 }

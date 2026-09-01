@@ -50,6 +50,9 @@ export class CheckoutService {
   /** Server-verified discount amount (set after apply-coupon Edge Function responds) */
   readonly serverDiscount = signal<number>(0);
 
+  /** Platform commission rate (loaded from platform_settings, fallback 20%) */
+  readonly commissionRate = signal<number>(0.20);
+
   readonly expiryTime = signal<number>(Date.now() + 10 * 60 * 1000);
 
   readonly subtotal = computed(() => {
@@ -63,7 +66,7 @@ export class CheckoutService {
   readonly commission = computed(() => {
     const tot = this.subtotal() - this.discount();
     if (tot <= 0) return 0;
-    return Math.round(tot * 0.20 * 100) / 100;
+    return Math.round(tot * this.commissionRate() * 100) / 100;
   });
 
   readonly total = computed(() =>
@@ -72,6 +75,28 @@ export class CheckoutService {
 
   constructor() {
     this.loadCart();
+    this.loadCommissionRate();
+  }
+
+  async loadCommissionRate(): Promise<void> {
+    try {
+      const { data } = await this.supabase
+        .from('platform_settings')
+        .select('value')
+        .eq('key', 'commission_rate')
+        .maybeSingle();
+
+      if (data && data.value !== undefined && data.value !== null) {
+        const parsed = typeof data.value === 'number'
+          ? data.value
+          : parseFloat(String(data.value).replace(/['"]/g, ''));
+        if (!isNaN(parsed) && parsed >= 0) {
+          this.commissionRate.set(parsed);
+        }
+      }
+    } catch (err) {
+      console.error('Error loading platform commission rate:', err);
+    }
   }
 
   loadCart(): StoredCart | null {

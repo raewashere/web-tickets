@@ -185,6 +185,11 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
                   <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }} MXN</span>
                 </div>
 
+                <div *ngIf="checkout.commission() > 0" class="flex items-center justify-between text-surface/70">
+                  <span>Comisión de Servicio ({{ (checkout.commissionRate() * 100) | number:'1.0-0' }}%):</span>
+                  <span class="font-mono font-bold text-surface">\${{ checkout.commission() | number:'1.2-2' }} MXN</span>
+                </div>
+
                 <div class="pt-3 border-t border-surface/10 flex items-center justify-between">
                   <span class="font-bold text-sm text-surface">Total a Pagar:</span>
                   <span class="text-2xl font-black text-primary font-mono">

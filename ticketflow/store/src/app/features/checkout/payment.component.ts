@@ -207,7 +207,7 @@ interface PayPalButtonsOptions {
                 <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }}</span>
               </div>
               <div class="flex justify-between text-surface/70">
-                <span>Comisión (20%)</span>
+                <span>Comisión ({{ (checkout.commissionRate() * 100) | number:'1.0-0' }}%)</span>
                 <span class="font-mono">\${{ checkout.commission() | number:'1.2-2' }}</span>
               </div>
             </div>

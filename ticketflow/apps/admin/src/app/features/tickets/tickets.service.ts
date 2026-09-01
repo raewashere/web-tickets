@@ -210,7 +210,32 @@ export class TicketsService {
   }
 
   /**
-   * Calculate platform commission (20% default).
+   * Fetch configured platform commission rate from platform_settings (default 0.20).
+   */
+  async getCommissionRate(): Promise<number> {
+    try {
+      const { data } = await this.supabase
+        .from('platform_settings')
+        .select('value')
+        .eq('key', 'commission_rate')
+        .maybeSingle();
+
+      if (data && data.value !== undefined && data.value !== null) {
+        const parsed = typeof data.value === 'number'
+          ? data.value
+          : parseFloat(String(data.value).replace(/['"]/g, ''));
+        if (!isNaN(parsed) && parsed >= 0) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching platform commission rate:', err);
+    }
+    return 0.20;
+  }
+
+  /**
+   * Calculate platform commission.
    */
   calculateCommission(price: number, commissionRate = 0.20): {
     basePrice: number;
