@@ -1,9 +1,9 @@
 // store/src/app/features/my-tickets/ticket-detail.component.ts
 // Shows a full-page detail view of a single order:
-//   - QR code generated locally (no external API)
-//   - Ticket breakdown
+//   - Local QR code generated with Canvas API
+//   - Ticket breakdown & pricing
 //   - Event info
-//   - Back navigation
+//   - Print & PDF download layout
 
 import {
   Component,
@@ -25,24 +25,35 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
   standalone: true,
   imports: [CommonModule, RouterModule, ButtonComponent, BadgeComponent, SpinnerComponent],
   template: `
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-10 space-y-8 print:py-0 print:px-0 print:max-w-full">
 
-      <!-- Back nav -->
-      <a
-        routerLink="/my-tickets"
-        class="inline-flex items-center gap-2 text-xs font-bold text-dark/60 hover:text-primary transition-colors"
-      >
-        ← Volver a Mis Boletos
-      </a>
+      <!-- Back nav & Print Button (hidden when printing) -->
+      <div class="flex items-center justify-between print:hidden">
+        <a
+          routerLink="/my-tickets"
+          class="inline-flex items-center gap-2 text-xs font-bold text-dark/60 hover:text-primary transition-colors"
+        >
+          ← Volver a Mis Boletos
+        </a>
+
+        <button
+          type="button"
+          (click)="printPass()"
+          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark/10 hover:bg-dark/20 text-dark text-xs font-bold transition-colors"
+        >
+          <span>🖨️</span>
+          <span>Imprimir / Guardar PDF</span>
+        </button>
+      </div>
 
       <!-- Loading -->
-      <div *ngIf="isLoading()" class="py-20 flex flex-col items-center gap-3">
+      <div *ngIf="isLoading()" class="py-20 flex flex-col items-center gap-3 print:hidden">
         <tf-spinner size="lg" color="primary"></tf-spinner>
         <p class="text-sm text-dark/60">Cargando boleto...</p>
       </div>
 
       <!-- Not found -->
-      <div *ngIf="!isLoading() && !order()" class="py-16 text-center space-y-3">
+      <div *ngIf="!isLoading() && !order()" class="py-16 text-center space-y-3 print:hidden">
         <span class="text-4xl block">🎫</span>
         <p class="text-dark/60 text-sm">No se encontró la orden solicitada.</p>
         <a routerLink="/my-tickets">
@@ -69,10 +80,10 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           <tf-badge variant="success">Confirmada</tf-badge>
         </div>
 
-        <!-- QR Pass Card -->
-        <div class="rounded-3xl border border-dark/10 bg-surface shadow-lg overflow-hidden">
+        <!-- QR Pass Card (Boarding Pass Layout) -->
+        <div class="rounded-3xl border border-dark/10 bg-surface shadow-lg overflow-hidden print:shadow-none print:border-2 print:border-black">
           <!-- Dark header strip -->
-          <div class="bg-dark px-6 py-4 flex items-center justify-between">
+          <div class="bg-dark px-6 py-4 flex items-center justify-between text-surface print:bg-black">
             <div>
               <span class="text-[10px] font-extrabold uppercase tracking-widest text-primary block">
                 Pase de Acceso Oficial
@@ -86,8 +97,8 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
 
           <!-- QR area -->
           <div class="p-8 flex flex-col items-center gap-5">
-            <!-- QR canvas -->
-            <div class="p-4 bg-white rounded-2xl border-2 border-dark/10 shadow-inner">
+            <!-- QR canvas image -->
+            <div class="p-4 bg-white rounded-2xl border-2 border-dark/10 shadow-inner print:border-black">
               <img
                 *ngIf="qrDataUrl()"
                 [src]="qrDataUrl()"
@@ -104,8 +115,8 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
               <p class="font-mono text-xs text-dark/50 tracking-widest font-bold">
                 AUTH: {{ order()!.id.substring(0, 16).toUpperCase() }}
               </p>
-              <p class="text-[10px] text-dark/40">
-                Presenta este QR en la entrada del recinto desde tu celular o impreso.
+              <p class="text-[10px] text-dark/40 print:text-black">
+                Presenta este QR en la entrada del recinto desde tu celular o impreso para validar tu acceso.
               </p>
             </div>
 
@@ -115,7 +126,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
                 class="py-2.5 flex items-center justify-between text-dark/80"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-primary/20 text-primary font-black text-xs flex items-center justify-center">
+                  <span class="w-6 h-6 rounded-lg bg-primary/20 text-primary font-black text-xs flex items-center justify-center print:bg-gray-200 print:text-black">
                     {{ item.quantity }}
                   </span>
                   <span class="font-semibold">{{ item.ticket_types?.name }}</span>
@@ -141,13 +152,13 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
               </div>
               <div class="flex justify-between font-black text-dark text-sm pt-1 border-t border-dark/10">
                 <span>Total pagado</span>
-                <span class="font-mono text-primary">\${{ order()!.total | number:'1.2-2' }} MXN</span>
+                <span class="font-mono text-primary print:text-black">\${{ order()!.total | number:'1.2-2' }} MXN</span>
               </div>
             </div>
           </div>
 
           <!-- Holder strip -->
-          <div class="px-6 py-4 bg-dark/5 border-t border-dark/10 flex items-center justify-between text-xs text-dark/70">
+          <div class="px-6 py-4 bg-dark/5 border-t border-dark/10 flex items-center justify-between text-xs text-dark/70 print:bg-gray-100">
             <div>
               <span class="font-bold text-dark block">Titular del boleto</span>
               <span>{{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email }}</span>
@@ -159,10 +170,20 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           </div>
         </div>
 
-        <!-- Print hint -->
-        <p class="text-center text-xs text-dark/40">
-          💡 Puedes imprimir esta página o tomar captura de pantalla para acceder sin internet.
-        </p>
+        <!-- Action Bar & Print hint -->
+        <div class="text-center space-y-3 print:hidden">
+          <button
+            type="button"
+            (click)="printPass()"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-dark text-surface hover:bg-black font-bold text-xs transition-all shadow-md"
+          >
+            <span>🖨️</span>
+            <span>Imprimir / Descargar en PDF</span>
+          </button>
+          <p class="text-xs text-dark/40">
+            💡 Puedes imprimir esta página o tomar captura de pantalla para acceder sin internet.
+          </p>
+        </div>
       </div>
     </div>
   `,
@@ -199,6 +220,12 @@ export class TicketDetailComponent implements OnInit {
       console.error('TicketDetail error:', err);
     } finally {
       this.isLoading.set(false);
+    }
+  }
+
+  printPass(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      window.print();
     }
   }
 }

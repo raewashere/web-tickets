@@ -105,6 +105,7 @@ export class SidebarComponent {
     { label: 'Panel Principal', route: '/dashboard', icon: '📊', exact: true },
     { label: 'Perfil de Artista', route: '/artist/profile', icon: '🎤' },
     { label: 'Mis Eventos', route: '/events', icon: '🎪' },
+    { label: 'Control de Acceso', route: '/access-control', icon: '🛡️' },
     { label: 'Sedes & Lugares', route: '/venues', icon: '📍' },
   ];
 

@@ -17,10 +17,12 @@ export class SupabaseService {
   constructor(
     @Optional() @Inject(SUPABASE_CONFIG) customConfig?: SupabaseConfig
   ) {
-    const metaEnv = (
-      typeof import.meta !== 'undefined' &&
-      (import.meta as unknown as Record<string, unknown>)?.['env']
-    ) as Record<string, string> | undefined;
+    let metaEnv: Record<string, string> | undefined;
+    try {
+      metaEnv = (Function('return typeof import.meta !== "undefined" ? import.meta.env : undefined')()) as Record<string, string> | undefined;
+    } catch {
+      metaEnv = undefined;
+    }
 
     const globalObj = typeof globalThis !== 'undefined'
       ? (globalThis as unknown as Record<string, unknown>)

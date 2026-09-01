@@ -10,6 +10,9 @@
     },
     "create-order": {
       "verify_jwt": true
+    },
+    "send-ticket-email": {
+      "verify_jwt": true
     }
   }
 }

@@ -65,6 +65,20 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'access-control',
+        loadComponent: () =>
+          import('./features/access-control/access-control.component').then(
+            (m) => m.AccessControlComponent
+          ),
+      },
+      {
+        path: 'events/:id/access-control',
+        loadComponent: () =>
+          import('./features/access-control/access-control.component').then(
+            (m) => m.AccessControlComponent
+          ),
+      },
+      {
         path: 'venues',
         loadChildren: () =>
           import('./features/venues/venues.routes').then(

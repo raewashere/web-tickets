@@ -107,15 +107,21 @@ import {
 
         <!-- Action CTAs -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <a routerLink="/my-tickets" class="w-full sm:w-auto">
+          <a [routerLink]="['/my-tickets', order()!.id]" class="w-full sm:w-auto">
             <tf-button variant="primary" size="lg" class="w-full sm:w-auto">
-              🎟️ Ver Mis Boletos & Códigos QR
+              📲 Ver Pase Digital (QR & PDF)
+            </tf-button>
+          </a>
+
+          <a routerLink="/my-tickets" class="w-full sm:w-auto">
+            <tf-button variant="secondary" size="lg" class="w-full sm:w-auto">
+              🎟️ Todos Mis Boletos
             </tf-button>
           </a>
 
           <a routerLink="/search" class="w-full sm:w-auto">
-            <tf-button variant="secondary" size="lg" class="w-full sm:w-auto">
-              Explorar Más Eventos
+            <tf-button variant="ghost" size="lg" class="w-full sm:w-auto">
+              Explorar Más Shows
             </tf-button>
           </a>
         </div>
