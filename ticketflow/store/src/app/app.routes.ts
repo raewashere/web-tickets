@@ -69,10 +69,23 @@ export const appRoutes: Route[] = [
   {
     path: 'my-tickets',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/my-tickets/my-tickets.component').then(
-        (m) => m.MyTicketsComponent
-      ),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./features/my-tickets/my-tickets.component').then(
+            (m) => m.MyTicketsComponent
+          ),
+      },
+      {
+        path: ':orderId',
+        loadComponent: () =>
+          import('./features/my-tickets/ticket-detail.component').then(
+            (m) => m.TicketDetailComponent
+          ),
+      },
+    ],
   },
   {
     path: '**',

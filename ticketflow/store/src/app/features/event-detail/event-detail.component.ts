@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EventDetailService, EventDetailPublic, CartTicketItem } from './event-detail.service';
 import { TicketSelectorComponent } from './ticket-selector.component';
+import { VenueMapComponent } from './venue-map.component';
 import { AuthService } from '@ticketflow/data-access';
 import {
   ButtonComponent,
@@ -22,6 +23,7 @@ import {
     CommonModule,
     RouterModule,
     TicketSelectorComponent,
+    VenueMapComponent,
     ButtonComponent,
     SpinnerComponent,
   ],
@@ -130,19 +132,21 @@ import {
                 </div>
               </div>
 
-              <!-- Google Maps Link -->
-              <div *ngIf="event()!.venues?.latitude && event()!.venues?.longitude" class="pt-1">
-                <a
-                  [href]="'https://www.google.com/maps?q=' + event()!.venues!.latitude + ',' + event()!.venues!.longitude"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 text-xs font-bold text-primary hover:underline"
-                >
-                  <span>📍 Ver ubicación en Google Maps</span>
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
+              <!-- Interactive Venue Map (Leaflet/OSM — no API key) -->
+              <div *ngIf="event()!.venues?.latitude && event()!.venues?.longitude" class="pt-3">
+                <store-venue-map
+                  [lat]="event()!.venues!.latitude!"
+                  [lng]="event()!.venues!.longitude!"
+                  [venueName]="event()!.venues!.name"
+                ></store-venue-map>
+              </div>
+
+              <!-- Fallback: simple link if no coordinates -->
+              <div *ngIf="!event()!.venues?.latitude && !event()!.venues?.longitude && event()!.venues?.name" class="pt-1">
+                <p class="text-xs text-dark/60 flex items-center gap-1">
+                  <span>📍</span>
+                  <span>{{ event()!.venues!.name }}</span>
+                </p>
               </div>
 
               <!-- Description -->
@@ -155,10 +159,10 @@ import {
             </div>
           </div>
 
-          <!-- Venue Map/Croquis Card if available -->
+          <!-- Venue Croquis/Floor Plan Card if available -->
           <div *ngIf="event()!.venues?.map_url" class="p-6 rounded-3xl border border-dark/10 bg-surface space-y-4">
             <h3 class="font-extrabold text-base text-dark flex items-center gap-2">
-              <span>🗺️</span> Mapa y Croquis del Recinto
+              <span>🏟️</span> Croquis del Recinto
             </h3>
             <div class="rounded-2xl overflow-hidden border border-dark/10 bg-dark/5 aspect-[16/9] relative">
               <img
@@ -169,6 +173,7 @@ import {
             </div>
           </div>
         </div>
+
 
         <!-- Right Column: Ticket Selector -->
         <div class="lg:col-span-1">

@@ -14,6 +14,7 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { VenuesService, UpsertVenueDto } from '../venues.service';
 import { AuthService } from '@ticketflow/data-access';
+import { MapPickerComponent, MapCoordinates } from '../map-picker/map-picker.component';
 import {
   ButtonComponent,
   CardComponent,
@@ -34,6 +35,7 @@ interface CityPreset {
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
+    MapPickerComponent,
     ButtonComponent,
     CardComponent,
     FileUploadComponent,
@@ -133,38 +135,8 @@ interface CityPreset {
         </tf-card>
 
         <!-- Location Card -->
-        <tf-card title="Ubicación Geográfica" subtitle="Coordenadas GPS para visualización en mapa y direcciones">
-          <div class="space-y-5">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <!-- Latitude -->
-              <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
-                  Latitud
-                </label>
-                <input
-                  type="number"
-                  step="any"
-                  formControlName="latitude"
-                  placeholder="Ej. 19.3958"
-                  class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark placeholder-dark/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
-                />
-              </div>
-
-              <!-- Longitude -->
-              <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
-                  Longitud
-                </label>
-                <input
-                  type="number"
-                  step="any"
-                  formControlName="longitude"
-                  placeholder="Ej. -99.1738"
-                  class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark placeholder-dark/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
-                />
-              </div>
-            </div>
-
+        <tf-card title="Ubicación Geográfica" subtitle="Haz clic en el mapa para seleccionar la ubicación del recinto">
+          <div class="space-y-4">
             <!-- Quick City Presets -->
             <div>
               <p class="text-xs font-semibold text-dark/70 mb-2">Accesos directos por ciudad:</p>
@@ -180,24 +152,12 @@ interface CityPreset {
               </div>
             </div>
 
-            <!-- Map Link Preview -->
-            <div *ngIf="hasCoordinates()" class="flex items-center justify-between p-3.5 rounded-xl bg-accent/15 border border-accent/30 text-xs text-dark">
-              <div class="flex items-center gap-2">
-                <span class="text-base">🗺️</span>
-                <span>Coordenadas fijadas: <strong>{{ venueForm.get('latitude')?.value }}, {{ venueForm.get('longitude')?.value }}</strong></span>
-              </div>
-              <a
-                [href]="googleMapsUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-bold text-dark hover:underline flex items-center gap-1"
-              >
-                Abrir en Google Maps
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
+            <!-- Interactive Map Picker (Leaflet + OpenStreetMap) -->
+            <admin-map-picker
+              [lat]="venueForm.get('latitude')?.value"
+              [lng]="venueForm.get('longitude')?.value"
+              (coordinatesChanged)="onMapCoordinatesChanged($event)"
+            ></admin-map-picker>
           </div>
         </tf-card>
 
@@ -342,6 +302,15 @@ export class VenueFormComponent implements OnInit {
     this.venueForm.patchValue({
       latitude: preset.lat,
       longitude: preset.lng,
+    });
+    this.venueForm.markAsDirty();
+  }
+
+  /** Receives coordinates from the MapPickerComponent and patches the form. */
+  onMapCoordinatesChanged(coords: MapCoordinates): void {
+    this.venueForm.patchValue({
+      latitude:  coords.lat,
+      longitude: coords.lng,
     });
     this.venueForm.markAsDirty();
   }

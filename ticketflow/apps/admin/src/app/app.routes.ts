@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
+import { artistRoleGuard } from './core/guards/artist-role.guard';
 
 export const appRoutes: Route[] = [
   // Public Auth Routes
@@ -24,7 +25,7 @@ export const appRoutes: Route[] = [
   // Protected Admin Portal (AdminShell wrapper)
   {
     path: '',
-    canActivate: [authGuard],
+    canActivate: [authGuard, artistRoleGuard],
     loadComponent: () =>
       import('./shared/layout/admin-shell.component').then(
         (m) => m.AdminShellComponent

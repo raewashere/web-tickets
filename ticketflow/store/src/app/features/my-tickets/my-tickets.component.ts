@@ -123,15 +123,23 @@ import {
               </div>
             </div>
 
-            <!-- Action Button: Show QR Pass -->
-            <div class="w-full md:w-auto flex-shrink-0">
+            <!-- Action Buttons -->
+            <div class="w-full md:w-auto flex-shrink-0 flex flex-col sm:flex-row gap-2">
+              <tf-button
+                variant="secondary"
+                size="md"
+                class="w-full sm:w-auto"
+                [routerLink]="['/my-tickets', order.id]"
+              >
+                📄 Ver Detalle
+              </tf-button>
               <tf-button
                 variant="primary"
                 size="md"
-                class="w-full md:w-auto"
+                class="w-full sm:w-auto"
                 (click)="openQrModal(order)"
               >
-                📲 Ver Pase Digital (QR)
+                📲 Ver QR
               </tf-button>
             </div>
           </div>
