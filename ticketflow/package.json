@@ -2,7 +2,11 @@
   "name": "@ticketflow/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:store": "nx build store --configuration=production",
+    "build:admin": "nx build admin --configuration=production",
+    "build:all": "nx run-many -t build --configuration=production"
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "~22.0.4",

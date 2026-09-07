@@ -41,7 +41,7 @@ export class CheckoutService {
   private get supabaseUrl(): string {
     // Access the same URL the SupabaseService uses
     return (this.supabase as unknown as { supabaseUrl: string }).supabaseUrl
-      ?? 'https://tyohkooarijtnnyheoex.supabase.co';
+      ?? 'https://kevgwhiosnyemaftbjqs.supabase.co';
   }
 
   readonly cart           = signal<StoredCart | null>(null);

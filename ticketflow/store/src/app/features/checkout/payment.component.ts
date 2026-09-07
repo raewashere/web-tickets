@@ -304,7 +304,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           if (!token) throw new Error('Sesión de usuario no válida.');
 
           const supabaseUrl = (this.supabase as unknown as { supabaseUrl: string }).supabaseUrl
-            ?? 'https://tyohkooarijtnnyheoex.supabase.co';
+            ?? 'https://kevgwhiosnyemaftbjqs.supabase.co';
 
           const res = await fetch(`${supabaseUrl}/functions/v1/create-paypal-order`, {
             method:  'POST',

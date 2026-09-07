@@ -36,9 +36,9 @@ export class SupabaseService {
       globalObj?.['window'] as { __ENV__?: Record<string, string> } | undefined
     )?.__ENV__;
 
-    const DEFAULT_URL = 'https://tyohkooarijtnnyheoex.supabase.co';
+    const DEFAULT_URL = 'https://kevgwhiosnyemaftbjqs.supabase.co';
     const DEFAULT_ANON_KEY =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5b2hrb29hcmlqdG5ueWhlb2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczNTQ1OTUsImV4cCI6MjEwMjkzMDU5NX0.11-Zz0qe00-ZhAgO6PzEAjlHNAsenCShyQxw5V1cx80';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtldmd3aGlvc255ZW1hZnRianFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3NDIwODYsImV4cCI6MjEwNDMxODA4Nn0.Zw1oMWKyhqJ9AUm6k14-KVX0O1O96loBIskGbxfdnG0';
 
     const url =
       customConfig?.supabaseUrl ||

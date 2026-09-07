@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/supabase/cli/main/pkg/config/templates/config.schema.json",
-  "project_id": "tyohkooarijtnnyheoex",
+  "project_id": "kevgwhiosnyemaftbjqs",
   "functions": {
     "create-paypal-order": {
       "verify_jwt": true
