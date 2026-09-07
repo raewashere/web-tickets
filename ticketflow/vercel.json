@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "dist/store/browser",
   "rewrites": [
     {
       "source": "/(.*)",
