@@ -17,16 +17,16 @@ import type { SearchFilterParams } from './search.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="space-y-6 p-6 rounded-3xl border border-dark/10 bg-surface shadow-sm">
-      <div class="flex items-center justify-between pb-4 border-b border-dark/10">
-        <h3 class="font-extrabold text-base text-dark flex items-center gap-2">
+    <div class="space-y-6 p-6 rounded-3xl border border-slate-200 bg-white shadow-sm">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
           <span>⚡</span> Filtros
         </h3>
 
         <button
           type="button"
           (click)="clearFilters()"
-          class="text-xs text-contrast hover:underline font-semibold"
+          class="text-xs text-rose-500 hover:underline font-semibold"
         >
           Limpiar Todo
         </button>
@@ -34,14 +34,14 @@ import type { SearchFilterParams } from './search.service';
 
       <!-- Categories / Event Types -->
       <div class="space-y-3">
-        <label class="block text-xs font-bold uppercase tracking-wider text-dark/70">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
           Categoría / Género
         </label>
         <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
           <label
-            class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-dark/5 cursor-pointer transition-colors text-xs select-none"
+            class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors text-xs select-none"
             [class.font-bold]="!selectedTypeId"
-            [class.text-primary]="!selectedTypeId"
+            [class.text-cyan-600]="!selectedTypeId"
           >
             <input
               type="radio"
@@ -49,16 +49,16 @@ import type { SearchFilterParams } from './search.service';
               [value]="null"
               [(ngModel)]="selectedTypeId"
               (ngModelChange)="onFilterChange()"
-              class="w-4 h-4 text-primary focus:ring-primary border-dark/30"
+              class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 border-slate-300"
             />
             <span>Todas las categorías</span>
           </label>
 
           <label
             *ngFor="let cat of eventTypes"
-            class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-dark/5 cursor-pointer transition-colors text-xs select-none"
+            class="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors text-xs select-none"
             [class.font-bold]="selectedTypeId === cat.id"
-            [class.text-primary]="selectedTypeId === cat.id"
+            [class.text-cyan-600]="selectedTypeId === cat.id"
           >
             <input
               type="radio"
@@ -66,7 +66,7 @@ import type { SearchFilterParams } from './search.service';
               [value]="cat.id"
               [(ngModel)]="selectedTypeId"
               (ngModelChange)="onFilterChange()"
-              class="w-4 h-4 text-primary focus:ring-primary border-dark/30"
+              class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 border-slate-300"
             />
             <span>{{ cat.name }}</span>
           </label>
@@ -74,44 +74,44 @@ import type { SearchFilterParams } from './search.service';
       </div>
 
       <!-- Date Range Filter -->
-      <div class="space-y-3 pt-4 border-t border-dark/10">
-        <label class="block text-xs font-bold uppercase tracking-wider text-dark/70">
+      <div class="space-y-3 pt-4 border-t border-slate-200">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
           Rango de Fechas
         </label>
 
         <div class="space-y-2">
           <div>
-            <span class="text-[10px] text-dark/50 font-bold block mb-1">A partir de:</span>
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">A partir de:</span>
             <input
               type="date"
               [(ngModel)]="dateFrom"
               (ngModelChange)="onFilterChange()"
-              class="w-full px-3 py-2 rounded-xl border border-dark/20 bg-surface text-dark text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+              class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
 
           <div>
-            <span class="text-[10px] text-dark/50 font-bold block mb-1">Hasta:</span>
+            <span class="text-[10px] text-slate-500 font-bold block mb-1">Hasta:</span>
             <input
               type="date"
               [(ngModel)]="dateTo"
               (ngModelChange)="onFilterChange()"
-              class="w-full px-3 py-2 rounded-xl border border-dark/20 bg-surface text-dark text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+              class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
         </div>
       </div>
 
       <!-- Sort Options -->
-      <div class="space-y-3 pt-4 border-t border-dark/10">
-        <label class="block text-xs font-bold uppercase tracking-wider text-dark/70">
+      <div class="space-y-3 pt-4 border-t border-slate-200">
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
           Ordenar Por
         </label>
 
         <select
           [(ngModel)]="sort"
           (ngModelChange)="onFilterChange()"
-          class="w-full px-3 py-2 rounded-xl border border-dark/20 bg-surface text-dark text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+          class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
         >
           <option value="date_asc">Próxima Fecha (Más cercana)</option>
           <option value="date_desc">Fecha más lejana</option>

@@ -9,7 +9,6 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CheckoutService } from './checkout.service';
 import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.component';
-import { ButtonComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-cart-summary',
@@ -19,24 +18,23 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
     RouterModule,
     FormsModule,
     CountdownTimerComponent,
-    ButtonComponent,
   ],
   template: `
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       <!-- Steps Indicator -->
       <div class="flex items-center justify-center gap-3 sm:gap-6 text-xs font-bold">
-        <div class="flex items-center gap-2 text-primary">
-          <span class="w-6 h-6 rounded-full bg-primary text-dark font-black flex items-center justify-center text-xs">1</span>
+        <div class="flex items-center gap-2 text-cyan-600">
+          <span class="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 font-black flex items-center justify-center text-xs">1</span>
           <span>Revisión de Carrito</span>
         </div>
-        <div class="w-8 sm:w-12 h-0.5 bg-dark/20"></div>
-        <div class="flex items-center gap-2 text-dark/40">
-          <span class="w-6 h-6 rounded-full bg-dark/10 text-dark/60 font-black flex items-center justify-center text-xs">2</span>
+        <div class="w-8 sm:w-12 h-0.5 bg-slate-300"></div>
+        <div class="flex items-center gap-2 text-slate-400">
+          <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 font-black flex items-center justify-center text-xs">2</span>
           <span>Pago Seguro</span>
         </div>
-        <div class="w-8 sm:w-12 h-0.5 bg-dark/20"></div>
-        <div class="flex items-center gap-2 text-dark/40">
-          <span class="w-6 h-6 rounded-full bg-dark/10 text-dark/60 font-black flex items-center justify-center text-xs">3</span>
+        <div class="w-8 sm:w-12 h-0.5 bg-slate-300"></div>
+        <div class="flex items-center gap-2 text-slate-400">
+          <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 font-black flex items-center justify-center text-xs">3</span>
           <span>Boletos Emitidos</span>
         </div>
       </div>
@@ -44,29 +42,32 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
       <!-- No cart empty state -->
       <div
         *ngIf="!checkout.cart() || checkout.cart()!.items.length === 0"
-        class="py-20 text-center rounded-3xl border border-dashed border-dark/20 p-8 bg-surface space-y-4"
+        class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
       >
         <span class="text-5xl block">🛒</span>
-        <h3 class="text-lg font-bold text-dark">Tu carrito está vacío</h3>
-        <p class="text-xs text-dark/60 max-w-sm mx-auto">
+        <h3 class="text-lg font-bold text-slate-900">Tu carrito está vacío</h3>
+        <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
           No tienes boletos reservados en este momento. Explora nuestra cartelera para conseguir tus entradas.
         </p>
         <a routerLink="/search">
-          <tf-button variant="primary" size="md">
+          <button
+            type="button"
+            class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs sm:text-sm shadow-md"
+          >
             Explorar Cartelera de Eventos
-          </tf-button>
+          </button>
         </a>
       </div>
 
       <!-- Active Cart -->
       <div *ngIf="checkout.cart() && checkout.cart()!.items.length > 0" class="space-y-8">
         <!-- Header & Countdown -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-dark/10">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
           <div>
-            <h1 class="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Resumen de tu Orden
             </h1>
-            <p class="text-xs text-dark/60 mt-1">
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
               {{ checkout.cart()!.eventName }} · {{ checkout.cart()!.venueName || 'Recinto Confirmado' }}
             </p>
           </div>
@@ -82,27 +83,27 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
           <!-- Left: Items List & Coupon Box -->
           <div class="lg:col-span-2 space-y-6">
             <!-- Items Table/Card -->
-            <div class="p-6 rounded-3xl border border-dark/10 bg-surface space-y-4">
-              <h3 class="font-extrabold text-base text-dark">Localidades Seleccionadas</h3>
+            <div class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-4">
+              <h3 class="font-extrabold text-base text-slate-900">Localidades Seleccionadas</h3>
 
-              <div class="divide-y divide-dark/10">
+              <div class="divide-y divide-slate-100">
                 <div
                   *ngFor="let item of checkout.cart()!.items"
                   class="py-3.5 flex items-center justify-between gap-4"
                 >
                   <div>
                     <div class="flex items-center gap-2">
-                      <span class="font-bold text-sm text-dark">{{ item.name }}</span>
-                      <span class="text-[10px] font-mono font-bold bg-dark/5 px-2 py-0.5 rounded text-dark/70">
+                      <span class="font-bold text-sm text-slate-900">{{ item.name }}</span>
+                      <span class="text-[10px] font-mono font-bold bg-slate-100 px-2 py-0.5 rounded text-slate-700">
                         {{ item.sku }}
                       </span>
                     </div>
-                    <span class="text-xs text-dark/60 font-mono">
+                    <span class="text-xs text-slate-500 font-mono">
                       {{ item.quantity }} x \${{ item.price | number:'1.2-2' }} MXN
                     </span>
                   </div>
 
-                  <div class="font-black text-base text-dark font-mono">
+                  <div class="font-black text-base text-slate-900 font-mono">
                     \${{ (item.price * item.quantity) | number:'1.2-2' }}
                   </div>
                 </div>
@@ -110,24 +111,24 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
             </div>
 
             <!-- Coupon Code Section -->
-            <div class="p-6 rounded-3xl border border-dark/10 bg-surface space-y-4">
-              <h3 class="font-extrabold text-base text-dark flex items-center gap-2">
+            <div class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-4">
+              <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
                 <span>🏷️</span> Código Promocional o Cortesía
               </h3>
 
               <!-- If coupon applied -->
               <div
                 *ngIf="checkout.appliedCoupon()"
-                class="p-4 rounded-2xl bg-green-50 border border-green-200 flex items-center justify-between"
+                class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between"
               >
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="font-mono font-black text-sm text-green-800 uppercase">
+                    <span class="font-mono font-black text-sm text-emerald-800 uppercase">
                       {{ checkout.appliedCoupon()!.code }}
                     </span>
-                    <span class="text-xs font-bold text-green-700">✓ Cupón Aplicado</span>
+                    <span class="text-xs font-bold text-emerald-700">✓ Cupón Aplicado</span>
                   </div>
-                  <span class="text-xs text-green-600">
+                  <span class="text-xs text-emerald-600">
                     Descuento obtenido: -\${{ checkout.discount() | number:'1.2-2' }} MXN
                   </span>
                 </div>
@@ -135,7 +136,7 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
                 <button
                   type="button"
                   (click)="checkout.removeCoupon()"
-                  class="text-xs font-bold text-contrast hover:underline"
+                  class="text-xs font-bold text-rose-600 hover:underline"
                 >
                   Quitar
                 </button>
@@ -148,19 +149,19 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
                     type="text"
                     [(ngModel)]="couponCodeInput"
                     placeholder="Ingresa código (ej. PROMO20)"
-                    class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark uppercase font-mono text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 uppercase font-mono text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
-                  <tf-button
-                    variant="secondary"
-                    size="sm"
+                  <button
+                    type="button"
+                    class="px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 disabled:opacity-40 transition-colors shadow-sm"
                     [disabled]="!couponCodeInput.trim() || isCheckingCoupon()"
                     (click)="applyCoupon()"
                   >
                     {{ isCheckingCoupon() ? 'Validando...' : 'Aplicar' }}
-                  </tf-button>
+                  </button>
                 </div>
 
-                <p *ngIf="couponError()" class="text-xs text-contrast">
+                <p *ngIf="couponError()" class="text-xs text-rose-600 font-semibold">
                   {{ couponError() }}
                 </p>
               </div>
@@ -169,30 +170,30 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
 
           <!-- Right: Summary Box & Checkout CTA -->
           <div class="lg:col-span-1">
-            <div class="p-6 rounded-3xl bg-dark text-surface space-y-6 shadow-xl border border-surface/10">
-              <h3 class="font-extrabold text-base text-surface border-b border-surface/10 pb-3">
+            <div class="p-6 sm:p-7 rounded-3xl bg-slate-900 text-white space-y-6 shadow-xl border border-slate-800">
+              <h3 class="font-extrabold text-base text-white border-b border-slate-800 pb-3">
                 Desglose del Pedido
               </h3>
 
               <div class="space-y-3 text-xs">
-                <div class="flex items-center justify-between text-surface/70">
+                <div class="flex items-center justify-between text-slate-400">
                   <span>Subtotal:</span>
-                  <span class="font-mono font-bold text-surface">\${{ checkout.subtotal() | number:'1.2-2' }} MXN</span>
+                  <span class="font-mono font-bold text-white">\${{ checkout.subtotal() | number:'1.2-2' }} MXN</span>
                 </div>
 
-                <div *ngIf="checkout.discount() > 0" class="flex items-center justify-between text-accent font-bold">
+                <div *ngIf="checkout.discount() > 0" class="flex items-center justify-between text-amber-400 font-bold">
                   <span>Descuento Promocional:</span>
                   <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }} MXN</span>
                 </div>
 
-                <div *ngIf="checkout.commission() > 0" class="flex items-center justify-between text-surface/70">
+                <div *ngIf="checkout.commission() > 0" class="flex items-center justify-between text-slate-400">
                   <span>Comisión de Servicio ({{ (checkout.commissionRate() * 100) | number:'1.0-0' }}%):</span>
-                  <span class="font-mono font-bold text-surface">\${{ checkout.commission() | number:'1.2-2' }} MXN</span>
+                  <span class="font-mono font-bold text-white">\${{ checkout.commission() | number:'1.2-2' }} MXN</span>
                 </div>
 
-                <div class="pt-3 border-t border-surface/10 flex items-center justify-between">
-                  <span class="font-bold text-sm text-surface">Total a Pagar:</span>
-                  <span class="text-2xl font-black text-primary font-mono">
+                <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+                  <span class="font-bold text-sm text-white">Total a Pagar:</span>
+                  <span class="text-2xl font-black text-cyan-400 font-mono">
                     \${{ checkout.total() | number:'1.2-2' }} MXN
                   </span>
                 </div>
@@ -200,13 +201,16 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
 
               <div class="pt-2">
                 <a routerLink="/checkout/payment">
-                  <tf-button variant="primary" size="lg" class="w-full">
+                  <button
+                    type="button"
+                    class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
+                  >
                     <span>Proceder al Pago Seguro →</span>
-                  </tf-button>
+                  </button>
                 </a>
               </div>
 
-              <div class="pt-2 text-[10px] text-surface/50 text-center space-y-1">
+              <div class="pt-2 text-[10px] text-slate-400 text-center space-y-1">
                 <p>🔒 Transacción cifrada vía SSL de 256 bits.</p>
                 <p>Aceptamos PayPal, tarjetas de crédito y débito.</p>
               </div>

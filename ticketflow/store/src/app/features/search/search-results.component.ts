@@ -11,10 +11,7 @@ import { SearchService, SearchFilterParams, SearchResult } from './search.servic
 import { FilterPanelComponent } from './filter-panel.component';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
 import type { EventType } from '@ticketflow/models';
-import {
-  ButtonComponent,
-  SpinnerComponent,
-} from '@ticketflow/shared-ui';
+import { SpinnerComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-search-results',
@@ -25,19 +22,18 @@ import {
     FormsModule,
     FilterPanelComponent,
     EventCardComponent,
-    ButtonComponent,
     SpinnerComponent,
   ],
   template: `
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       <!-- Search Header & Search Input -->
       <div class="space-y-4">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
-            <h1 class="text-2xl sm:text-4xl font-black text-dark tracking-tight">
+            <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Explorar Cartelera
             </h1>
-            <p class="text-xs sm:text-sm text-dark/60 mt-1">
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
               Encuentra los mejores conciertos, festivales y shows en vivo.
             </p>
           </div>
@@ -49,15 +45,15 @@ import {
               [(ngModel)]="searchQuery"
               (keyup.enter)="onSearchSubmit()"
               placeholder="Buscar por artista, evento o recinto..."
-              class="w-full pl-10 pr-20 py-2.5 rounded-2xl border border-dark/20 bg-surface text-dark placeholder-dark/40 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary shadow-sm transition-all"
+              class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent shadow-sm transition-all"
             />
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-dark/40 text-sm">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-sm">
               🔍
             </span>
             <button
               type="button"
               (click)="onSearchSubmit()"
-              class="absolute right-1.5 top-1.5 bottom-1.5 px-3 rounded-xl bg-primary text-dark font-bold text-xs hover:bg-primary/90 transition-colors"
+              class="absolute right-1.5 top-1.5 bottom-1.5 px-3.5 rounded-lg bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs transition-colors shadow-sm"
             >
               Buscar
             </button>
@@ -79,12 +75,12 @@ import {
         <!-- Results Column -->
         <div class="lg:col-span-3 space-y-6">
           <!-- Results Counter Bar -->
-          <div class="flex items-center justify-between text-xs text-dark/60 pb-3 border-b border-dark/10">
+          <div class="flex items-center justify-between text-xs text-slate-500 pb-3 border-b border-slate-200">
             <span>
-              Mostrando <strong>{{ results()?.events?.length || 0 }}</strong> de <strong>{{ results()?.total || 0 }}</strong> espectáculos encontrados
+              Mostrando <strong class="text-slate-800">{{ results()?.events?.length || 0 }}</strong> de <strong class="text-slate-800">{{ results()?.total || 0 }}</strong> espectáculos
             </span>
 
-            <span *ngIf="currentParams.query" class="font-semibold text-primary">
+            <span *ngIf="currentParams.query" class="font-bold text-cyan-600">
               Resultados para: "{{ currentParams.query }}"
             </span>
           </div>
@@ -92,13 +88,13 @@ import {
           <!-- Loading State -->
           <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
             <tf-spinner size="lg" color="primary"></tf-spinner>
-            <p class="text-sm text-dark/60">Buscando eventos en la cartelera...</p>
+            <p class="text-sm text-slate-500 font-medium">Buscando eventos en la cartelera...</p>
           </div>
 
           <!-- Error Alert -->
           <div
             *ngIf="errorMessage()"
-            class="p-4 rounded-2xl bg-contrast/10 border border-contrast/20 text-contrast text-xs"
+            class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs"
           >
             {{ errorMessage() }}
           </div>
@@ -117,44 +113,48 @@ import {
           <!-- Empty State -->
           <div
             *ngIf="!isLoading() && results() && results()!.events.length === 0"
-            class="py-20 text-center rounded-3xl border border-dashed border-dark/20 p-8 bg-dark/5"
+            class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm"
           >
             <span class="text-5xl block mb-2">🔍</span>
-            <h3 class="text-lg font-bold text-dark">No se encontraron eventos</h3>
-            <p class="text-xs text-dark/60 max-w-sm mx-auto mt-1 mb-4">
+            <h3 class="text-lg font-bold text-slate-900">No se encontraron eventos</h3>
+            <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-1 mb-4">
               Prueba modificando tus términos de búsqueda o eliminando los filtros de categoría y fecha.
             </p>
-            <tf-button variant="secondary" size="sm" (click)="resetSearch()">
+            <button
+              type="button"
+              (click)="resetSearch()"
+              class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors shadow-sm"
+            >
               Ver Todos los Eventos
-            </tf-button>
+            </button>
           </div>
 
           <!-- Pagination -->
           <div
             *ngIf="!isLoading() && results() && results()!.totalPages > 1"
-            class="pt-6 border-t border-dark/10 flex items-center justify-between"
+            class="pt-6 border-t border-slate-200 flex items-center justify-between"
           >
-            <tf-button
-              variant="secondary"
-              size="sm"
+            <button
+              type="button"
+              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors"
               [disabled]="results()!.page <= 1"
               (click)="changePage(results()!.page - 1)"
             >
               ← Anterior
-            </tf-button>
+            </button>
 
-            <span class="text-xs font-bold text-dark">
+            <span class="text-xs font-bold text-slate-700">
               Página {{ results()!.page }} de {{ results()!.totalPages }}
             </span>
 
-            <tf-button
-              variant="secondary"
-              size="sm"
+            <button
+              type="button"
+              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors"
               [disabled]="results()!.page >= results()!.totalPages"
               (click)="changePage(results()!.page + 1)"
             >
               Siguiente →
-            </tf-button>
+            </button>
           </div>
         </div>
       </div>

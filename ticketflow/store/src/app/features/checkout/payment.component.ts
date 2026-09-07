@@ -11,7 +11,7 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CheckoutService } from './checkout.service';
 import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.component';
-import { ButtonComponent, SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent } from '@ticketflow/shared-ui';
 import { SupabaseService } from '@ticketflow/data-access';
 
 // PayPal JS SDK loaded dynamically via script tag (loaded in index.html or on-demand below)
@@ -45,45 +45,49 @@ interface PayPalButtonsOptions {
     CommonModule,
     RouterModule,
     CountdownTimerComponent,
-    ButtonComponent,
     SpinnerComponent,
   ],
   template: `
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       <!-- Steps Indicator -->
       <div class="flex items-center justify-center gap-3 sm:gap-6 text-xs font-bold">
-        <a routerLink="/checkout" class="flex items-center gap-2 text-dark/70 hover:text-primary">
-          <span class="w-6 h-6 rounded-full bg-primary/20 text-primary font-black flex items-center justify-center text-xs">✓</span>
+        <a routerLink="/checkout" class="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium">
+          <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 font-black flex items-center justify-center text-xs">✓</span>
           <span>Carrito</span>
         </a>
-        <div class="w-8 sm:w-12 h-0.5 bg-primary"></div>
-        <div class="flex items-center gap-2 text-primary">
-          <span class="w-6 h-6 rounded-full bg-primary text-dark font-black flex items-center justify-center text-xs">2</span>
+        <div class="w-8 sm:w-12 h-0.5 bg-cyan-500"></div>
+        <div class="flex items-center gap-2 text-cyan-600">
+          <span class="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 font-black flex items-center justify-center text-xs">2</span>
           <span>Pago Seguro</span>
         </div>
-        <div class="w-8 sm:w-12 h-0.5 bg-dark/20"></div>
-        <div class="flex items-center gap-2 text-dark/40">
-          <span class="w-6 h-6 rounded-full bg-dark/10 text-dark/60 font-black flex items-center justify-center text-xs">3</span>
+        <div class="w-8 sm:w-12 h-0.5 bg-slate-300"></div>
+        <div class="flex items-center gap-2 text-slate-400">
+          <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 font-black flex items-center justify-center text-xs">3</span>
           <span>Confirmación</span>
         </div>
       </div>
 
-      <div *ngIf="!checkout.cart()" class="py-16 text-center space-y-3">
+      <div *ngIf="!checkout.cart()" class="py-16 text-center space-y-3 bg-white rounded-3xl border border-dashed border-slate-300 p-8">
         <span class="text-4xl block">⚠️</span>
-        <p class="text-sm text-dark/60">No se encontró una orden activa en el carrito.</p>
+        <p class="text-sm text-slate-500">No se encontró una orden activa en el carrito.</p>
         <a routerLink="/search">
-          <tf-button variant="primary" size="sm">Ir a la Cartelera</tf-button>
+          <button
+            type="button"
+            class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors shadow-sm"
+          >
+            Ir a la Cartelera
+          </button>
         </a>
       </div>
 
       <div *ngIf="checkout.cart()" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <!-- Left: Payment Form & Gateway -->
         <div class="lg:col-span-2 space-y-6">
-          <div class="p-6 sm:p-8 rounded-3xl border border-dark/10 bg-surface shadow-sm space-y-6">
-            <div class="flex items-center justify-between pb-4 border-b border-dark/10">
+          <div class="p-6 sm:p-8 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-200">
               <div>
-                <h2 class="text-xl font-black text-dark">Método de Pago</h2>
-                <p class="text-xs text-dark/60 mt-0.5">Selecciona tu plataforma de pago preferida.</p>
+                <h2 class="text-xl font-black text-slate-900">Método de Pago</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Selecciona tu plataforma de pago preferida.</p>
               </div>
 
               <store-countdown-timer
@@ -95,7 +99,7 @@ interface PayPalButtonsOptions {
             <!-- Error alert -->
             <div
               *ngIf="errorMessage()"
-              class="p-4 rounded-2xl bg-contrast/10 border border-contrast/20 text-contrast text-xs flex items-center gap-2"
+              class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2"
             >
               <span>⚠️</span>
               <span>{{ errorMessage() }}</span>
@@ -107,54 +111,53 @@ interface PayPalButtonsOptions {
               class="flex flex-col items-center justify-center py-10 gap-4"
             >
               <tf-spinner size="lg" color="primary"></tf-spinner>
-              <p class="text-sm font-bold text-dark/70">{{ processingMessage() }}</p>
+              <p class="text-sm font-bold text-slate-700">{{ processingMessage() }}</p>
             </div>
 
             <!-- 1. Zero-cost courtesy flow -->
-            <div *ngIf="checkout.total() === 0 && !isProcessing()" class="p-6 rounded-2xl bg-accent/20 border border-accent/40 text-center space-y-4">
+            <div *ngIf="checkout.total() === 0 && !isProcessing()" class="p-6 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-4">
               <div class="text-3xl">🎁</div>
-              <h3 class="font-extrabold text-base text-dark">Cortesía 100% Bonificada</h3>
-              <p class="text-xs text-dark/70 max-w-sm mx-auto">
+              <h3 class="font-extrabold text-base text-slate-900">Cortesía 100% Bonificada</h3>
+              <p class="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
                 Tu orden tiene un costo de $0.00 MXN gracias al cupón o cortesía aplicado. No requieres ingresar métodos de pago.
               </p>
-              <tf-button
-                variant="primary"
-                size="lg"
-                class="w-full"
+              <button
+                type="button"
+                class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-amber-500/20"
                 [disabled]="isProcessing()"
                 (click)="processCourtesyOrder()"
               >
                 Canjear y Obtener Mis Boletos Gratis
-              </tf-button>
+              </button>
             </div>
 
             <!-- 2. PayPal Smart Buttons (renders when total > 0) -->
             <div *ngIf="checkout.total() > 0 && !isProcessing()" class="space-y-4">
-              <div class="p-5 rounded-2xl border-2 border-primary/40 bg-primary/5 space-y-4">
+              <div class="p-5 rounded-2xl border-2 border-cyan-500/40 bg-cyan-50/30 space-y-4">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     <span class="text-2xl">🅿️</span>
                     <div>
-                      <span class="font-bold text-sm text-dark block">PayPal Express Checkout</span>
-                      <span class="text-[11px] text-dark/60">Tarjetas de Crédito, Débito o Saldo PayPal</span>
+                      <span class="font-bold text-sm text-slate-900 block">PayPal Express Checkout</span>
+                      <span class="text-[11px] text-slate-500">Tarjetas de Crédito, Débito o Saldo PayPal</span>
                     </div>
                   </div>
-                  <span class="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full">Recomendado</span>
+                  <span class="text-xs font-bold text-cyan-700 bg-cyan-100 px-2.5 py-1 rounded-full">Recomendado</span>
                 </div>
 
-                <p class="text-xs text-dark/70">
-                  Total a pagar: <strong class="text-primary font-black text-sm">\${{ checkout.total() | number:'1.2-2' }} MXN</strong>
+                <p class="text-xs text-slate-600">
+                  Total a pagar: <strong class="text-cyan-700 font-black text-sm">\${{ checkout.total() | number:'1.2-2' }} MXN</strong>
                 </p>
 
                 <!-- PayPal SDK renders its buttons here -->
                 <div id="paypal-button-container" class="min-h-[55px]">
                   <div *ngIf="paypalLoading()" class="flex items-center justify-center py-4">
                     <tf-spinner size="sm" color="primary"></tf-spinner>
-                    <span class="ml-2 text-xs text-dark/60">Cargando botones de pago...</span>
+                    <span class="ml-2 text-xs text-slate-500 font-medium">Cargando botones de pago...</span>
                   </div>
                   <div
                     *ngIf="!paypalLoading() && paypalError()"
-                    class="p-3 rounded-xl bg-contrast/10 text-contrast text-xs text-center"
+                    class="p-3.5 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 text-xs text-center"
                   >
                     ⚠️ {{ paypalError() }}
                     <button (click)="retryPayPal()" class="ml-2 underline font-bold">Reintentar</button>
@@ -169,7 +172,7 @@ interface PayPalButtonsOptions {
                 type="button"
                 (click)="cancelCheckout()"
                 [disabled]="isProcessing()"
-                class="text-xs font-bold text-contrast hover:underline disabled:opacity-40"
+                class="text-xs font-bold text-rose-600 hover:underline disabled:opacity-40"
               >
                 Cancelar y regresar a la cartelera
               </button>
@@ -179,42 +182,42 @@ interface PayPalButtonsOptions {
 
         <!-- Right: Mini Order Recap -->
         <div class="lg:col-span-1">
-          <div class="p-6 rounded-3xl bg-dark text-surface space-y-4 shadow-xl border border-surface/10">
-            <h3 class="font-extrabold text-sm text-surface border-b border-surface/10 pb-3">
+          <div class="p-6 sm:p-7 rounded-3xl bg-slate-900 text-white space-y-4 shadow-xl border border-slate-800">
+            <h3 class="font-extrabold text-sm text-white border-b border-slate-800 pb-3">
               Resumen de Compra
             </h3>
 
-            <div class="space-y-2 text-xs">
-              <p class="font-bold text-surface truncate">{{ checkout.cart()!.eventName }}</p>
-              <p class="text-surface/60">{{ checkout.cart()!.venueName }}</p>
-              <p class="text-surface/60">{{ checkout.cart()!.eventDate | date:'mediumDate' }}</p>
+            <div class="space-y-1.5 text-xs">
+              <p class="font-bold text-white truncate">{{ checkout.cart()!.eventName }}</p>
+              <p class="text-slate-400">{{ checkout.cart()!.venueName }}</p>
+              <p class="text-slate-400">{{ checkout.cart()!.eventDate | date:'mediumDate' }}</p>
             </div>
 
-            <div class="divide-y divide-surface/10 pt-2 text-xs">
-              <div *ngFor="let item of checkout.cart()!.items" class="py-2 flex items-center justify-between text-surface/80">
+            <div class="divide-y divide-slate-800 pt-2 text-xs">
+              <div *ngFor="let item of checkout.cart()!.items" class="py-2 flex items-center justify-between text-slate-300">
                 <span>{{ item.quantity }}x {{ item.name }}</span>
                 <span class="font-mono font-bold">\${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
               </div>
             </div>
 
-            <div class="space-y-1 pt-2 border-t border-surface/10 text-xs">
-              <div class="flex justify-between text-surface/70">
+            <div class="space-y-1 pt-2 border-t border-slate-800 text-xs">
+              <div class="flex justify-between text-slate-400">
                 <span>Subtotal</span>
                 <span class="font-mono">\${{ checkout.subtotal() | number:'1.2-2' }}</span>
               </div>
-              <div *ngIf="checkout.discount() > 0" class="flex justify-between text-accent">
+              <div *ngIf="checkout.discount() > 0" class="flex justify-between text-amber-400">
                 <span>Descuento</span>
                 <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }}</span>
               </div>
-              <div class="flex justify-between text-surface/70">
+              <div class="flex justify-between text-slate-400">
                 <span>Comisión ({{ (checkout.commissionRate() * 100) | number:'1.0-0' }}%)</span>
                 <span class="font-mono">\${{ checkout.commission() | number:'1.2-2' }}</span>
               </div>
             </div>
 
-            <div class="pt-3 border-t border-surface/10 flex items-center justify-between text-xs">
-              <span class="font-bold text-surface">Total:</span>
-              <span class="text-xl font-black text-accent font-mono">
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+              <span class="font-bold text-white">Total:</span>
+              <span class="text-xl font-black text-amber-400 font-mono">
                 \${{ checkout.total() | number:'1.2-2' }} MXN
               </span>
             </div>

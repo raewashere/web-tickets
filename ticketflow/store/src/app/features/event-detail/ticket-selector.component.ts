@@ -10,78 +10,77 @@ import {
 import { CommonModule } from '@angular/common';
 import type { TicketTypeWithAvailability } from '@ticketflow/models';
 import type { CartTicketItem } from './event-detail.service';
-import { ButtonComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-ticket-selector',
   standalone: true,
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule],
   template: `
     <div class="space-y-6">
-      <div class="flex items-center justify-between pb-3 border-b border-dark/10">
-        <h3 class="text-lg font-black text-dark flex items-center gap-2">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
           <span>🎟️</span> Selecciona tus Boletos
         </h3>
-        <span class="text-xs text-dark/60">
-          Máximo 10 boletos por orden
+        <span class="text-xs text-slate-500 font-medium">
+          Máx. 10 boletos
         </span>
       </div>
 
       <!-- Tickets List -->
-      <div *ngIf="ticketTypes.length > 0" class="space-y-4">
+      <div *ngIf="ticketTypes.length > 0" class="space-y-3.5">
         <div
           *ngFor="let t of ticketTypes"
-          class="p-5 rounded-2xl border transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-          [class.border-primary]="getQuantity(t.id) > 0"
-          [class.bg-primary\/5]="getQuantity(t.id) > 0"
-          [class.border-dark\/10]="getQuantity(t.id) === 0"
-          [class.bg-surface]="getQuantity(t.id) === 0"
+          class="p-4 sm:p-5 rounded-2xl border transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          [class.border-cyan-500]="getQuantity(t.id) > 0"
+          [class.bg-cyan-50\/40]="getQuantity(t.id) > 0"
+          [class.border-slate-200]="getQuantity(t.id) === 0"
+          [class.bg-white]="getQuantity(t.id) === 0"
           [class.opacity-60]="t.available <= 0"
         >
           <!-- Left: Details -->
           <div class="space-y-1">
             <div class="flex items-center gap-2">
-              <h4 class="font-bold text-base text-dark">{{ t.name }}</h4>
-              <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-dark/10 text-dark">
+              <h4 class="font-bold text-sm sm:text-base text-slate-900">{{ t.name }}</h4>
+              <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700">
                 {{ t.sku }}
               </span>
             </div>
 
-            <p *ngIf="t.description" class="text-xs text-dark/70 max-w-md">
+            <p *ngIf="t.description" class="text-xs text-slate-500 max-w-md">
               {{ t.description }}
             </p>
 
             <div class="text-xs">
-              <span *ngIf="t.available > 0" class="text-green-700 font-semibold">
+              <span *ngIf="t.available > 0" class="text-emerald-700 font-semibold">
                 ● {{ t.available }} disponibles
               </span>
-              <span *ngIf="t.available <= 0" class="text-contrast font-bold uppercase tracking-wider text-[10px]">
+              <span *ngIf="t.available <= 0" class="text-rose-600 font-bold uppercase tracking-wider text-[10px]">
                 Agotado
               </span>
             </div>
           </div>
 
           <!-- Right: Price & Stepper -->
-          <div class="flex items-center justify-between sm:justify-end gap-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-dark/10">
+          <div class="flex items-center justify-between sm:justify-end gap-5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
             <div class="text-right">
-              <span class="text-xs text-dark/50 block">Precio por boleto</span>
-              <span class="font-black text-lg text-dark font-mono">
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Precio</span>
+              <span class="font-black text-base text-slate-900 font-mono">
                 \${{ t.price | number:'1.2-2' }}
               </span>
             </div>
 
             <!-- Stepper -->
-            <div *ngIf="t.available > 0" class="flex items-center gap-2 bg-dark/5 rounded-xl p-1 border border-dark/10">
+            <div *ngIf="t.available > 0" class="flex items-center gap-1.5 bg-slate-100 rounded-xl p-1 border border-slate-200">
               <button
                 type="button"
                 (click)="decrement(t)"
                 [disabled]="getQuantity(t.id) <= 0"
-                class="w-8 h-8 rounded-lg bg-surface text-dark font-black flex items-center justify-center hover:bg-dark/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
+                class="w-7 h-7 rounded-lg bg-white text-slate-800 font-black flex items-center justify-center hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
               >
                 −
               </button>
 
-              <span class="w-8 text-center font-bold text-sm text-dark font-mono">
+              <span class="w-7 text-center font-bold text-sm text-slate-900 font-mono">
                 {{ getQuantity(t.id) }}
               </span>
 
@@ -89,13 +88,13 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
                 type="button"
                 (click)="increment(t)"
                 [disabled]="getQuantity(t.id) >= Math.min(10, t.available) || totalCount >= 10"
-                class="w-8 h-8 rounded-lg bg-primary text-dark font-black flex items-center justify-center hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
+                class="w-7 h-7 rounded-lg bg-cyan-400 text-slate-950 font-black flex items-center justify-center hover:bg-cyan-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
               >
                 +
               </button>
             </div>
 
-            <div *ngIf="t.available <= 0" class="text-xs text-dark/40 font-bold italic">
+            <div *ngIf="t.available <= 0" class="text-xs text-slate-400 font-bold italic">
               No disponible
             </div>
           </div>
@@ -103,38 +102,36 @@ import { ButtonComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="ticketTypes.length === 0" class="p-8 text-center text-dark/50 border border-dashed border-dark/20 rounded-2xl">
+      <div *ngIf="ticketTypes.length === 0" class="p-8 text-center text-slate-400 border border-dashed border-slate-300 rounded-2xl">
         <span class="text-3xl block mb-1">🎫</span>
         <span>Aún no hay localidades disponibles para la venta.</span>
       </div>
 
       <!-- Floating or Bottom Summary Box -->
-      <div *ngIf="totalCount > 0" class="p-6 rounded-2xl bg-dark text-surface space-y-4 shadow-2xl border border-surface/10">
+      <div *ngIf="totalCount > 0" class="p-5 sm:p-6 rounded-2xl bg-slate-900 text-white space-y-4 shadow-xl border border-slate-800">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-xs text-surface/60 uppercase font-bold tracking-wider block">Resumen de Selección</span>
-            <span class="text-sm font-semibold text-surface">
+            <span class="text-xs text-slate-400 uppercase font-bold tracking-wider block">Resumen</span>
+            <span class="text-sm font-semibold text-slate-200">
               {{ totalCount }} {{ totalCount === 1 ? 'boleto seleccionado' : 'boletos seleccionados' }}
             </span>
           </div>
 
           <div class="text-right">
-            <span class="text-xs text-surface/60 block">Total a pagar:</span>
-            <span class="text-2xl font-black text-accent font-mono">
+            <span class="text-xs text-slate-400 block">Total a pagar:</span>
+            <span class="text-xl sm:text-2xl font-black text-amber-400 font-mono">
               \${{ totalPrice | number:'1.2-2' }} MXN
             </span>
           </div>
         </div>
 
-        <tf-button
+        <button
           type="button"
-          variant="primary"
-          size="lg"
-          class="w-full"
+          class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
           (click)="onProceed()"
         >
           <span>Continuar con {{ totalCount }} {{ totalCount === 1 ? 'Boleto' : 'Boletos' }} →</span>
-        </tf-button>
+        </button>
       </div>
     </div>
   `,
