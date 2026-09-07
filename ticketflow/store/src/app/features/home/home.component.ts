@@ -200,7 +200,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             </p>
           </div>
 
-          <a routerLink="/login" class="flex-shrink-0">
+          <a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex-shrink-0">
             <button
               type="button"
               class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20"

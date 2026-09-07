@@ -45,7 +45,7 @@ import { RouterModule } from '@angular/router';
           <div class="space-y-3">
             <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400">Creadores & Soporte</h4>
             <ul class="space-y-2 text-xs sm:text-sm text-slate-400">
-              <li><a routerLink="/login" class="hover:text-white transition-colors">Portal de Artistas</a></li>
+              <li><a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Portal de Artistas</a></li>
               <li><a routerLink="/my-tickets" class="hover:text-white transition-colors">Consultar Mis Boletos</a></li>
               <li><span class="text-slate-500">soporte&#64;ticketflow.app</span></li>
             </ul>
