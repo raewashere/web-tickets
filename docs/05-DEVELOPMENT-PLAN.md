@@ -408,6 +408,23 @@ Both apps fully functional MVP, tested, mobile-friendly, ready for initial users
 
 ---
 
+## Pending Tasks & Issues to Review (Admin Flow QA)
+
+> **Priority QA & Debugging Backlog:**
+- [ ] **Investigate `Failed to fetch` error in Admin Portal**:
+  - Check browser console & network tab for exact failing HTTP request.
+  - Verify `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel project environment variables and trigger redeploy.
+  - Test if browser privacy extensions/adblockers are interfering with requests to `supabase.co`.
+- [ ] **Verify Storage Uploads**:
+  - Test file upload in `artist-form` to ensure bucket `artist-photos` handles multipart uploads without CORS/permission issues.
+- [ ] **Admin End-to-End Flow Verification**:
+  - Artist profile creation / edit (`/artist/profile`).
+  - Venue creation & Google Maps picker integration (`/venues`).
+  - Event creation, flyer upload, ticket types configuration, and status transition to published (`/events`).
+  - Access control / ticket QR scanner functionality (`/access-control`).
+
+---
+
 ## Open Questions & Future Enhancements
 
 ### For Future Sprints (Post-MVP)
