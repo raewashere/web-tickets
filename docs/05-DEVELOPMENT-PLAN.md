@@ -335,44 +335,61 @@ Both apps fully functional MVP, tested, mobile-friendly, ready for initial users
 
 ---
 
+---
+
+## Checkpoint & Progress Log
+
+### Checkpoint — Environment Setup & Supabase Integration (Completed)
+- [x] **Monorepo & Workspace**: Angular 18+ / Nx 23, TailwindCSS, shared libraries (`models`, `data-access`, `shared-ui`).
+- [x] **Supabase Setup**:
+  - Remote project connected and schema migrations applied.
+  - Storage buckets configured (`artist-photos`, `event-flyers`, `venue-maps`).
+  - Seed catalog data populated (`artist_types`, `event_types`, `platform_settings`).
+  - Google OAuth / Gmail sign-in trigger enhanced with search_path safety and role management.
+  - `platform_settings` updated with PayPal Client ID and commission rate.
+- [x] **Environment Configuration**: `.env` files created for `apps/admin`, `store`, and root monorepo.
+- [x] **Admin App & Store App**: Source code fully structured and ready for local development.
+
+---
+
 ## MVP Checklist
 
 ### Infrastructure
-- [ ] Supabase project created
-- [ ] All DB migrations applied
-- [ ] Catalog data seeded
-- [ ] Storage buckets configured
-- [ ] pg_cron enabled and scheduled
-- [ ] TypeScript types generated
-- [ ] Edge Functions deployed
-- [ ] Environment variables set in all environments
+- [x] Supabase project created & linked
+- [x] All DB migrations applied
+- [x] Catalog data seeded
+- [x] Storage buckets configured
+- [x] pg_cron enabled and scheduled
+- [x] TypeScript types generated
+- [x] Edge Functions deployed & configured
+- [x] Environment variables set in all environments
 
 ### Admin App
-- [ ] Artist registration
-- [ ] Artist login / logout
-- [ ] Artist profile CRUD (with photo upload)
-- [ ] Venue CRUD (with map picker + map upload)
-- [ ] Venue configurations CRUD
-- [ ] Event CRUD (with flyer upload, venue picker)
-- [ ] Event publishing workflow
-- [ ] Ticket type CRUD per event (with SKU validation)
-- [ ] Commission display on ticket types
-- [ ] Coupon CRUD per event
-- [ ] Dashboard with live stats
+- [x] Artist registration & Google OAuth
+- [x] Artist login / logout
+- [x] Artist profile CRUD (with photo upload)
+- [x] Venue CRUD (with map picker + map upload)
+- [x] Venue configurations CRUD
+- [x] Event CRUD (with flyer upload, venue picker)
+- [x] Event publishing workflow
+- [x] Ticket type CRUD per event (with SKU validation)
+- [x] Commission display on ticket types
+- [x] Coupon CRUD per event
+- [x] Dashboard with live stats
 
 ### Store App
-- [ ] Customer registration
-- [ ] Customer login / logout
-- [ ] Home page with featured events
-- [ ] Search by name / type / date
-- [ ] Event detail page
-- [ ] Ticket selection with stock awareness
-- [ ] Ticket lock (15 min reservation)
-- [ ] Countdown timer during checkout
-- [ ] Cart summary with coupon application
-- [ ] PayPal payment integration
-- [ ] Order confirmation page
-- [ ] My Tickets page
+- [x] Customer registration & Google OAuth
+- [x] Customer login / logout
+- [x] Home page with featured events
+- [x] Search by name / type / date
+- [x] Event detail page
+- [x] Ticket selection with stock awareness
+- [x] Ticket lock (15 min reservation)
+- [x] Countdown timer during checkout
+- [x] Cart summary with coupon application
+- [x] PayPal payment integration
+- [x] Order confirmation page
+- [x] My Tickets page with QR code rendering
 
 ---
 
