@@ -7,14 +7,14 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@ticketflow/data-access';
 
-export const artistRoleGuard: CanActivateFn = async (_route, _state) => {
-  const auth   = inject(AuthService);
+export const artistRoleGuard: CanActivateFn = async (_route, state) => {
+  const auth = inject(AuthService);
   const router = inject(Router);
 
   // Wait for auth initialisation before checking roles
-  const state = await auth.waitForAuthReady();
+  const authState = await auth.waitForAuthReady();
 
-  if (!state.user) {
+  if (!authState.user) {
     return router.createUrlTree(['/login']);
   }
 
@@ -28,6 +28,18 @@ export const artistRoleGuard: CanActivateFn = async (_route, _state) => {
     return true;
   }
 
-  // Authenticated but no artist role → guide them to create profile
+  // Authenticated user in the admin portal: auto-assign artist role
+  try {
+    await auth.assignRole(authState.user.id, 'artist');
+  } catch (err) {
+    console.warn('Could not auto-assign artist role:', err);
+  }
+
+  // If already on /artist/profile, allow them to view and complete the form
+  if (state.url.includes('/artist/profile')) {
+    return true;
+  }
+
+  // Otherwise, guide them to complete their artist profile
   return router.createUrlTree(['/artist/profile']);
 };

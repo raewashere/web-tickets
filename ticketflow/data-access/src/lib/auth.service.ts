@@ -112,12 +112,13 @@ export class AuthService {
   async register(
     email: string,
     password: string,
-    displayName: string
+    displayName: string,
+    role: RoleType = 'customer'
   ): Promise<{ error: AuthError | null }> {
     const { error } = await this.supabase.client.auth.signUp({
       email,
       password,
-      options: { data: { full_name: displayName, display_name: displayName } },
+      options: { data: { full_name: displayName, display_name: displayName, role } },
     });
     return { error };
   }
@@ -132,6 +133,29 @@ export class AuthService {
         email,
         password,
       });
+    return { error };
+  }
+
+  /** Sign in or register with Google OAuth. */
+  async signInWithGoogle(
+    role: RoleType = 'customer',
+    returnUrl?: string
+  ): Promise<{ error: AuthError | null }> {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const redirectTo = returnUrl
+      ? (returnUrl.startsWith('http') ? returnUrl : `${origin}${returnUrl.startsWith('/') ? '' : '/'}${returnUrl}`)
+      : `${origin}/`;
+
+    const { error } = await this.supabase.client.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
     return { error };
   }
 
