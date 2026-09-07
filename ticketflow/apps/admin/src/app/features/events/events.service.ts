@@ -286,7 +286,10 @@ export class EventsService {
 
     const { data, error } = await this.supabase.storage
       .from(STORAGE_BUCKETS.EVENT_FLYERS)
-      .upload(filePath, file, { upsert: true });
+      .upload(filePath, file, {
+        upsert: true,
+        contentType: file.type || 'image/png',
+      });
 
     if (error) {
       console.error('Error uploading flyer:', error);

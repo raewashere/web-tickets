@@ -25,6 +25,9 @@
 | Migraciones aplicadas | ✅ | 4 migraciones: schema inicial, `create_order_atomic`, validaciones, trigger OAuth |
 | Seed de datos de catálogo | ✅ | `artist_types`, `event_types`, `platform_settings` (commission_rate=0.20) |
 | Storage buckets creados | ✅ | `artist-photos` (5MB), `event-flyers` (10MB), `venue-maps` (20MB) |
+| Políticas RLS de Storage | ✅ | Configuradas en Dashboard para `artist-photos`, `event-flyers`, `venue-maps` |
+| Migración Storage RLS | ✅ | `20250106000000_storage_rls_policies.sql` generada |
+| Fix `contentType` en subidas TS | ✅ | `artists.service.ts` y `events.service.ts` envían MIME type explícito |
 | `platform_settings.paypal_client_id` | ✅ | Insertado como JSONB en la tabla |
 | RLS habilitado en todas las tablas | ✅ | Incluye políticas de `INSERT` para `user_roles` y `profiles` |
 | Trigger `handle_new_user` (OAuth fix) | ✅ | Corregido con `SET search_path = public, auth, pg_temp` + manejo de excepciones |

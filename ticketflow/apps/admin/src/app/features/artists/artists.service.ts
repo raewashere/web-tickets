@@ -125,7 +125,10 @@ export class ArtistsService {
 
     const { error: uploadError } = await this.supabase.storage
       .from(STORAGE_BUCKETS.ARTIST_PHOTOS)
-      .upload(filePath, file, { upsert: true });
+      .upload(filePath, file, {
+        upsert: true,
+        contentType: file.type || 'image/png',
+      });
 
     if (uploadError) {
       console.error('Error uploading photo:', uploadError);
