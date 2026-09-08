@@ -117,22 +117,11 @@ export class SidebarComponent {
     { label: 'Sedes & Lugares', route: '/venues', icon: '📍' },
   ];
 
-  private readonly superAdminNavItems: NavItem[] = [
-    { label: 'Métricas Globales', route: '/super-admin', icon: '⚡', exact: true },
-    { label: 'Liquidaciones Globales', route: '/super-admin/payouts', icon: '💳' },
-    { label: 'Moderar Recintos', route: '/super-admin/venues', icon: '📍' },
-    { label: 'Usuarios y Roles', route: '/super-admin/users', icon: '👥' },
-  ];
-
   get visibleNavItems(): NavItem[] {
     const roles = this.auth.roles();
     const isDoormanOnly = roles.includes('doorman') && !roles.includes('admin') && !roles.includes('artist');
     if (isDoormanOnly) {
       return this.artistNavItems.filter((item) => item.route === '/access-control');
-    }
-
-    if (this.auth.isAdmin()) {
-      return [...this.superAdminNavItems, ...this.artistNavItems];
     }
 
     return this.artistNavItems;

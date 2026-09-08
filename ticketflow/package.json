@@ -5,6 +5,7 @@
   "scripts": {
     "build:store": "nx build store --configuration=production",
     "build:admin": "nx build admin --configuration=production",
+    "build:backoffice": "nx build backoffice --configuration=production",
     "build:all": "nx run-many -t build --configuration=production"
   },
   "private": true,

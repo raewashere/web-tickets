@@ -11,7 +11,7 @@
 
 | Item | Estado | Notas |
 |------|--------|-------|
-| Monorepo Nx 23 + Angular 22 | ✅ | Apps: `admin`, `store`. Libs: `models`, `data-access`, `shared-ui` |
+| Monorepo Nx 23 + Angular 22 | ✅ | Apps: `admin`, `store`, `backoffice`. Libs: `models`, `data-access`, `shared-ui` |
 | TailwindCSS con design tokens | ✅ | Colores: `primary` cian, `accent` amarillo, `dark`, `contrast` magenta |
 | TypeScript estricto + path aliases | ✅ | `@ticketflow/models`, `@ticketflow/data-access`, `@ticketflow/shared-ui` |
 | Dependencias actualizadas | ✅ | Paquete `qrcode` y `@types/qrcode` añadidos para generación QR real |
