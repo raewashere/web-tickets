@@ -107,10 +107,8 @@
 - [x] **[M7] Rol "Control de Admisión" (doorman)**
   - **Completado:** Implementadas migraciones SQL 009 y 010, guards de navegación (`doormanGuard`, `artistRoleGuard`), componentes `EventStaffComponent` y `AcceptInviteComponent`, servicio `EventStaffService`, filtrado de menú en `SidebarComponent`, modo doorman en `AccessControlComponent`, tipos en `@ticketflow/models` y Edge Function `send-staff-invite`.
 
-- [ ] **1. Módulo de Super-Admin Central**
-  - **Moderación y Verificación de Recintos:** Vista para revisar recintos registrados por los artistas y activar el sello de verificación (`venues.verified = true`).
-  - **Gestión Global de Usuarios & Roles:** Tabla general de usuarios registrados en Supabase Auth para asignar o revocar manualmente roles (`admin`, `artist`, `doorman`, `customer`) mediante la tabla `user_roles`.
-  - **Métricas y Estadísticas Globales:** Dashboard con volumen total de ventas (GMV), comisiones acumuladas de la plataforma, eventos activos, tasa de ocupación de aforos y usuarios registrados.
+- [x] **1. Módulo de Super-Admin Central**
+  - **Completado:** Migración SQL 013 con RPCs `get_all_users_with_roles`, `admin_set_user_role`, `admin_toggle_venue_verification` y `get_global_platform_metrics`. Implementadas las vistas `VenueModerationComponent`, `UserManagementComponent`, `SuperAdminDashboardComponent`, servicio `SuperAdminService`, `superAdminGuard` y navegación dedicada en `SidebarComponent`.
 
 - [ ] **2. Gestión de Solicitudes de Reembolso**
   - **Flujo de Usuario (Tienda):** Opción *"Solicitar Reembolso"* dentro del detalle de orden en *Mis Boletos* indicando motivo y boletos a cancelar.
@@ -153,9 +151,9 @@
 | P0 — Blockers & Producción | 4 | 3 | 1 (PayPal Live) |
 | P1 — Alta prioridad | 9 | 8 | 1 (Webhook N8N Email) |
 | P2 — Media prioridad | 4 | 2 | 2 |
-| P3 — Super Admin & Módulos Avanzados | 5 | 1 | 4 |
+| P3 — Super Admin & Módulos Avanzados | 5 | 2 | 3 |
 | P4 — Roadmap | 10 | 0 | 10 |
-| **Total** | **32** | **14** | **18** |
+| **Total** | **32** | **15** | **17** |
 
 ---
 

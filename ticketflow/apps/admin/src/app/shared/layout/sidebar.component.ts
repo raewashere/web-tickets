@@ -107,7 +107,7 @@ export class SidebarComponent {
   @Input() isOpen = false;
   @Output() closeSidebar = new EventEmitter<void>();
 
-  private readonly allNavItems: NavItem[] = [
+  private readonly artistNavItems: NavItem[] = [
     { label: 'Panel Principal', route: '/dashboard', icon: '📊', exact: true },
     { label: 'Perfil de Artista', route: '/artist/profile', icon: '🎤' },
     { label: 'Mis Eventos', route: '/events', icon: '🎪' },
@@ -115,13 +115,24 @@ export class SidebarComponent {
     { label: 'Sedes & Lugares', route: '/venues', icon: '📍' },
   ];
 
+  private readonly superAdminNavItems: NavItem[] = [
+    { label: 'Métricas Globales', route: '/super-admin', icon: '⚡', exact: true },
+    { label: 'Moderar Recintos', route: '/super-admin/venues', icon: '📍' },
+    { label: 'Usuarios y Roles', route: '/super-admin/users', icon: '👥' },
+  ];
+
   get visibleNavItems(): NavItem[] {
     const roles = this.auth.roles();
     const isDoormanOnly = roles.includes('doorman') && !roles.includes('admin') && !roles.includes('artist');
     if (isDoormanOnly) {
-      return this.allNavItems.filter((item) => item.route === '/access-control');
+      return this.artistNavItems.filter((item) => item.route === '/access-control');
     }
-    return this.allNavItems;
+
+    if (this.auth.isAdmin()) {
+      return [...this.superAdminNavItems, ...this.artistNavItems];
+    }
+
+    return this.artistNavItems;
   }
 
   get userInitial(): string {

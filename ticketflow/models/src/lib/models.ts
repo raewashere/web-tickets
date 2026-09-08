@@ -125,3 +125,45 @@ export interface StaffInvitationWithRelations {
   events?: Pick<Event, 'id' | 'name' | 'event_date' | 'flyer_url'> | null;
 }
 
+// Super-Admin user item
+export interface SuperAdminUserItem {
+  id: string;
+  email: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  roles: string[];
+  created_at: string;
+  last_sign_in_at?: string | null;
+}
+
+// Super-Admin global platform metrics
+export interface PlatformGlobalMetrics {
+  total_gmv: number;
+  total_platform_commission: number;
+  total_orders_count: number;
+  total_tickets_sold: number;
+  total_events_count: number;
+  active_events_count: number;
+  total_venues_count: number;
+  verified_venues_count: number;
+  total_artists_count: number;
+  total_users_count: number;
+}
+
+// Super-Admin venue moderation item
+export interface AdminVenueModerationItem {
+  id: string;
+  name: string;
+  latitude: number | null;
+  longitude: number | null;
+  map_url: string | null;
+  verified: boolean;
+  created_at: string;
+  created_by: string | null;
+  creator_email: string | null;
+  configurations_count: number;
+  total_capacity: number;
+  events_count: number;
+}
+
+

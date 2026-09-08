@@ -3,6 +3,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
 import { artistRoleGuard } from './core/guards/artist-role.guard';
 import { doormanGuard } from './core/guards/doorman.guard';
+import { superAdminGuard } from './core/guards/super-admin.guard';
 
 export const appRoutes: Route[] = [
   // Public Auth Routes
@@ -98,6 +99,14 @@ export const appRoutes: Route[] = [
         loadChildren: () =>
           import('./features/venues/venues.routes').then(
             (m) => m.venueRoutes
+          ),
+      },
+      {
+        path: 'super-admin',
+        canActivate: [superAdminGuard],
+        loadChildren: () =>
+          import('./features/super-admin/super-admin.routes').then(
+            (m) => m.superAdminRoutes
           ),
       },
     ],
