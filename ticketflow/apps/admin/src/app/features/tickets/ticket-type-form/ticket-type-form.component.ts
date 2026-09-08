@@ -145,11 +145,37 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
               <input
                 type="number"
                 min="1"
+                [max]="remainingCapacity !== null ? remainingCapacity : null"
                 step="1"
                 formControlName="stock"
                 placeholder="100"
                 class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark placeholder-dark/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
               />
+              <!-- Venue capacity helper -->
+              <div *ngIf="venueCapacity !== null" class="mt-1.5 p-2 rounded-lg bg-dark/5 text-[11px] space-y-0.5">
+                <div class="flex justify-between text-dark/70">
+                  <span>Aforo total del recinto:</span>
+                  <span class="font-mono font-bold">{{ venueCapacity }}</span>
+                </div>
+                <div class="flex justify-between text-dark/70">
+                  <span>Asignados en otras localidades:</span>
+                  <span class="font-mono font-bold">{{ usedStock }}</span>
+                </div>
+                <div
+                  class="flex justify-between font-bold pt-1 border-t border-dark/10"
+                  [class.text-emerald-700]="(remainingCapacity ?? 0) > 0"
+                  [class.text-contrast]="(remainingCapacity ?? 0) <= 0"
+                >
+                  <span>Disponibles para esta localidad:</span>
+                  <span class="font-mono">{{ remainingCapacity }}</span>
+                </div>
+              </div>
+              <p
+                *ngIf="ticketForm.get('stock')?.errors?.['max']"
+                class="text-xs text-contrast mt-1 font-semibold"
+              >
+                El stock supera la capacidad disponible del recinto (máx. {{ remainingCapacity }} boletos).
+              </p>
             </div>
           </div>
 
@@ -228,6 +254,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 export class TicketTypeFormComponent implements OnInit, OnChanges {
   @Input({ required: false }) eventId!: string;
   @Input() ticket: TicketType | null = null;
+  @Input() venueCapacity: number | null = null;
+  @Input() usedStock = 0;
 
   @Output() saved = new EventEmitter<TicketType>();
   @Output() cancelled = new EventEmitter<void>();
@@ -246,6 +274,12 @@ export class TicketTypeFormComponent implements OnInit, OnChanges {
   readonly isLoadingTicket = signal(false);
 
   ticketForm: FormGroup = this.initForm();
+
+  get remainingCapacity(): number | null {
+    if (this.venueCapacity === null) return null;
+    const myCurrentStock = this.ticket ? Number(this.ticket.stock || 0) : 0;
+    return Math.max(0, this.venueCapacity - this.usedStock + myCurrentStock);
+  }
 
   ngOnInit(): void {
     // Page-mode: read eventId and optional tid from route params
@@ -279,6 +313,22 @@ export class TicketTypeFormComponent implements OnInit, OnChanges {
     if (changes['ticket'] && !changes['ticket'].firstChange) {
       this.populateForm();
     }
+    if (changes['venueCapacity'] || changes['usedStock'] || changes['ticket']) {
+      this.updateStockValidator();
+    }
+  }
+
+  private updateStockValidator(): void {
+    const maxStock = this.remainingCapacity;
+    const stockControl = this.ticketForm?.get('stock');
+    if (!stockControl) return;
+
+    const validators = [Validators.required, Validators.min(1)];
+    if (maxStock !== null && maxStock >= 0) {
+      validators.push(Validators.max(maxStock));
+    }
+    stockControl.setValidators(validators);
+    stockControl.updateValueAndValidity();
   }
 
 

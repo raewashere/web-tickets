@@ -95,3 +95,33 @@ export const STORAGE_BUCKETS = {
 
 export type StorageBucket =
   (typeof STORAGE_BUCKETS)[keyof typeof STORAGE_BUCKETS];
+
+// Event staff with user profile info
+export interface EventStaffMember {
+  id: string;
+  event_id: string;
+  user_id: string;
+  invited_by: string | null;
+  status: 'pending' | 'accepted' | 'revoked';
+  created_at: string;
+  updated_at: string;
+  profiles?: {
+    id?: string;
+    display_name: string | null;
+    avatar_url: string | null;
+  } | null;
+}
+
+// Staff invitation with event details
+export interface StaffInvitationWithRelations {
+  id: string;
+  event_id: string;
+  email: string;
+  token: string;
+  invited_by: string | null;
+  status: 'pending' | 'accepted' | 'expired' | 'revoked';
+  expires_at: string;
+  created_at: string;
+  events?: Pick<Event, 'id' | 'name' | 'event_date' | 'flyer_url'> | null;
+}
+

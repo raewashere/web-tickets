@@ -28,6 +28,12 @@ export const artistRoleGuard: CanActivateFn = async (_route, state) => {
     return true;
   }
 
+  // Doormen: redirect directly to access-control
+  const roles = auth.roles();
+  if (roles.includes('doorman')) {
+    return router.createUrlTree(['/access-control']);
+  }
+
   // Authenticated user in the admin portal: auto-assign artist role
   try {
     await auth.assignRole(authState.user.id, 'artist');

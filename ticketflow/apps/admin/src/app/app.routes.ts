@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
 import { artistRoleGuard } from './core/guards/artist-role.guard';
+import { doormanGuard } from './core/guards/doorman.guard';
 
 export const appRoutes: Route[] = [
   // Public Auth Routes
@@ -21,11 +22,18 @@ export const appRoutes: Route[] = [
         (m) => m.RegisterComponent
       ),
   },
+  {
+    path: 'staff-invite',
+    loadComponent: () =>
+      import('./features/auth/accept-invite/accept-invite.component').then(
+        (m) => m.AcceptInviteComponent
+      ),
+  },
 
   // Protected Admin Portal (AdminShell wrapper)
   {
     path: '',
-    canActivate: [authGuard, artistRoleGuard],
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./shared/layout/admin-shell.component').then(
         (m) => m.AdminShellComponent
@@ -38,6 +46,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'dashboard',
+        canActivate: [artistRoleGuard],
         loadComponent: () =>
           import('./features/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
@@ -45,6 +54,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'artist/profile',
+        canActivate: [artistRoleGuard],
         loadComponent: () =>
           import('./features/artists/artist-detail/artist-detail.component').then(
             (m) => m.ArtistDetailComponent
@@ -52,6 +62,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'artist/profile/edit',
+        canActivate: [artistRoleGuard],
         loadComponent: () =>
           import('./features/artists/artist-form/artist-form.component').then(
             (m) => m.ArtistFormComponent
@@ -59,6 +70,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'events',
+        canActivate: [artistRoleGuard],
         loadChildren: () =>
           import('./features/events/events.routes').then(
             (m) => m.eventRoutes
@@ -66,6 +78,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'access-control',
+        canActivate: [doormanGuard],
         loadComponent: () =>
           import('./features/access-control/access-control.component').then(
             (m) => m.AccessControlComponent
@@ -73,6 +86,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'events/:id/access-control',
+        canActivate: [doormanGuard],
         loadComponent: () =>
           import('./features/access-control/access-control.component').then(
             (m) => m.AccessControlComponent
@@ -80,6 +94,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'venues',
+        canActivate: [artistRoleGuard],
         loadChildren: () =>
           import('./features/venues/venues.routes').then(
             (m) => m.venueRoutes

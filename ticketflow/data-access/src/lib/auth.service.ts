@@ -33,6 +33,15 @@ export class AuthService {
   readonly roles = computed(() => this._state().roles);
   readonly isArtist = computed(() => this._state().roles.includes('artist'));
   readonly isAdmin = computed(() => this._state().roles.includes('admin'));
+  readonly avatarUrl = computed<string | null>(() => {
+    const u = this._state().user;
+    if (!u) return null;
+    return (
+      (u.user_metadata?.['avatar_url'] as string | undefined) ??
+      (u.user_metadata?.['picture'] as string | undefined) ??
+      null
+    );
+  });
 
   constructor() {
     this.init();

@@ -10,7 +10,7 @@ export interface ValidationItem {
 
 export interface ValidationResponse {
   success: boolean;
-  result: 'valid' | 'already_used' | 'invalid_event' | 'not_found' | 'unpaid';
+  result: 'valid' | 'already_used' | 'invalid_event' | 'not_found' | 'unpaid' | 'doors_not_open';
   message: string;
   order_id?: string;
   customer_name?: string;
@@ -44,8 +44,28 @@ export class AccessControlService {
    * Get all published/active events the current user has access to.
    */
   async getEvents(): Promise<Event[]> {
-    const artistId = await this.auth.getCurrentArtistId();
+    const roles = this.auth.roles();
     const isAdmin = this.auth.isAdmin();
+    const isArtist = this.auth.isArtist();
+    const isDoormanOnly = roles.includes('doorman') && !isAdmin && !isArtist;
+
+    if (isDoormanOnly) {
+      const doormanEventId = await this.getDoormanEventId();
+      if (!doormanEventId) return [];
+
+      const { data, error } = await this.supabase
+        .from('events')
+        .select('*, venues(name), venue_configurations(name, capacity)')
+        .eq('id', doormanEventId);
+
+      if (error) {
+        console.error('Error loading doorman event:', error);
+        return [];
+      }
+      return (data || []) as Event[];
+    }
+
+    const artistId = await this.auth.getCurrentArtistId();
 
     let query = this.supabase
       .from('events')
@@ -62,6 +82,26 @@ export class AccessControlService {
       return [];
     }
     return (data || []) as Event[];
+  }
+
+  /**
+   * Fetch the event ID assigned to the current doorman.
+   */
+  async getDoormanEventId(): Promise<string | null> {
+    const { data, error } = await this.supabase.rpc('get_doorman_event_id');
+    if (error || !data) {
+      // Fallback direct query on event_staff
+      const userId = this.auth.user()?.id;
+      if (!userId) return null;
+      const { data: staffData } = await this.supabase
+        .from('event_staff')
+        .select('event_id')
+        .eq('user_id', userId)
+        .eq('status', 'accepted')
+        .maybeSingle();
+      return staffData?.event_id ?? null;
+    }
+    return data as string;
   }
 
   /**

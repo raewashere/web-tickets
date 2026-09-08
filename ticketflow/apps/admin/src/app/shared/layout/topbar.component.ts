@@ -36,11 +36,22 @@ import { AuthService } from '@ticketflow/data-access';
           routerLink="/artist/profile"
           class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-dark/5 transition-colors border border-dark/10"
         >
-          <div class="w-7 h-7 rounded-full bg-primary text-dark font-bold text-xs flex items-center justify-center">
-            {{ userInitial }}
+          <div class="relative w-7 h-7 flex-shrink-0">
+            <img
+              *ngIf="auth.avatarUrl()"
+              [src]="auth.avatarUrl()!"
+              [alt]="auth.user()?.email || 'Avatar'"
+              class="w-7 h-7 rounded-full object-cover ring-1 ring-primary/40 shadow-xs"
+            />
+            <div
+              *ngIf="!auth.avatarUrl()"
+              class="w-7 h-7 rounded-full bg-primary text-dark font-bold text-xs flex items-center justify-center"
+            >
+              {{ userInitial }}
+            </div>
           </div>
-          <span class="text-xs font-medium text-dark hidden sm:inline">
-            {{ auth.user()?.user_metadata?.['full_name'] || 'Mi Perfil' }}
+          <span class="text-xs font-medium text-dark hidden sm:inline truncate max-w-[140px]">
+            {{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email || 'Mi Perfil' }}
           </span>
         </a>
       </div>

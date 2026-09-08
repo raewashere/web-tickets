@@ -1,6 +1,6 @@
 // Auto-generated types matching the Supabase/PostgreSQL schema
 
-export type RoleType = 'admin' | 'artist' | 'customer';
+export type RoleType = 'admin' | 'artist' | 'customer' | 'doorman';
 export type EventStatus = 'draft' | 'published' | 'cancelled' | 'completed';
 export type CouponType = 'courtesy' | 'percentage' | 'fixed';
 export type OrderStatus = 'pending' | 'confirmed' | 'cancelled' | 'refunded';
@@ -171,5 +171,26 @@ export interface TicketLock {
   session_id: string;
   quantity: number;
   locked_until: string;
+  created_at: string;
+}
+
+export interface EventStaff {
+  id: string;
+  event_id: string;
+  user_id: string;
+  invited_by: string | null;
+  status: 'pending' | 'accepted' | 'revoked';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StaffInvitation {
+  id: string;
+  event_id: string;
+  email: string;
+  token: string;
+  invited_by: string | null;
+  status: 'pending' | 'accepted' | 'expired' | 'revoked';
+  expires_at: string;
   created_at: string;
 }

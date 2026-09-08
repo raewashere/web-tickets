@@ -3,6 +3,14 @@
 -- 20250106000000_storage_rls_policies.sql
 -- =============================================================================
 
+-- 1. Create buckets if they do not exist
+INSERT INTO storage.buckets (id, name, public)
+VALUES 
+  ('artist-photos', 'artist-photos', true),
+  ('event-flyers', 'event-flyers', true),
+  ('venue-maps', 'venue-maps', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
 -- Ensure RLS is active on storage.objects
 ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 

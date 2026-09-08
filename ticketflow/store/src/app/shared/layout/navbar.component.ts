@@ -61,8 +61,19 @@ import { AuthService } from '@ticketflow/data-access';
                 (click)="toggleUserMenu()"
                 class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 transition-colors text-xs font-bold text-white shadow-sm"
               >
-                <div class="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 font-black flex items-center justify-center text-xs">
-                  {{ userInitial }}
+                <div class="relative w-6 h-6 flex-shrink-0">
+                  <img
+                    *ngIf="auth.avatarUrl()"
+                    [src]="auth.avatarUrl()!"
+                    [alt]="userName"
+                    class="w-6 h-6 rounded-full object-cover ring-1 ring-cyan-400/50"
+                  />
+                  <div
+                    *ngIf="!auth.avatarUrl()"
+                    class="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 font-black flex items-center justify-center text-xs"
+                  >
+                    {{ userInitial }}
+                  </div>
                 </div>
                 <span class="max-w-[110px] truncate text-slate-200">
                   {{ userName }}

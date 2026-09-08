@@ -214,6 +214,8 @@ import {
         *ngIf="showModal()"
         [eventId]="eventId!"
         [ticket]="selectedTicket()"
+        [venueCapacity]="event()?.venue_configurations?.capacity ?? null"
+        [usedStock]="usedStockForCurrentTicket()"
         (saved)="onTicketSaved($event)"
         (cancelled)="closeModal()"
       ></app-ticket-type-form>
@@ -238,6 +240,13 @@ export class TicketTypeListComponent implements OnInit {
   readonly totalStock = computed(() =>
     this.tickets().reduce((acc, t) => acc + (t.stock || 0), 0)
   );
+
+  readonly usedStockForCurrentTicket = computed(() => {
+    const selected = this.selectedTicket();
+    const allStock = this.totalStock();
+    return selected ? Math.max(0, allStock - (selected.stock || 0)) : allStock;
+  });
+
   readonly totalSold = computed(() =>
     this.tickets().reduce((acc, t) => acc + (t.sold || 0), 0)
   );

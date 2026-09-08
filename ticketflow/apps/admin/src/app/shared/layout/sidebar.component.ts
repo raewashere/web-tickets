@@ -55,7 +55,7 @@ interface NavItem {
       <!-- Navigation Links -->
       <nav class="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
         <a
-          *ngFor="let item of navItems"
+          *ngFor="let item of visibleNavItems"
           [routerLink]="item.route"
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
           routerLinkActive="bg-primary/15 text-primary border-r-4 border-primary font-semibold"
@@ -70,12 +70,18 @@ interface NavItem {
       <!-- User footer -->
       <div class="p-4 border-t border-white/10 bg-black/20">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-9 h-9 rounded-full bg-primary/20 text-primary font-bold flex items-center justify-center border border-primary/30 text-sm">
-            {{ userInitial }}
+          <div class="w-9 h-9 rounded-full bg-primary/20 text-primary font-bold flex items-center justify-center border border-primary/30 text-sm overflow-hidden flex-shrink-0">
+            <img
+              *ngIf="auth.avatarUrl()"
+              [src]="auth.avatarUrl()!"
+              [alt]="auth.user()?.email || 'Avatar'"
+              class="w-full h-full object-cover"
+            />
+            <span *ngIf="!auth.avatarUrl()">{{ userInitial }}</span>
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-white truncate">
-              {{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email || 'Artista' }}
+              {{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email || 'Validador' }}
             </p>
             <p class="text-xs text-surface/50 truncate">{{ auth.user()?.email }}</p>
           </div>
@@ -101,13 +107,22 @@ export class SidebarComponent {
   @Input() isOpen = false;
   @Output() closeSidebar = new EventEmitter<void>();
 
-  readonly navItems: NavItem[] = [
+  private readonly allNavItems: NavItem[] = [
     { label: 'Panel Principal', route: '/dashboard', icon: '📊', exact: true },
     { label: 'Perfil de Artista', route: '/artist/profile', icon: '🎤' },
     { label: 'Mis Eventos', route: '/events', icon: '🎪' },
     { label: 'Control de Acceso', route: '/access-control', icon: '🛡️' },
     { label: 'Sedes & Lugares', route: '/venues', icon: '📍' },
   ];
+
+  get visibleNavItems(): NavItem[] {
+    const roles = this.auth.roles();
+    const isDoormanOnly = roles.includes('doorman') && !roles.includes('admin') && !roles.includes('artist');
+    if (isDoormanOnly) {
+      return this.allNavItems.filter((item) => item.route === '/access-control');
+    }
+    return this.allNavItems;
+  }
 
   get userInitial(): string {
     const name =

@@ -19,6 +19,7 @@ import {
   ValidationLog,
 } from './access-control.service';
 import type { Event } from '@ticketflow/models';
+import { AuthService } from '@ticketflow/data-access';
 import {
   ButtonComponent,
   BadgeComponent,
@@ -66,8 +67,8 @@ declare global {
           </p>
         </div>
 
-        <!-- Event selector -->
-        <div class="w-full sm:w-72">
+        <!-- Event selector (Admin / Artist mode) -->
+        <div *ngIf="!isDoormanMode()" class="w-full sm:w-72">
           <label class="block text-[10px] font-bold uppercase tracking-wider text-dark/60 mb-1">
             Evento Seleccionado
           </label>
@@ -81,6 +82,15 @@ declare global {
               {{ ev.name }} ({{ ev.event_date | date:'shortDate' }})
             </option>
           </select>
+        </div>
+
+        <!-- Event Badge (Doorman Mode) -->
+        <div *ngIf="isDoormanMode()" class="w-full sm:w-auto flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-primary/15 border border-primary/30 text-dark">
+          <span class="text-base">🎯</span>
+          <div>
+            <span class="text-[10px] uppercase tracking-wider font-extrabold text-primary block">Evento Asignado</span>
+            <span class="text-xs font-black">{{ events()[0]?.name || 'Cargando espectáculo...' }}</span>
+          </div>
         </div>
       </div>
 
@@ -224,21 +234,32 @@ declare global {
               [ngClass]="{
                 'bg-green-50 border-green-500 text-green-950': lastResult()!.result === 'valid',
                 'bg-amber-50 border-amber-500 text-amber-950': lastResult()!.result === 'already_used',
-                'bg-red-50 border-red-500 text-red-950': lastResult()!.result !== 'valid' && lastResult()!.result !== 'already_used'
+                'bg-blue-50 border-blue-500 text-blue-950': lastResult()!.result === 'doors_not_open',
+                'bg-red-50 border-red-500 text-red-950': !['valid', 'already_used', 'doors_not_open'].includes(lastResult()!.result)
               }"
             >
               <div class="flex items-center gap-3">
                 <span class="text-3xl">
-                  {{ lastResult()!.result === 'valid' ? '✅' : (lastResult()!.result === 'already_used' ? '⚠️' : '❌') }}
+                  {{
+                    lastResult()!.result === 'valid'
+                      ? '✅'
+                      : lastResult()!.result === 'already_used'
+                      ? '⚠️'
+                      : lastResult()!.result === 'doors_not_open'
+                      ? '⏰'
+                      : '❌'
+                  }}
                 </span>
                 <div>
                   <h3 class="font-black text-lg leading-tight">
                     {{
                       lastResult()!.result === 'valid'
                         ? '¡ACCESO AUTORIZADO!'
-                        : (lastResult()!.result === 'already_used'
-                            ? 'BOLETO YA CANJEADO'
-                            : 'ACCESO DENEGADO')
+                        : lastResult()!.result === 'already_used'
+                        ? 'BOLETO YA CANJEADO'
+                        : lastResult()!.result === 'doors_not_open'
+                        ? 'PUERTAS CERRADAS'
+                        : 'ACCESO DENEGADO'
                     }}
                   </h3>
                   <p class="text-xs font-semibold opacity-80 mt-0.5">
@@ -296,6 +317,7 @@ export class AccessControlComponent implements OnInit, OnDestroy {
   private readonly accessControl = inject(AccessControlService);
   private readonly route = inject(ActivatedRoute);
   private readonly platformId = inject(PLATFORM_ID);
+  readonly auth = inject(AuthService);
 
   protected readonly Math = Math;
 
@@ -326,7 +348,23 @@ export class AccessControlComponent implements OnInit, OnDestroy {
     return Math.round((s.totalCheckedIn / s.totalSoldTickets) * 100);
   });
 
+  readonly isDoormanMode = signal(false);
+
   async ngOnInit(): Promise<void> {
+    const roles = this.auth.roles();
+    const isDoormanOnly = roles.includes('doorman') && !this.auth.isAdmin() && !this.auth.isArtist();
+
+    if (isDoormanOnly) {
+      this.isDoormanMode.set(true);
+      const doormanEventId = await this.accessControl.getDoormanEventId();
+      if (doormanEventId) {
+        const list = await this.accessControl.getEvents();
+        this.events.set(list);
+        await this.onEventChanged(doormanEventId);
+        return;
+      }
+    }
+
     const list = await this.accessControl.getEvents();
     this.events.set(list);
 

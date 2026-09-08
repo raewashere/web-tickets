@@ -41,7 +41,22 @@ export class SearchService {
 
     if (params.query && params.query.trim()) {
       const q = params.query.trim();
-      query = query.ilike('name', `%${q}%`);
+      // Find matching artists to allow searching by artist name as well as event name
+      try {
+        const { data: matchingArtists } = await this.supabase
+          .from('artists')
+          .select('id')
+          .ilike('name', `%${q}%`);
+
+        if (matchingArtists && matchingArtists.length > 0) {
+          const artistIds = matchingArtists.map((a) => a.id).join(',');
+          query = query.or(`name.ilike.%${q}%,artist_id.in.(${artistIds})`);
+        } else {
+          query = query.ilike('name', `%${q}%`);
+        }
+      } catch {
+        query = query.ilike('name', `%${q}%`);
+      }
     }
 
     if (params.eventTypeId) {

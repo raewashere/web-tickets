@@ -103,9 +103,9 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
                 *ngIf="qrDataUrl()"
                 [src]="qrDataUrl()"
                 alt="Código QR de acceso"
-                class="w-52 h-52 rounded-lg"
+                class="w-56 h-56 sm:w-64 sm:h-64 rounded-lg object-contain"
               />
-              <div *ngIf="!qrDataUrl()" class="w-52 h-52 flex items-center justify-center">
+              <div *ngIf="!qrDataUrl()" class="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center">
                 <tf-spinner size="md" color="primary"></tf-spinner>
               </div>
             </div>
@@ -213,7 +213,7 @@ export class TicketDetailComponent implements OnInit {
       // Generate QR locally if in browser
       if (found && isPlatformBrowser(this.platformId)) {
         const payload = `TICKETFLOW-AUTH-${found.id}`;
-        const url = generateQrDataUrl(payload, 220);
+        const url = await generateQrDataUrl(payload, 400);
         this.qrDataUrl.set(url);
       }
     } catch (err) {

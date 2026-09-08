@@ -205,9 +205,9 @@ import {
               *ngIf="qrDataUrl()"
               [src]="qrDataUrl()"
               alt="QR Code Boleto"
-              class="w-48 h-48 rounded-lg shadow-sm"
+              class="w-56 h-56 rounded-lg shadow-sm object-contain"
             />
-            <div *ngIf="!qrDataUrl()" class="w-48 h-48 flex items-center justify-center">
+            <div *ngIf="!qrDataUrl()" class="w-56 h-56 flex items-center justify-center">
               <tf-spinner size="md" color="primary"></tf-spinner>
             </div>
             <span class="font-mono text-[10px] text-slate-400 tracking-widest font-bold">
@@ -264,10 +264,11 @@ export class MyTicketsComponent implements OnInit {
     }
   }
 
-  openQrModal(order: OrderWithRelations): void {
+  async openQrModal(order: OrderWithRelations): Promise<void> {
     this.selectedOrderForQr.set(order);
     if (isPlatformBrowser(this.platformId)) {
-      this.qrDataUrl.set(generateQrDataUrl(`TICKETFLOW-AUTH-${order.id}`, 220));
+      const url = await generateQrDataUrl(`TICKETFLOW-AUTH-${order.id}`, 400);
+      this.qrDataUrl.set(url);
     }
   }
 

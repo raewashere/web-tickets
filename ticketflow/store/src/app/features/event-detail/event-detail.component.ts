@@ -258,7 +258,7 @@ export class EventDetailComponent implements OnInit {
 
     // If user not authenticated, redirect to login first
     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['/login'], { queryParams: { returnUrl: `/event/${this.event()!.id}` } });
+      this.router.navigate(['/login'], { queryParams: { returnUrl: `/events/${this.event()!.id}` } });
       return;
     }
 
