@@ -196,3 +196,18 @@ export interface StaffInvitation {
   expires_at: string;
   created_at: string;
 }
+
+export interface RefundRequest {
+  id: string;
+  order_id: string;
+  user_id: string;
+  event_id: string;
+  amount: number;
+  reason: string;
+  status: 'pending' | 'approved' | 'rejected';
+  admin_notes: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}

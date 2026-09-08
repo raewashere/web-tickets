@@ -33,7 +33,8 @@
 | `20250110000000_validate_with_doorman_auth.sql` | ✅ Lista | `validate_ticket_qr` con control de autorización para Doormen |
 | `20250111000000_coupon_ticket_sku.sql` | ✅ Aplicada | Cupones asociados por SKU (`ticket_sku`) y descuento proporcional atómico |
 | `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
-| `20250113000000_super_admin.sql` | 🟡 Lista para ejecutar | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
+| `20250113000000_super_admin.sql` | ✅ Aplicada | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
+| `20250114000000_refund_requests.sql` | 🟡 Lista para ejecutar | Sistema de solicitudes de reembolso, RLS y RPCs de aprobación/rechazo atómico |
 
 ### Despliegue & Producción
 
@@ -69,6 +70,7 @@
 | **M9** | Admin + Store + DB | Perfil de artista con biografía y galería multi-fotos | `artist-form.*`, `artist-detail.*`, `event-detail.*`, `search-results.*`, migración 012 |
 | **M10** | Store | SEO dinámico, 404, Sitemap XML, Gracias, Privacidad y Alt texts | `seo.service.ts`, `not-found.*`, `thank-you.*`, `privacy-policy.*`, `sitemap.xml` |
 | **M11** | Admin + DB | Módulo de Super-Admin (Métricas globales, moderación de recintos, roles de usuario) | `super-admin.*`, `super-admin.guard.ts`, `venue-moderation.*`, `user-management.*`, migración 013 |
+| **M12** | Admin + Store + DB | Gestión de Reembolsos (Solicitud post-venta, aprobación/rechazo atómico, devolución de stock y anulación de QR) | `refunds.*`, `my-tickets.*`, `ticket-detail.*`, migración 014 |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

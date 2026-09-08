@@ -6,6 +6,7 @@ import type {
   EventType,
   Order,
   OrderItem,
+  RefundRequest,
   TicketType,
   Venue,
   VenueConfiguration,
@@ -57,6 +58,7 @@ export interface OrderWithRelations extends Order {
   }) | null;
   order_items: OrderItemWithTicketType[];
   coupons: Coupon | null;
+  refund_requests?: RefundRequest | RefundRequest[] | null;
 }
 
 // Coupon validation result
@@ -165,5 +167,16 @@ export interface AdminVenueModerationItem {
   total_capacity: number;
   events_count: number;
 }
+
+// Refund request with joined relations
+export interface RefundRequestWithRelations extends RefundRequest {
+  customer_email?: string | null;
+  customer_name?: string | null;
+  event_name?: string | null;
+  event_date?: string | null;
+  artist_name?: string | null;
+  order_total?: number | null;
+}
+
 
 

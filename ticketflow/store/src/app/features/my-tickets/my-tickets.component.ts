@@ -3,14 +3,14 @@ import {
   OnInit,
   inject,
   signal,
-  computed,
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MyTicketsService } from './my-tickets.service';
 import { AuthService } from '@ticketflow/data-access';
-import type { OrderWithRelations, OrderItemWithTicketType } from '@ticketflow/models';
+import type { OrderWithRelations, RefundRequest } from '@ticketflow/models';
 import { generateQrDataUrl } from '../../shared/utils/qr.utils';
 import {
   BadgeComponent,
@@ -22,6 +22,7 @@ import {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule,
     BadgeComponent,
     SpinnerComponent,
@@ -35,7 +36,7 @@ import {
             Mis Boletos
           </h1>
           <p class="text-xs sm:text-sm text-slate-500 mt-1">
-            Consulta tus entradas compradas y presenta tu código QR oficial en el acceso.
+            Consulta tus entradas compradas, solicita reembolsos y presenta tu código QR oficial en el acceso.
           </p>
         </div>
 
@@ -47,6 +48,25 @@ import {
             + Explorar Más Shows
           </button>
         </a>
+      </div>
+
+      <!-- Toast Feedback Message -->
+      <div
+        *ngIf="feedbackMessage()"
+        class="p-4 rounded-2xl flex items-center justify-between transition-all"
+        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
+      >
+        <div class="flex items-center gap-3 text-sm font-semibold">
+          <span>{{ feedbackType() === 'success' ? '✅' : '⚠️' }}</span>
+          <span>{{ feedbackMessage() }}</span>
+        </div>
+        <button
+          type="button"
+          (click)="feedbackMessage.set(null)"
+          class="text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5"
+        >
+          ✕
+        </button>
       </div>
 
       <!-- Loading State -->
@@ -79,20 +99,67 @@ import {
       <div *ngIf="!isLoading() && orders().length > 0" class="space-y-6">
         <div
           *ngFor="let order of orders()"
-          class="p-6 sm:p-8 rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all space-y-6"
+          class="p-6 sm:p-8 rounded-3xl border bg-white shadow-sm hover:shadow-md transition-all space-y-6"
+          [ngClass]="order.status === 'refunded' ? 'border-rose-200 bg-rose-50/20' : 'border-slate-200'"
         >
           <!-- Order Top Header: Date & Status -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
               <span class="font-mono font-bold text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-800">
                 Orden #{{ order.id.substring(0, 8).toUpperCase() }}
               </span>
-              <tf-badge variant="success">Confirmada</tf-badge>
+
+              <!-- Status Badge -->
+              <span
+                *ngIf="order.status === 'refunded'"
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
+              >
+                💸 Reembolsado
+              </span>
+              <span
+                *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'pending'"
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"
+              >
+                ⏳ Reembolso en Revisión
+              </span>
+              <span
+                *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'rejected'"
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200"
+              >
+                ❌ Solicitud Rechazada
+              </span>
+              <tf-badge *ngIf="order.status === 'confirmed' && !getRefund(order)" variant="success">
+                Confirmada
+              </tf-badge>
             </div>
 
             <div class="text-xs text-slate-500">
               Comprado el: <strong class="text-slate-700">{{ order.created_at | date:'medium' }}</strong>
             </div>
+          </div>
+
+          <!-- Refund Status Info Alert (if applicable) -->
+          <div
+            *ngIf="getRefund(order) as refund"
+            class="p-4 rounded-2xl text-xs space-y-1"
+            [ngClass]="{
+              'bg-amber-50 border border-amber-200 text-amber-900': refund.status === 'pending',
+              'bg-emerald-50 border border-emerald-200 text-emerald-900': refund.status === 'approved' || order.status === 'refunded',
+              'bg-rose-50 border border-rose-200 text-rose-900': refund.status === 'rejected'
+            }"
+          >
+            <div class="flex items-center justify-between font-bold">
+              <span>
+                {{ refund.status === 'pending' ? '⏳ Solicitud de reembolso en trámite' : refund.status === 'approved' || order.status === 'refunded' ? '✅ Reembolso completado' : '❌ Solicitud de reembolso declinada' }}
+              </span>
+              <span class="font-mono text-[11px] opacity-80">{{ refund.created_at | date:'short' }}</span>
+            </div>
+            <p class="text-slate-600">
+              <strong>Motivo enviado:</strong> {{ refund.reason }}
+            </p>
+            <p *ngIf="refund.admin_notes" class="text-slate-700 italic">
+              <strong>Nota del organizador:</strong> "{{ refund.admin_notes }}"
+            </p>
           </div>
 
           <!-- Event Body Card -->
@@ -142,12 +209,25 @@ import {
                   📄 Ver Detalle
                 </button>
               </a>
+
+              <!-- QR Button: Only if order is confirmed and not refunded -->
               <button
+                *ngIf="order.status === 'confirmed'"
                 type="button"
                 class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs shadow-sm transition-all"
                 (click)="openQrModal(order)"
               >
                 📲 Ver QR
+              </button>
+
+              <!-- Request Refund Button -->
+              <button
+                *ngIf="canRequestRefund(order)"
+                type="button"
+                (click)="openRefundModal(order)"
+                class="w-full sm:w-auto px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-colors"
+              >
+                💸 Solicitar Reembolso
               </button>
             </div>
           </div>
@@ -232,6 +312,99 @@ import {
           </p>
         </div>
       </div>
+
+      <!-- Refund Request Modal -->
+      <div
+        *ngIf="selectedOrderForRefund()"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+      >
+        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-200">
+          <!-- Close Button -->
+          <button
+            type="button"
+            (click)="closeRefundModal()"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 font-bold flex items-center justify-center transition-colors"
+          >
+            ✕
+          </button>
+
+          <!-- Header -->
+          <div class="space-y-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-rose-600 block">
+              Garantía y Devolución
+            </span>
+            <h3 class="text-xl font-black text-slate-900">
+              Solicitar Reembolso
+            </h3>
+            <p class="text-xs text-slate-500">
+              Orden #{{ selectedOrderForRefund()!.id.substring(0, 8).toUpperCase() }} · Total: <strong class="text-slate-800">\${{ selectedOrderForRefund()!.total | number:'1.2-2' }} MXN</strong>
+            </p>
+          </div>
+
+          <!-- Notice Alert -->
+          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
+            <p class="font-bold flex items-center gap-1.5">
+              <span>⚠️</span> Políticas de Devolución:
+            </p>
+            <p class="text-[11px] leading-relaxed">
+              Tu solicitud será evaluada por el organizador del evento. Una vez aprobado, el importe se reintegrará y los boletos quedarán inválidos de forma permanente.
+            </p>
+          </div>
+
+          <!-- Form -->
+          <div class="space-y-4 text-xs">
+            <div class="space-y-1.5">
+              <label class="font-bold text-slate-700">Categoría del Motivo:</label>
+              <select
+                [(ngModel)]="refundCategory"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none"
+              >
+                <option value="Cancelación de planes personales">Cancelación de planes personales</option>
+                <option value="Error en la compra o cantidad de boletos">Error en la compra o duplicidad</option>
+                <option value="Imprevisto médico o de fuerza mayor">Imprevisto médico o de fuerza mayor</option>
+                <option value="Inconformidad o cambio en el evento">Inconformidad o cambio en el evento</option>
+                <option value="Otro motivo">Otro motivo</option>
+              </select>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="font-bold text-slate-700">Explica brevemente tu caso (mínimo 5 caracteres):</label>
+              <textarea
+                [(ngModel)]="refundDetails"
+                rows="3"
+                placeholder="Por favor describe detalladamente la razón de tu solicitud de reembolso..."
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Error in modal -->
+            <p *ngIf="refundError()" class="text-rose-600 font-bold text-xs">
+              {{ refundError() }}
+            </p>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+            <button
+              type="button"
+              (click)="closeRefundModal()"
+              [disabled]="isSubmittingRefund()"
+              class="px-4 py-2.5 rounded-xl text-slate-600 font-bold text-xs hover:bg-slate-100 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              (click)="submitRefundRequest()"
+              [disabled]="isSubmittingRefund()"
+              class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
+            >
+              <tf-spinner *ngIf="isSubmittingRefund()" size="sm" color="white"></tf-spinner>
+              <span>{{ isSubmittingRefund() ? 'Enviando...' : 'Confirmar Solicitud' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -245,6 +418,17 @@ export class MyTicketsComponent implements OnInit {
   readonly selectedOrderForQr = signal<OrderWithRelations | null>(null);
   readonly qrDataUrl = signal<string | null>(null);
 
+  // Refund modal state
+  readonly selectedOrderForRefund = signal<OrderWithRelations | null>(null);
+  readonly isSubmittingRefund = signal(false);
+  readonly refundError = signal<string | null>(null);
+  refundCategory = 'Cancelación de planes personales';
+  refundDetails = '';
+
+  // Toast feedback
+  readonly feedbackMessage = signal<string | null>(null);
+  readonly feedbackType = signal<'success' | 'error'>('success');
+
   async ngOnInit(): Promise<void> {
     const user = this.auth.user();
     if (user) {
@@ -252,7 +436,7 @@ export class MyTicketsComponent implements OnInit {
     }
   }
 
-  private async loadOrders(userId: string): Promise<void> {
+  async loadOrders(userId: string): Promise<void> {
     this.isLoading.set(true);
     try {
       const data = await this.myTicketsService.getMyOrders(userId);
@@ -262,6 +446,22 @@ export class MyTicketsComponent implements OnInit {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  getRefund(order: OrderWithRelations): RefundRequest | null {
+    if (!order.refund_requests) return null;
+    if (Array.isArray(order.refund_requests)) {
+      return order.refund_requests[0] || null;
+    }
+    return order.refund_requests as RefundRequest;
+  }
+
+  canRequestRefund(order: OrderWithRelations): boolean {
+    if (order.status !== 'confirmed') return false;
+    const existingRefund = this.getRefund(order);
+    if (existingRefund) return false;
+    if (!order.events?.event_date) return false;
+    return new Date(order.events.event_date).getTime() > Date.now();
   }
 
   async openQrModal(order: OrderWithRelations): Promise<void> {
@@ -276,4 +476,53 @@ export class MyTicketsComponent implements OnInit {
     this.selectedOrderForQr.set(null);
     this.qrDataUrl.set(null);
   }
+
+  openRefundModal(order: OrderWithRelations): void {
+    this.selectedOrderForRefund.set(order);
+    this.refundCategory = 'Cancelación de planes personales';
+    this.refundDetails = '';
+    this.refundError.set(null);
+  }
+
+  closeRefundModal(): void {
+    this.selectedOrderForRefund.set(null);
+    this.refundError.set(null);
+  }
+
+  async submitRefundRequest(): Promise<void> {
+    const order = this.selectedOrderForRefund();
+    if (!order) return;
+
+    const reason = this.refundDetails.trim()
+      ? `[${this.refundCategory}] ${this.refundDetails.trim()}`
+      : `[${this.refundCategory}] Solicitud de reembolso por parte del usuario.`;
+
+    if (reason.length < 5) {
+      this.refundError.set('Por favor describe tu motivo con al menos 5 caracteres.');
+      return;
+    }
+
+    this.isSubmittingRefund.set(true);
+    this.refundError.set(null);
+
+    try {
+      const res = await this.myTicketsService.requestRefund(order.id, reason);
+      if (res.success) {
+        this.closeRefundModal();
+        this.feedbackType.set('success');
+        this.feedbackMessage.set('Solicitud de reembolso enviada con éxito. El organizador la revisará a la brevedad.');
+        const userId = this.auth.user()?.id;
+        if (userId) {
+          await this.loadOrders(userId);
+        }
+      } else {
+        this.refundError.set(res.error || 'No se pudo procesar la solicitud.');
+      }
+    } catch (err: any) {
+      this.refundError.set(err.message || 'Ocurrió un error inesperado.');
+    } finally {
+      this.isSubmittingRefund.set(false);
+    }
+  }
 }
+

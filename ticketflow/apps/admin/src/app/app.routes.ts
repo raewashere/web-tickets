@@ -102,6 +102,14 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'refunds',
+        canActivate: [artistRoleGuard],
+        loadChildren: () =>
+          import('./features/refunds/refunds.routes').then(
+            (m) => m.refundRoutes
+          ),
+      },
+      {
         path: 'super-admin',
         canActivate: [superAdminGuard],
         loadChildren: () =>

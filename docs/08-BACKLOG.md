@@ -110,10 +110,8 @@
 - [x] **1. Módulo de Super-Admin Central**
   - **Completado:** Migración SQL 013 con RPCs `get_all_users_with_roles`, `admin_set_user_role`, `admin_toggle_venue_verification` y `get_global_platform_metrics`. Implementadas las vistas `VenueModerationComponent`, `UserManagementComponent`, `SuperAdminDashboardComponent`, servicio `SuperAdminService`, `superAdminGuard` y navegación dedicada en `SidebarComponent`.
 
-- [ ] **2. Gestión de Solicitudes de Reembolso**
-  - **Flujo de Usuario (Tienda):** Opción *"Solicitar Reembolso"* dentro del detalle de orden en *Mis Boletos* indicando motivo y boletos a cancelar.
-  - **Panel de Aprobación (Admin / Super-Admin):** Bandeja de solicitudes pendientes con detalles de la orden, motivo y monto a devolver.
-  - **Ejecución y Estado:** Al aprobar, se actualiza el estado de la orden a `refunded`, se invalidan los códigos QR (`ticket_validations`) y se reincorpora el stock de boletos.
+- [x] **2. Gestión de Solicitudes de Reembolso (Post-Venta)**
+  - **Completado:** Migración SQL 014 con tabla `refund_requests` y RPCs `request_order_refund`, `process_refund_request` y `get_all_refund_requests`. Flujo del cliente en la tienda (`my-tickets.component.ts` y `ticket-detail.component.ts`) con modal interactivo de motivos, banners de estado y anulación de QR si reembolsado. Panel completo de administración (`refund-list.component.ts`, `refunds.service.ts`, `refunds.routes.ts`) con filtros, tarjetas de métricas y aprobación/rechazo atómico que reincorpora stock y anula boletos.
 
 - [ ] **3. Waitlist / Lista de Espera para Eventos Agotados**
   - **Suscripción de Compradores:** Formulario interactivo en la página del evento cuando el aforo / stock de todos los tipos de boletos esté en 0.
@@ -151,9 +149,9 @@
 | P0 — Blockers & Producción | 4 | 3 | 1 (PayPal Live) |
 | P1 — Alta prioridad | 9 | 8 | 1 (Webhook N8N Email) |
 | P2 — Media prioridad | 4 | 2 | 2 |
-| P3 — Super Admin & Módulos Avanzados | 5 | 2 | 3 |
+| P3 — Super Admin & Módulos Avanzados | 5 | 3 | 2 |
 | P4 — Roadmap | 10 | 0 | 10 |
-| **Total** | **32** | **15** | **17** |
+| **Total** | **32** | **16** | **16** |
 
 ---
 
