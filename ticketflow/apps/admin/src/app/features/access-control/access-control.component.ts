@@ -22,7 +22,6 @@ import type { Event } from '@ticketflow/models';
 import { AuthService } from '@ticketflow/data-access';
 import {
   ButtonComponent,
-  BadgeComponent,
   CardComponent,
   SpinnerComponent,
 } from '@ticketflow/shared-ui';
@@ -43,7 +42,6 @@ declare global {
     FormsModule,
     RouterModule,
     ButtonComponent,
-    BadgeComponent,
     CardComponent,
     SpinnerComponent,
   ],

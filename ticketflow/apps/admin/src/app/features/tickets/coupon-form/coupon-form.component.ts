@@ -18,7 +18,7 @@ import {
 } from '@angular/forms';
 import { TicketsService, UpsertCouponDto } from '../tickets.service';
 import { AuthService } from '@ticketflow/data-access';
-import type { Coupon, CouponType } from '@ticketflow/models';
+import type { Coupon, CouponType, TicketType } from '@ticketflow/models';
 import {
   ButtonComponent,
   SpinnerComponent,
