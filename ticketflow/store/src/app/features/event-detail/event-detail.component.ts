@@ -244,6 +244,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
               <store-ticket-selector
                 *ngIf="!isReserving()"
+                [eventId]="event()!.id"
                 [ticketTypes]="event()!.ticket_types"
                 (checkoutRequested)="onCheckoutRequested($event)"
               ></store-ticket-selector>

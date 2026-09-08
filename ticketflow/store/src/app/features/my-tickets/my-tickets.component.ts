@@ -9,8 +9,9 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MyTicketsService } from './my-tickets.service';
+import { WaitlistService } from '../../core/services/waitlist.service';
 import { AuthService } from '@ticketflow/data-access';
-import type { OrderWithRelations, RefundRequest } from '@ticketflow/models';
+import type { OrderWithRelations, RefundRequest, CustomerWaitlistSummary } from '@ticketflow/models';
 import { generateQrDataUrl } from '../../shared/utils/qr.utils';
 import {
   BadgeComponent,
@@ -33,10 +34,10 @@ import {
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Mis Boletos
+            Mis Boletos & Reservas
           </h1>
           <p class="text-xs sm:text-sm text-slate-500 mt-1">
-            Consulta tus entradas compradas, solicita reembolsos y presenta tu código QR oficial en el acceso.
+            Consulta tus entradas compradas, solicitudes de reembolso y registros en listas de espera.
           </p>
         </div>
 
@@ -48,6 +49,39 @@ import {
             + Explorar Más Shows
           </button>
         </a>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="flex items-center gap-3 border-b border-slate-200 pb-1">
+        <button
+          type="button"
+          (click)="activeTab.set('tickets')"
+          [class.text-slate-950]="activeTab() === 'tickets'"
+          [class.border-cyan-500]="activeTab() === 'tickets'"
+          [class.text-slate-500]="activeTab() !== 'tickets'"
+          [class.border-transparent]="activeTab() !== 'tickets'"
+          class="pb-3 px-3 text-sm font-black border-b-2 transition-all flex items-center gap-2"
+        >
+          <span>🎟️ Boletos Comprados</span>
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+            {{ orders().length }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          (click)="activeTab.set('waitlist')"
+          [class.text-slate-950]="activeTab() === 'waitlist'"
+          [class.border-cyan-500]="activeTab() === 'waitlist'"
+          [class.text-slate-500]="activeTab() !== 'waitlist'"
+          [class.border-transparent]="activeTab() !== 'waitlist'"
+          class="pb-3 px-3 text-sm font-black border-b-2 transition-all flex items-center gap-2"
+        >
+          <span>🔔 Listas de Espera</span>
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+            {{ waitlistEntries().length }}
+          </span>
+        </button>
       </div>
 
       <!-- Toast Feedback Message -->
@@ -75,177 +109,266 @@ import {
         <p class="text-sm text-slate-500 font-medium">Cargando tus entradas...</p>
       </div>
 
-      <!-- Empty State -->
-      <div
-        *ngIf="!isLoading() && orders().length === 0"
-        class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
-      >
-        <span class="text-5xl block">🎟️</span>
-        <h3 class="text-lg font-bold text-slate-900">Aún no tienes boletos comprados</h3>
-        <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
-          Encuentra tus conciertos y festivales favoritos y adquiere tus entradas oficiales al instante.
-        </p>
-        <a routerLink="/search">
-          <button
-            type="button"
-            class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
-          >
-            Explorar Cartelera
-          </button>
-        </a>
-      </div>
-
-      <!-- Orders List -->
-      <div *ngIf="!isLoading() && orders().length > 0" class="space-y-6">
+      <!-- Orders List (Tickets Tab) -->
+      <div *ngIf="activeTab() === 'tickets'">
+        <!-- Empty State for Orders -->
         <div
-          *ngFor="let order of orders()"
-          class="p-6 sm:p-8 rounded-3xl border bg-white shadow-sm hover:shadow-md transition-all space-y-6"
-          [ngClass]="order.status === 'refunded' ? 'border-rose-200 bg-rose-50/20' : 'border-slate-200'"
+          *ngIf="!isLoading() && orders().length === 0"
+          class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
         >
-          <!-- Order Top Header: Date & Status -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-              <span class="font-mono font-bold text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-800">
-                Orden #{{ order.id.substring(0, 8).toUpperCase() }}
-              </span>
+          <span class="text-5xl block">🎟️</span>
+          <h3 class="text-lg font-bold text-slate-900">Aún no tienes boletos comprados</h3>
+          <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
+            Encuentra tus conciertos y festivales favoritos y adquiere tus entradas oficiales al instante.
+          </p>
+          <a routerLink="/search">
+            <button
+              type="button"
+              class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
+            >
+              Explorar Cartelera
+            </button>
+          </a>
+        </div>
 
-              <!-- Status Badge -->
-              <span
-                *ngIf="order.status === 'refunded'"
-                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
-              >
-                💸 Reembolsado
-              </span>
-              <span
-                *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'pending'"
-                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"
-              >
-                ⏳ Reembolso en Revisión
-              </span>
-              <span
-                *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'rejected'"
-                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200"
-              >
-                ❌ Solicitud Rechazada
-              </span>
-              <tf-badge *ngIf="order.status === 'confirmed' && !getRefund(order)" variant="success">
-                Confirmada
-              </tf-badge>
-            </div>
-
-            <div class="text-xs text-slate-500">
-              Comprado el: <strong class="text-slate-700">{{ order.created_at | date:'medium' }}</strong>
-            </div>
-          </div>
-
-          <!-- Refund Status Info Alert (if applicable) -->
+        <div *ngIf="!isLoading() && orders().length > 0" class="space-y-6">
           <div
-            *ngIf="getRefund(order) as refund"
-            class="p-4 rounded-2xl text-xs space-y-1"
-            [ngClass]="{
-              'bg-amber-50 border border-amber-200 text-amber-900': refund.status === 'pending',
-              'bg-emerald-50 border border-emerald-200 text-emerald-900': refund.status === 'approved' || order.status === 'refunded',
-              'bg-rose-50 border border-rose-200 text-rose-900': refund.status === 'rejected'
-            }"
+            *ngFor="let order of orders()"
+            class="p-6 sm:p-8 rounded-3xl border bg-white shadow-sm hover:shadow-md transition-all space-y-6"
+            [ngClass]="order.status === 'refunded' ? 'border-rose-200 bg-rose-50/20' : 'border-slate-200'"
           >
-            <div class="flex items-center justify-between font-bold">
-              <span>
-                {{ refund.status === 'pending' ? '⏳ Solicitud de reembolso en trámite' : refund.status === 'approved' || order.status === 'refunded' ? '✅ Reembolso completado' : '❌ Solicitud de reembolso declinada' }}
-              </span>
-              <span class="font-mono text-[11px] opacity-80">{{ refund.created_at | date:'short' }}</span>
-            </div>
-            <p class="text-slate-600">
-              <strong>Motivo enviado:</strong> {{ refund.reason }}
-            </p>
-            <p *ngIf="refund.admin_notes" class="text-slate-700 italic">
-              <strong>Nota del organizador:</strong> "{{ refund.admin_notes }}"
-            </p>
-          </div>
+            <!-- Order Top Header: Date & Status -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span class="font-mono font-bold text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-800">
+                  Orden #{{ order.id.substring(0, 8).toUpperCase() }}
+                </span>
 
-          <!-- Event Body Card -->
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <!-- Event Info -->
-            <div class="flex items-start gap-4">
-              <!-- Flyer Thumbnail -->
-              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
-                <img
-                  *ngIf="order.events?.flyer_url"
-                  [src]="order.events!.flyer_url"
-                  [alt]="'Flyer del concierto ' + (order.events?.name || 'evento')"
-                  class="w-full h-full object-cover"
-                />
-                <div *ngIf="!order.events?.flyer_url" class="w-full h-full flex items-center justify-center text-2xl text-slate-400">
-                  🎸
+                <!-- Status Badge -->
+                <span
+                  *ngIf="order.status === 'refunded'"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
+                >
+                  💸 Reembolsado
+                </span>
+                <span
+                  *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'pending'"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"
+                >
+                  ⏳ Reembolso en Revisión
+                </span>
+                <span
+                  *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'rejected'"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200"
+                >
+                  ❌ Solicitud Rechazada
+                </span>
+                <tf-badge *ngIf="order.status === 'confirmed' && !getRefund(order)" variant="success">
+                  Confirmada
+                </tf-badge>
+              </div>
+
+              <div class="text-xs text-slate-500">
+                Comprado el: <strong class="text-slate-700">{{ order.created_at | date:'medium' }}</strong>
+              </div>
+            </div>
+
+            <!-- Refund Status Info Alert (if applicable) -->
+            <div
+              *ngIf="getRefund(order) as refund"
+              class="p-4 rounded-2xl text-xs space-y-1"
+              [ngClass]="{
+                'bg-amber-50 border border-amber-200 text-amber-900': refund.status === 'pending',
+                'bg-emerald-50 border border-emerald-200 text-emerald-900': refund.status === 'approved' || order.status === 'refunded',
+                'bg-rose-50 border border-rose-200 text-rose-900': refund.status === 'rejected'
+              }"
+            >
+              <div class="flex items-center justify-between font-bold">
+                <span>
+                  {{ refund.status === 'pending' ? '⏳ Solicitud de reembolso en trámite' : refund.status === 'approved' || order.status === 'refunded' ? '✅ Reembolso completado' : '❌ Solicitud de reembolso declinada' }}
+                </span>
+                <span class="font-mono text-[11px] opacity-80">{{ refund.created_at | date:'short' }}</span>
+              </div>
+              <p class="text-slate-600">
+                <strong>Motivo enviado:</strong> {{ refund.reason }}
+              </p>
+              <p *ngIf="refund.admin_notes" class="text-slate-700 italic">
+                <strong>Nota del organizador:</strong> "{{ refund.admin_notes }}"
+              </p>
+            </div>
+
+            <!-- Event Body Card -->
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <!-- Event Info -->
+              <div class="flex items-start gap-4">
+                <!-- Flyer Thumbnail -->
+                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+                  <img
+                    *ngIf="order.events?.flyer_url"
+                    [src]="order.events!.flyer_url"
+                    [alt]="'Flyer del concierto ' + (order.events?.name || 'evento')"
+                    class="w-full h-full object-cover"
+                  />
+                  <div *ngIf="!order.events?.flyer_url" class="w-full h-full flex items-center justify-center text-2xl text-slate-400">
+                    🎸
+                  </div>
+                </div>
+
+                <!-- Titles & Date -->
+                <div class="space-y-1">
+                  <span class="text-xs font-bold uppercase text-cyan-600">
+                    {{ order.events?.artists?.name }}
+                  </span>
+                  <h3 class="text-lg font-black text-slate-900 leading-snug">
+                    {{ order.events?.name }}
+                  </h3>
+                  <p class="text-xs text-slate-500">
+                    📍 {{ order.events?.venues?.name || 'Recinto Confirmado' }}
+                  </p>
+                  <p class="text-xs font-bold text-slate-700">
+                    📅 {{ order.events?.event_date | date:'fullDate' }} · {{ order.events?.event_date | date:'shortTime' }} hrs
+                  </p>
                 </div>
               </div>
 
-              <!-- Titles & Date -->
-              <div class="space-y-1">
-                <span class="text-xs font-bold uppercase text-cyan-600">
-                  {{ order.events?.artists?.name }}
+              <!-- Action Buttons -->
+              <div class="w-full md:w-auto flex-shrink-0 flex flex-col sm:flex-row gap-2.5">
+                <a
+                  [routerLink]="['/my-tickets', order.id]"
+                  class="w-full sm:w-auto"
+                >
+                  <button
+                    type="button"
+                    class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-sm transition-colors"
+                  >
+                    📄 Ver Detalle
+                  </button>
+                </a>
+
+                <!-- QR Button: Only if order is confirmed and not refunded -->
+                <button
+                  *ngIf="order.status === 'confirmed'"
+                  type="button"
+                  class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs shadow-sm transition-all"
+                  (click)="openQrModal(order)"
+                >
+                  📲 Ver QR
+                </button>
+
+                <!-- Request Refund Button -->
+                <button
+                  *ngIf="canRequestRefund(order)"
+                  type="button"
+                  (click)="openRefundModal(order)"
+                  class="w-full sm:w-auto px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-colors"
+                >
+                  💸 Solicitar Reembolso
+                </button>
+              </div>
+            </div>
+
+            <!-- Items Breakdown in Order -->
+            <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span class="font-bold text-slate-500">Entradas:</span>
+                <span
+                  *ngFor="let item of order.order_items"
+                  class="px-2.5 py-1 rounded-lg bg-slate-100 font-semibold text-slate-800"
+                >
+                  {{ item.quantity }}x {{ item.ticket_types?.name }} (\${{ item.unit_price | number:'1.2-2' }})
                 </span>
-                <h3 class="text-lg font-black text-slate-900 leading-snug">
-                  {{ order.events?.name }}
+              </div>
+
+              <div class="font-bold text-slate-900 font-mono text-sm">
+                Total: \${{ order.total | number:'1.2-2' }} MXN
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Waitlist Tab Content -->
+      <div *ngIf="activeTab() === 'waitlist'" class="space-y-6">
+        <!-- Empty State for Waitlist -->
+        <div
+          *ngIf="!isLoading() && waitlistEntries().length === 0"
+          class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
+        >
+          <span class="text-5xl block">🔔</span>
+          <h3 class="text-lg font-bold text-slate-900">No tienes registros en listas de espera</h3>
+          <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
+            Cuando un evento tenga localidades agotadas, podrás unirte a la lista de espera para recibir alertas prioritarias de compra.
+          </p>
+          <a routerLink="/search">
+            <button
+              type="button"
+              class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
+            >
+              Explorar Cartelera
+            </button>
+          </a>
+        </div>
+
+        <!-- Waitlist Cards -->
+        <div *ngIf="!isLoading() && waitlistEntries().length > 0" class="space-y-4">
+          <div
+            *ngFor="let entry of waitlistEntries()"
+            class="p-6 rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+          >
+            <!-- Event & Details -->
+            <div class="flex items-start gap-4">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+                <img
+                  *ngIf="entry.flyer_url"
+                  [src]="entry.flyer_url"
+                  [alt]="'Flyer de ' + entry.event_name"
+                  class="w-full h-full object-cover"
+                />
+                <div *ngIf="!entry.flyer_url" class="w-full h-full flex items-center justify-center text-xl text-slate-400">
+                  🎪
+                </div>
+              </div>
+
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span
+                    *ngIf="entry.status === 'pending'"
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200"
+                  >
+                    ⏳ En Lista de Espera
+                  </span>
+                  <span
+                    *ngIf="entry.status === 'notified'"
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200"
+                  >
+                    🔔 ¡Boletos Liberados!
+                  </span>
+                  <span class="text-xs text-slate-400">· Registrado {{ entry.created_at | date:'mediumDate' }}</span>
+                </div>
+
+                <h3 class="text-base font-black text-slate-900 leading-snug">
+                  {{ entry.event_name }}
                 </h3>
                 <p class="text-xs text-slate-500">
-                  📍 {{ order.events?.venues?.name || 'Recinto Confirmado' }}
+                  📍 {{ entry.venue_name || 'Recinto' }} · 📅 {{ entry.event_date | date:'mediumDate' }}
                 </p>
-                <p class="text-xs font-bold text-slate-700">
-                  📅 {{ order.events?.event_date | date:'fullDate' }} · {{ order.events?.event_date | date:'shortTime' }} hrs
+                <p class="text-xs font-semibold text-slate-700 pt-0.5">
+                  Localidad solicitada: <span class="font-bold text-cyan-600">{{ entry.ticket_type_name }}</span>
                 </p>
               </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="w-full md:w-auto flex-shrink-0 flex flex-col sm:flex-row gap-2.5">
-              <a
-                [routerLink]="['/my-tickets', order.id]"
-                class="w-full sm:w-auto"
-              >
+            <!-- Action Link -->
+            <div class="w-full md:w-auto flex-shrink-0">
+              <a [routerLink]="['/events', entry.event_id]" class="w-full md:w-auto">
                 <button
                   type="button"
-                  class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-sm transition-colors"
+                  class="w-full md:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
                 >
-                  📄 Ver Detalle
+                  <span>🎟️</span>
+                  <span>Ver Evento & Boletos</span>
                 </button>
               </a>
-
-              <!-- QR Button: Only if order is confirmed and not refunded -->
-              <button
-                *ngIf="order.status === 'confirmed'"
-                type="button"
-                class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs shadow-sm transition-all"
-                (click)="openQrModal(order)"
-              >
-                📲 Ver QR
-              </button>
-
-              <!-- Request Refund Button -->
-              <button
-                *ngIf="canRequestRefund(order)"
-                type="button"
-                (click)="openRefundModal(order)"
-                class="w-full sm:w-auto px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-colors"
-              >
-                💸 Solicitar Reembolso
-              </button>
-            </div>
-          </div>
-
-          <!-- Items Breakdown in Order -->
-          <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs">
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-              <span class="font-bold text-slate-500">Entradas:</span>
-              <span
-                *ngFor="let item of order.order_items"
-                class="px-2.5 py-1 rounded-lg bg-slate-100 font-semibold text-slate-800"
-              >
-                {{ item.quantity }}x {{ item.ticket_types?.name }} (\${{ item.unit_price | number:'1.2-2' }})
-              </span>
-            </div>
-
-            <div class="font-bold text-slate-900 font-mono text-sm">
-              Total: \${{ order.total | number:'1.2-2' }} MXN
             </div>
           </div>
         </div>
@@ -410,11 +533,14 @@ import {
 })
 export class MyTicketsComponent implements OnInit {
   private readonly myTicketsService = inject(MyTicketsService);
+  private readonly waitlistService = inject(WaitlistService);
   private readonly platformId = inject(PLATFORM_ID);
   readonly auth = inject(AuthService);
 
+  readonly activeTab = signal<'tickets' | 'waitlist'>('tickets');
   readonly isLoading = signal(true);
   readonly orders = signal<OrderWithRelations[]>([]);
+  readonly waitlistEntries = signal<CustomerWaitlistSummary[]>([]);
   readonly selectedOrderForQr = signal<OrderWithRelations | null>(null);
   readonly qrDataUrl = signal<string | null>(null);
 
@@ -432,7 +558,10 @@ export class MyTicketsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const user = this.auth.user();
     if (user) {
-      await this.loadOrders(user.id);
+      await Promise.all([
+        this.loadOrders(user.id),
+        this.loadWaitlist(),
+      ]);
     }
   }
 
@@ -445,6 +574,15 @@ export class MyTicketsComponent implements OnInit {
       console.error('Error loading my tickets:', err);
     } finally {
       this.isLoading.set(false);
+    }
+  }
+
+  async loadWaitlist(): Promise<void> {
+    try {
+      const data = await this.waitlistService.getMyWaitlist();
+      this.waitlistEntries.set(data);
+    } catch (err) {
+      console.error('Error loading my waitlist:', err);
     }
   }
 

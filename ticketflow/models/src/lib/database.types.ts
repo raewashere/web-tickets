@@ -211,3 +211,19 @@ export interface RefundRequest {
   created_at: string;
   updated_at: string;
 }
+
+export type WaitlistStatus = 'pending' | 'notified' | 'purchased' | 'cancelled';
+
+export interface WaitlistEntry {
+  id: string;
+  event_id: string;
+  ticket_type_id: string | null;
+  user_id: string | null;
+  email: string;
+  phone_number: string | null;
+  status: WaitlistStatus;
+  notified_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+

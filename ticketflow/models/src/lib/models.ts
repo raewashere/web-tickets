@@ -10,6 +10,7 @@ import type {
   TicketType,
   Venue,
   VenueConfiguration,
+  WaitlistEntry,
 } from './database.types';
 
 // Artist with joined artist_type
@@ -176,6 +177,27 @@ export interface RefundRequestWithRelations extends RefundRequest {
   event_date?: string | null;
   artist_name?: string | null;
   order_total?: number | null;
+}
+
+// Waitlist entry with joined relations (for Admin / Organizer)
+export interface WaitlistEntryWithRelations extends WaitlistEntry {
+  ticket_type_name?: string | null;
+  user_display_name?: string | null;
+}
+
+// Customer Waitlist summary (for Store My Tickets)
+export interface CustomerWaitlistSummary {
+  id: string;
+  event_id: string;
+  event_name: string;
+  event_date: string;
+  flyer_url: string | null;
+  venue_name: string | null;
+  artist_name: string | null;
+  ticket_type_name: string | null;
+  status: string;
+  notified_at: string | null;
+  created_at: string;
 }
 
 

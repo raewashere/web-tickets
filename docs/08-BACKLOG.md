@@ -113,10 +113,8 @@
 - [x] **2. Gestión de Solicitudes de Reembolso (Post-Venta)**
   - **Completado:** Migración SQL 014 con tabla `refund_requests` y RPCs `request_order_refund`, `process_refund_request` y `get_all_refund_requests`. Flujo del cliente en la tienda (`my-tickets.component.ts` y `ticket-detail.component.ts`) con modal interactivo de motivos, banners de estado y anulación de QR si reembolsado. Panel completo de administración (`refund-list.component.ts`, `refunds.service.ts`, `refunds.routes.ts`) con filtros, tarjetas de métricas y aprobación/rechazo atómico que reincorpora stock y anula boletos.
 
-- [ ] **3. Waitlist / Lista de Espera para Eventos Agotados**
-  - **Suscripción de Compradores:** Formulario interactivo en la página del evento cuando el aforo / stock de todos los tipos de boletos esté en 0.
-  - **Tabla `waitlist`:** Almacenamiento de `event_id`, `ticket_type_id`, `user_id`/`email`, `created_at` y estado `notified`.
-  - **Automatización de Notificaciones:** Disparador (vía Edge Function o Webhook N8N) cuando el `release_expired_locks` libere boletos o haya reembolsos, notificando por orden cronológico con ventana de compra prioritaria.
+- [x] **3. Waitlist / Lista de Espera para Eventos Agotados**
+  - **Completado:** Migración SQL 015 con tabla `waitlist` (cola FIFO, RLS y RPCs `join_event_waitlist`, `get_event_waitlist`, `notify_event_waitlist` y `get_my_waitlist`). Formulario interactivo de suscripción en la tienda (`ticket-selector.component.ts`) ante localidades agotadas. Pestaña de gestión de suscripciones para el comprador en *Mis Boletos* (`my-tickets.component.ts`). Tarjeta de gestión de cola y disparador de notificaciones por lote para el organizador en el detalle del evento en Admin (`event-waitlist.component.ts`).
 
 - [ ] **4. Facturación y Control de Pagos a Artistas (Payouts & Liquidaciones)**
   - **Cálculo de Liquidación Neta:** Desglose automático por evento: `Total Bruto Recaudado - Comisiones TicketFlow - Descuentos/Cupones - Reembolsos = Balance Neto a Liquidar`.
@@ -149,9 +147,9 @@
 | P0 — Blockers & Producción | 4 | 3 | 1 (PayPal Live) |
 | P1 — Alta prioridad | 9 | 8 | 1 (Webhook N8N Email) |
 | P2 — Media prioridad | 4 | 2 | 2 |
-| P3 — Super Admin & Módulos Avanzados | 5 | 3 | 2 |
+| P3 — Super Admin & Módulos Avanzados | 5 | 4 | 1 |
 | P4 — Roadmap | 10 | 0 | 10 |
-| **Total** | **32** | **16** | **16** |
+| **Total** | **32** | **17** | **15** |
 
 ---
 

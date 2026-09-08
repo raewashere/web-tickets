@@ -16,6 +16,7 @@ import {
   SpinnerComponent,
 } from '@ticketflow/shared-ui';
 import { EventStaffComponent } from '../event-staff/event-staff.component';
+import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.component';
 
 @Component({
   selector: 'app-event-detail',
@@ -28,6 +29,7 @@ import { EventStaffComponent } from '../event-staff/event-staff.component';
     BadgeComponent,
     SpinnerComponent,
     EventStaffComponent,
+    EventWaitlistComponent,
   ],
   template: `
     <div class="max-w-6xl mx-auto space-y-6">
@@ -308,6 +310,11 @@ import { EventStaffComponent } from '../event-staff/event-staff.component';
           <!-- Event Staff & Doorman Admission Control Section -->
           <tf-card>
             <app-event-staff [eventId]="event()!.id"></app-event-staff>
+          </tf-card>
+
+          <!-- Event Waitlist Section -->
+          <tf-card>
+            <app-event-waitlist [eventId]="event()!.id"></app-event-waitlist>
           </tf-card>
         </div>
       </div>
