@@ -19,6 +19,7 @@ export interface UpsertTicketTypeDto {
 
 export interface UpsertCouponDto {
   event_id?: string | null;
+  ticket_sku?: string | null;
   code: string;
   type: CouponType;
   value?: number | null;
@@ -310,6 +311,7 @@ export class TicketsService {
       .from('coupons')
       .insert({
         event_id: dto.event_id || null,
+        ticket_sku: dto.ticket_sku?.trim().toUpperCase() || null,
         code: codeClean,
         type: dto.type,
         value: dto.type === 'courtesy' ? null : (dto.value !== undefined ? Number(dto.value) : null),
@@ -345,6 +347,7 @@ export class TicketsService {
     };
 
     if (dto.code !== undefined) updatePayload['code'] = dto.code.trim().toUpperCase();
+    if (dto.ticket_sku !== undefined) updatePayload['ticket_sku'] = dto.ticket_sku?.trim().toUpperCase() || null;
     if (dto.type !== undefined) updatePayload['type'] = dto.type;
     if (dto.value !== undefined) updatePayload['value'] = dto.value !== null ? Number(dto.value) : null;
     if (dto.max_uses !== undefined) updatePayload['max_uses'] = dto.max_uses !== null ? Number(dto.max_uses) : null;

@@ -11,7 +11,9 @@ export class HomeService {
    * Fetch upcoming published events for the home showcase.
    */
   async getFeaturedEvents(): Promise<StoreEventItem[]> {
-    const nowIso = new Date().toISOString();
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const nowIso = startOfToday.toISOString();
 
     const { data, error } = await this.supabase
       .from('events')

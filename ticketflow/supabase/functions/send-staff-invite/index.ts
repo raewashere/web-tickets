@@ -136,8 +136,10 @@ serve(async (req: Request) => {
     // 3. Send email with Resend
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
     let emailStatus = 'simulated';
+    let emailError: string | null = null;
 
     if (resendApiKey) {
+      const fromEmail = Deno.env.get('EMAIL_FROM') || 'TicketFlow <onboarding@resend.dev>';
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -145,7 +147,7 @@ serve(async (req: Request) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: Deno.env.get('EMAIL_FROM') || 'TicketFlow <accesos@ticketflow.io>',
+          from: fromEmail,
           to: [email],
           subject: `🛡️ Invitación de Control de Acceso — ${eventName}`,
           html: htmlContent,
@@ -158,13 +160,20 @@ serve(async (req: Request) => {
         const errText = await res.text();
         console.error('Resend error:', errText);
         emailStatus = 'failed';
+        emailError = errText;
       }
     } else {
       console.log(`[send-staff-invite:simulated] Invitation email sent to ${email} for event ${eventName}. URL: ${inviteUrl}`);
     }
 
     return new Response(
-      JSON.stringify({ success: true, recipient: email, status: emailStatus, inviteUrl }),
+      JSON.stringify({
+        success: emailStatus !== 'failed',
+        recipient: email,
+        status: emailStatus,
+        error: emailError,
+        inviteUrl,
+      }),
       { status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
     );
   } catch (err) {

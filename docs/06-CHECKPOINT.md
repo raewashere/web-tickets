@@ -31,6 +31,7 @@
 | `20250108000000_search_events_function.sql` | ✅ Lista | Búsqueda full-text de eventos por nombre y artista |
 | `20250109000000_doorman_role.sql` | ✅ Lista | Enum `'doorman'`, tablas `event_staff` + `staff_invitations`, RLS |
 | `20250110000000_validate_with_doorman_auth.sql` | ✅ Lista | `validate_ticket_qr` con control de autorización para Doormen |
+| `20250111000000_coupon_ticket_sku.sql` | ✅ Aplicada | Cupones asociados por SKU (`ticket_sku`) y descuento proporcional atómico |
 
 ### Edge Functions (Supabase Deno)
 
@@ -38,9 +39,9 @@
 |---------|--------|-------------|
 | `create-paypal-order` | ✅ Desplegada | Crea orden PayPal sandbox/live, verifica locks activos |
 | `create-order` | ✅ Desplegada | Captura pago PayPal y llama `create_order_atomic` |
-| `apply-coupon` | ✅ Desplegada | Valida y aplica cupones al checkout |
+| `apply-coupon` | ✅ Actualizada | Valida y aplica cupones globales, por evento o por `ticket_sku` |
 | `send-ticket-email` | ✅ Creada | Envío de confirmación de compra y resumen de acceso por correo |
-| `send-staff-invite` | ✅ Creada | Envío de invitación por correo a validadores (Doorman) con enlace directo |
+| `send-staff-invite` | ✅ Actualizada | Envío de invitación a Doormen vía Resend / fallback y enlace directo |
 
 ### Mejoras Post-MVP Implementadas
 
@@ -53,6 +54,7 @@
 | **M5** | Store | Fix retorno a compra post-login | `event-detail.component.ts` |
 | **M6** | Store | Buscador por nombre de artista | `search.service.ts`, migración 008 |
 | **M7** | Admin | Rol y flujo Doorman completo | `doorman.guard.ts`, `event-staff.*`, `accept-invite.*`, `sidebar.*` |
+| **M8** | Admin + Store + DB | Cupones por SKU + Fix visibilidad eventos + Resend config | `coupon-form.*`, `coupon-list.*`, `apply-coupon`, `search.service.ts`, `send-staff-invite` |
 
 ---
 

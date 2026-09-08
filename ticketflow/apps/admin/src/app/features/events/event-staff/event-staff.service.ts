@@ -73,9 +73,9 @@ export class EventStaffService {
       throw error;
     }
 
-    // Trigger email edge function if available
+    // Trigger email edge function
     try {
-      await this.supabase.functions.invoke('send-staff-invite', {
+      const { data: edgeRes, error: edgeErr } = await this.supabase.functions.invoke('send-staff-invite', {
         body: {
           eventId,
           email: cleanEmail,
@@ -83,6 +83,11 @@ export class EventStaffService {
           invitedBy,
         },
       });
+      if (edgeErr) {
+        console.warn('send-staff-invite invocation warning:', edgeErr);
+      } else {
+        console.log('send-staff-invite response:', edgeRes);
+      }
     } catch (edgeErr) {
       console.warn('Edge function send-staff-invite invocation:', edgeErr);
     }

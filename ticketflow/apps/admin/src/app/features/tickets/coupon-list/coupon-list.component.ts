@@ -136,6 +136,19 @@ import {
               <span class="text-xs font-semibold px-2 py-0.5 rounded bg-dark/5 text-dark/80">
                 {{ formatType(c.type) }}
               </span>
+
+              <span
+                *ngIf="c.ticket_sku"
+                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-primary/20 text-dark border border-primary/30"
+              >
+                🎟️ SKU: {{ c.ticket_sku }}
+              </span>
+              <span
+                *ngIf="!c.ticket_sku"
+                class="text-xs px-2 py-0.5 rounded bg-dark/5 text-dark/50 font-medium"
+              >
+                🌐 Todos los boletos
+              </span>
             </div>
 
             <div class="flex flex-wrap items-center gap-3 text-xs text-dark/60">

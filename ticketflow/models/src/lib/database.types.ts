@@ -124,6 +124,7 @@ export interface TicketType {
 export interface Coupon {
   id: string;
   event_id: string | null;
+  ticket_sku: string | null;
   code: string;
   type: CouponType;
   value: number | null;

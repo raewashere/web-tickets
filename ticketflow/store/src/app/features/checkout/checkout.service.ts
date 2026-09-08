@@ -28,6 +28,7 @@ export interface CouponResult {
   code?: string;
   type?: string;
   value?: number;
+  ticketSku?: string | null;
   discountAmount?: number;
   message?: string;
 }
@@ -143,6 +144,11 @@ export class CheckoutService {
           code,
           eventId:  c.eventId,
           subtotal: this.subtotal(),
+          items: (c.items || []).map((i) => ({
+            sku: i.sku,
+            price: i.price,
+            quantity: i.quantity,
+          })),
         }),
       });
 
@@ -159,6 +165,7 @@ export class CheckoutService {
           code:       result.code ?? code,
           type:       result.type as Coupon['type'],
           value:      result.value ?? 0,
+          ticket_sku: result.ticketSku ?? null,
           event_id:   c.eventId,
           is_active:  true,
           uses_count: 0,

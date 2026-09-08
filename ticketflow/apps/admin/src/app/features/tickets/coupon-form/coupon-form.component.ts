@@ -135,6 +135,25 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
             </div>
           </div>
 
+          <!-- Ticket Type / SKU association -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+              🎟️ Aplicar a Tipo de Boleto (por SKU)
+            </label>
+            <select
+              formControlName="ticket_sku"
+              class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+            >
+              <option value="">🌐 Todos los tipos de boleto (Sin restricción de SKU)</option>
+              <option *ngFor="let tt of ticketTypes()" [value]="tt.sku">
+                {{ tt.name }} (SKU: {{ tt.sku }}) — \${{ tt.price | number:'1.2-2' }} MXN
+              </option>
+            </select>
+            <p class="text-[11px] text-dark/50 mt-1">
+              Si seleccionas un tipo de boleto específico, el descuento o cortesía se aplicará únicamente a los boletos con ese SKU.
+            </p>
+          </div>
+
           <!-- Max Uses -->
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
@@ -239,32 +258,45 @@ export class CouponFormComponent implements OnInit, OnChanges {
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly isLoadingCoupon = signal(false);
+  readonly ticketTypes = signal<TicketType[]>([]);
 
   couponForm: FormGroup = this.initForm();
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const routeEventId = this.route.snapshot.paramMap.get('id');
     const routeCid = this.route.snapshot.paramMap.get('cid');
 
     if (routeEventId && !this.eventId) {
       this.eventId = routeEventId;
       this.isPageMode.set(true);
+    }
 
-      if (routeCid) {
-        this.isLoadingCoupon.set(true);
-        this.ticketsService.getCouponById(routeCid).then((c) => {
-          this.coupon = c;
-          this.populateForm();
-          this.isLoadingCoupon.set(false);
-        }).catch(() => {
-          this.errorMessage.set('No se pudo cargar el cupón.');
-          this.isLoadingCoupon.set(false);
-        });
-      } else {
+    if (this.eventId) {
+      await this.loadTicketTypes();
+    }
+
+    if (this.isPageMode() && routeCid) {
+      this.isLoadingCoupon.set(true);
+      try {
+        const c = await this.ticketsService.getCouponById(routeCid);
+        this.coupon = c;
         this.populateForm();
+      } catch {
+        this.errorMessage.set('No se pudo cargar el cupón.');
+      } finally {
+        this.isLoadingCoupon.set(false);
       }
     } else {
       this.populateForm();
+    }
+  }
+
+  async loadTicketTypes(): Promise<void> {
+    try {
+      const tickets = await this.ticketsService.getTicketTypes(this.eventId);
+      this.ticketTypes.set(tickets);
+    } catch (err) {
+      console.error('Error loading ticket types for coupon form:', err);
     }
   }
 
@@ -272,13 +304,16 @@ export class CouponFormComponent implements OnInit, OnChanges {
     if (changes['coupon'] && !changes['coupon'].firstChange) {
       this.populateForm();
     }
+    if (changes['eventId'] && !changes['eventId'].firstChange && this.eventId) {
+      this.loadTicketTypes();
+    }
   }
-
 
   private initForm(): FormGroup {
     return this.fb.group({
       code: ['', [Validators.required, Validators.minLength(3)]],
       type: ['percentage', [Validators.required]],
+      ticket_sku: [''],
       value: [10, [Validators.min(1)]],
       max_uses: [null],
       valid_from: [this.formatDatetime(new Date()), [Validators.required]],
@@ -292,6 +327,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
       this.couponForm.patchValue({
         code: this.coupon.code,
         type: this.coupon.type,
+        ticket_sku: this.coupon.ticket_sku || '',
         value: this.coupon.value,
         max_uses: this.coupon.max_uses,
         valid_from: this.coupon.valid_from ? this.formatDatetime(new Date(this.coupon.valid_from)) : '',
@@ -302,6 +338,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
       this.couponForm.reset({
         code: this.ticketsService.generateRandomCode(),
         type: 'percentage',
+        ticket_sku: '',
         value: 15,
         max_uses: null,
         valid_from: this.formatDatetime(new Date()),
@@ -358,6 +395,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
 
     const val = this.couponForm.value;
     const userId = this.authService.user()?.id;
+    const ticketSku = val.ticket_sku?.trim() ? val.ticket_sku.trim().toUpperCase() : null;
 
     try {
       if (this.coupon) {
@@ -365,6 +403,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
           this.coupon.id,
           {
             event_id: this.eventId,
+            ticket_sku: ticketSku,
             code: val.code,
             type: val.type as CouponType,
             value: val.type === 'courtesy' ? null : Number(val.value),
@@ -384,6 +423,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
         const created = await this.ticketsService.createCoupon(
           {
             event_id: this.eventId,
+            ticket_sku: ticketSku,
             code: val.code,
             type: val.type as CouponType,
             value: val.type === 'courtesy' ? null : Number(val.value),

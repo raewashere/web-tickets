@@ -173,6 +173,7 @@ CREATE TABLE ticket_types (
 CREATE TABLE coupons (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     event_id    UUID REFERENCES events(id) ON DELETE CASCADE,  -- NULL = global coupon
+    ticket_sku  TEXT,                         -- NULL = all ticket types in event; set = restricted to SKU
     code        TEXT UNIQUE NOT NULL,
     type        coupon_type NOT NULL,
     value       NUMERIC CHECK (value >= 0),  -- % for percentage, flat for fixed, ignored for courtesy

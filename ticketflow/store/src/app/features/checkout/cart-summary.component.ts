@@ -122,13 +122,19 @@ import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.compone
                 class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between"
               >
                 <div>
-                  <div class="flex items-center gap-2">
+                  <div class="flex flex-wrap items-center gap-2">
                     <span class="font-mono font-black text-sm text-emerald-800 uppercase">
                       {{ checkout.appliedCoupon()!.code }}
                     </span>
                     <span class="text-xs font-bold text-emerald-700">✓ Cupón Aplicado</span>
+                    <span
+                      *ngIf="checkout.appliedCoupon()!.ticket_sku"
+                      class="text-[10px] font-mono font-bold bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded"
+                    >
+                      SKU: {{ checkout.appliedCoupon()!.ticket_sku }}
+                    </span>
                   </div>
-                  <span class="text-xs text-emerald-600">
+                  <span class="text-xs text-emerald-600 block mt-0.5">
                     Descuento obtenido: -\${{ checkout.discount() | number:'1.2-2' }} MXN
                   </span>
                 </div>

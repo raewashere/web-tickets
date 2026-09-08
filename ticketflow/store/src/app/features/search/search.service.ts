@@ -49,8 +49,8 @@ export class SearchService {
           .ilike('name', `%${q}%`);
 
         if (matchingArtists && matchingArtists.length > 0) {
-          const artistIds = matchingArtists.map((a) => a.id).join(',');
-          query = query.or(`name.ilike.%${q}%,artist_id.in.(${artistIds})`);
+          const artistConditions = matchingArtists.map((a) => `artist_id.eq.${a.id}`).join(',');
+          query = query.or(`name.ilike.%${q}%,${artistConditions}`);
         } else {
           query = query.ilike('name', `%${q}%`);
         }
@@ -65,9 +65,11 @@ export class SearchService {
 
     if (params.dateFrom) {
       query = query.gte('event_date', params.dateFrom);
-    } else {
-      // Default: future events only
-      query = query.gte('event_date', new Date().toISOString());
+    } else if (!params.query) {
+      // Default: future events from start of today if not searching specifically
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+      query = query.gte('event_date', startOfToday.toISOString());
     }
 
     if (params.dateTo) {

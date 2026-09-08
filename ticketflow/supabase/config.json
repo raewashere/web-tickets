@@ -13,6 +13,9 @@
     },
     "send-ticket-email": {
       "verify_jwt": true
+    },
+    "send-staff-invite": {
+      "verify_jwt": true
     }
   }
 }

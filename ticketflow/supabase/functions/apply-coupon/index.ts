@@ -14,6 +14,7 @@ const CORS_HEADERS = {
 interface CouponRow {
   id: string;
   event_id: string | null;
+  ticket_sku: string | null;
   code: string;
   type: 'courtesy' | 'percentage' | 'fixed';
   value: number | null;
@@ -22,6 +23,12 @@ interface CouponRow {
   valid_from: string | null;
   valid_until: string | null;
   is_active: boolean;
+}
+
+interface CartItemInput {
+  sku: string;
+  price: number;
+  quantity: number;
 }
 
 serve(async (req: Request) => {
@@ -61,8 +68,13 @@ serve(async (req: Request) => {
     }
 
     // 2. Parse body
-    const body = await req.json() as { code: string; eventId: string; subtotal: number };
-    const { code, eventId, subtotal } = body;
+    const body = await req.json() as {
+      code: string;
+      eventId: string;
+      subtotal: number;
+      items?: CartItemInput[];
+    };
+    const { code, eventId, subtotal, items } = body;
 
     if (!code || !eventId || subtotal === undefined || subtotal < 0) {
       return new Response(
@@ -124,16 +136,42 @@ serve(async (req: Request) => {
       );
     }
 
-    // 7. Calculate discount server-side
+    // 7. Validate SKU restriction & calculate discount server-side
+    let eligibleSubtotal = subtotal;
+
+    if (coupon.ticket_sku && coupon.ticket_sku.trim() !== '') {
+      const targetSku = coupon.ticket_sku.trim().toUpperCase();
+      if (items && Array.isArray(items) && items.length > 0) {
+        const matchingItems = items.filter(
+          (i) => (i.sku || '').trim().toUpperCase() === targetSku
+        );
+
+        if (matchingItems.length === 0) {
+          return new Response(
+            JSON.stringify({
+              valid: false,
+              message: `Este cupón solo es válido para boletos con SKU "${targetSku}".`,
+            }),
+            { status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+          );
+        }
+
+        eligibleSubtotal = matchingItems.reduce(
+          (sum, i) => sum + Number(i.price) * Number(i.quantity),
+          0
+        );
+      }
+    }
+
     let discountAmount = 0;
     if (coupon.type === 'courtesy') {
-      discountAmount = subtotal;
+      discountAmount = eligibleSubtotal;
     } else if (coupon.type === 'percentage') {
       const pct = Number(coupon.value) || 0;
-      discountAmount = Math.round(subtotal * (pct / 100) * 100) / 100;
+      discountAmount = Math.round(eligibleSubtotal * (pct / 100) * 100) / 100;
     } else if (coupon.type === 'fixed') {
       const flat = Number(coupon.value) || 0;
-      discountAmount = Math.min(subtotal, flat);
+      discountAmount = Math.min(eligibleSubtotal, flat);
     }
 
     // 8. Return validated coupon + discount
@@ -144,6 +182,7 @@ serve(async (req: Request) => {
         code:           coupon.code,
         type:           coupon.type,
         value:          coupon.value,
+        ticketSku:      coupon.ticket_sku,
         discountAmount,
         message:        '¡Cupón aplicado exitosamente!',
       }),
