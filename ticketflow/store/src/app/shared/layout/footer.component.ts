@@ -56,9 +56,8 @@ import { RouterModule } from '@angular/router';
         <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© 2026 TicketFlow Technologies Inc. Todos los derechos reservados.</p>
           <div class="flex items-center gap-4">
-            <span class="hover:text-slate-300 cursor-pointer transition-colors">Términos del Servicio</span>
-            <span class="hover:text-slate-300 cursor-pointer transition-colors">Política de Privacidad</span>
-            <span class="hover:text-slate-300 cursor-pointer transition-colors">Garantía del Comprador</span>
+            <a routerLink="/privacy" class="hover:text-slate-300 transition-colors">Política de Privacidad</a>
+            <a routerLink="/thank-you" class="hover:text-slate-300 transition-colors">Garantía del Comprador</a>
           </div>
         </div>
       </div>

@@ -65,7 +65,7 @@ import { AuthService } from '@ticketflow/data-access';
                   <img
                     *ngIf="auth.avatarUrl()"
                     [src]="auth.avatarUrl()!"
-                    [alt]="userName"
+                    [alt]="'Foto de perfil de ' + userName"
                     class="w-6 h-6 rounded-full object-cover ring-1 ring-cyan-400/50"
                   />
                   <div

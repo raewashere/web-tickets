@@ -184,7 +184,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               <img
                 *ngIf="selectedArtist()?.photo_url"
                 [src]="selectedArtist()!.photo_url"
-                [alt]="selectedArtist()?.name"
+                [alt]="'Fotografía de perfil del artista ' + selectedArtist()?.name"
                 class="w-full h-full object-cover"
               />
               <div *ngIf="!selectedArtist()?.photo_url" class="w-full h-full flex items-center justify-center text-cyan-400 font-black text-3xl">
@@ -215,13 +215,13 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             </h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div
-                *ngFor="let photo of selectedArtist()!.gallery_urls"
+                *ngFor="let photo of selectedArtist()!.gallery_urls; let idx = index"
                 class="relative rounded-2xl overflow-hidden aspect-square border border-slate-200 bg-slate-100 group cursor-pointer hover:shadow-md transition"
                 (click)="selectedGalleryPhoto.set(photo)"
               >
                 <img
                   [src]="photo"
-                  [alt]="'Foto de ' + selectedArtist()?.name"
+                  [alt]="'Fotografía ' + (idx + 1) + ' de la galería de ' + selectedArtist()?.name"
                   class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
@@ -237,7 +237,11 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         (click)="selectedGalleryPhoto.set(null)"
       >
         <div class="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl" (click)="$event.stopPropagation()">
-          <img [src]="selectedGalleryPhoto()" alt="Foto de artista" class="max-w-full max-h-[85vh] object-contain rounded-xl" />
+          <img
+            [src]="selectedGalleryPhoto()"
+            [alt]="'Vista ampliada de la fotografía de galería de ' + (selectedArtist()?.name || 'artista')"
+            class="max-w-full max-h-[85vh] object-contain rounded-xl"
+          />
           <button
             type="button"
             (click)="selectedGalleryPhoto.set(null)"

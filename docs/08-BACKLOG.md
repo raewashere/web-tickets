@@ -53,6 +53,9 @@
 - [x] **[M9] Perfil de artista con biografía y galería multi-fotos**
   - **Completado:** Migración SQL 012 (`gallery_urls`), carga y gestión de múltiples fotos en Admin (`artist-form` y `artist-detail`), y visualización interactiva con lightbox en la tienda (`event-detail` y `search-results`).
 
+- [x] **[M10] SEO, Sitemap XML, 404 personalizado, Página de Gracias, Política de Privacidad y Textos Alt**
+  - **Completado:** Servicio `SeoService` con títulos y meta descripciones dinámicas por ruta en español, página 404 personalizada (`not-found`), página de agradecimiento (`thank-you`), página legal de política de privacidad (`privacy-policy`), `sitemap.xml`, `robots.txt`, y textos `alt` descriptivos en todas las imágenes.
+
 - [x] **Fix contador de boletos (stepper layout)**
   - **Completado:** Se rediseñó el componente `ticket-selector.component.ts` en layout vertical apilado para evitar desbordes visuales en columnas angostas.
 

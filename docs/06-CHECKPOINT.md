@@ -65,6 +65,7 @@
 | **M7** | Admin | Rol y flujo Doorman completo | `doorman.guard.ts`, `event-staff.*`, `accept-invite.*`, `sidebar.*` |
 | **M8** | Admin + Store + DB | Cupones por SKU + Fix visibilidad eventos | `coupon-form.*`, `coupon-list.*`, `apply-coupon`, `search.service.ts` |
 | **M9** | Admin + Store + DB | Perfil de artista con biografía y galería multi-fotos | `artist-form.*`, `artist-detail.*`, `event-detail.*`, `search-results.*`, migración 012 |
+| **M10** | Store | SEO dinámico, 404, Sitemap XML, Gracias, Privacidad y Alt texts | `seo.service.ts`, `not-found.*`, `thank-you.*`, `privacy-policy.*`, `sitemap.xml` |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

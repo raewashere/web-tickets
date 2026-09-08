@@ -102,7 +102,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
               <img
                 *ngIf="qrDataUrl()"
                 [src]="qrDataUrl()"
-                alt="Código QR de acceso"
+                [alt]="'Código QR de validación y acceso oficial para orden ' + (order()?.id?.substring(0, 8) || '')"
                 class="w-56 h-56 sm:w-64 sm:h-64 rounded-lg object-contain"
               />
               <div *ngIf="!qrDataUrl()" class="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center">

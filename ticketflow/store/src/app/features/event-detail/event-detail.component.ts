@@ -10,6 +10,7 @@ import { EventDetailService, EventDetailPublic, CartTicketItem } from './event-d
 import { TicketSelectorComponent } from './ticket-selector.component';
 import { VenueMapComponent } from './venue-map.component';
 import { AuthService } from '@ticketflow/data-access';
+import { SeoService } from '../../core/services/seo.service';
 import { SpinnerComponent } from '@ticketflow/shared-ui';
 
 @Component({
@@ -71,7 +72,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               <img
                 *ngIf="event()!.flyer_url"
                 [src]="event()!.flyer_url"
-                [alt]="event()!.name"
+                [alt]="'Flyer oficial del concierto ' + event()!.name"
                 class="w-full h-full object-cover object-center"
               />
               <div *ngIf="!event()!.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-slate-400">
@@ -165,7 +166,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 aspect-[16/9] relative">
               <img
                 [src]="event()!.venues!.map_url"
-                [alt]="'Plano de ' + event()!.venues!.name"
+                [alt]="'Croquis y distribución de asientos de ' + event()!.venues!.name"
                 class="w-full h-full object-contain p-2"
               />
             </div>
@@ -179,7 +180,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <img
                   *ngIf="event()!.artists?.photo_url"
                   [src]="event()!.artists!.photo_url"
-                  [alt]="event()!.artists?.name"
+                  [alt]="'Fotografía de perfil de ' + event()!.artists?.name"
                   class="w-full h-full object-cover"
                 />
                 <div *ngIf="!event()!.artists?.photo_url" class="w-full h-full flex items-center justify-center text-cyan-400 font-black text-2xl">
@@ -207,13 +208,13 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               </h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 <div
-                  *ngFor="let photo of event()!.artists!.gallery_urls"
+                  *ngFor="let photo of event()!.artists!.gallery_urls; let idx = index"
                   class="relative rounded-2xl overflow-hidden aspect-square border border-slate-200 bg-slate-100 group cursor-pointer hover:shadow-md transition duration-200"
                   (click)="selectedGalleryPhoto.set(photo)"
                 >
                   <img
                     [src]="photo"
-                    [alt]="'Foto de ' + event()!.artists?.name"
+                    [alt]="'Fotografía ' + (idx + 1) + ' de la galería de ' + event()!.artists?.name"
                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                 </div>
@@ -269,7 +270,11 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         (click)="selectedGalleryPhoto.set(null)"
       >
         <div class="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl" (click)="$event.stopPropagation()">
-          <img [src]="selectedGalleryPhoto()" alt="Foto de artista" class="max-w-full max-h-[85vh] object-contain rounded-xl" />
+          <img
+            [src]="selectedGalleryPhoto()"
+            [alt]="'Vista previa ampliada de la fotografía de ' + (event()!.artists?.name || 'artista')"
+            class="max-w-full max-h-[85vh] object-contain rounded-xl"
+          />
           <button
             type="button"
             (click)="selectedGalleryPhoto.set(null)"
@@ -287,6 +292,7 @@ export class EventDetailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly eventDetailService = inject(EventDetailService);
   private readonly auth = inject(AuthService);
+  private readonly seoService = inject(SeoService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
@@ -311,6 +317,13 @@ export class EventDetailComponent implements OnInit {
         return;
       }
       this.event.set(data);
+
+      // Update dynamic SEO tags
+      this.seoService.updateTags({
+        title: `Boletos para ${data.name} — ${data.venues?.name || 'Recinto'}`,
+        description: `Compra boletos oficiales para ${data.name}${data.artists?.name ? ' con ' + data.artists.name : ''}. Acceso digital con código QR garantizado.`,
+        image: data.flyer_url || undefined,
+      });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al cargar el evento';
       this.errorMessage.set(msg);
