@@ -35,7 +35,8 @@
 | `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
 | `20250113000000_super_admin.sql` | ✅ Aplicada | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
 | `20250114000000_refund_requests.sql` | ✅ Aplicada | Sistema de solicitudes de reembolso, RLS y RPCs de aprobación/rechazo atómico |
-| `20250115000000_waitlist.sql` | 🟡 Lista para ejecutar | Sistema de lista de espera (FIFO), RLS, suscripciones y RPCs de notificación por lote |
+| `20250115000000_waitlist.sql` | ✅ Aplicada | Sistema de lista de espera (FIFO), RLS, suscripciones y RPCs de notificación por lote |
+| `20250116000000_payouts_and_settlements.sql` | 🟡 Lista para ejecutar | Control de pagos a artistas, liquidaciones netas, datos bancarios/fiscales y dispersiones |
 
 ### Despliegue & Producción
 
@@ -73,6 +74,7 @@
 | **M11** | Admin + DB | Módulo de Super-Admin (Métricas globales, moderación de recintos, roles de usuario) | `super-admin.*`, `super-admin.guard.ts`, `venue-moderation.*`, `user-management.*`, migración 013 |
 | **M12** | Admin + Store + DB | Gestión de Reembolsos (Solicitud post-venta, aprobación/rechazo atómico, devolución de stock y anulación de QR) | `refunds.*`, `my-tickets.*`, `ticket-detail.*`, migración 014 |
 | **M13** | Admin + Store + DB | Waitlist / Lista de Espera (Suscripción a eventos agotados, cola FIFO, panel de organizador y notificaciones) | `waitlist.service.*`, `ticket-selector.*`, `my-tickets.*`, `event-waitlist.*`, migración 015 |
+| **M14** | Admin + DB | Facturación y Control de Pagos a Artistas (Portal de finanzas, balance neto, dispersiones Super-Admin y datos bancarios) | `finances.*`, `admin-payouts.*`, migración 016 |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

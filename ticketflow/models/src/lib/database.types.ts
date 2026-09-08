@@ -227,3 +227,36 @@ export interface WaitlistEntry {
   updated_at: string;
 }
 
+export type PayoutStatus = 'pending' | 'processing' | 'completed' | 'cancelled';
+export type PayoutMethod = 'bank_transfer' | 'paypal' | 'manual';
+
+export interface ArtistPayoutSetting {
+  artist_id: string;
+  bank_name: string | null;
+  bank_account_number: string | null;
+  bank_account_holder: string | null;
+  tax_id: string | null;
+  tax_regime: string | null;
+  payout_email: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Payout {
+  id: string;
+  artist_id: string;
+  event_id: string | null;
+  amount: number;
+  currency: string;
+  status: PayoutStatus;
+  payout_method: PayoutMethod;
+  reference_code: string | null;
+  receipt_url: string | null;
+  notes: string | null;
+  processed_by: string | null;
+  processed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+

@@ -116,10 +116,8 @@
 - [x] **3. Waitlist / Lista de Espera para Eventos Agotados**
   - **Completado:** Migración SQL 015 con tabla `waitlist` (cola FIFO, RLS y RPCs `join_event_waitlist`, `get_event_waitlist`, `notify_event_waitlist` y `get_my_waitlist`). Formulario interactivo de suscripción en la tienda (`ticket-selector.component.ts`) ante localidades agotadas. Pestaña de gestión de suscripciones para el comprador en *Mis Boletos* (`my-tickets.component.ts`). Tarjeta de gestión de cola y disparador de notificaciones por lote para el organizador en el detalle del evento en Admin (`event-waitlist.component.ts`).
 
-- [ ] **4. Facturación y Control de Pagos a Artistas (Payouts & Liquidaciones)**
-  - **Cálculo de Liquidación Neta:** Desglose automático por evento: `Total Bruto Recaudado - Comisiones TicketFlow - Descuentos/Cupones - Reembolsos = Balance Neto a Liquidar`.
-  - **Control de Balances:** Panel para artistas con balance acumulado, saldo disponible, historial de pagos recibidos y datos bancarios/fiscales (`tax_id`, `legal_name`).
-  - **Registro de Pagos (Super-Admin):** Módulo para marcar liquidaciones como `pending`, `processing` o `paid`, adjuntando comprobante de transferencia o integración con PayPal Payouts.
+- [x] **4. Facturación y Control de Pagos a Artistas (Payouts & Liquidaciones)**
+  - **Completado:** Migración SQL 016 con tablas `artist_payout_settings` y `payouts`, RLS y RPCs `upsert_artist_payout_settings`, `get_artist_financial_summary`, `get_all_artists_financial_overview` y `create_payout_record`. Portal financiero para artistas en `/finances` con desglose de saldo disponible, comisiones, reembolsos descontados e historial de transferencias. Panel central en Super-Admin `/super-admin/payouts` para liquidar saldos pendientes (SPEI, PayPal, Manual).
 
 ---
 
@@ -147,9 +145,9 @@
 | P0 — Blockers & Producción | 4 | 3 | 1 (PayPal Live) |
 | P1 — Alta prioridad | 9 | 8 | 1 (Webhook N8N Email) |
 | P2 — Media prioridad | 4 | 2 | 2 |
-| P3 — Super Admin & Módulos Avanzados | 5 | 4 | 1 |
+| P3 — Super Admin & Módulos Avanzados | 5 | 5 | 0 |
 | P4 — Roadmap | 10 | 0 | 10 |
-| **Total** | **32** | **17** | **15** |
+| **Total** | **32** | **18** | **14** |
 
 ---
 

@@ -1,11 +1,13 @@
 import type {
   Artist,
+  ArtistPayoutSetting,
   ArtistType,
   Coupon,
   Event,
   EventType,
   Order,
   OrderItem,
+  Payout,
   RefundRequest,
   TicketType,
   Venue,
@@ -199,6 +201,63 @@ export interface CustomerWaitlistSummary {
   notified_at: string | null;
   created_at: string;
 }
+
+// Event Financial Breakdown item
+export interface EventFinancialBreakdown {
+  event_id: string;
+  event_name: string;
+  event_date: string;
+  status: string;
+  flyer_url: string | null;
+  venue_name: string | null;
+  tickets_sold: number;
+  gross: number;
+  commission: number;
+  refunded: number;
+  net: number;
+  paid: number;
+  balance: number;
+}
+
+// Payout History item
+export interface PayoutItem extends Payout {
+  event_name?: string | null;
+}
+
+// Full Artist Financial Summary
+export interface ArtistFinancialSummary {
+  success: boolean;
+  artist_id: string;
+  artist_name: string;
+  total_gross: number;
+  total_commission: number;
+  total_refunded: number;
+  net_earnings: number;
+  total_paid: number;
+  balance_due: number;
+  events: EventFinancialBreakdown[];
+  payouts: PayoutItem[];
+  settings: Partial<ArtistPayoutSetting>;
+}
+
+// Super-Admin Artist Financial Item
+export interface AdminArtistFinancialItem {
+  artist_id: string;
+  artist_name: string;
+  artist_email: string;
+  photo_url: string | null;
+  total_events: number;
+  total_gross: number;
+  total_commission: number;
+  total_refunded: number;
+  net_earnings: number;
+  total_paid: number;
+  balance_due: number;
+  bank_name: string | null;
+  bank_account_number: string | null;
+  tax_id: string | null;
+}
+
 
 
 

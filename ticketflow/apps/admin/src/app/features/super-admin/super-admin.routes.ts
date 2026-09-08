@@ -30,6 +30,13 @@ export const superAdminRoutes: Routes = [
             (m) => m.UserManagementComponent
           ),
       },
+      {
+        path: 'payouts',
+        loadComponent: () =>
+          import('./payouts/admin-payouts.component').then(
+            (m) => m.AdminPayoutsComponent
+          ),
+      },
     ],
   },
 ];

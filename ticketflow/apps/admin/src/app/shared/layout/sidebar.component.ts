@@ -111,6 +111,7 @@ export class SidebarComponent {
     { label: 'Panel Principal', route: '/dashboard', icon: '📊', exact: true },
     { label: 'Perfil de Artista', route: '/artist/profile', icon: '🎤' },
     { label: 'Mis Eventos', route: '/events', icon: '🎪' },
+    { label: 'Finanzas & Pagos', route: '/finances', icon: '🏦' },
     { label: 'Reembolsos', route: '/refunds', icon: '💸' },
     { label: 'Control de Acceso', route: '/access-control', icon: '🛡️' },
     { label: 'Sedes & Lugares', route: '/venues', icon: '📍' },
@@ -118,6 +119,7 @@ export class SidebarComponent {
 
   private readonly superAdminNavItems: NavItem[] = [
     { label: 'Métricas Globales', route: '/super-admin', icon: '⚡', exact: true },
+    { label: 'Liquidaciones Globales', route: '/super-admin/payouts', icon: '💳' },
     { label: 'Moderar Recintos', route: '/super-admin/venues', icon: '📍' },
     { label: 'Usuarios y Roles', route: '/super-admin/users', icon: '👥' },
   ];

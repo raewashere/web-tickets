@@ -110,6 +110,14 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'finances',
+        canActivate: [artistRoleGuard],
+        loadChildren: () =>
+          import('./features/finances/finances.routes').then(
+            (m) => m.financeRoutes
+          ),
+      },
+      {
         path: 'super-admin',
         canActivate: [superAdminGuard],
         loadChildren: () =>
