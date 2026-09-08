@@ -12,12 +12,8 @@
 
 > Deben completarse **antes** de abrir la plataforma al público. Sin estas configuraciones, la producción está rota o incompleta.
 
-- [ ] **pg_cron: activar liberación de locks expirados**
-  - Sin esto, cada vez que un usuario abandona el carrito sin pagar, los boletos quedan bloqueados 15 minutos pero nunca se liberan automáticamente si el cron no corre.
-  - Ejecutar en SQL Editor de Supabase:
-    ```sql
-    SELECT cron.schedule('release-expired-locks', '* * * * *', 'SELECT release_expired_locks()');
-    ```
+- [x] **pg_cron: activar liberación de locks expirados**
+  - **Completado:** Extensión `pg_cron` habilitada y job programado (`* * * * * SELECT release_expired_locks()`). Permite liberar automáticamente el stock reservado tras 15 minutos de inactividad en carritos abandonados.
 
 - [x] **Supabase Auth → URLs de redirección para producción y Google OAuth**
   - **Completado:** URLs de redirección y OAuth configurados en Supabase Dashboard y Google Cloud Console.

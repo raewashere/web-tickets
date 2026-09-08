@@ -71,14 +71,10 @@
 
 ## 🟡 Pendiente de Ejecución / QA
 
-1. **Ejecutar migraciones en Supabase SQL Editor:**
-   - `20250112000000_artist_gallery.sql`
-2. **Programar pg_cron en Supabase:**
-   ```sql
-   SELECT cron.schedule('release-expired-locks', '* * * * *', 'SELECT release_expired_locks()');
-   ```
-3. **Alternativa N8N Webhook para Doorman:**
-   - Evaluar / implementar webhook hacia N8N para automatización de correos de invitación y confirmación.
+1. **pg_cron de Liberación de Locks:**
+   - ✅ Habilitado en Supabase y programado (`release-expired-locks` cada minuto).
+2. **Alternativa N8N Webhook para Doorman:**
+   - Evaluar / implementar webhook hacia N8N para automatización de correos de invitación y confirmación de acceso.
 
 ---
 
