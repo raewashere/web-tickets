@@ -32,7 +32,7 @@
 | `20250109000000_doorman_role.sql` | ✅ Lista | Enum `'doorman'`, tablas `event_staff` + `staff_invitations`, RLS |
 | `20250110000000_validate_with_doorman_auth.sql` | ✅ Lista | `validate_ticket_qr` con control de autorización para Doormen |
 | `20250111000000_coupon_ticket_sku.sql` | ✅ Aplicada | Cupones asociados por SKU (`ticket_sku`) y descuento proporcional atómico |
-| `20250112000000_artist_gallery.sql` | 🟡 Lista para ejecutar | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
+| `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
 
 ### Despliegue & Producción
 
@@ -41,6 +41,7 @@
 | **Admin App** | ✅ Desplegado | Vercel (`ticketflow-admin.vercel.app`) |
 | **Store App** | ✅ Desplegado | Vercel |
 | **Google OAuth Redirects** | ✅ Configurado | Supabase Dashboard & Google Cloud Console |
+| **pg_cron Locks** | ✅ Programado | Supabase (`release-expired-locks` cada minuto) |
 
 ### Edge Functions (Supabase Deno)
 
@@ -52,7 +53,7 @@
 | `send-ticket-email` | ✅ Creada | Envío de confirmación de compra y resumen de acceso por correo |
 | `send-staff-invite` | 🟡 Pendiente | Envío de invitación a Doormen (considerando Webhook en N8N) |
 
-### Mejoras Post-MVP Implementadas
+### Mejoras Implementadas
 
 | # | Área | Mejora | Componentes Involucrados |
 |---|------|--------|--------------------------|
@@ -70,12 +71,27 @@
 
 ---
 
-## 🟡 Pendiente de Ejecución / QA
+## 🏗️ Especificación de Próximos Módulos (En Backlog)
 
-1. **pg_cron de Liberación de Locks:**
-   - ✅ Habilitado en Supabase y programado (`release-expired-locks` cada minuto).
-2. **Alternativa N8N Webhook para Doorman:**
-   - Evaluar / implementar webhook hacia N8N para automatización de correos de invitación y confirmación de acceso.
+### 1. Módulo de Super-Admin Central
+- **Moderación de Recintos:** Vista para revisar recintos registrados y activar el check de verificación `venues.verified`.
+- **Gestión Global de Usuarios:** Listado central de usuarios con asignación y revocación manual de roles (`admin`, `artist`, `doorman`, `customer`) en `user_roles`.
+- **Métricas Globales:** Tablero con GMV total, comisiones netas de plataforma, eventos publicados y total de entradas vendidas.
+
+### 2. Gestión de Solicitudes de Reembolso
+- **Flujo Comprador (Store):** Botón *"Solicitar Reembolso"* en *Mis Boletos* con captura de motivo.
+- **Panel de Aprobación (Admin):** Revisión de solicitudes pendientes por organizador / super-admin.
+- **Transición Atómica:** Al aprobarse, cambio de estado de orden a `refunded`, anulación de QR en `ticket_validations` y reintegración del stock de boletos.
+
+### 3. Waitlist / Lista de Espera
+- **Suscripción de Usuarios:** Formulario en página de evento cuando todas las localidades estén agotadas.
+- **Tabla `waitlist`:** Registro de interesados (`event_id`, `ticket_type_id`, `user_id`/`email`, `created_at`).
+- **Disparador Automático:** Notificación por correo/N8N en orden de registro cuando se liberen locks expirados o se procesen reembolsos.
+
+### 4. Facturación y Control de Pagos a Artistas (Payouts)
+- **Cálculo de Liquidación Neta:** Desglose automático por evento (`Total Bruto - Comisiones TicketFlow - Retenciones = Saldo a Liquidar`).
+- **Portal Financiero de Artistas:** Balance acumulado, saldo disponible y desglose por evento.
+- **Control de Dispersión (Admin):** Registro y seguimiento de transferencias con comprobante de pago o integración PayPal Payouts.
 
 ---
 
@@ -84,5 +100,5 @@
 | Documento | Propósito |
 |-----------|-----------|
 | [`docs/07-MEJORAS-POST-MVP.md`](./07-MEJORAS-POST-MVP.md) | Especificación técnica detallada de mejoras |
-| [`docs/08-BACKLOG.md`](./08-BACKLOG.md) | Backlog maestro con prioridades P0–P4 y estado de tareas |
-| [`docs/06-CHECKPOINT.md`](./06-CHECKPOINT.md) | Resumen ejecutivo del estado del proyecto |
+| [`docs/08-BACKLOG.md`](./08-BACKLOG.md) | Backlog maestro con prioridades P0–P4 y métricas |
+| [`docs/06-CHECKPOINT.md`](./06-CHECKPOINT.md) | Resumen ejecutivo del estado del proyecto y especificación de nuevos módulos |

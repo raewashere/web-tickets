@@ -100,21 +100,32 @@
 
 > Features acordadas en la sesión de mejoras. Tienen diseño técnico completo en el doc `07`.
 
+## 🔵 P3 — Mejoras Planificadas & Módulos Avanzados
+
+> Features estratégicas para la escalabilidad, administración central y operación financiera de la plataforma.
+
 - [x] **[M7] Rol "Control de Admisión" (doorman)**
   - **Completado:** Implementadas migraciones SQL 009 y 010, guards de navegación (`doormanGuard`, `artistRoleGuard`), componentes `EventStaffComponent` y `AcceptInviteComponent`, servicio `EventStaffService`, filtrado de menú en `SidebarComponent`, modo doorman en `AccessControlComponent`, tipos en `@ticketflow/models` y Edge Function `send-staff-invite`.
 
-- [ ] **Panel de super-admin**
-  - Verificación de recintos (flag `venues.verified`)
-  - Gestión de usuarios (cambio de roles, desactivar cuentas)
-  - Estadísticas globales de la plataforma
+- [ ] **1. Módulo de Super-Admin Central**
+  - **Moderación y Verificación de Recintos:** Vista para revisar recintos registrados por los artistas y activar el sello de verificación (`venues.verified = true`).
+  - **Gestión Global de Usuarios & Roles:** Tabla general de usuarios registrados en Supabase Auth para asignar o revocar manualmente roles (`admin`, `artist`, `doorman`, `customer`) mediante la tabla `user_roles`.
+  - **Métricas y Estadísticas Globales:** Dashboard con volumen total de ventas (GMV), comisiones acumuladas de la plataforma, eventos activos, tasa de ocupación de aforos y usuarios registrados.
 
-- [ ] **Gestión de reembolsos**
-  - Flujo de solicitud de reembolso → aprobación por admin/artista → devolución PayPal
-  - Nuevo estado `refunded` en `orders.status` (ya existe en el enum)
+- [ ] **2. Gestión de Solicitudes de Reembolso**
+  - **Flujo de Usuario (Tienda):** Opción *"Solicitar Reembolso"* dentro del detalle de orden en *Mis Boletos* indicando motivo y boletos a cancelar.
+  - **Panel de Aprobación (Admin / Super-Admin):** Bandeja de solicitudes pendientes con detalles de la orden, motivo y monto a devolver.
+  - **Ejecución y Estado:** Al aprobar, se actualiza el estado de la orden a `refunded`, se invalidan los códigos QR (`ticket_validations`) y se reincorpora el stock de boletos.
 
-- [ ] **Waitlist para eventos agotados**
-  - Tabla `waitlist` (event_id, user_id, created_at, notified)
-  - Notificación automática cuando se libera un boleto
+- [ ] **3. Waitlist / Lista de Espera para Eventos Agotados**
+  - **Suscripción de Compradores:** Formulario interactivo en la página del evento cuando el aforo / stock de todos los tipos de boletos esté en 0.
+  - **Tabla `waitlist`:** Almacenamiento de `event_id`, `ticket_type_id`, `user_id`/`email`, `created_at` y estado `notified`.
+  - **Automatización de Notificaciones:** Disparador (vía Edge Function o Webhook N8N) cuando el `release_expired_locks` libere boletos o haya reembolsos, notificando por orden cronológico con ventana de compra prioritaria.
+
+- [ ] **4. Facturación y Control de Pagos a Artistas (Payouts & Liquidaciones)**
+  - **Cálculo de Liquidación Neta:** Desglose automático por evento: `Total Bruto Recaudado - Comisiones TicketFlow - Descuentos/Cupones - Reembolsos = Balance Neto a Liquidar`.
+  - **Control de Balances:** Panel para artistas con balance acumulado, saldo disponible, historial de pagos recibidos y datos bancarios/fiscales (`tax_id`, `legal_name`).
+  - **Registro de Pagos (Super-Admin):** Módulo para marcar liquidaciones como `pending`, `processing` o `paid`, adjuntando comprobante de transferencia o integración con PayPal Payouts.
 
 ---
 
@@ -122,36 +133,16 @@
 
 > Ideas y mejoras para versiones posteriores. Sin diseño técnico detallado aún.
 
-- [ ] Payouts a artistas vía PayPal Payouts API
-- [ ] PWA / Capacitor para app móvil nativa
-- [ ] Seat map con selección de asiento individual
+- [ ] Integración automatizada con PayPal Payouts API para dispersión masiva de pagos
+- [ ] PWA / Capacitor para app móvil nativa para iOS y Android
+- [ ] Seat map con selección de asiento individual y zonas interactivas
 - [ ] Series / eventos recurrentes (un template → múltiples fechas)
-- [ ] Transferencia de boletos entre usuarios
-- [ ] Login social: Facebook, Apple (via Supabase OAuth providers)
+- [ ] Transferencia segura de boletos entre usuarios
+- [ ] Login social adicional: Apple, Facebook (via Supabase OAuth providers)
 - [ ] Soporte multi-moneda (USD, EUR, etc.)
 - [ ] Notificaciones push para recordatorios de eventos
-- [ ] Múltiples artistas por evento (co-headlining)
-- [ ] QR scan con lector físico (USB / Web HID API)
-- [ ] Modo offline para el Control de Acceso (PWA con cache)
-
----
-
-## 📋 Sprint actual sugerido — Semana del 08-Sep-2026
-
-Tomando en cuenta las prioridades, el sprint de esta semana debería enfocarse en los items más impactantes y rápidos:
-
-| Tarea | Prioridad | Esfuerzo | Impacto |
-|-------|-----------|----------|---------|
-| pg_cron locks | P0 | 2 min (1 SQL) | 🔴 Crítico |
-| Auth redirect URLs Supabase | P0 | 5 min (config) | 🔴 Crítico |
-| Fix URL redirect login (M5) | P1 | 2 min (1 línea) | 🟠 Alto |
-| QR escaneable (M3) | P1 | 30 min | 🟠 Alto |
-| Foto Gmail topbar (M4) | P1 | 45 min | 🟡 Medio |
-| Buscador por artista (M6) | P1 | 1h (SQL + service) | 🟠 Alto |
-| Email confirmación | P1 | 2-3h | 🟠 Alto |
-| Google Maps API Key | P1 | 15 min (config) | 🟡 Medio |
-| Stock vs Capacity (M1) | P2 | 2h | 🟡 Medio |
-| Apertura de puertas (M2) | P2 | 1h (SQL) | 🟡 Medio |
+- [ ] Múltiples artistas por evento (co-headlining y line-up por horarios)
+- [ ] Modo offline para el Control de Acceso (PWA con cache local de hashes QR)
 
 ---
 
@@ -159,12 +150,12 @@ Tomando en cuenta las prioridades, el sprint de esta semana debería enfocarse e
 
 | Categoría | Total | Completado | Pendiente |
 |-----------|-------|-----------|-----------|
-| P0 — Blockers | 4 | 0 | 4 |
-| P1 — Alta prioridad | 8 | 0 | 8 |
-| P2 — Media prioridad | 4 | 0 | 4 |
-| P3 — Planificadas | 4 | 0 | 4 |
+| P0 — Blockers & Producción | 4 | 3 | 1 (PayPal Live) |
+| P1 — Alta prioridad | 9 | 8 | 1 (Webhook N8N Email) |
+| P2 — Media prioridad | 4 | 2 | 2 |
+| P3 — Super Admin & Módulos Avanzados | 5 | 1 | 4 |
 | P4 — Roadmap | 10 | 0 | 10 |
-| **Total** | **30** | **0** | **30** |
+| **Total** | **32** | **14** | **18** |
 
 ---
 
