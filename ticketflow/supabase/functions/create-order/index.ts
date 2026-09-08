@@ -190,6 +190,20 @@ serve(async (req: Request) => {
       );
     }
 
+    // 6. Trigger confirmation email asynchronously (non-blocking)
+    if (orderResult && (orderResult as { id?: string }).id) {
+      try {
+        await supabaseAdmin.functions.invoke('send-ticket-email', {
+          body: {
+            orderId: (orderResult as { id: string }).id,
+            recipientEmail: user.email,
+          },
+        });
+      } catch (emailErr) {
+        console.warn('send-ticket-email invocation warning:', emailErr);
+      }
+    }
+
     return new Response(
       JSON.stringify({ order: orderResult }),
       {

@@ -107,6 +107,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <store-event-card
               *ngFor="let ev of results()!.events"
               [event]="ev"
+              (artistClick)="openArtistModal($event)"
             ></store-event-card>
           </div>
 
@@ -158,6 +159,94 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           </div>
         </div>
       </div>
+
+      <!-- Artist Profile Modal -->
+      <div
+        *ngIf="selectedArtist()"
+        class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+        (click)="closeArtistModal()"
+      >
+        <div
+          class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6 relative"
+          (click)="$event.stopPropagation()"
+        >
+          <button
+            type="button"
+            (click)="closeArtistModal()"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm font-bold transition"
+          >
+            ✕
+          </button>
+
+          <!-- Header -->
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl bg-slate-900 border-2 border-slate-100 shadow overflow-hidden shrink-0">
+              <img
+                *ngIf="selectedArtist()?.photo_url"
+                [src]="selectedArtist()!.photo_url"
+                [alt]="selectedArtist()?.name"
+                class="w-full h-full object-cover"
+              />
+              <div *ngIf="!selectedArtist()?.photo_url" class="w-full h-full flex items-center justify-center text-cyan-400 font-black text-3xl">
+                {{ (selectedArtist()?.name || 'A').charAt(0) }}
+              </div>
+            </div>
+
+            <div>
+              <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-wider block">Perfil del Artista</span>
+              <h2 class="text-2xl font-black text-slate-900">
+                {{ selectedArtist()?.name }}
+              </h2>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="space-y-2 border-t border-slate-100 pt-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biografía / Trayectoria</h3>
+            <p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed">
+              {{ selectedArtist()?.description || 'No hay descripción disponible para este artista.' }}
+            </p>
+          </div>
+
+          <!-- Gallery Photos -->
+          <div *ngIf="selectedArtist()?.gallery_urls && selectedArtist()!.gallery_urls!.length > 0" class="space-y-3 border-t border-slate-100 pt-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <span>📸</span> Galería de Fotos
+            </h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div
+                *ngFor="let photo of selectedArtist()!.gallery_urls"
+                class="relative rounded-2xl overflow-hidden aspect-square border border-slate-200 bg-slate-100 group cursor-pointer hover:shadow-md transition"
+                (click)="selectedGalleryPhoto.set(photo)"
+              >
+                <img
+                  [src]="photo"
+                  [alt]="'Foto de ' + selectedArtist()?.name"
+                  class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lightbox for Gallery Photo -->
+      <div
+        *ngIf="selectedGalleryPhoto()"
+        class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
+        (click)="selectedGalleryPhoto.set(null)"
+      >
+        <div class="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl" (click)="$event.stopPropagation()">
+          <img [src]="selectedGalleryPhoto()" alt="Foto de artista" class="max-w-full max-h-[85vh] object-contain rounded-xl" />
+          <button
+            type="button"
+            (click)="selectedGalleryPhoto.set(null)"
+            class="absolute top-4 right-4 w-9 h-9 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center text-lg transition"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -170,9 +259,19 @@ export class SearchResultsComponent implements OnInit {
   readonly errorMessage = signal<string | null>(null);
   readonly results = signal<SearchResult | null>(null);
   readonly eventTypes = signal<EventType[]>([]);
+  readonly selectedArtist = signal<any | null>(null);
+  readonly selectedGalleryPhoto = signal<string | null>(null);
 
   searchQuery = '';
   currentParams: SearchFilterParams = {};
+
+  openArtistModal(artist: any): void {
+    this.selectedArtist.set(artist);
+  }
+
+  closeArtistModal(): void {
+    this.selectedArtist.set(null);
+  }
 
   async ngOnInit(): Promise<void> {
     // 1. Fetch categories

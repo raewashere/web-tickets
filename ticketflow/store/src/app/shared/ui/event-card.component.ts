@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import type { EventWithRelations, TicketType } from '@ticketflow/models';
+import type { EventWithRelations, TicketType, Artist } from '@ticketflow/models';
 
 export type StoreEventItem = EventWithRelations & {
   ticket_types?: TicketType[];
@@ -53,9 +53,19 @@ export type StoreEventItem = EventWithRelations & {
         <!-- Card Body -->
         <div class="p-5 space-y-3">
           <!-- Artist / Co-artist -->
-          <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
-            <span class="w-2 h-2 rounded-full bg-cyan-500 inline-block"></span>
-            <span class="truncate">{{ event.artists?.name || 'Artista Invitado' }}</span>
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+            <button
+              *ngIf="event.artists"
+              type="button"
+              (click)="$event.stopPropagation(); artistClick.emit(event.artists)"
+              class="flex items-center gap-1.5 hover:text-cyan-600 transition-colors text-left truncate group/artist"
+              title="Ver perfil del artista"
+            >
+              <span class="w-2 h-2 rounded-full bg-cyan-500 inline-block shrink-0"></span>
+              <span class="truncate font-bold text-slate-700 group-hover/artist:text-cyan-600">{{ event.artists?.name }}</span>
+              <span class="text-[10px] text-cyan-600 shrink-0 font-medium opacity-80 group-hover/artist:opacity-100">· Ver perfil ↗</span>
+            </button>
+            <span *ngIf="!event.artists" class="text-slate-400">Artista Invitado</span>
           </div>
 
           <!-- Event Title -->
@@ -100,6 +110,7 @@ export type StoreEventItem = EventWithRelations & {
 })
 export class EventCardComponent {
   @Input({ required: true }) event!: StoreEventItem;
+  @Output() artistClick = new EventEmitter<Pick<Artist, 'id' | 'name' | 'photo_url' | 'description' | 'gallery_urls'>>();
 
   get minPriceText(): string {
     if (!this.event.ticket_types || this.event.ticket_types.length === 0) {

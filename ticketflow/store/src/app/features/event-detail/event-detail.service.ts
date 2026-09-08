@@ -25,7 +25,7 @@ export class EventDetailService {
   async getEvent(id: string): Promise<EventDetailPublic | null> {
     const { data, error } = await this.supabase
       .from('events')
-      .select('*, artists(id, name, photo_url, description), venues(id, name, latitude, longitude, map_url, verified), venue_configurations(id, name, capacity), event_types(*), ticket_types(*)')
+      .select('*, artists(id, name, photo_url, description, gallery_urls), venues(id, name, latitude, longitude, map_url, verified), venue_configurations(id, name, capacity), event_types(*), ticket_types(*)')
       .eq('id', id)
       .eq('status', 'published')
       .maybeSingle();

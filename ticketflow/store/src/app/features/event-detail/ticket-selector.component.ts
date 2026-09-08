@@ -30,28 +30,28 @@ import type { CartTicketItem } from './event-detail.service';
       <div *ngIf="ticketTypes.length > 0" class="space-y-3.5">
         <div
           *ngFor="let t of ticketTypes"
-          class="p-4 sm:p-5 rounded-2xl border transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          class="p-4 rounded-2xl border transition-all duration-200 space-y-3"
           [class.border-cyan-500]="getQuantity(t.id) > 0"
           [class.bg-cyan-50\/40]="getQuantity(t.id) > 0"
           [class.border-slate-200]="getQuantity(t.id) === 0"
           [class.bg-white]="getQuantity(t.id) === 0"
           [class.opacity-60]="t.available <= 0"
         >
-          <!-- Left: Details -->
+          <!-- Top: Name, SKU, Availability & Description -->
           <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <h4 class="font-bold text-sm sm:text-base text-slate-900">{{ t.name }}</h4>
-              <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+            <div class="flex items-start justify-between gap-2">
+              <h4 class="font-bold text-sm text-slate-900 leading-snug">{{ t.name }}</h4>
+              <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700 shrink-0">
                 {{ t.sku }}
               </span>
             </div>
 
-            <p *ngIf="t.description" class="text-xs text-slate-500 max-w-md">
+            <p *ngIf="t.description" class="text-xs text-slate-500 line-clamp-2">
               {{ t.description }}
             </p>
 
-            <div class="text-xs">
-              <span *ngIf="t.available > 0" class="text-emerald-700 font-semibold">
+            <div class="text-xs pt-0.5">
+              <span *ngIf="t.available > 0" class="text-emerald-700 font-semibold text-[11px]">
                 ● {{ t.available }} disponibles
               </span>
               <span *ngIf="t.available <= 0" class="text-rose-600 font-bold uppercase tracking-wider text-[10px]">
@@ -60,27 +60,27 @@ import type { CartTicketItem } from './event-detail.service';
             </div>
           </div>
 
-          <!-- Right: Price & Stepper -->
-          <div class="flex items-center justify-between sm:justify-end gap-5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-            <div class="text-right">
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Precio</span>
-              <span class="font-black text-base text-slate-900 font-mono">
-                \${{ t.price | number:'1.2-2' }}
+          <!-- Bottom: Price & Stepper -->
+          <div class="flex items-center justify-between gap-3 pt-2.5 border-t border-slate-100">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block leading-none">Precio</span>
+              <span class="font-black text-base text-slate-900 font-mono mt-0.5 block">
+                \${{ t.price | number:'1.2-2' }} <span class="text-[10px] font-normal text-slate-400">MXN</span>
               </span>
             </div>
 
             <!-- Stepper -->
-            <div *ngIf="t.available > 0" class="flex items-center gap-1.5 bg-slate-100 rounded-xl p-1 border border-slate-200">
+            <div *ngIf="t.available > 0" class="flex items-center gap-1.5 bg-slate-100 rounded-xl p-1 border border-slate-200 shrink-0">
               <button
                 type="button"
                 (click)="decrement(t)"
                 [disabled]="getQuantity(t.id) <= 0"
-                class="w-7 h-7 rounded-lg bg-white text-slate-800 font-black flex items-center justify-center hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
+                class="w-7 h-7 rounded-lg bg-white text-slate-800 font-black flex items-center justify-center hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm select-none"
               >
                 −
               </button>
 
-              <span class="w-7 text-center font-bold text-sm text-slate-900 font-mono">
+              <span class="w-7 text-center font-bold text-sm text-slate-900 font-mono select-none">
                 {{ getQuantity(t.id) }}
               </span>
 
@@ -88,13 +88,13 @@ import type { CartTicketItem } from './event-detail.service';
                 type="button"
                 (click)="increment(t)"
                 [disabled]="getQuantity(t.id) >= Math.min(10, t.available) || totalCount >= 10"
-                class="w-7 h-7 rounded-lg bg-cyan-400 text-slate-950 font-black flex items-center justify-center hover:bg-cyan-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
+                class="w-7 h-7 rounded-lg bg-cyan-400 text-slate-950 font-black flex items-center justify-center hover:bg-cyan-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm text-sm select-none"
               >
                 +
               </button>
             </div>
 
-            <div *ngIf="t.available <= 0" class="text-xs text-slate-400 font-bold italic">
+            <div *ngIf="t.available <= 0" class="text-xs text-slate-400 font-bold italic shrink-0">
               No disponible
             </div>
           </div>

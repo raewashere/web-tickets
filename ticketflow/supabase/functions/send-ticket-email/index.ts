@@ -217,7 +217,7 @@ serve(async (req: Request) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: Deno.env.get('EMAIL_FROM') || 'TicketFlow <boletos@ticketflow.io>',
+          from: Deno.env.get('EMAIL_FROM') || 'TicketFlow <onboarding@resend.dev>',
           to: [targetEmail],
           subject: `🎟️ Tus Boletos para ${eventName} — Orden #${order.id.substring(0, 8).toUpperCase()}`,
           html: htmlEmail,

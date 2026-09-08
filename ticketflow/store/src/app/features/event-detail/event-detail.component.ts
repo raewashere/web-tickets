@@ -170,6 +170,56 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               />
             </div>
           </div>
+
+          <!-- Artist Profile & Gallery Section -->
+          <div *ngIf="event()!.artists" class="p-6 sm:p-8 rounded-3xl border border-slate-200 bg-white space-y-6 shadow-sm">
+            <div class="flex items-center gap-4">
+              <!-- Artist avatar -->
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-900 border-2 border-slate-100 shadow overflow-hidden shrink-0">
+                <img
+                  *ngIf="event()!.artists?.photo_url"
+                  [src]="event()!.artists!.photo_url"
+                  [alt]="event()!.artists?.name"
+                  class="w-full h-full object-cover"
+                />
+                <div *ngIf="!event()!.artists?.photo_url" class="w-full h-full flex items-center justify-center text-cyan-400 font-black text-2xl">
+                  {{ (event()!.artists?.name || 'A').charAt(0) }}
+                </div>
+              </div>
+
+              <div>
+                <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-wider block">Acerca del Artista</span>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900">
+                  {{ event()!.artists?.name }}
+                </h2>
+              </div>
+            </div>
+
+            <!-- Artist Biography / Description -->
+            <div *ngIf="event()!.artists?.description" class="text-sm text-slate-700 whitespace-pre-line leading-relaxed border-t border-slate-100 pt-4">
+              {{ event()!.artists!.description }}
+            </div>
+
+            <!-- Artist Photo Gallery -->
+            <div *ngIf="event()!.artists?.gallery_urls && event()!.artists!.gallery_urls!.length > 0" class="space-y-3 border-t border-slate-100 pt-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <span>📸</span> Galería de Fotos
+              </h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <div
+                  *ngFor="let photo of event()!.artists!.gallery_urls"
+                  class="relative rounded-2xl overflow-hidden aspect-square border border-slate-200 bg-slate-100 group cursor-pointer hover:shadow-md transition duration-200"
+                  (click)="selectedGalleryPhoto.set(photo)"
+                >
+                  <img
+                    [src]="photo"
+                    [alt]="'Foto de ' + event()!.artists?.name"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Right Column: Ticket Selector -->
@@ -211,6 +261,24 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           </div>
         </div>
       </div>
+
+      <!-- Lightbox for Gallery Photo -->
+      <div
+        *ngIf="selectedGalleryPhoto()"
+        class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
+        (click)="selectedGalleryPhoto.set(null)"
+      >
+        <div class="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl" (click)="$event.stopPropagation()">
+          <img [src]="selectedGalleryPhoto()" alt="Foto de artista" class="max-w-full max-h-[85vh] object-contain rounded-xl" />
+          <button
+            type="button"
+            (click)="selectedGalleryPhoto.set(null)"
+            class="absolute top-4 right-4 w-9 h-9 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center text-lg transition"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -223,6 +291,7 @@ export class EventDetailComponent implements OnInit {
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly event = signal<EventDetailPublic | null>(null);
+  readonly selectedGalleryPhoto = signal<string | null>(null);
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');

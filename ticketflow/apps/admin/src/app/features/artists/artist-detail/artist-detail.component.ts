@@ -141,6 +141,49 @@ import {
           </div>
         </div>
 
+        <!-- Gallery Photos Section -->
+        <tf-card title="Galería de Fotos" subtitle="Fotos públicas que se muestran en la tienda y eventos">
+          <div *ngIf="artist()?.gallery_urls && artist()!.gallery_urls!.length > 0; else noGallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div
+              *ngFor="let url of artist()?.gallery_urls"
+              class="relative rounded-xl overflow-hidden aspect-square border border-dark/10 shadow-sm bg-dark/5 group cursor-pointer"
+              (click)="selectedGalleryPhoto.set(url)"
+            >
+              <img [src]="url" alt="Galería de artista" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" />
+            </div>
+          </div>
+          <ng-template #noGallery>
+            <div class="text-center py-8 text-dark/50 text-sm">
+              <p>No has agregado fotos a tu galería aún.</p>
+              <button
+                type="button"
+                (click)="isEditing.set(true)"
+                class="mt-2 text-primary font-semibold hover:underline"
+              >
+                + Subir fotos
+              </button>
+            </div>
+          </ng-template>
+        </tf-card>
+
+        <!-- Lightbox / Photo preview modal -->
+        <div
+          *ngIf="selectedGalleryPhoto()"
+          class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          (click)="selectedGalleryPhoto.set(null)"
+        >
+          <div class="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl" (click)="$event.stopPropagation()">
+            <img [src]="selectedGalleryPhoto()" alt="Vista previa" class="max-w-full max-h-[85vh] object-contain rounded-xl" />
+            <button
+              type="button"
+              (click)="selectedGalleryPhoto.set(null)"
+              class="absolute top-4 right-4 w-9 h-9 bg-black/60 text-white rounded-full flex items-center justify-center text-lg hover:bg-black/90 transition"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
         <!-- Info Grid: Billing & Contact Details -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <tf-card title="Datos de Contacto">
@@ -185,6 +228,7 @@ export class ArtistDetailComponent implements OnInit {
   readonly isLoading = signal(true);
   readonly isEditing = signal(false);
   readonly notification = signal<string | null>(null);
+  readonly selectedGalleryPhoto = signal<string | null>(null);
 
   async ngOnInit(): Promise<void> {
     await this.loadProfile();

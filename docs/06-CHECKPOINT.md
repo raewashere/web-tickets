@@ -32,6 +32,15 @@
 | `20250109000000_doorman_role.sql` | ✅ Lista | Enum `'doorman'`, tablas `event_staff` + `staff_invitations`, RLS |
 | `20250110000000_validate_with_doorman_auth.sql` | ✅ Lista | `validate_ticket_qr` con control de autorización para Doormen |
 | `20250111000000_coupon_ticket_sku.sql` | ✅ Aplicada | Cupones asociados por SKU (`ticket_sku`) y descuento proporcional atómico |
+| `20250112000000_artist_gallery.sql` | 🟡 Lista para ejecutar | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
+
+### Despliegue & Producción
+
+| Aplicación / Servicio | Estado | Plataforma / URL |
+|-----------------------|:------:|------------------|
+| **Admin App** | ✅ Desplegado | Vercel (`ticketflow-admin.vercel.app`) |
+| **Store App** | ✅ Desplegado | Vercel |
+| **Google OAuth Redirects** | ✅ Configurado | Supabase Dashboard & Google Cloud Console |
 
 ### Edge Functions (Supabase Deno)
 
@@ -41,7 +50,7 @@
 | `create-order` | ✅ Desplegada | Captura pago PayPal y llama `create_order_atomic` |
 | `apply-coupon` | ✅ Actualizada | Valida y aplica cupones globales, por evento o por `ticket_sku` |
 | `send-ticket-email` | ✅ Creada | Envío de confirmación de compra y resumen de acceso por correo |
-| `send-staff-invite` | ✅ Actualizada | Envío de invitación a Doormen vía Resend / fallback y enlace directo |
+| `send-staff-invite` | 🟡 Pendiente | Envío de invitación a Doormen (considerando Webhook en N8N) |
 
 ### Mejoras Post-MVP Implementadas
 
@@ -54,23 +63,22 @@
 | **M5** | Store | Fix retorno a compra post-login | `event-detail.component.ts` |
 | **M6** | Store | Buscador por nombre de artista | `search.service.ts`, migración 008 |
 | **M7** | Admin | Rol y flujo Doorman completo | `doorman.guard.ts`, `event-staff.*`, `accept-invite.*`, `sidebar.*` |
-| **M8** | Admin + Store + DB | Cupones por SKU + Fix visibilidad eventos + Resend config | `coupon-form.*`, `coupon-list.*`, `apply-coupon`, `search.service.ts`, `send-staff-invite` |
+| **M8** | Admin + Store + DB | Cupones por SKU + Fix visibilidad eventos | `coupon-form.*`, `coupon-list.*`, `apply-coupon`, `search.service.ts` |
+| **M9** | Admin + Store + DB | Perfil de artista con biografía y galería multi-fotos | `artist-form.*`, `artist-detail.*`, `event-detail.*`, `search-results.*`, migración 012 |
+| **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---
 
 ## 🟡 Pendiente de Ejecución / QA
 
 1. **Ejecutar migraciones en Supabase SQL Editor:**
-   - `20250107000000_validate_doors_open.sql`
-   - `20250108000000_search_events_function.sql`
-   - `20250109000000_doorman_role.sql`
-   - `20250110000000_validate_with_doorman_auth.sql`
+   - `20250112000000_artist_gallery.sql`
 2. **Programar pg_cron en Supabase:**
    ```sql
    SELECT cron.schedule('release-expired-locks', '* * * * *', 'SELECT release_expired_locks()');
    ```
-3. **Despliegue de Store App en Vercel:**
-   - Configurar variables de entorno y comando de build `npm run build:store`.
+3. **Alternativa N8N Webhook para Doorman:**
+   - Evaluar / implementar webhook hacia N8N para automatización de correos de invitación y confirmación.
 
 ---
 

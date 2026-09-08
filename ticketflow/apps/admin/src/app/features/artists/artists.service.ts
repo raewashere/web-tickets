@@ -13,6 +13,7 @@ export interface UpsertArtistDto {
   email?: string | null;
   phone_number?: string | null;
   photo_url?: string | null;
+  gallery_urls?: string[] | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -39,12 +40,18 @@ export class ArtistsService {
   async createArtistProfile(
     userId: string,
     dto: UpsertArtistDto,
-    photoFile?: File
+    photoFile?: File,
+    galleryFiles?: File[]
   ): Promise<Artist> {
     let photoUrl = dto.photo_url;
+    let galleryUrls = [...(dto.gallery_urls || [])];
 
     if (photoFile) {
       photoUrl = await this.uploadPhoto(photoFile, userId);
+    }
+    if (galleryFiles && galleryFiles.length > 0) {
+      const uploaded = await this.uploadGalleryPhotos(galleryFiles, userId);
+      galleryUrls = [...galleryUrls, ...uploaded];
     }
 
     const { data, error } = await this.supabase
@@ -60,6 +67,7 @@ export class ArtistsService {
         email: dto.email || null,
         phone_number: dto.phone_number || null,
         photo_url: photoUrl || null,
+        gallery_urls: galleryUrls,
         created_by: userId,
         updated_by: userId,
       })
@@ -79,12 +87,18 @@ export class ArtistsService {
     artistId: string,
     userId: string,
     dto: UpsertArtistDto,
-    photoFile?: File
+    photoFile?: File,
+    galleryFiles?: File[]
   ): Promise<Artist> {
     let photoUrl = dto.photo_url;
+    let galleryUrls = [...(dto.gallery_urls || [])];
 
     if (photoFile) {
       photoUrl = await this.uploadPhoto(photoFile, userId);
+    }
+    if (galleryFiles && galleryFiles.length > 0) {
+      const uploaded = await this.uploadGalleryPhotos(galleryFiles, userId);
+      galleryUrls = [...galleryUrls, ...uploaded];
     }
 
     const updatePayload: Record<string, unknown> = {
@@ -96,6 +110,7 @@ export class ArtistsService {
       postal_code: dto.postal_code || null,
       email: dto.email || null,
       phone_number: dto.phone_number || null,
+      gallery_urls: galleryUrls,
       updated_by: userId,
     };
 
@@ -116,6 +131,37 @@ export class ArtistsService {
     }
 
     return data as Artist;
+  }
+
+  /** Upload multiple gallery photos to Supabase Storage and get their public URLs */
+  async uploadGalleryPhotos(files: File[], userId: string): Promise<string[]> {
+    const urls: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${userId}/gallery-${Date.now()}-${i}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+
+      const { error: uploadError } = await this.supabase.storage
+        .from(STORAGE_BUCKETS.ARTIST_PHOTOS)
+        .upload(filePath, file, {
+          upsert: true,
+          contentType: file.type || 'image/png',
+        });
+
+      if (uploadError) {
+        console.error('Error uploading gallery photo:', uploadError);
+        throw uploadError;
+      }
+
+      const {
+        data: { publicUrl },
+      } = this.supabase.storage
+        .from(STORAGE_BUCKETS.ARTIST_PHOTOS)
+        .getPublicUrl(filePath);
+
+      urls.push(publicUrl);
+    }
+    return urls;
   }
 
   /** Upload artist photo to Supabase Storage and get public URL */

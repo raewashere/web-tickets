@@ -47,6 +47,7 @@ export interface Artist {
   name: string;
   photo_url: string | null;
   description: string | null;
+  gallery_urls?: string[] | null;
   artist_type_id: string | null;
   tax_id: string | null;
   legal_name: string | null;

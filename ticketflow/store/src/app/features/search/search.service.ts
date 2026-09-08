@@ -36,7 +36,7 @@ export class SearchService {
 
     let query = this.supabase
       .from('events')
-      .select('*, artists(id, name, photo_url), venues(id, name, latitude, longitude, map_url, verified), venue_configurations(id, name, capacity), event_types(*), ticket_types(*)', { count: 'exact' })
+      .select('*, artists(id, name, photo_url, description, gallery_urls), venues(id, name, latitude, longitude, map_url, verified), venue_configurations(id, name, capacity), event_types(*), ticket_types(*)', { count: 'exact' })
       .eq('status', 'published');
 
     if (params.query && params.query.trim()) {

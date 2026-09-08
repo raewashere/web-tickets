@@ -110,6 +110,69 @@ import { Router, RouterModule } from '@angular/router';
           </div>
         </tf-card>
 
+        <!-- Gallery Photos Section -->
+        <tf-card title="Galería de Fotos del Artista" subtitle="Sube múltiples fotos para mostrar en el perfil público del artista y detalle del evento">
+          <div class="space-y-4">
+            <!-- Multi photo input trigger -->
+            <div
+              class="border-2 border-dashed border-dark/20 rounded-2xl p-6 text-center hover:border-primary/50 transition-colors bg-white/50 cursor-pointer"
+              (click)="galleryFileInput.click()"
+            >
+              <input
+                #galleryFileInput
+                type="file"
+                multiple
+                accept="image/jpeg,image/png,image/webp"
+                (change)="onGalleryFilesSelected($event)"
+                class="hidden"
+              />
+              <div class="flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
+                  📸
+                </div>
+                <div class="text-sm font-semibold text-dark">
+                  Haz clic para añadir fotos a la galería
+                </div>
+                <p class="text-xs text-dark/50">
+                  Formatos JPG, PNG, WEBP. Puedes seleccionar varias imágenes al mismo tiempo.
+                </p>
+              </div>
+            </div>
+
+            <!-- Existing and Pending Gallery Photos Grid -->
+            <div *ngIf="existingGalleryUrls().length > 0 || pendingGalleryFiles().length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pt-2">
+              <!-- Existing uploaded photos -->
+              <div *ngFor="let url of existingGalleryUrls(); let i = index" class="relative group rounded-xl overflow-hidden aspect-square border border-dark/10 shadow-sm bg-dark/5">
+                <img [src]="url" alt="Foto de galería" class="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  (click)="removeExistingGalleryPhoto(i)"
+                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-sm shadow hover:bg-red-700 transition"
+                  title="Eliminar foto"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <!-- Pending upload preview photos -->
+              <div *ngFor="let preview of pendingPreviews(); let i = index" class="relative group rounded-xl overflow-hidden aspect-square border-2 border-primary/40 shadow-sm bg-primary/5">
+                <img [src]="preview" alt="Nueva foto" class="w-full h-full object-cover" />
+                <div class="absolute bottom-1 left-1 bg-primary text-dark text-[10px] font-bold px-1.5 py-0.5 rounded">
+                  Nueva
+                </div>
+                <button
+                  type="button"
+                  (click)="removePendingGalleryFile(i)"
+                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-sm shadow hover:bg-red-700 transition"
+                  title="Quitar"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        </tf-card>
+
         <!-- Contact & Legal Section -->
         <tf-card title="Contacto y Facturación" subtitle="Información interna para contacto y liquidación de ventas">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -199,6 +262,9 @@ export class ArtistFormComponent implements OnInit {
   readonly isSaving = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly photoPreviewUrl = signal<string | null>(null);
+  readonly existingGalleryUrls = signal<string[]>([]);
+  readonly pendingGalleryFiles = signal<File[]>([]);
+  readonly pendingPreviews = signal<string[]>([]);
   private selectedFile: File | null = null;
 
   artistForm: FormGroup = this.fb.group({
@@ -232,6 +298,9 @@ export class ArtistFormComponent implements OnInit {
       if (this.initialArtist.photo_url) {
         this.photoPreviewUrl.set(this.initialArtist.photo_url);
       }
+      if (this.initialArtist.gallery_urls && Array.isArray(this.initialArtist.gallery_urls)) {
+        this.existingGalleryUrls.set([...this.initialArtist.gallery_urls]);
+      }
     } else {
       // Prefill defaults for new profile
       const defaultEmail = this.auth.user()?.email || '';
@@ -254,6 +323,33 @@ export class ArtistFormComponent implements OnInit {
       this.photoPreviewUrl.set(reader.result as string);
     };
     reader.readAsDataURL(file);
+  }
+
+  onGalleryFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const files = Array.from(input.files);
+    this.pendingGalleryFiles.update(current => [...current, ...files]);
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.pendingPreviews.update(previews => [...previews, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    input.value = '';
+  }
+
+  removeExistingGalleryPhoto(index: number): void {
+    this.existingGalleryUrls.update(urls => urls.filter((_, i) => i !== index));
+  }
+
+  removePendingGalleryFile(index: number): void {
+    this.pendingGalleryFiles.update(files => files.filter((_, i) => i !== index));
+    this.pendingPreviews.update(previews => previews.filter((_, i) => i !== index));
   }
 
   getNameError(): string | undefined {
@@ -297,7 +393,10 @@ export class ArtistFormComponent implements OnInit {
     this.isSaving.set(true);
     this.errorMessage.set(null);
 
-    const dto: UpsertArtistDto = this.artistForm.value;
+    const dto: UpsertArtistDto = {
+      ...this.artistForm.value,
+      gallery_urls: this.existingGalleryUrls(),
+    };
 
     try {
       let savedArtist: Artist;
@@ -307,13 +406,15 @@ export class ArtistFormComponent implements OnInit {
           this.initialArtist.id,
           currentUser.id,
           dto,
-          this.selectedFile || undefined
+          this.selectedFile || undefined,
+          this.pendingGalleryFiles()
         );
       } else {
         savedArtist = await this.artistsService.createArtistProfile(
           currentUser.id,
           dto,
-          this.selectedFile || undefined
+          this.selectedFile || undefined,
+          this.pendingGalleryFiles()
         );
       }
 

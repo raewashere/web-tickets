@@ -18,7 +18,7 @@ export interface ArtistWithType extends Artist {
 
 // Event with all joined relations
 export interface EventWithRelations extends Event {
-  artists: Pick<Artist, 'id' | 'name' | 'photo_url'> | null;
+  artists: Pick<Artist, 'id' | 'name' | 'photo_url' | 'description' | 'gallery_urls'> | null;
   event_types: EventType | null;
   venues: Pick<
     Venue,

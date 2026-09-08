@@ -19,18 +19,11 @@
     SELECT cron.schedule('release-expired-locks', '* * * * *', 'SELECT release_expired_locks()');
     ```
 
-- [ ] **Supabase Auth → URLs de redirección para producción**
-  - Ir a Supabase Dashboard → Authentication → URL Configuration → Redirect URLs
-  - Agregar:
-    - `https://ticketflow-admin.vercel.app/**`
-    - `https://<store-url>.vercel.app/**`
-  - Sin esto, el login con Google OAuth falla en producción.
+- [x] **Supabase Auth → URLs de redirección para producción y Google OAuth**
+  - **Completado:** URLs de redirección y OAuth configurados en Supabase Dashboard y Google Cloud Console.
 
-- [ ] **Despliegue de la Store en Vercel**
-  - Crear proyecto Vercel apuntando a `store/`
-  - Build Command: `npm run build:store`
-  - Output Directory: `dist/store/browser`
-  - Variables de entorno: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_PAYPAL_CLIENT_ID`, `VITE_GOOGLE_MAPS_API_KEY`
+- [x] **Despliegue de la Store y Admin en Vercel**
+  - **Completado:** Tanto la aplicación de Tienda (`store`) como el panel de Administración (`admin`) se encuentran desplegados y operativos en Vercel.
 
 - [ ] **PayPal: cambiar de Sandbox a producción**
   - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`
@@ -45,9 +38,9 @@
 - [x] **[M3] QR realmente escaneable por cámara**
   - **Completado:** Se integró la librería `qrcode` con nivel de corrección H y renderizado HD asíncrono en `ticket-detail` y `my-tickets`.
 
-- [ ] **Email de confirmación al comprar (`send-ticket-email`)**
-  - La Edge Function existe pero no tiene Resend configurado. El usuario no recibe confirmación de compra.
-  - Requiere: cuenta en Resend, `RESEND_API_KEY` en secrets de Supabase, configurar `from` domain, activar el envío desde `create-order` Edge Function.
+- [ ] **Envío de invitaciones Doorman y correos de confirmación (Alternativa N8N Webhook)**
+  - **Estado:** Pendiente de estabilización en producción.
+  - **Alternativa propuesta:** Implementar un Webhook hacia N8N para procesar el envío de correos y automatizaciones de forma desacoplada y confiable.
 
 - [x] **[M5] Fix redirect a login al intentar comprar**
   - **Completado:** Se corrigió la URL en `event-detail.component.ts` a `/events/:id`.
@@ -57,6 +50,15 @@
 
 - [x] **[M4] Foto de perfil de Gmail en topbar (Admin y Store)**
   - **Completado:** Agregada señal `avatarUrl` en `AuthService` y actualizada la interfaz en `topbar.component.ts` y `navbar.component.ts`.
+
+- [x] **[M8] Cupones por SKU + Fix visibilidad de eventos en tienda**
+  - **Completado:** Migración SQL 011, selector dinámico en admin, cálculo por SKU en Edge Function y atomic order, y fix de filtros de fechas en tienda.
+
+- [x] **[M9] Perfil de artista con biografía y galería multi-fotos**
+  - **Completado:** Migración SQL 012 (`gallery_urls`), carga y gestión de múltiples fotos en Admin (`artist-form` y `artist-detail`), y visualización interactiva con lightbox en la tienda (`event-detail` y `search-results`).
+
+- [x] **Fix contador de boletos (stepper layout)**
+  - **Completado:** Se rediseñó el componente `ticket-selector.component.ts` en layout vertical apilado para evitar desbordes visuales en columnas angostas.
 
 - [ ] **Google Maps API Key para el mapa del recinto**
   - `VenueMapComponent` requiere `VITE_GOOGLE_MAPS_API_KEY`. Sin la key, el mapa no carga.
