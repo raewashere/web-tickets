@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeService } from './home.service';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
 import type { EventType } from '@ticketflow/models';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-home',
@@ -21,6 +21,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
     FormsModule,
     EventCardComponent,
     SpinnerComponent,
+    SkeletonComponent,
   ],
   template: `
     <div class="space-y-12 sm:space-y-20 pb-16">
@@ -112,9 +113,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         </div>
 
         <!-- Loading State -->
-        <div *ngIf="isLoading()" class="py-20 flex flex-col items-center justify-center gap-3">
-          <tf-spinner size="lg" color="primary"></tf-spinner>
-          <p class="text-sm text-slate-500 font-medium">Cargando eventos de la cartelera...</p>
+        <div *ngIf="isLoading()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <tf-skeleton variant="event-card"></tf-skeleton>
+          <tf-skeleton variant="event-card"></tf-skeleton>
+          <tf-skeleton variant="event-card"></tf-skeleton>
         </div>
 
         <!-- Events Grid -->

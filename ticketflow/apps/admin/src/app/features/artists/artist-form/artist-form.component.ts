@@ -23,6 +23,7 @@ import {
   InputComponent,
   FileUploadComponent,
   SpinnerComponent,
+  ToastService,
 } from '@ticketflow/shared-ui';
 import { Router, RouterModule } from '@angular/router';
 
@@ -286,6 +287,7 @@ export class ArtistFormComponent implements OnInit {
   private readonly artistsService = inject(ArtistsService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   @Input() initialArtist?: ArtistWithType | null;
   @Input() showCancel = true;
@@ -462,6 +464,10 @@ export class ArtistFormComponent implements OnInit {
         );
       }
 
+      this.toast.success(
+        'Perfil actualizado',
+        'Los datos del perfil de artista se guardaron exitosamente.'
+      );
       this.saved.emit(savedArtist);
       // Navigate to profile view after saving (works both as page and modal)
       this.router.navigate(['/artist/profile']);

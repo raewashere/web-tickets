@@ -11,7 +11,7 @@ import { SearchService, SearchFilterParams, SearchResult } from './search.servic
 import { FilterPanelComponent } from './filter-panel.component';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
 import type { EventType } from '@ticketflow/models';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-search-results',
@@ -23,6 +23,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
     FilterPanelComponent,
     EventCardComponent,
     SpinnerComponent,
+    SkeletonComponent,
   ],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
@@ -86,9 +87,13 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           </div>
 
           <!-- Loading State -->
-          <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
-            <tf-spinner size="lg" color="primary"></tf-spinner>
-            <p class="text-sm text-slate-500 font-medium">Buscando eventos en la cartelera...</p>
+          <div *ngIf="isLoading()" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <tf-skeleton variant="event-card"></tf-skeleton>
+            <tf-skeleton variant="event-card"></tf-skeleton>
+            <tf-skeleton variant="event-card"></tf-skeleton>
+            <tf-skeleton variant="event-card"></tf-skeleton>
+            <tf-skeleton variant="event-card"></tf-skeleton>
+            <tf-skeleton variant="event-card"></tf-skeleton>
           </div>
 
           <!-- Error Alert -->

@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from './sidebar.component';
 import { TopbarComponent } from './topbar.component';
+import { ToastContainerComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-admin-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent, TopbarComponent],
+  imports: [CommonModule, RouterModule, SidebarComponent, TopbarComponent, ToastContainerComponent],
   template: `
     <div class="min-h-screen bg-[#f8f9fa] text-dark flex">
+      <tf-toast-container></tf-toast-container>
       <!-- Sidebar -->
       <app-sidebar
         [isOpen]="isSidebarOpen"

@@ -27,6 +27,7 @@ import {
   CardComponent,
   FileUploadComponent,
   SpinnerComponent,
+  ToastService,
 } from '@ticketflow/shared-ui';
 
 @Component({
@@ -351,6 +352,7 @@ export class EventFormComponent implements OnInit {
   private readonly eventsService = inject(EventsService);
   private readonly artistsService = inject(ArtistsService);
   private readonly authService = inject(AuthService);
+  private readonly toast = inject(ToastService);
 
   readonly isLoading = signal(true);
   readonly isSubmitting = signal(false);
@@ -515,12 +517,20 @@ export class EventFormComponent implements OnInit {
           this.selectedFlyerFile || undefined,
           userId
         );
+        this.toast.success(
+          'Evento actualizado',
+          targetStatus === 'published' ? 'El evento ha sido publicado exitosamente.' : 'El borrador del evento fue guardado.'
+        );
         this.router.navigate(['/events', updated.id]);
       } else {
         const created = await this.eventsService.createEvent(
           dto,
           this.selectedFlyerFile || undefined,
           userId
+        );
+        this.toast.success(
+          'Evento creado',
+          targetStatus === 'published' ? 'El evento ha sido publicado exitosamente.' : 'El borrador del evento fue guardado.'
         );
         this.router.navigate(['/events', created.id]);
       }

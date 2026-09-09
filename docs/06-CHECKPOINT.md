@@ -77,6 +77,9 @@
 | **M13** | Admin + Store + DB | Waitlist / Lista de Espera (Suscripción a eventos agotados, cola FIFO, panel de organizador y notificaciones) | `waitlist.service.*`, `ticket-selector.*`, `my-tickets.*`, `event-waitlist.*`, migración 015 |
 | **M14** | Admin + DB | Facturación y Control de Pagos a Artistas (Portal de finanzas, balance neto, dispersiones Super-Admin y datos bancarios) | `finances.*`, `admin-payouts.*`, migración 016 |
 | **M15** | Admin + Store + DB | Meta Pixel por Artista (Tracking de `ViewContent`, `InitiateCheckout` y `Purchase` desde campañas de redes sociales) | `meta-pixel.service.ts`, `artist-form.*`, `event-detail.*`, `thank-you.*`, migración 019 |
+| **UX-1** | Store + Admin | Skeleton Screens / Estados de carga | `skeleton.ts`, `home.component.ts`, `search-results.component.ts`, `dashboard.component.ts` |
+| **UX-2** | Store + Admin | Toast Notifications Contextuales | `toast.ts`, `app.html`, `admin-shell.component.ts`, `artist-form.component.ts`, `event-form.component.ts` |
+| **UX-3** | Store | Confirmación de Compra Animada (Canvas Confetti, Resumen de Pago & Toast) | `thank-you.component.ts` |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

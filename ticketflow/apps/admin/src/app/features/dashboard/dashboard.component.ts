@@ -11,6 +11,7 @@ import {
   CardComponent,
   BadgeComponent,
   SpinnerComponent,
+  SkeletonComponent,
 } from '@ticketflow/shared-ui';
 
 @Component({
@@ -24,6 +25,7 @@ import {
     CardComponent,
     BadgeComponent,
     SpinnerComponent,
+    SkeletonComponent,
   ],
   template: `
     <div class="space-y-8">
@@ -71,9 +73,22 @@ import {
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoading()" class="py-20 flex flex-col items-center justify-center">
-        <tf-spinner size="lg"></tf-spinner>
-        <p class="text-dark/50 text-sm mt-4">Cargando métricas del panel...</p>
+      <div *ngIf="isLoading()" class="space-y-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <tf-skeleton variant="card"></tf-skeleton>
+          <tf-skeleton variant="card"></tf-skeleton>
+          <tf-skeleton variant="card"></tf-skeleton>
+          <tf-skeleton variant="card"></tf-skeleton>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2 space-y-4">
+            <tf-skeleton variant="card"></tf-skeleton>
+            <tf-skeleton variant="card"></tf-skeleton>
+          </div>
+          <div>
+            <tf-skeleton variant="card"></tf-skeleton>
+          </div>
+        </div>
       </div>
 
       <div *ngIf="!isLoading()" class="space-y-8">
