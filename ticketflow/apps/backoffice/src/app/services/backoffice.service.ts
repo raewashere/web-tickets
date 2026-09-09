@@ -5,7 +5,7 @@ import type {
   SuperAdminUserItem,
   AdminVenueModerationItem,
   AdminArtistFinancialItem,
-  RefundRequestItem,
+  RefundRequestWithRelations,
   RoleType,
 } from '@ticketflow/models';
 
@@ -190,7 +190,7 @@ export class BackofficeService {
   }
 
   /** Fetch all refund requests platform-wide */
-  async getAllRefundRequests(): Promise<RefundRequestItem[]> {
+  async getAllRefundRequests(): Promise<RefundRequestWithRelations[]> {
     const { data, error } = await this.supabase.rpc('get_all_refund_requests');
 
     if (error) {
@@ -198,7 +198,7 @@ export class BackofficeService {
       throw error;
     }
 
-    return (data || []) as RefundRequestItem[];
+    return (data || []) as RefundRequestWithRelations[];
   }
 
   /** Process refund request (Approve / Reject) */

@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BackofficeService } from '../../services/backoffice.service';
-import type { RefundRequestItem } from '@ticketflow/models';
+import type { RefundRequestWithRelations } from '@ticketflow/models';
 import { SpinnerComponent } from '@ticketflow/shared-ui';
 
 @Component({
@@ -192,7 +192,7 @@ export class AdminRefundsComponent implements OnInit {
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly refunds = signal<RefundRequestItem[]>([]);
+  readonly refunds = signal<RefundRequestWithRelations[]>([]);
   readonly processingId = signal<string | null>(null);
 
   searchQuery = '';
@@ -245,7 +245,7 @@ export class AdminRefundsComponent implements OnInit {
     }
   }
 
-  async processRefund(refund: RefundRequestItem, action: 'approved' | 'rejected'): Promise<void> {
+  async processRefund(refund: RefundRequestWithRelations, action: 'approved' | 'rejected'): Promise<void> {
     const confirmMsg = action === 'approved' 
       ? `¿Confirmas la aprobación del reembolso de la orden #${refund.order_number}? Esto reincorporará el stock de boletos y anulará los QR.`
       : `¿Deseas rechazar la solicitud de reembolso para la orden #${refund.order_number}?`;

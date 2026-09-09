@@ -129,7 +129,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                     </div>
                     <div>
                       <span class="font-extrabold text-dark block">{{ user.email }}</span>
-                      <span class="text-[10px] text-dark/40 font-mono">ID: {{ user.user_id }}</span>
+                      <span class="text-[10px] text-dark/40 font-mono">ID: {{ user.id }}</span>
                     </div>
                   </div>
                 </td>
@@ -142,7 +142,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="toggleRole(user, 'admin')"
-                    [disabled]="updatingKey() === user.user_id + '_admin'"
+                    [disabled]="updatingKey() === user.id + '_admin'"
                     [class.bg-purple-700]="user.roles.includes('admin')"
                     [class.text-white]="user.roles.includes('admin')"
                     [class.bg-dark/5]="!user.roles.includes('admin')"
@@ -158,7 +158,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="toggleRole(user, 'artist')"
-                    [disabled]="updatingKey() === user.user_id + '_artist'"
+                    [disabled]="updatingKey() === user.id + '_artist'"
                     [class.bg-amber-600]="user.roles.includes('artist')"
                     [class.text-white]="user.roles.includes('artist')"
                     [class.bg-dark/5]="!user.roles.includes('artist')"
@@ -174,7 +174,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="toggleRole(user, 'doorman')"
-                    [disabled]="updatingKey() === user.user_id + '_doorman'"
+                    [disabled]="updatingKey() === user.id + '_doorman'"
                     [class.bg-cyan-600]="user.roles.includes('doorman')"
                     [class.text-white]="user.roles.includes('doorman')"
                     [class.bg-dark/5]="!user.roles.includes('doorman')"
@@ -190,7 +190,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="toggleRole(user, 'customer')"
-                    [disabled]="updatingKey() === user.user_id + '_customer'"
+                    [disabled]="updatingKey() === user.id + '_customer'"
                     [class.bg-emerald-600]="user.roles.includes('customer')"
                     [class.text-white]="user.roles.includes('customer')"
                     [class.bg-dark/5]="!user.roles.includes('customer')"
@@ -239,7 +239,7 @@ export class UserManagementComponent implements OnInit {
       list = list.filter(
         (u) =>
           u.email.toLowerCase().includes(q) ||
-          u.user_id.toLowerCase().includes(q)
+          u.id.toLowerCase().includes(q)
       );
     }
 
@@ -268,14 +268,14 @@ export class UserManagementComponent implements OnInit {
   async toggleRole(user: SuperAdminUserItem, role: RoleType): Promise<void> {
     const hasRole = user.roles.includes(role);
     const shouldHave = !hasRole;
-    const key = `${user.user_id}_${role}`;
+    const key = `${user.id}_${role}`;
     this.updatingKey.set(key);
 
     try {
-      await this.backofficeService.setUserRole(user.user_id, role, shouldHave);
+      await this.backofficeService.setUserRole(user.id, role, shouldHave);
       this.users.update((items) =>
         items.map((u) => {
-          if (u.user_id !== user.user_id) return u;
+          if (u.id !== user.id) return u;
           const updatedRoles = shouldHave
             ? [...u.roles, role]
             : u.roles.filter((r) => r !== role);
