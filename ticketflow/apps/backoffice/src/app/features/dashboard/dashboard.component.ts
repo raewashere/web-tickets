@@ -28,7 +28,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <button
           type="button"
           (click)="loadMetrics()"
-          class="px-4 py-2.5 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
+          class="px-4 py-2.5 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs sm:text-sm shadow-sm transition flex items-center gap-2 self-start sm:self-auto flex-shrink-0"
         >
           <span>🔄</span>
           <span>Actualizar Datos</span>
@@ -38,151 +38,260 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Loading state -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg"></tf-spinner>
-        <p class="text-xs text-dark/50">Cargando métricas de la plataforma...</p>
+        <p class="text-xs text-dark/50 font-medium">Cargando métricas de la plataforma...</p>
       </div>
 
       <!-- Error State -->
-      <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">
+      <div *ngIf="errorMessage()" class="p-5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm font-bold shadow-sm">
         {{ errorMessage() }}
       </div>
 
       <!-- Metrics Content -->
       <div *ngIf="!isLoading() && metrics()" class="space-y-8">
         <!-- Main Financial KPI Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
           <!-- GMV -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-2">
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Volumen Total (GMV)</span>
-              <span class="text-xl">💰</span>
+              <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Volumen Total (GMV)</span>
+              <span class="text-xl p-2 rounded-xl bg-amber-500/10">💰</span>
             </div>
-            <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
-              \${{ metrics()!.total_gmv | number:'1.2-2' }} <span class="text-xs font-normal text-dark/50">MXN</span>
-            </p>
-            <p class="text-[11px] text-dark/50">
-              En <strong class="text-dark font-semibold">{{ metrics()!.total_orders_count }}</strong> órdenes confirmadas
-            </p>
+            <div class="space-y-1">
+              <p class="text-2xl sm:text-3xl font-black text-dark font-mono truncate">
+                \${{ metrics()!.total_gmv | number:'1.2-2' }}
+              </p>
+              <p class="text-[11px] text-dark/50">
+                En <strong class="text-dark font-semibold">{{ metrics()!.total_orders_count }}</strong> órdenes confirmadas
+              </p>
+            </div>
           </div>
 
           <!-- Platform Commissions -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-2">
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Comisiones TicketFlow</span>
-              <span class="text-xl">📈</span>
+              <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Comisiones TicketFlow</span>
+              <span class="text-xl p-2 rounded-xl bg-emerald-500/10">📈</span>
             </div>
-            <p class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono">
-              \${{ metrics()!.total_platform_commission | number:'1.2-2' }} <span class="text-xs font-normal text-dark/50">MXN</span>
-            </p>
-            <p class="text-[11px] text-emerald-700/70 font-medium">
-              Retención neta por servicio
-            </p>
+            <div class="space-y-1">
+              <p class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono truncate">
+                \${{ metrics()!.total_platform_commission | number:'1.2-2' }}
+              </p>
+              <p class="text-[11px] text-emerald-700/80 font-medium">
+                Retención neta por servicio
+              </p>
+            </div>
           </div>
 
           <!-- Tickets Sold -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-2">
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Boletos Emitidos</span>
-              <span class="text-xl">🎟️</span>
+              <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Boletos Emitidos</span>
+              <span class="text-xl p-2 rounded-xl bg-cyan-500/10">🎟️</span>
             </div>
-            <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
-              {{ metrics()!.total_tickets_sold | number }}
-            </p>
-            <p class="text-[11px] text-dark/50">
-              Códigos QR activos
-            </p>
+            <div class="space-y-1">
+              <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
+                {{ metrics()!.total_tickets_sold | number }}
+              </p>
+              <p class="text-[11px] text-dark/50">
+                Códigos QR activos en eventos
+              </p>
+            </div>
           </div>
 
           <!-- Active Events -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-2">
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Eventos Activos</span>
-              <span class="text-xl">🎪</span>
+              <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Eventos Activos</span>
+              <span class="text-xl p-2 rounded-xl bg-purple-500/10">🎪</span>
             </div>
-            <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
-              {{ metrics()!.active_events_count }}
-            </p>
-            <p class="text-[11px] text-dark/50">
-              De <strong class="text-dark font-semibold">{{ metrics()!.total_events_count }}</strong> eventos registrados
-            </p>
+            <div class="space-y-1">
+              <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
+                {{ metrics()!.active_events_count }}
+              </p>
+              <p class="text-[11px] text-dark/50">
+                De <strong class="text-dark font-semibold">{{ metrics()!.total_events_count }}</strong> eventos en catálogo
+              </p>
+            </div>
           </div>
         </div>
 
-        <!-- Direct Navigation Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Direct Navigation Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           <!-- Payouts & Liquidations -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-xl font-bold">
-                💳
+          <div class="p-6 sm:p-7 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                  💳
+                </div>
+                <div>
+                  <h2 class="font-black text-base text-dark">Liquidaciones & Pagos</h2>
+                  <p class="text-xs text-dark/50">Dispersión de fondos a creadores</p>
+                </div>
               </div>
-              <div>
-                <h2 class="font-black text-base text-dark">Liquidaciones & Pagos</h2>
-                <p class="text-xs text-dark/50">Dispersión de fondos a creadores</p>
-              </div>
+              <p class="text-xs text-dark/70 leading-relaxed">
+                Controla las transferencias bancarias SPEI, PayPal o registros manuales con comprobante adjunto.
+              </p>
             </div>
-            <p class="text-xs text-dark/70">
-              Controla las transferencias bancarias SPEI, PayPal o registros manuales con comprobante adjunto.
-            </p>
-            <a routerLink="/payouts">
-              <button
-                type="button"
-                class="w-full py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2"
-              >
-                <span>Gestionar Liquidaciones</span>
-                <span>→</span>
-              </button>
-            </a>
+            <div class="pt-2">
+              <a routerLink="/payouts" class="block w-full">
+                <button
+                  type="button"
+                  class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Gestionar Liquidaciones</span>
+                  <span>→</span>
+                </button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Artists & Balances -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                  🎤
+                </div>
+                <div>
+                  <h2 class="font-black text-base text-dark">Directorio de Artistas</h2>
+                  <p class="text-xs text-dark/50">Creadores y balances fiscales</p>
+                </div>
+              </div>
+              <p class="text-xs text-dark/70 leading-relaxed">
+                Consulta los {{ metrics()!.total_artists_count }} artistas registrados, sus datos fiscales RFC y sus balances pendientes.
+              </p>
+            </div>
+            <div class="pt-2">
+              <a routerLink="/artists" class="block w-full">
+                <button
+                  type="button"
+                  class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Ver Directorio</span>
+                  <span>→</span>
+                </button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Refunds Management -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                  💸
+                </div>
+                <div>
+                  <h2 class="font-black text-base text-dark">Reembolsos Globales</h2>
+                  <p class="text-xs text-dark/50">Solicitudes post-venta</p>
+                </div>
+              </div>
+              <p class="text-xs text-dark/70 leading-relaxed">
+                Revisa solicitudes de devolución de compradores, con reintegro atómico de stock y anulación de QR.
+              </p>
+            </div>
+            <div class="pt-2">
+              <a routerLink="/refunds" class="block w-full">
+                <button
+                  type="button"
+                  class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Auditar Reembolsos</span>
+                  <span>→</span>
+                </button>
+              </a>
+            </div>
           </div>
 
           <!-- Venues Moderation -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center text-xl font-bold">
-                📍
+          <div class="p-6 sm:p-7 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                  📍
+                </div>
+                <div>
+                  <h2 class="font-black text-base text-dark">Recintos y Sedes</h2>
+                  <p class="text-xs text-dark/50">Sedes registradas en la plataforma</p>
+                </div>
               </div>
-              <div>
-                <h2 class="font-black text-base text-dark">Recintos y Sedes</h2>
-                <p class="text-xs text-dark/50">Sedes registradas en la plataforma</p>
+              <div class="flex items-center justify-between text-xs font-bold text-dark/70 bg-dark/[0.03] p-3 rounded-xl border border-dark/5">
+                <span>Registrados: {{ metrics()!.total_venues_count }}</span>
+                <span class="text-emerald-600">Verificados: {{ metrics()!.verified_venues_count }}</span>
               </div>
             </div>
-            <div class="flex items-center justify-between text-xs font-bold text-dark/70">
-              <span>Registrados: {{ metrics()!.total_venues_count }}</span>
-              <span class="text-emerald-600">Verificados: {{ metrics()!.verified_venues_count }}</span>
+            <div class="pt-2">
+              <a routerLink="/venues" class="block w-full">
+                <button
+                  type="button"
+                  class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Auditar Sedes</span>
+                  <span>→</span>
+                </button>
+              </a>
             </div>
-            <a routerLink="/venues">
-              <button
-                type="button"
-                class="w-full py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2"
-              >
-                <span>Auditar y Verificar Sedes</span>
-                <span>→</span>
-              </button>
-            </a>
           </div>
 
           <!-- Users Management -->
-          <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-xl font-bold">
-                👥
+          <div class="p-6 sm:p-7 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                  👥
+                </div>
+                <div>
+                  <h2 class="font-black text-base text-dark">Usuarios & Roles</h2>
+                  <p class="text-xs text-dark/50">Control de permisos global</p>
+                </div>
               </div>
-              <div>
-                <h2 class="font-black text-base text-dark">Usuarios & Roles</h2>
-                <p class="text-xs text-dark/50">Control de permisos global</p>
+              <div class="text-xs font-bold text-dark/70 bg-dark/[0.03] p-3 rounded-xl border border-dark/5 flex items-center justify-between">
+                <span>Cuentas totales:</span>
+                <span class="font-mono font-black text-dark">{{ metrics()!.total_users_count }}</span>
               </div>
             </div>
-            <div class="text-xs font-bold text-dark/70">
-              <span>Cuentas totales: {{ metrics()!.total_users_count }}</span>
+            <div class="pt-2">
+              <a routerLink="/users" class="block w-full">
+                <button
+                  type="button"
+                  class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Administrar Usuarios</span>
+                  <span>→</span>
+                </button>
+              </a>
             </div>
-            <a routerLink="/users">
-              <button
-                type="button"
-                class="w-full py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2"
-              >
-                <span>Administrar Usuarios</span>
-                <span>→</span>
-              </button>
-            </a>
+          </div>
+
+          <!-- Events Global Overview -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
+                  🎪
+                </div>
+                <div>
+                  <h2 class="font-black text-base text-dark">Catálogo de Eventos</h2>
+                  <p class="text-xs text-dark/50">Shows publicados y recaudación</p>
+                </div>
+              </div>
+              <div class="text-xs font-bold text-dark/70 bg-dark/[0.03] p-3 rounded-xl border border-dark/5 flex items-center justify-between">
+                <span>Activos: {{ metrics()!.active_events_count }}</span>
+                <span>Total: {{ metrics()!.total_events_count }}</span>
+              </div>
+            </div>
+            <div class="pt-2">
+              <a routerLink="/events" class="block w-full">
+                <button
+                  type="button"
+                  class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <span>Ver Todos los Eventos</span>
+                  <span>→</span>
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
