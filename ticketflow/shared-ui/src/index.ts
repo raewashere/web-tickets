@@ -12,4 +12,5 @@ export { ToastService, ToastContainerComponent } from './lib/toast/toast';
 export type { ToastType, ToastItem } from './lib/toast/toast';
 export { ThemeService } from './lib/theme/theme.service';
 export type { ThemeMode } from './lib/theme/theme.service';
-
+export { EmptyStateComponent } from './lib/empty-state/empty-state';
+export type { EmptyStateIllustration } from './lib/empty-state/empty-state';

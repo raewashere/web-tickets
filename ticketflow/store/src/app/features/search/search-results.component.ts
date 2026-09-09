@@ -11,7 +11,7 @@ import { SearchService, SearchFilterParams, SearchResult } from './search.servic
 import { FilterPanelComponent } from './filter-panel.component';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
 import type { EventType } from '@ticketflow/models';
-import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-search-results',
@@ -24,6 +24,7 @@ import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
     EventCardComponent,
     SpinnerComponent,
     SkeletonComponent,
+    EmptyStateComponent,
   ],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
@@ -130,23 +131,14 @@ import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
           </div>
 
           <!-- Empty State -->
-          <div
+          <tf-empty-state
             *ngIf="!isLoading() && results() && results()!.events.length === 0"
-            class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm"
-          >
-            <i class="fa-solid fa-magnifying-glass text-4xl text-slate-400 block mb-3"></i>
-            <h3 class="text-lg font-bold text-slate-900">No se encontraron eventos</h3>
-            <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-1 mb-4">
-              Prueba modificando tus términos de búsqueda o eliminando los filtros de categoría y fecha.
-            </p>
-            <button
-              type="button"
-              (click)="resetSearch()"
-              class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors shadow-sm"
-            >
-              Ver Todos los Eventos
-            </button>
-          </div>
+            title="No se encontraron eventos"
+            description="Prueba modificando tus términos de búsqueda o eliminando los filtros de categoría y fecha."
+            illustration="search"
+            actionLabel="Ver Todos los Eventos"
+            (actionClicked)="resetSearch()"
+          ></tf-empty-state>
 
           <!-- Pagination -->
           <div

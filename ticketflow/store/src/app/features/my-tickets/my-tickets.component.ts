@@ -16,6 +16,7 @@ import { generateQrDataUrl } from '../../shared/utils/qr.utils';
 import {
   BadgeComponent,
   SpinnerComponent,
+  EmptyStateComponent,
 } from '@ticketflow/shared-ui';
 
 @Component({
@@ -27,6 +28,7 @@ import {
     RouterModule,
     BadgeComponent,
     SpinnerComponent,
+    EmptyStateComponent,
   ],
   template: `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
@@ -112,24 +114,14 @@ import {
       <!-- Orders List (Tickets Tab) -->
       <div *ngIf="activeTab() === 'tickets'">
         <!-- Empty State for Orders -->
-        <div
+        <tf-empty-state
           *ngIf="!isLoading() && orders().length === 0"
-          class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
-        >
-          <i class="fa-solid fa-ticket text-5xl text-slate-300 block mb-2"></i>
-          <h3 class="text-lg font-bold text-slate-900">Aún no tienes boletos comprados</h3>
-          <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
-            Encuentra tus conciertos y festivales favoritos y adquiere tus entradas oficiales al instante.
-          </p>
-          <a routerLink="/search">
-            <button
-              type="button"
-              class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
-            >
-              Explorar Cartelera
-            </button>
-          </a>
-        </div>
+          title="Aún no tienes boletos comprados"
+          description="Encuentra tus conciertos y festivales favoritos y adquiere tus entradas oficiales al instante."
+          illustration="tickets"
+          actionLabel="Explorar Cartelera"
+          actionRoute="/search"
+        ></tf-empty-state>
 
         <div *ngIf="!isLoading() && orders().length > 0" class="space-y-6">
           <div
@@ -295,24 +287,14 @@ import {
       <!-- Waitlist Tab Content -->
       <div *ngIf="activeTab() === 'waitlist'" class="space-y-6">
         <!-- Empty State for Waitlist -->
-        <div
+        <tf-empty-state
           *ngIf="!isLoading() && waitlistEntries().length === 0"
-          class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
-        >
-          <i class="fa-solid fa-bell text-5xl text-slate-300 block mb-2"></i>
-          <h3 class="text-lg font-bold text-slate-900">No tienes registros en listas de espera</h3>
-          <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
-            Cuando un evento tenga localidades agotadas, podrás unirte a la lista de espera para recibir alertas prioritarias de compra.
-          </p>
-          <a routerLink="/search">
-            <button
-              type="button"
-              class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
-            >
-              Explorar Cartelera
-            </button>
-          </a>
-        </div>
+          title="No tienes registros en listas de espera"
+          description="Cuando un evento tenga localidades agotadas, podrás unirte a la lista de espera para recibir alertas prioritarias de compra."
+          illustration="events"
+          actionLabel="Explorar Cartelera"
+          actionRoute="/search"
+        ></tf-empty-state>
 
         <!-- Waitlist Cards -->
         <div *ngIf="!isLoading() && waitlistEntries().length > 0" class="space-y-4">

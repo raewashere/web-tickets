@@ -86,6 +86,8 @@
 | **UX-7** | Store + Admin | Modo Oscuro / Dark Mode Toggle & Preference | `theme.service.ts`, `navbar.component.ts`, `topbar.component.ts`, `tailwind.config.js` |
 | **UX-8** | Store | Preview del QR con Candado Previo al Pago | `cart-summary.component.ts`, `payment.component.ts` |
 | **UX-9** | Admin | Dashboard del Artista con Gráficas de Ventas | `dashboard.component.ts` |
+| **UX-10** | Store + Admin | Componente de Estado Vacío Ilustrado (`tf-empty-state`) | `empty-state.ts`, `search-results.component.ts`, `my-tickets.component.ts`, `event-list.component.ts` |
+| **UX-11** | Store + Admin | Transiciones de Navegación Fluidas (View Transitions API) | `app.config.ts`, `app.css` |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

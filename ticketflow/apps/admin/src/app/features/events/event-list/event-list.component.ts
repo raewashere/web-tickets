@@ -18,6 +18,7 @@ import {
   BadgeComponent,
   StatCardComponent,
   SpinnerComponent,
+  EmptyStateComponent,
 } from '@ticketflow/shared-ui';
 
 @Component({
@@ -32,6 +33,7 @@ import {
     BadgeComponent,
     StatCardComponent,
     SpinnerComponent,
+    EmptyStateComponent,
   ],
   template: `
     <div class="space-y-6">
@@ -214,36 +216,15 @@ import {
       </div>
 
       <!-- Empty State -->
-      <tf-card *ngIf="!isLoading() && filteredEvents().length === 0">
-        <div class="py-12 text-center text-dark/60">
-          <div class="text-5xl mb-3 text-dark/30">
-            <i class="fa-solid fa-masks-theater"></i>
-          </div>
-          <h3 class="text-lg font-bold text-dark">
-            {{ searchQuery || activeTab !== 'all' ? 'No se encontraron eventos' : 'Aún no tienes eventos registrados' }}
-          </h3>
-          <p class="text-sm text-dark/60 max-w-md mx-auto mt-1 mb-5">
-            {{ searchQuery || activeTab !== 'all'
-              ? 'Prueba cambiando los filtros de estado o el término de búsqueda.'
-              : 'Empieza programando tu primer concierto o espectáculo seleccionando fecha y recinto.' }}
-          </p>
-
-          <a routerLink="/events/new" *ngIf="!searchQuery && activeTab === 'all'">
-            <tf-button variant="primary" size="md">
-              <i class="fa-solid fa-plus mr-1.5"></i> Crear Primer Evento
-            </tf-button>
-          </a>
-
-          <tf-button
-            *ngIf="searchQuery || activeTab !== 'all'"
-            variant="secondary"
-            size="sm"
-            (click)="resetFilters()"
-          >
-            Limpiar Filtros
-          </tf-button>
-        </div>
-      </tf-card>
+      <tf-empty-state
+        *ngIf="!isLoading() && filteredEvents().length === 0"
+        [title]="searchQuery || activeTab !== 'all' ? 'No se encontraron eventos' : 'Aún no tienes eventos registrados'"
+        [description]="searchQuery || activeTab !== 'all' ? 'Prueba cambiando los filtros de estado o el término de búsqueda.' : 'Empieza programando tu primer concierto o espectáculo seleccionando fecha y recinto.'"
+        illustration="events"
+        [actionLabel]="searchQuery || activeTab !== 'all' ? 'Limpiar Filtros' : 'Crear Primer Evento'"
+        [actionRoute]="searchQuery || activeTab !== 'all' ? undefined : '/events/new'"
+        (actionClicked)="resetFilters()"
+      ></tf-empty-state>
     </div>
   `,
 })
