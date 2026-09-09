@@ -113,20 +113,20 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               <tr *ngFor="let ref of filteredRefunds()" class="hover:bg-dark/[0.02] transition">
                 <td class="py-4 px-4 sm:px-6">
                   <div class="space-y-0.5">
-                    <span class="font-extrabold text-dark block">Orden #{{ ref.order_number }}</span>
-                    <span class="text-xs text-dark/60">{{ ref.customer_name || ref.customer_email }}</span>
+                    <span class="font-extrabold text-dark block">Orden #{{ ref.order_id.substring(0, 8) }}</span>
+                    <span class="text-xs text-dark/60">{{ ref.customer_name || ref.customer_email || 'Cliente' }}</span>
                   </div>
                 </td>
                 <td class="py-4 px-4 font-semibold text-dark/80">
-                  🎪 {{ ref.event_name }}
+                  🎪 {{ ref.event_name || 'Evento' }}
                 </td>
                 <td class="py-4 px-4 text-right font-black font-mono text-dark">
-                  \${{ ref.order_total | number:'1.2-2' }} MXN
+                  \${{ (ref.order_total || ref.amount) | number:'1.2-2' }} MXN
                 </td>
                 <td class="py-4 px-4 max-w-xs">
                   <p class="text-xs text-dark/80 italic">"{{ ref.reason }}"</p>
                   <span class="text-[10px] text-dark/40 font-mono block mt-0.5">
-                    {{ ref.requested_at | date:'dd/MM/yyyy HH:mm' }}
+                    {{ ref.created_at | date:'dd/MM/yyyy HH:mm' }}
                   </span>
                 </td>
                 <td class="py-4 px-4 text-center">
@@ -216,9 +216,9 @@ export class AdminRefundsComponent implements OnInit {
     if (q) {
       list = list.filter(
         (r) =>
-          r.order_number.toLowerCase().includes(q) ||
-          r.event_name.toLowerCase().includes(q) ||
-          r.reason.toLowerCase().includes(q) ||
+          (r.order_id && r.order_id.toLowerCase().includes(q)) ||
+          (r.event_name && r.event_name.toLowerCase().includes(q)) ||
+          (r.reason && r.reason.toLowerCase().includes(q)) ||
           (r.customer_email && r.customer_email.toLowerCase().includes(q))
       );
     }
@@ -246,9 +246,10 @@ export class AdminRefundsComponent implements OnInit {
   }
 
   async processRefund(refund: RefundRequestWithRelations, action: 'approved' | 'rejected'): Promise<void> {
+    const orderIdShort = refund.order_id ? refund.order_id.substring(0, 8) : refund.id.substring(0, 8);
     const confirmMsg = action === 'approved' 
-      ? `¿Confirmas la aprobación del reembolso de la orden #${refund.order_number}? Esto reincorporará el stock de boletos y anulará los QR.`
-      : `¿Deseas rechazar la solicitud de reembolso para la orden #${refund.order_number}?`;
+      ? `¿Confirmas la aprobación del reembolso de la orden #${orderIdShort}? Esto reincorporará el stock de boletos y anulará los QR.`
+      : `¿Deseas rechazar la solicitud de reembolso para la orden #${orderIdShort}?`;
 
     if (!confirm(confirmMsg)) return;
 
