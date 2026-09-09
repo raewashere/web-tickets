@@ -35,8 +35,8 @@
 | `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
 | `20250113000000_super_admin.sql` | ✅ Aplicada | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
 | `20250114000000_refund_requests.sql` | ✅ Aplicada | Sistema de solicitudes de reembolso, RLS y RPCs de aprobación/rechazo atómico |
-| `20250115000000_waitlist.sql` | ✅ Aplicada | Sistema de lista de espera (FIFO), RLS, suscripciones y RPCs de notificación por lote |
-| `20250116000000_payouts_and_settlements.sql` | 🟡 Lista para ejecutar | Control de pagos a artistas, liquidaciones netas, datos bancarios/fiscales y dispersiones |
+| `20250116000000_payouts_and_settlements.sql` | ✅ Aplicada | Control de pagos a artistas, liquidaciones netas, datos bancarios/fiscales y dispersiones |
+| `20250117000000_fix_super_admin_rpc_and_functions.sql` | ✅ Aplicada | Fixes de seguridad `is_admin`, ambigüedades en `get_all_artists_financial_overview` y permisos |
 
 ### Despliegue & Producción
 

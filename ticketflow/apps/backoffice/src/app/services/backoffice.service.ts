@@ -208,8 +208,8 @@ export class BackofficeService {
     notes?: string
   ): Promise<void> {
     const { data, error } = await this.supabase.rpc('process_refund_request', {
-      p_refund_request_id: refundRequestId,
-      p_status: status,
+      p_request_id: refundRequestId,
+      p_approved: status === 'approved',
       p_admin_notes: notes || null,
     });
 
