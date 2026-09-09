@@ -165,6 +165,8 @@ END;
 $$;
 
 -- 3. Update search_published_events to hide events whose duration has ended
+DROP FUNCTION IF EXISTS search_published_events(TEXT, UUID, TIMESTAMPTZ, TIMESTAMPTZ, TEXT, INT, INT);
+
 CREATE OR REPLACE FUNCTION search_published_events(
   p_query      TEXT DEFAULT NULL,
   p_type_id    UUID DEFAULT NULL,
