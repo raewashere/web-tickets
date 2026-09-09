@@ -156,6 +156,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                   </span>
                   <span class="text-xs text-dark/70 font-semibold">
                     Hora: {{ event()!.event_date | date:'shortTime' }} hrs
+                    <span *ngIf="event()!.duration_minutes"> · Duración: {{ event()!.duration_minutes }} min</span>
                   </span>
                 </div>
 

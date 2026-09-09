@@ -233,7 +233,8 @@ declare global {
                 'bg-green-50 border-green-500 text-green-950': lastResult()!.result === 'valid',
                 'bg-amber-50 border-amber-500 text-amber-950': lastResult()!.result === 'already_used',
                 'bg-blue-50 border-blue-500 text-blue-950': lastResult()!.result === 'doors_not_open',
-                'bg-red-50 border-red-500 text-red-950': !['valid', 'already_used', 'doors_not_open'].includes(lastResult()!.result)
+                'bg-purple-50 border-purple-500 text-purple-950': lastResult()!.result === 'event_ended',
+                'bg-red-50 border-red-500 text-red-950': !['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)
               }"
             >
               <div class="flex items-center gap-3">
@@ -245,6 +246,8 @@ declare global {
                       ? '⚠️'
                       : lastResult()!.result === 'doors_not_open'
                       ? '⏰'
+                      : lastResult()!.result === 'event_ended'
+                      ? '⌛'
                       : '❌'
                   }}
                 </span>
@@ -257,6 +260,8 @@ declare global {
                         ? 'BOLETO YA CANJEADO'
                         : lastResult()!.result === 'doors_not_open'
                         ? 'PUERTAS CERRADAS'
+                        : lastResult()!.result === 'event_ended'
+                        ? 'EVENTO FINALIZADO'
                         : 'ACCESO DENEGADO'
                     }}
                   </h3>
@@ -290,7 +295,7 @@ declare global {
               <div *ngIf="recentLogs().length > 0" class="divide-y divide-dark/10 -mx-4 -my-2 text-xs">
                 <div *ngFor="let log of recentLogs()" class="p-3 flex items-center justify-between hover:bg-dark/5 transition-colors">
                   <div class="flex items-center gap-2.5">
-                    <span>{{ log.result === 'valid' ? '🟢' : (log.result === 'already_used' ? '🟡' : '🔴') }}</span>
+                    <span>{{ log.result === 'valid' ? '🟢' : (log.result === 'already_used' ? '🟡' : (log.result === 'event_ended' ? '⌛' : '🔴')) }}</span>
                     <div>
                       <p class="font-bold text-dark leading-tight">{{ log.message }}</p>
                       <span class="font-mono text-[10px] text-dark/40">{{ log.scanned_code }}</span>

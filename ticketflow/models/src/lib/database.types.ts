@@ -97,6 +97,7 @@ export interface Event {
   venue_configuration_id: string | null;
   event_date: string | null;
   doors_open: string | null;
+  duration_minutes: number | null;
   shared: boolean;
   status: EventStatus;
   created_at: string;

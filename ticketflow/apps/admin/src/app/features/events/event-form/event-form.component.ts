@@ -175,12 +175,12 @@ import {
         </tf-card>
 
         <!-- 2. Dates & Schedule Card -->
-        <tf-card title="Fechas y Horarios" subtitle="Cuándo se llevará a cabo el espectáculo">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <tf-card title="Fechas y Horarios" subtitle="Cuándo se llevará a cabo el espectáculo y duración estimada">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <!-- Event Date & Time -->
             <div>
               <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
-                Fecha y Hora del Evento *
+                Fecha y Hora de Inicio *
               </label>
               <input
                 type="datetime-local"
@@ -206,7 +206,40 @@ import {
                 class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
               />
               <p class="text-xs text-dark/50 mt-1">
-                Opcional: horario en el que se permite el acceso al recinto.
+                Opcional: horario de apertura de acceso.
+              </p>
+            </div>
+
+            <!-- Estimated Duration -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                Duración Estimada *
+              </label>
+              <input
+                type="number"
+                min="15"
+                max="1440"
+                step="15"
+                formControlName="duration_minutes"
+                placeholder="120"
+                class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all font-mono"
+              />
+              <div class="flex items-center gap-1 mt-2 flex-wrap">
+                <button
+                  type="button"
+                  *ngFor="let mins of durationPresets"
+                  (click)="eventForm.patchValue({ duration_minutes: mins })"
+                  [class.bg-primary]="eventForm.get('duration_minutes')?.value === mins"
+                  [class.text-dark]="eventForm.get('duration_minutes')?.value === mins"
+                  [class.bg-dark/5]="eventForm.get('duration_minutes')?.value !== mins"
+                  [class.text-dark/70]="eventForm.get('duration_minutes')?.value !== mins"
+                  class="px-2 py-0.5 rounded-md text-[10px] font-bold transition hover:bg-primary/50"
+                >
+                  {{ mins < 60 ? mins + 'm' : (mins / 60) + 'h' }}
+                </button>
+              </div>
+              <p class="text-[10px] text-dark/50 mt-1">
+                Cierra compras y expira la vigencia del QR.
               </p>
             </div>
           </div>
@@ -262,27 +295,28 @@ import {
               type="checkbox"
               id="shared"
               formControlName="shared"
-              class="w-4 h-4 rounded text-primary focus:ring-primary border-dark/30 cursor-pointer"
+              class="w-4 h-4 rounded text-primary focus:ring-primary border-dark/20"
             />
-            <label for="shared" class="text-xs font-semibold text-dark cursor-pointer select-none">
-              Evento Compartido / Festival (Permite co-artistas y gestión compartida)
+            <label for="shared" class="text-xs text-dark select-none cursor-pointer">
+              <span class="font-bold">Permitir co-producción o show compartido</span>
+              <span class="block text-dark/60">Otros organizadores podrán vincular fechas adicionales con este artista.</span>
             </label>
           </div>
         </tf-card>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-dark/10">
-          <a routerLink="/events">
-            <tf-button type="button" variant="secondary" size="md" [disabled]="isSubmitting()">
+        <!-- Form Actions Bar -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-surface border border-dark/10 shadow-sm">
+          <a routerLink="/events" class="w-full sm:w-auto">
+            <tf-button type="button" variant="secondary" size="md" class="w-full sm:w-auto">
               Cancelar
             </tf-button>
           </a>
 
-          <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+          <div class="flex items-center gap-3 w-full sm:w-auto">
             <!-- Save as Draft -->
             <tf-button
               type="button"
-              variant="secondary"
+              variant="ghost"
               size="md"
               (click)="saveEvent('draft')"
               [disabled]="eventForm.invalid || isSubmitting()"
@@ -325,6 +359,7 @@ export class EventFormComponent implements OnInit {
   readonly previewFlyerUrl = signal<string | null>(null);
 
   readonly eventTypes = signal<EventType[]>([]);
+  readonly durationPresets = [60, 90, 120, 180, 240];
   artistId: string | null = null;
   eventId: string | null = null;
   selectedFlyerFile: File | null = null;
@@ -337,6 +372,7 @@ export class EventFormComponent implements OnInit {
     venue_configuration_id: [null, [Validators.required]],
     event_date: ['', [Validators.required]],
     doors_open: [''],
+    duration_minutes: [120, [Validators.required, Validators.min(15), Validators.max(1440)]],
     shared: [false],
   });
 
@@ -393,6 +429,7 @@ export class EventFormComponent implements OnInit {
       venue_configuration_id: event.venue_configuration_id,
       event_date: event.event_date ? this.formatDatetimeForInput(event.event_date) : '',
       doors_open: event.doors_open ? this.formatDatetimeForInput(event.doors_open) : '',
+      duration_minutes: event.duration_minutes || 120,
       shared: event.shared,
     });
 
@@ -464,6 +501,7 @@ export class EventFormComponent implements OnInit {
       venue_configuration_id: val.venue_configuration_id,
       event_date: new Date(val.event_date).toISOString(),
       doors_open: val.doors_open ? new Date(val.doors_open).toISOString() : null,
+      duration_minutes: val.duration_minutes ? Number(val.duration_minutes) : 120,
       shared: Boolean(val.shared),
       status: targetStatus,
       flyer_url: this.previewFlyerUrl(),

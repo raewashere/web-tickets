@@ -20,6 +20,7 @@ export interface UpsertEventDto {
   venue_configuration_id: string;
   event_date: string;
   doors_open?: string | null;
+  duration_minutes?: number | null;
   shared?: boolean;
   status?: EventStatus;
 }

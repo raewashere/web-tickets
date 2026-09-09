@@ -28,7 +28,15 @@ export class HomeService {
       throw error;
     }
 
-    return (data || []) as StoreEventItem[];
+    const now = Date.now();
+    const activeEvents = ((data || []) as StoreEventItem[]).filter((ev) => {
+      if (!ev.event_date) return false;
+      const eventTime = new Date(ev.event_date).getTime();
+      const durationMs = (ev.duration_minutes || 120) * 60 * 1000;
+      return eventTime + durationMs >= now;
+    });
+
+    return activeEvents;
   }
 
   /**

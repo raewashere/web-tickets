@@ -91,11 +91,22 @@ export class SearchService {
       throw error;
     }
 
+    const now = Date.now();
+    let events = (data || []) as StoreEventItem[];
+    if (!params.dateTo && !params.dateFrom) {
+      events = events.filter((ev) => {
+        if (!ev.event_date) return false;
+        const eventTime = new Date(ev.event_date).getTime();
+        const durationMs = (ev.duration_minutes || 120) * 60 * 1000;
+        return eventTime + durationMs >= now;
+      });
+    }
+
     const total = count || 0;
     const totalPages = Math.ceil(total / pageSize);
 
     return {
-      events: (data || []) as StoreEventItem[],
+      events,
       total,
       page,
       pageSize,

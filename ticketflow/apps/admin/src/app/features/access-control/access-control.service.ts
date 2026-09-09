@@ -10,7 +10,7 @@ export interface ValidationItem {
 
 export interface ValidationResponse {
   success: boolean;
-  result: 'valid' | 'already_used' | 'invalid_event' | 'not_found' | 'unpaid' | 'doors_not_open';
+  result: 'valid' | 'already_used' | 'invalid_event' | 'not_found' | 'unpaid' | 'doors_not_open' | 'event_ended';
   message: string;
   order_id?: string;
   customer_name?: string;

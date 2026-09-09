@@ -3,6 +3,7 @@ import {
   OnInit,
   inject,
   signal,
+  computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -112,6 +113,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   <p class="text-xs text-slate-600">
                     Show: {{ event()!.event_date | date:'shortTime' }} hrs
                     <span *ngIf="event()!.doors_open"> · Puertas: {{ event()!.doors_open | date:'shortTime' }} hrs</span>
+                    <span *ngIf="event()!.duration_minutes"> · Duración: {{ event()!.duration_minutes }} min</span>
                   </p>
                 </div>
 
@@ -226,7 +228,28 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <!-- Right Column: Ticket Selector -->
         <div class="lg:col-span-1">
           <div class="sticky top-24 space-y-6">
-            <div class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-md">
+            <!-- Event Ended Banner -->
+            <div
+              *ngIf="isEventEnded()"
+              class="p-6 sm:p-7 rounded-3xl border border-amber-200 bg-amber-50 shadow-md space-y-3 text-center"
+            >
+              <span class="text-4xl block">⌛</span>
+              <h3 class="text-lg font-black text-amber-950">Evento Finalizado</h3>
+              <p class="text-xs text-amber-800 leading-relaxed">
+                Este espectáculo concluyó o la vigencia para adquirir boletos ha expirado.
+              </p>
+              <a routerLink="/search" class="inline-block mt-2">
+                <button
+                  type="button"
+                  class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors shadow-sm"
+                >
+                  Explorar Otros Eventos
+                </button>
+              </a>
+            </div>
+
+            <!-- Ticket Selection Box (if active) -->
+            <div *ngIf="!isEventEnded()" class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-md">
               <!-- Reserve error feedback -->
               <div
                 *ngIf="reserveError()"
@@ -300,6 +323,14 @@ export class EventDetailComponent implements OnInit {
   readonly event = signal<EventDetailPublic | null>(null);
   readonly selectedGalleryPhoto = signal<string | null>(null);
 
+  readonly isEventEnded = computed(() => {
+    const ev = this.event();
+    if (!ev || !ev.event_date) return false;
+    const eventTime = new Date(ev.event_date).getTime();
+    const durationMs = (ev.duration_minutes || 120) * 60 * 1000;
+    return eventTime + durationMs < Date.now();
+  });
+
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -338,6 +369,11 @@ export class EventDetailComponent implements OnInit {
 
   async onCheckoutRequested(items: CartTicketItem[]): Promise<void> {
     if (!this.event() || items.length === 0) return;
+
+    if (this.isEventEnded()) {
+      this.reserveError.set('El evento ya ha finalizado. No es posible adquirir boletos.');
+      return;
+    }
 
     // If user not authenticated, redirect to login first
     if (!this.auth.isAuthenticated()) {
