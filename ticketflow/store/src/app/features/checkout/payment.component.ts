@@ -11,7 +11,7 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CheckoutService } from './checkout.service';
 import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.component';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 import { SupabaseService } from '@ticketflow/data-access';
 
 // PayPal JS SDK loaded dynamically via script tag (loaded in index.html or on-demand below)
@@ -232,6 +232,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   private  readonly router  = inject(Router);
   private  readonly platformId = inject(PLATFORM_ID);
   private  readonly supabase   = inject(SupabaseService).client;
+  private  readonly toast      = inject(ToastService);
 
   readonly isProcessing     = signal(false);
   readonly processingMessage = signal('Procesando pago...');
@@ -420,6 +421,10 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
 
   async onTimerExpired(): Promise<void> {
+    this.toast.error(
+      'Reserva Expirada',
+      'Tu tiempo de 15 minutos ha concluido. Los boletos se liberaron para otros usuarios.'
+    );
     await this.checkout.cancelCheckout();
     this.router.navigate(['/search'], {
       queryParams: { expired: '1' },

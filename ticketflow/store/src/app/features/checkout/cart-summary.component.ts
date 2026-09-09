@@ -9,6 +9,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CheckoutService } from './checkout.service';
 import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.component';
+import { ToastService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-cart-summary',
@@ -230,6 +231,7 @@ import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.compone
 export class CartSummaryComponent implements OnInit {
   readonly checkout = inject(CheckoutService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   couponCodeInput = '';
   readonly isCheckingCoupon = signal(false);
@@ -258,6 +260,10 @@ export class CartSummaryComponent implements OnInit {
   }
 
   async onTimerExpired(): Promise<void> {
+    this.toast.error(
+      'Reserva Expirada',
+      'Tu tiempo de 15 minutos ha concluido. Los boletos se liberaron para otros usuarios.'
+    );
     await this.checkout.cancelCheckout();
     this.router.navigate(['/search']);
   }

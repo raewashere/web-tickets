@@ -13,7 +13,7 @@ import { VenueMapComponent } from './venue-map.component';
 import { AuthService } from '@ticketflow/data-access';
 import { SeoService } from '../../core/services/seo.service';
 import { MetaPixelService } from '../../core/services/meta-pixel.service';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-event-detail',
@@ -157,6 +157,65 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed">
                   {{ event()!.description }}
                 </p>
+              </div>
+
+              <!-- Compartir este Concierto Card -->
+              <div class="pt-6 border-t border-slate-200 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-cyan-600"></i> Compartir evento con amigos
+                  </h3>
+                </div>
+                <div class="flex flex-wrap items-center gap-2.5">
+                  <button
+                    type="button"
+                    (click)="shareNative()"
+                    class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2"
+                  >
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    <span>Compartir</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    (click)="copyEventLink()"
+                    class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center gap-2"
+                    title="Copiar enlace"
+                  >
+                    <i class="fa-solid fa-link"></i>
+                    <span>Copiar Enlace</span>
+                  </button>
+
+                  <a
+                    [href]="getShareUrl('whatsapp')"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-9 h-9 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center text-base shadow-sm transition-all"
+                    title="Compartir por WhatsApp"
+                  >
+                    <i class="fa-brands fa-whatsapp"></i>
+                  </a>
+
+                  <a
+                    [href]="getShareUrl('twitter')"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-black text-white flex items-center justify-center text-sm shadow-sm transition-all"
+                    title="Compartir en X / Twitter"
+                  >
+                    <i class="fa-brands fa-x-twitter"></i>
+                  </a>
+
+                  <a
+                    [href]="getShareUrl('facebook')"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center text-sm shadow-sm transition-all"
+                    title="Compartir en Facebook"
+                  >
+                    <i class="fa-brands fa-facebook-f"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -319,11 +378,42 @@ export class EventDetailComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly seoService = inject(SeoService);
   private readonly metaPixel = inject(MetaPixelService);
+  private readonly toast = inject(ToastService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly event = signal<EventDetailPublic | null>(null);
   readonly selectedGalleryPhoto = signal<string | null>(null);
+
+  copyEventLink(): void {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      this.toast.success('¡Enlace copiado!', 'El link del evento ha sido copiado al portapapeles.');
+    }
+  }
+
+  shareNative(): void {
+    if (typeof window !== 'undefined' && navigator.share && this.event()) {
+      navigator.share({
+        title: this.event()!.name,
+        text: `¡Mira este concierto! ${this.event()!.name} en ${this.event()!.venues?.name || 'TicketFlow'}`,
+        url: window.location.href,
+      }).catch(() => {});
+    } else {
+      this.copyEventLink();
+    }
+  }
+
+  getShareUrl(platform: 'whatsapp' | 'twitter' | 'facebook'): string {
+    if (typeof window === 'undefined' || !this.event()) return '#';
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(`¡Boletos para ${this.event()!.name}!`);
+    switch (platform) {
+      case 'whatsapp': return `https://api.whatsapp.com/send?text=${text}%20${url}`;
+      case 'twitter': return `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+      case 'facebook': return `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    }
+  }
 
   readonly isEventEnded = computed(() => {
     const ev = this.event();

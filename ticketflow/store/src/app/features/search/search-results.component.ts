@@ -62,10 +62,23 @@ import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
         </div>
       </div>
 
+      <!-- Mobile Filter Trigger Button -->
+      <div class="lg:hidden flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+        <button
+          type="button"
+          (click)="isMobileFilterOpen.set(true)"
+          class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs shadow-md"
+        >
+          <i class="fa-solid fa-sliders text-cyan-400"></i>
+          <span>Filtros y Ordenación</span>
+          <span *ngIf="currentParams.eventTypeId || currentParams.dateFrom" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+        </button>
+      </div>
+
       <!-- Main Layout: Sidebar Filters + Results Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         <!-- Sidebar Filter Panel (Desktop & Mobile toggle) -->
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 hidden lg:block">
           <store-filter-panel
             [eventTypes]="eventTypes()"
             [initialParams]="currentParams"
@@ -256,6 +269,45 @@ import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
           </button>
         </div>
       </div>
+
+      <!-- Mobile Filter Drawer Backdrop & Modal -->
+      <div
+        *ngIf="isMobileFilterOpen()"
+        class="fixed inset-0 z-[9999] bg-slate-950/70 backdrop-blur-sm lg:hidden flex justify-end transition-opacity"
+      >
+        <div class="w-full max-w-xs sm:max-w-sm bg-white h-full overflow-y-auto p-6 space-y-6 shadow-2xl flex flex-col justify-between">
+          <div class="space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+              <h3 class="font-extrabold text-lg text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-cyan-600"></i> Filtros
+              </h3>
+              <button
+                type="button"
+                (click)="isMobileFilterOpen.set(false)"
+                class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-sm"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <store-filter-panel
+              [eventTypes]="eventTypes()"
+              [initialParams]="currentParams"
+              (filtersChange)="onFiltersChange($event); isMobileFilterOpen.set(false)"
+            ></store-filter-panel>
+          </div>
+
+          <div class="pt-4 border-t border-slate-200">
+            <button
+              type="button"
+              (click)="isMobileFilterOpen.set(false)"
+              class="w-full py-3.5 rounded-2xl bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-cyan-400/20"
+            >
+              Ver Espectáculos
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -264,6 +316,7 @@ export class SearchResultsComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  readonly isMobileFilterOpen = signal(false);
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly results = signal<SearchResult | null>(null);
