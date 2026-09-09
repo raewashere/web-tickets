@@ -88,6 +88,7 @@
 | **UX-9** | Admin | Dashboard del Artista con Gráficas de Ventas | `dashboard.component.ts` |
 | **UX-10** | Store + Admin | Componente de Estado Vacío Ilustrado (`tf-empty-state`) | `empty-state.ts`, `search-results.component.ts`, `my-tickets.component.ts`, `event-list.component.ts` |
 | **UX-11** | Store + Admin | Transiciones de Navegación Fluidas (View Transitions API) | `app.config.ts`, `app.css` |
+| **M16** | Store + Admin + DB | Corrección del Modelo de Precios y Retención de Comisión (El comprador paga exactamente el precio del artista; la comisión se retiene del saldo neto) | `checkout.service.ts`, `cart-summary.*`, `payment.*`, `send-ticket-email`, migración 020 |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

@@ -170,10 +170,6 @@ serve(async (req: Request) => {
                         <td align="right" style="font-size: 13px; color: #f43f5e; font-family: monospace; font-weight: bold;">-$${Number(order.discount_amount).toFixed(2)} MXN</td>
                       </tr>` : ''}
                       <tr>
-                        <td style="font-size: 13px; color: #94a3b8; padding: 4px 0;">Comisión de servicio:</td>
-                        <td align="right" style="font-size: 13px; color: #e2e8f0; font-family: monospace;">$${Number(order.commission_amount).toFixed(2)} MXN</td>
-                      </tr>
-                      <tr>
                         <td style="font-size: 16px; font-weight: 900; color: #ffffff; padding: 10px 0 0 0; border-top: 1px solid #334155;">Total Pagado:</td>
                         <td align="right" style="font-size: 16px; font-weight: 900; color: #818cf8; font-family: monospace; padding: 10px 0 0 0; border-top: 1px solid #334155;">$${Number(order.total).toFixed(2)} MXN</td>
                       </tr>

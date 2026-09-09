@@ -65,13 +65,12 @@ export class CheckoutService {
   readonly discount = computed(() => this.serverDiscount());
 
   readonly commission = computed(() => {
-    const tot = this.subtotal() - this.discount();
-    if (tot <= 0) return 0;
-    return Math.round(tot * this.commissionRate() * 100) / 100;
+    const totalAmount = this.total();
+    return Math.round(totalAmount * this.commissionRate() * 100) / 100;
   });
 
   readonly total = computed(() =>
-    Math.max(0, this.subtotal() - this.discount() + this.commission())
+    Math.max(0, this.subtotal() - this.discount())
   );
 
   constructor() {
