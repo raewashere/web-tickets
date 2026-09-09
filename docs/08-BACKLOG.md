@@ -117,7 +117,11 @@
   - **Completado:** Migración SQL 015 con tabla `waitlist` (cola FIFO, RLS y RPCs `join_event_waitlist`, `get_event_waitlist`, `notify_event_waitlist` y `get_my_waitlist`). Formulario interactivo de suscripción en la tienda (`ticket-selector.component.ts`) ante localidades agotadas. Pestaña de gestión de suscripciones para el comprador en *Mis Boletos* (`my-tickets.component.ts`). Tarjeta de gestión de cola y disparador de notificaciones por lote para el organizador en el detalle del evento en Admin (`event-waitlist.component.ts`).
 
 - [x] **4. Facturación y Control de Pagos a Artistas (Payouts & Liquidaciones)**
-  - **Completado:** Migración SQL 016 con tablas `artist_payout_settings` y `payouts`, RLS y RPCs `upsert_artist_payout_settings`, `get_artist_financial_summary`, `get_all_artists_financial_overview` y `create_payout_record`. Portal financiero para artistas en `/finances` con desglose de saldo disponible, comisiones, reembolsos descontados e historial de transferencias. Panel central en Super-Admin `/super-admin/payouts` para liquidar saldos pendientes (SPEI, PayPal, Manual).
+- [x] **[M15] Meta Pixel por Artista**
+  - **Completado:** Migración SQL 019 (`meta_pixel_id`), `MetaPixelService` dinámico en Store para disparar `ViewContent`, `InitiateCheckout` y `Purchase`, y sección "Marketing Digital" en el perfil de artista en Admin.
+
+- [x] **[UX-1 a UX-11] Suite Completa de Mejoras de Experiencia de Usuario**
+  - **Completado:** Skeletons animadas (`tf-skeleton`), sistema global de notificaciones Toast (`tf-toast-container`), animación de confetti Canvas y resumen en Thank You page, timer con advertencias de expiración en checkout, barra de compartir en redes sociales, drawer slide-over de filtros en móvil, Modo Oscuro (`ThemeService`), vista previa del QR con candado previo al pago, gráfica SVG interactiva de ventas en Dashboard de Artista, componente ilustrado de estado vacío (`tf-empty-state`) y transiciones de navegación fluidas (`withViewTransitions`).
 
 ---
 
