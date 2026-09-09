@@ -28,10 +28,12 @@ CREATE INDEX IF NOT EXISTS idx_refund_requests_status ON refund_requests(status)
 -- 2. Row Level Security Policies
 ALTER TABLE refund_requests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view their own refund requests" ON refund_requests;
 CREATE POLICY "Users can view their own refund requests"
   ON refund_requests FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Artists can view refund requests for their events" ON refund_requests;
 CREATE POLICY "Artists can view refund requests for their events"
   ON refund_requests FOR SELECT
   USING (
@@ -42,6 +44,7 @@ CREATE POLICY "Artists can view refund requests for their events"
     )
   );
 
+DROP POLICY IF EXISTS "Admins have full access to refund requests" ON refund_requests;
 CREATE POLICY "Admins have full access to refund requests"
   ON refund_requests FOR ALL
   USING (is_admin(auth.uid()));
