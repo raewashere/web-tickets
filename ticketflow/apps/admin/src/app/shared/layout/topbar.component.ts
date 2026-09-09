@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@ticketflow/data-access';
+import { ThemeService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-topbar',
@@ -32,6 +33,16 @@ import { AuthService } from '@ticketflow/data-access';
 
       <!-- Right controls -->
       <div class="flex items-center gap-4">
+        <button
+          type="button"
+          (click)="themeService.toggleTheme()"
+          class="p-2 rounded-lg text-dark/70 hover:text-dark hover:bg-dark/5 transition-colors border border-dark/10 flex items-center justify-center"
+          [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+          [attr.aria-label]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+        >
+          <i class="fa-solid text-sm" [ngClass]="themeService.isDark() ? 'fa-sun text-amber-400' : 'fa-moon text-slate-600'"></i>
+        </button>
+
         <a
           routerLink="/artist/profile"
           class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-dark/5 transition-colors border border-dark/10"
@@ -60,6 +71,7 @@ import { AuthService } from '@ticketflow/data-access';
 })
 export class TopbarComponent {
   readonly auth = inject(AuthService);
+  readonly themeService = inject(ThemeService);
 
   @Output() toggleSidebar = new EventEmitter<void>();
 

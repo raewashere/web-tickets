@@ -10,3 +10,6 @@ export { SpinnerComponent } from './lib/spinner/spinner';
 export { SkeletonComponent } from './lib/skeleton/skeleton';
 export { ToastService, ToastContainerComponent } from './lib/toast/toast';
 export type { ToastType, ToastItem } from './lib/toast/toast';
+export { ThemeService } from './lib/theme/theme.service';
+export type { ThemeMode } from './lib/theme/theme.service';
+

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@ticketflow/data-access';
+import { ThemeService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-navbar',
@@ -42,6 +43,18 @@ import { AuthService } from '@ticketflow/data-access';
           <a routerLink="/search" class="text-xs sm:text-sm font-semibold text-slate-300 hover:text-cyan-400 transition-colors">
             Explorar Eventos
           </a>
+
+          <!-- Theme Toggle Button -->
+          <button
+            type="button"
+            (click)="themeService.toggleTheme()"
+            class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors shadow-sm flex items-center justify-center"
+            [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+            [attr.aria-label]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+          >
+            <i class="fa-solid text-sm" [ngClass]="themeService.isDark() ? 'fa-sun text-amber-400' : 'fa-moon text-slate-300'"></i>
+          </button>
+
 
           <!-- Authenticated State -->
           <div *ngIf="auth.isAuthenticated()" class="flex items-center gap-3">
@@ -218,6 +231,7 @@ import { AuthService } from '@ticketflow/data-access';
 })
 export class NavbarComponent {
   readonly auth = inject(AuthService);
+  readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
 
   searchQuery = '';

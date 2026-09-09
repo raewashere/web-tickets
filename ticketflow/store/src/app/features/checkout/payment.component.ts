@@ -181,7 +181,7 @@ interface PayPalButtonsOptions {
         </div>
 
         <!-- Right: Mini Order Recap -->
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 space-y-6">
           <div class="p-6 sm:p-7 rounded-3xl bg-slate-900 text-white space-y-4 shadow-xl border border-slate-800">
             <h3 class="font-extrabold text-sm text-white border-b border-slate-800 pb-3">
               Resumen de Compra
@@ -221,6 +221,36 @@ interface PayPalButtonsOptions {
                 \${{ checkout.total() | number:'1.2-2' }} MXN
               </span>
             </div>
+          </div>
+
+          <!-- QR Ticket Preview Card -->
+          <div class="p-6 rounded-3xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm space-y-3 relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-qrcode text-cyan-600"></i> Vista Previa del QR
+              </span>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-lock text-[9px]"></i> Bloqueado
+              </span>
+            </div>
+
+            <div class="relative w-36 h-36 mx-auto rounded-2xl border-2 border-dashed border-slate-300 bg-slate-100 flex items-center justify-center p-2 overflow-hidden shadow-inner group">
+              <!-- Mock QR pattern background -->
+              <div class="w-full h-full bg-slate-900/10 rounded-lg flex items-center justify-center filter blur-[3px]">
+                <i class="fa-solid fa-qrcode text-6xl text-slate-800 opacity-60"></i>
+              </div>
+              <!-- Lock Badge overlay -->
+              <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white gap-1">
+                <div class="w-9 h-9 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center text-sm shadow-lg">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-cyan-300">Pendiente de Pago</span>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-slate-500 text-center leading-relaxed">
+              Tu código QR oficial escaneable de alta densidad se emitirá automáticamente al confirmar tu pago en <strong>Mis Boletos</strong>.
+            </p>
           </div>
         </div>
       </div>

@@ -83,6 +83,9 @@
 | **UX-4** | Store | Cuenta Regresiva Mejorada en Carrito & Alertas de Expiración | `countdown-timer.component.ts`, `cart-summary.component.ts`, `payment.component.ts` |
 | **UX-5** | Store | Compartir Evento en Redes Social (Native Share, Copiar Enlace, WhatsApp, X, FB) | `event-detail.component.ts` |
 | **UX-6** | Store | Filtros de Búsqueda Colapsables en Móvil (Slide-Over Drawer) | `search-results.component.ts`, `filter-panel.component.ts` |
+| **UX-7** | Store + Admin | Modo Oscuro / Dark Mode Toggle & Preference | `theme.service.ts`, `navbar.component.ts`, `topbar.component.ts`, `tailwind.config.js` |
+| **UX-8** | Store | Preview del QR con Candado Previo al Pago | `cart-summary.component.ts`, `payment.component.ts` |
+| **UX-9** | Admin | Dashboard del Artista con Gráficas de Ventas | `dashboard.component.ts` |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---
