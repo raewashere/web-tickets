@@ -222,6 +222,40 @@ import { Router, RouterModule } from '@angular/router';
           </div>
         </tf-card>
 
+        <!-- Marketing Section -->
+        <tf-card title="Marketing Digital" subtitle="Conecta tu Pixel de Meta para medir conversiones desde tus campañas en Instagram y Facebook">
+          <div class="space-y-3">
+            <div>
+              <tf-input
+                label="Pixel ID de Meta (Facebook)"
+                placeholder="Ej. 1234567890123456"
+                formControlName="meta_pixel_id"
+                [error]="getMetaPixelError()"
+              ></tf-input>
+              <p class="mt-1.5 text-xs text-dark/50 leading-relaxed">
+                Opcional. Ingresa el ID numérico de tu Meta Pixel para rastrear visitas, inicios de checkout y compras que provienen de tus anuncios.
+                <a
+                  href="https://business.facebook.com/events_manager"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-primary font-semibold hover:underline ml-1"
+                >¿Dónde encuentro mi Pixel ID? →</a>
+              </p>
+            </div>
+
+            <!-- Info banner -->
+            <div class="flex items-start gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20">
+              <span class="text-primary text-lg mt-0.5"><i class="fa-brands fa-meta"></i></span>
+              <div class="text-xs text-dark/70 leading-relaxed">
+                <span class="font-bold text-dark">¿Cómo funciona?</span> Al activar tu Pixel, cada vez que alguien visita tu evento, inicia el checkout o compra un boleto, se registra automáticamente en tu Meta Business Manager como
+                <span class="font-mono bg-primary/10 px-1 rounded">ViewContent</span>,
+                <span class="font-mono bg-primary/10 px-1 rounded">InitiateCheckout</span> y
+                <span class="font-mono bg-primary/10 px-1 rounded">Purchase</span>.
+              </div>
+            </div>
+          </div>
+        </tf-card>
+
         <!-- Actions -->
         <div class="flex items-center justify-end gap-3 pt-2">
           <tf-button
@@ -277,6 +311,7 @@ export class ArtistFormComponent implements OnInit {
     tax_id: [''],
     postal_code: [''],
     photo_url: [''],
+    meta_pixel_id: ['', [Validators.pattern(/^\d{14,17}$/)]],
   });
 
   async ngOnInit(): Promise<void> {
@@ -294,6 +329,7 @@ export class ArtistFormComponent implements OnInit {
         tax_id: this.initialArtist.tax_id ?? '',
         postal_code: this.initialArtist.postal_code ?? '',
         photo_url: this.initialArtist.photo_url ?? '',
+        meta_pixel_id: this.initialArtist.meta_pixel_id ?? '',
       });
       if (this.initialArtist.photo_url) {
         this.photoPreviewUrl.set(this.initialArtist.photo_url);
@@ -374,6 +410,14 @@ export class ArtistFormComponent implements OnInit {
     if (c?.touched && c.errors) {
       if (c.errors['required']) return 'El correo de contacto es obligatorio';
       if (c.errors['email']) return 'Formato de correo no válido';
+    }
+    return undefined;
+  }
+
+  getMetaPixelError(): string | undefined {
+    const c = this.artistForm.get('meta_pixel_id');
+    if (c?.touched && c.errors?.['pattern']) {
+      return 'El Pixel ID debe ser solo dígitos (14 a 17 caracteres)';
     }
     return undefined;
   }

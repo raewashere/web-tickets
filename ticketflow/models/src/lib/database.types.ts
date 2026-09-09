@@ -54,6 +54,7 @@ export interface Artist {
   postal_code: string | null;
   email: string | null;
   phone_number: string | null;
+  meta_pixel_id?: string | null;
   created_at: string;
   created_by: string | null;
   updated_at: string;

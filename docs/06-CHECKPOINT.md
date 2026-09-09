@@ -1,7 +1,7 @@
 # 📋 Checkpoint — Estado del Proyecto TicketFlow
 
-> **Fecha:** 08 de septiembre de 2026  
-> **Sesión:** Mejoras Post-MVP, Generador QR Real, Validaciones de Aforo/Apertura y Rol de Control de Admisión (Doorman)
+> **Fecha:** 09 de septiembre de 2026  
+> **Sesión:** Meta Pixel por Artista — Tracking de conversiones desde campañas de Instagram y Facebook
 
 ---
 
@@ -33,6 +33,7 @@
 | `20250110000000_validate_with_doorman_auth.sql` | ✅ Lista | `validate_ticket_qr` con control de autorización para Doormen |
 | `20250111000000_coupon_ticket_sku.sql` | ✅ Aplicada | Cupones asociados por SKU (`ticket_sku`) y descuento proporcional atómico |
 | `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
+| `20250119000000_artist_meta_pixel.sql` | ✅ Lista | Columna `meta_pixel_id TEXT` en `artists` para Pixel de Meta por artista |
 | `20250113000000_super_admin.sql` | ✅ Aplicada | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
 | `20250114000000_refund_requests.sql` | ✅ Aplicada | Sistema de solicitudes de reembolso, RLS y RPCs de aprobación/rechazo atómico |
 | `20250116000000_payouts_and_settlements.sql` | ✅ Aplicada | Control de pagos a artistas, liquidaciones netas, datos bancarios/fiscales y dispersiones |
@@ -75,6 +76,7 @@
 | **M12** | Admin + Store + DB | Gestión de Reembolsos (Solicitud post-venta, aprobación/rechazo atómico, devolución de stock y anulación de QR) | `refunds.*`, `my-tickets.*`, `ticket-detail.*`, migración 014 |
 | **M13** | Admin + Store + DB | Waitlist / Lista de Espera (Suscripción a eventos agotados, cola FIFO, panel de organizador y notificaciones) | `waitlist.service.*`, `ticket-selector.*`, `my-tickets.*`, `event-waitlist.*`, migración 015 |
 | **M14** | Admin + DB | Facturación y Control de Pagos a Artistas (Portal de finanzas, balance neto, dispersiones Super-Admin y datos bancarios) | `finances.*`, `admin-payouts.*`, migración 016 |
+| **M15** | Admin + Store + DB | Meta Pixel por Artista (Tracking de `ViewContent`, `InitiateCheckout` y `Purchase` desde campañas de redes sociales) | `meta-pixel.service.ts`, `artist-form.*`, `event-detail.*`, `thank-you.*`, migración 019 |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---

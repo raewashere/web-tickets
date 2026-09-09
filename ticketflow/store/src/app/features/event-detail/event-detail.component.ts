@@ -12,6 +12,7 @@ import { TicketSelectorComponent } from './ticket-selector.component';
 import { VenueMapComponent } from './venue-map.component';
 import { AuthService } from '@ticketflow/data-access';
 import { SeoService } from '../../core/services/seo.service';
+import { MetaPixelService } from '../../core/services/meta-pixel.service';
 import { SpinnerComponent } from '@ticketflow/shared-ui';
 
 @Component({
@@ -317,6 +318,7 @@ export class EventDetailComponent implements OnInit {
   private readonly eventDetailService = inject(EventDetailService);
   private readonly auth = inject(AuthService);
   private readonly seoService = inject(SeoService);
+  private readonly metaPixel = inject(MetaPixelService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
@@ -349,6 +351,17 @@ export class EventDetailComponent implements OnInit {
         return;
       }
       this.event.set(data);
+
+      // Load Meta Pixel for this artist (no-op if no pixel configured)
+      this.metaPixel.load(data.artists?.meta_pixel_id);
+      this.metaPixel.track('ViewContent', {
+        content_name: data.name,
+        content_category: data.event_types?.name || 'Evento',
+        content_ids: [data.id],
+        content_type: 'product',
+        value: 0,
+        currency: 'MXN',
+      });
 
       // Update dynamic SEO tags
       this.seoService.updateTags({
@@ -428,6 +441,17 @@ export class EventDetailComponent implements OnInit {
       };
 
       sessionStorage.setItem('tf_cart', JSON.stringify(cartData));
+
+      // Fire InitiateCheckout pixel event
+      const total = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const numItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
+      this.metaPixel.track('InitiateCheckout', {
+        content_name: this.event()!.name,
+        num_items: numItems,
+        value: total,
+        currency: 'MXN',
+      });
+
       this.router.navigate(['/checkout']);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al reservar boletos.';

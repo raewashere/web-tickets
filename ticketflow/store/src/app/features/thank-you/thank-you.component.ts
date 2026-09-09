@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
+import { MetaPixelService } from '../../core/services/meta-pixel.service';
 
 @Component({
   selector: 'store-thank-you',
@@ -91,4 +92,21 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
     </main>
   `,
 })
-export class ThankYouComponent {}
+export class ThankYouComponent implements OnInit {
+  private readonly metaPixel = inject(MetaPixelService);
+  private readonly route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    // Read order value from query params (set by checkout after successful payment)
+    // Expected: /thank-you?total=450&currency=MXN
+    const total = parseFloat(this.route.snapshot.queryParamMap.get('total') ?? '0');
+    const currency = this.route.snapshot.queryParamMap.get('currency') ?? 'MXN';
+
+    // Fire Purchase event — only fires if artist pixel was loaded on event page
+    this.metaPixel.track('Purchase', {
+      value: total || 0,
+      currency,
+      content_type: 'product',
+    });
+  }
+}

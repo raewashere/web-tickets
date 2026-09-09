@@ -22,7 +22,7 @@ export interface ArtistWithType extends Artist {
 
 // Event with all joined relations
 export interface EventWithRelations extends Event {
-  artists: Pick<Artist, 'id' | 'name' | 'photo_url' | 'description' | 'gallery_urls'> | null;
+  artists: Pick<Artist, 'id' | 'name' | 'photo_url' | 'description' | 'gallery_urls' | 'meta_pixel_id'> | null;
   event_types: EventType | null;
   venues: Pick<
     Venue,
