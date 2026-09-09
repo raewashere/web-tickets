@@ -249,11 +249,103 @@
         WHERE po.status = 'completed'
         GROUP BY po.artist_id
       ) p_stats ON p_stats.sub_artist_id = a.id
-      ORDER BY 11 DESC, 6 DESC;
-    END;
-    $$;
+  ORDER BY 11 DESC, 6 DESC;
+END;
+$$;
 
-    -- 6. Grant Permissions to authenticated, anon and service_role
+-- 6. RPC: Process refund request (Approve or Reject)
+CREATE OR REPLACE FUNCTION process_refund_request(
+  p_request_id UUID,
+  p_approved BOOLEAN,
+  p_admin_notes TEXT DEFAULT NULL
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
+DECLARE
+  v_req RECORD;
+  v_is_authorized BOOLEAN := FALSE;
+  v_item RECORD;
+BEGIN
+  -- 1. Fetch request
+  SELECT rr.*, e.artist_id, a.user_id AS artist_user_id
+  INTO v_req
+  FROM refund_requests rr
+  JOIN events e ON e.id = rr.event_id
+  LEFT JOIN artists a ON a.id = e.artist_id
+  WHERE rr.id = p_request_id;
+
+  IF NOT FOUND THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Solicitud de reembolso no encontrada.');
+  END IF;
+
+  IF v_req.status != 'pending' THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Esta solicitud ya ha sido procesada previamente.');
+  END IF;
+
+  -- 2. Check authorization: Admin or Artist owner
+  IF is_admin(auth.uid()) OR (v_req.artist_user_id = auth.uid()) THEN
+    v_is_authorized := TRUE;
+  END IF;
+
+  IF NOT v_is_authorized THEN
+    RETURN jsonb_build_object('success', false, 'error', 'No tienes permisos para procesar esta solicitud de reembolso.');
+  END IF;
+
+  -- 3. If APPROVED:
+  IF p_approved THEN
+    -- Update refund request
+    UPDATE refund_requests
+    SET status = 'approved',
+        admin_notes = p_admin_notes,
+        reviewed_by = auth.uid(),
+        reviewed_at = NOW(),
+        updated_at = NOW()
+    WHERE id = p_request_id;
+
+    -- Update order status to 'refunded'
+    UPDATE orders
+    SET status = 'refunded',
+        updated_at = NOW()
+    WHERE id = v_req.order_id;
+
+    -- Invalidate ticket validations if any
+    UPDATE ticket_validations
+    SET result = 'refunded',
+        message = COALESCE(message, '') || ' [Orden reembolsada]'
+    WHERE order_id = v_req.order_id;
+
+    -- Return ticket stock to ticket_types
+    FOR v_item IN
+      SELECT ticket_type_id, quantity
+      FROM order_items
+      WHERE order_id = v_req.order_id
+    LOOP
+      UPDATE ticket_types
+      SET sold = GREATEST(0, sold - v_item.quantity),
+          updated_at = NOW()
+      WHERE id = v_item.ticket_type_id;
+    END LOOP;
+
+    RETURN jsonb_build_object('success', true, 'status', 'approved');
+  ELSE
+    -- If REJECTED:
+    UPDATE refund_requests
+    SET status = 'rejected',
+        admin_notes = p_admin_notes,
+        reviewed_by = auth.uid(),
+        reviewed_at = NOW(),
+        updated_at = NOW()
+    WHERE id = p_request_id;
+
+    RETURN jsonb_build_object('success', true, 'status', 'rejected');
+  END IF;
+END;
+$$;
+
+-- 7. Grant Permissions to authenticated, anon and service_role
     GRANT EXECUTE ON FUNCTION is_admin(UUID) TO authenticated, service_role, anon;
     GRANT EXECUTE ON FUNCTION get_global_platform_metrics() TO authenticated, service_role, anon;
     GRANT EXECUTE ON FUNCTION get_all_venues_for_moderation() TO authenticated, service_role, anon;

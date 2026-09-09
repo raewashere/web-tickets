@@ -171,8 +171,8 @@ BEGIN
 
     -- Invalidate ticket validations if any
     UPDATE ticket_validations
-    SET valid = FALSE,
-        notes = COALESCE(notes, '') || ' [Orden reembolsada]'
+    SET result = 'refunded',
+        message = COALESCE(message, '') || ' [Orden reembolsada]'
     WHERE order_id = v_req.order_id;
 
     -- Return ticket stock to ticket_types
