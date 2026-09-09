@@ -24,9 +24,9 @@ export type StoreEventItem = EventWithRelations & {
             [alt]="event.name"
             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
-          <div *ngIf="!event.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-100">
-            <span class="text-5xl">🎸</span>
-            <span class="text-xs font-bold mt-1 text-slate-500">TicketFlow Live</span>
+          <div *ngIf="!event.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-slate-300 bg-slate-100">
+            <i class="fa-solid fa-guitar text-4xl mb-1"></i>
+            <span class="text-xs font-bold text-slate-400">TicketFlow Live</span>
           </div>
 
           <!-- Date Overlay Box -->
@@ -63,7 +63,7 @@ export type StoreEventItem = EventWithRelations & {
             >
               <span class="w-2 h-2 rounded-full bg-cyan-500 inline-block shrink-0"></span>
               <span class="truncate font-bold text-slate-700 group-hover/artist:text-cyan-600">{{ event.artists?.name }}</span>
-              <span class="text-[10px] text-cyan-600 shrink-0 font-medium opacity-80 group-hover/artist:opacity-100">· Ver perfil ↗</span>
+              <span class="text-[10px] text-cyan-600 shrink-0 font-medium opacity-80 group-hover/artist:opacity-100 flex items-center gap-0.5">· Ver perfil <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></span>
             </button>
             <span *ngIf="!event.artists" class="text-slate-400">Artista Invitado</span>
           </div>
@@ -76,11 +76,11 @@ export type StoreEventItem = EventWithRelations & {
           <!-- Venue & Time -->
           <div class="space-y-1 text-xs text-slate-500">
             <p class="flex items-center gap-1.5 truncate">
-              <span>📍</span>
+              <i class="fa-solid fa-location-dot text-slate-400"></i>
               <span class="font-medium truncate">{{ event.venues?.name || 'Recinto por confirmar' }}</span>
             </p>
             <p class="flex items-center gap-1.5">
-              <span>🕒</span>
+              <i class="fa-regular fa-clock text-slate-400"></i>
               <span>{{ event.event_date | date:'shortTime' }} hrs</span>
             </p>
           </div>

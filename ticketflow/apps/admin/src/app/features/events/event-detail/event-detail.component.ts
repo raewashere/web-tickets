@@ -75,7 +75,8 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
             (click)="onPublish()"
             [disabled]="isActionLoading()"
           >
-            🚀 Publicar Evento
+            <i class="fa-solid fa-rocket mr-1.5"></i>
+            <span>Publicar Evento</span>
           </tf-button>
 
           <!-- Cancel Action -->
@@ -86,13 +87,15 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
             (click)="onCancelEvent()"
             [disabled]="isActionLoading()"
           >
-            ⚠️ Cancelar Evento
+            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+            <span>Cancelar Evento</span>
           </tf-button>
 
           <!-- Edit Action -->
           <a [routerLink]="['/events', event()!.id, 'edit']">
             <tf-button variant="secondary" size="sm">
-              ✏️ Editar
+              <i class="fa-solid fa-pen-to-square mr-1.5"></i>
+              <span>Editar</span>
             </tf-button>
           </a>
 
@@ -104,7 +107,8 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
             (click)="onDelete()"
             [disabled]="isActionLoading()"
           >
-            🗑️ Eliminar
+            <i class="fa-solid fa-trash-can mr-1.5"></i>
+            <span>Eliminar</span>
           </tf-button>
         </div>
       </div>
@@ -139,7 +143,9 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
               class="w-full h-full object-cover object-center"
             />
             <div *ngIf="!event()!.flyer_url" class="p-8 text-center text-dark/40">
-              <span class="text-5xl block mb-2">🎨</span>
+              <span class="text-4xl block mb-2 opacity-50">
+                <i class="fa-solid fa-image"></i>
+              </span>
               <span class="text-xs font-semibold">Sin afiche promocional</span>
             </div>
           </div>
@@ -177,7 +183,9 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                   <span class="text-xs text-primary font-bold uppercase tracking-wider">Recinto & Aforo</span>
                   <div class="flex items-center gap-2">
                     <span class="font-extrabold text-dark text-base">{{ event()!.venues?.name || 'Recinto no asignado' }}</span>
-                    <tf-badge *ngIf="event()!.venues?.verified" variant="primary">✓ Verificada</tf-badge>
+                    <tf-badge *ngIf="event()!.venues?.verified" variant="primary">
+                      <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
+                    </tf-badge>
                   </div>
                   <p class="text-xs text-dark/70">
                     Configuración: <strong>{{ event()!.venue_configurations?.name || 'Estándar' }}</strong>
@@ -194,7 +202,8 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface border border-dark/10 text-xs font-bold text-dark hover:bg-dark/5 transition-colors"
                   >
-                    <span>📍 Google Maps</span>
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Google Maps</span>
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
@@ -224,7 +233,8 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
               </div>
               <a [routerLink]="['/events', event()!.id, 'tickets']">
                 <tf-button variant="primary" size="sm">
-                  ⚙️ Gestionar Boletos
+                  <i class="fa-solid fa-gear mr-1.5"></i>
+                  <span>Gestionar Boletos</span>
                 </tf-button>
               </a>
             </div>
@@ -252,7 +262,9 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
 
             <!-- Empty tickets preview -->
             <div *ngIf="!event()!.ticket_types || event()!.ticket_types!.length === 0" class="py-8 text-center text-dark/50">
-              <span class="text-3xl block mb-2">🎫</span>
+              <span class="text-3xl block mb-2 opacity-40">
+                <i class="fa-solid fa-ticket"></i>
+              </span>
               <p class="text-xs">Aún no se han configurado tipos de boletos para este show.</p>
               <a [routerLink]="['/events', event()!.id, 'tickets']" class="inline-block mt-3">
                 <tf-button variant="primary" size="sm">
@@ -271,7 +283,8 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
               </div>
               <a [routerLink]="['/events', event()!.id, 'coupons']">
                 <tf-button variant="secondary" size="sm">
-                  ⚙️ Gestionar Cupones
+                  <i class="fa-solid fa-tag mr-1.5"></i>
+                  <span>Gestionar Cupones</span>
                 </tf-button>
               </a>
             </div>
@@ -298,7 +311,9 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
 
             <!-- Empty coupons preview -->
             <div *ngIf="!event()!.coupons || event()!.coupons!.length === 0" class="py-8 text-center text-dark/50">
-              <span class="text-3xl block mb-2">🏷️</span>
+              <span class="text-3xl block mb-2 opacity-40">
+                <i class="fa-solid fa-tag"></i>
+              </span>
               <p class="text-xs">No hay cupones de descuento activos para este show.</p>
               <a [routerLink]="['/events', event()!.id, 'coupons']" class="inline-block mt-3">
                 <tf-button variant="secondary" size="sm">

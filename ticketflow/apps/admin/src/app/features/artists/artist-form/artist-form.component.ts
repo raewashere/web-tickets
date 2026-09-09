@@ -127,8 +127,8 @@ import { Router, RouterModule } from '@angular/router';
                 class="hidden"
               />
               <div class="flex flex-col items-center justify-center gap-2">
-                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl">
-                  📸
+                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xl">
+                  <i class="fa-solid fa-camera"></i>
                 </div>
                 <div class="text-sm font-semibold text-dark">
                   Haz clic para añadir fotos a la galería
@@ -147,10 +147,10 @@ import { Router, RouterModule } from '@angular/router';
                 <button
                   type="button"
                   (click)="removeExistingGalleryPhoto(i)"
-                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-sm shadow hover:bg-red-700 transition"
+                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-xs shadow hover:bg-red-700 transition"
                   title="Eliminar foto"
                 >
-                  ✕
+                  <i class="fa-solid fa-xmark"></i>
                 </button>
               </div>
 
@@ -163,10 +163,10 @@ import { Router, RouterModule } from '@angular/router';
                 <button
                   type="button"
                   (click)="removePendingGalleryFile(i)"
-                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-sm shadow hover:bg-red-700 transition"
+                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-xs shadow hover:bg-red-700 transition"
                   title="Quitar"
                 >
-                  ✕
+                  <i class="fa-solid fa-xmark"></i>
                 </button>
               </div>
             </div>

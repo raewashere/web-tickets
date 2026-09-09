@@ -32,7 +32,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
           (click)="loadOverview()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-rotate-right"></i>
           <span>Actualizar Balances</span>
         </button>
       </div>
@@ -44,7 +44,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
         [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
       >
         <div class="flex items-center gap-3">
-          <span>{{ feedbackType() === 'success' ? '✅' : '⚠️' }}</span>
+          <i class="fa-solid" [ngClass]="feedbackType() === 'success' ? 'fa-circle-check text-emerald-600' : 'fa-triangle-exclamation text-rose-600'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -52,7 +52,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
           (click)="feedbackMessage.set(null)"
           class="text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5"
         >
-          ✕
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
@@ -62,7 +62,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
         <div class="col-span-2 sm:col-span-1 p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-amber-50/60 to-white border-2 border-amber-500/30 shadow-sm space-y-1">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-black uppercase tracking-wider text-amber-800">Pasivo por Liquidar</span>
-            <span class="text-sm">⏳</span>
+            <i class="fa-solid fa-clock text-amber-700"></i>
           </div>
           <p class="text-2xl sm:text-3xl font-black text-amber-700 font-mono">
             \${{ totalPlatformBalanceDue() | number:'1.2-2' }}
@@ -70,31 +70,31 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
           <span class="text-[10px] text-amber-800/70 font-semibold block">Total pendiente en plataforma</span>
         </div>
 
-        <!-- Total Liquidado a Artistas -->
-        <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Total Liquidado</span>
+        <!-- Total Liquidado Histórico -->
+        <div class="p-5 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-1">
+          <span class="text-[10px] font-black uppercase tracking-wider text-dark/50 block">Liquidado Histórico</span>
           <p class="text-xl sm:text-2xl font-black text-emerald-700 font-mono">
             \${{ totalPlatformPaid() | number:'1.2-2' }}
           </p>
-          <span class="text-[10px] text-dark/40 font-medium">Dispersado por SPEI</span>
+          <span class="text-[10px] text-dark/40 font-semibold block">Transferido a artistas</span>
         </div>
 
-        <!-- Ganancia Neta Artistas -->
-        <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Neto Artistas</span>
-          <p class="text-xl sm:text-2xl font-black text-primary font-mono">
+        <!-- Ventas Brutas Totales -->
+        <div class="p-5 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-1">
+          <span class="text-[10px] font-black uppercase tracking-wider text-dark/50 block">Volumen Bruto Procesado</span>
+          <p class="text-xl sm:text-2xl font-black text-dark font-mono">
             \${{ totalPlatformNet() | number:'1.2-2' }}
           </p>
-          <span class="text-[10px] text-dark/40 font-medium">Ventas netas globales</span>
+          <span class="text-[10px] text-dark/40 font-semibold block">Venta acumulada</span>
         </div>
 
-        <!-- Artistas con Saldo Pendiente -->
-        <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Artistas con Saldo</span>
-          <p class="text-xl sm:text-2xl font-black text-dark">
-            {{ artistsWithPendingBalanceCount() }} / {{ artists().length }}
+        <!-- Ingreso Plataforma (Comisiones) -->
+        <div class="p-5 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-1">
+          <span class="text-[10px] font-black uppercase tracking-wider text-primary block">Comisiones TicketFlow</span>
+          <p class="text-xl sm:text-2xl font-black text-primary font-mono">
+            \${{ artists().length }}
           </p>
-          <span class="text-[10px] text-dark/40 font-medium">Pendientes de pago</span>
+          <span class="text-[10px] text-dark/40 font-semibold block">Artistas Registrados</span>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
             placeholder="Buscar por nombre de artista, correo, RFC o CLABE..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">🔍</span>
+          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
         </div>
 
         <!-- Filter tabs -->
@@ -160,7 +160,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
         *ngIf="!isLoading() && filteredArtists().length === 0"
         class="py-16 text-center rounded-2xl border border-dashed border-dark/20 bg-white p-8 space-y-3"
       >
-        <span class="text-4xl block">🏦</span>
+        <i class="fa-solid fa-building-columns text-4xl text-dark/30 block mb-2"></i>
         <h3 class="text-base font-bold text-dark">No se encontraron artistas</h3>
         <p class="text-xs text-dark/50 max-w-sm mx-auto">
           No hay registros que coincidan con la búsqueda o filtro aplicado.
@@ -237,8 +237,8 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
                     <div class="font-mono text-[10px] text-dark/60">CLABE: {{ a.bank_account_number }}</div>
                     <div *ngIf="a.tax_id" class="text-[10px] text-dark/40 font-mono">RFC: {{ a.tax_id }}</div>
                   </div>
-                  <span *ngIf="!a.bank_account_number" class="text-rose-600 font-semibold text-[11px]">
-                    ⚠️ Sin cuenta CLABE
+                  <span *ngIf="!a.bank_account_number" class="text-rose-600 font-semibold text-[11px] flex items-center gap-1">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Sin cuenta CLABE
                   </span>
                 </td>
 
@@ -253,7 +253,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
                     [class.bg-dark]="a.balance_due === 0"
                     [class.hover:bg-black]="a.balance_due === 0"
                   >
-                    <span>💸</span>
+                    <i class="fa-solid fa-money-bill-transfer"></i>
                     <span>{{ a.balance_due > 0 ? 'Liquidar Saldo' : 'Registrar Pago' }}</span>
                   </button>
                 </td>
@@ -274,7 +274,7 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
             (click)="closeModal()"
             class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
@@ -293,14 +293,14 @@ type PayoutFilter = 'all' | 'with_balance' | 'settled';
           <!-- Bank Account Info Alert -->
           <div class="p-3.5 rounded-2xl bg-cyan-50/50 border border-cyan-200 text-xs text-cyan-950 space-y-1">
             <div class="font-bold flex items-center gap-1.5">
-              <span>🏦</span> Datos de Destino del Artista:
+              <i class="fa-solid fa-building-columns"></i> Datos de Destino del Artista:
             </div>
             <p *ngIf="selectedArtistForPayout()!.bank_account_number" class="text-[11px] font-mono leading-relaxed">
               <strong>{{ selectedArtistForPayout()!.bank_name }}</strong> · CLABE: <strong>{{ selectedArtistForPayout()!.bank_account_number }}</strong>
               <span *ngIf="selectedArtistForPayout()!.tax_id"> · RFC: {{ selectedArtistForPayout()!.tax_id }}</span>
             </p>
-            <p *ngIf="!selectedArtistForPayout()!.bank_account_number" class="text-[11px] text-rose-600 font-bold">
-              ⚠️ El artista aún no ha capturado su CLABE interbancaria en su perfil financiero.
+            <p *ngIf="!selectedArtistForPayout()!.bank_account_number" class="text-[11px] text-rose-600 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-triangle-exclamation"></i> El artista aún no ha capturado su CLABE interbancaria en su perfil financiero.
             </p>
           </div>
 

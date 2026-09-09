@@ -33,7 +33,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           (click)="loadFinancialSummary()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-rotate-right" [class.animate-spin]="isLoading()"></i>
           <span>Actualizar Balances</span>
         </button>
       </div>
@@ -44,8 +44,8 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
         class="p-4 rounded-2xl flex items-center justify-between transition-all text-xs sm:text-sm font-semibold"
         [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
       >
-        <div class="flex items-center gap-3">
-          <span>{{ feedbackType() === 'success' ? '✅' : '⚠️' }}</span>
+        <div class="flex items-center gap-2">
+          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-emerald-600' : 'fa-solid fa-triangle-exclamation text-rose-600'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -53,7 +53,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           (click)="feedbackMessage.set(null)"
           class="text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5"
         >
-          ✕
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
@@ -71,7 +71,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           <div class="col-span-2 sm:col-span-1 p-5 rounded-3xl bg-gradient-to-br from-emerald-500/15 via-emerald-50/60 to-white border-2 border-emerald-500/30 shadow-sm space-y-1">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800">Saldo Disponible</span>
-              <span class="text-sm">💵</span>
+              <i class="fa-solid fa-money-bill-wave text-emerald-600 text-sm"></i>
             </div>
             <p class="text-2xl sm:text-3xl font-black text-emerald-700 font-mono">
               \${{ summary()!.balance_due | number:'1.2-2' }}
@@ -127,7 +127,8 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
             [class.text-dark]="activeTab() !== 'events'"
             class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2"
           >
-            <span>🎪 Desglose por Evento</span>
+            <i class="fa-solid fa-masks-theater"></i>
+            <span>Desglose por Evento</span>
             <span class="px-2 py-0.5 rounded-full text-[10px]" [class.bg-white/20]="activeTab() === 'events'" [class.bg-dark/10]="activeTab() !== 'events'">
               {{ summary()!.events.length }}
             </span>
@@ -142,7 +143,8 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
             [class.text-dark]="activeTab() !== 'payouts'"
             class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2"
           >
-            <span>💳 Historial de Pagos</span>
+            <i class="fa-solid fa-credit-card"></i>
+            <span>Historial de Pagos</span>
             <span class="px-2 py-0.5 rounded-full text-[10px]" [class.bg-white/20]="activeTab() === 'payouts'" [class.bg-dark/10]="activeTab() !== 'payouts'">
               {{ summary()!.payouts.length }}
             </span>
@@ -157,7 +159,8 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
             [class.text-dark]="activeTab() !== 'settings'"
             class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2"
           >
-            <span>🏦 Datos Bancarios y Fiscales</span>
+            <i class="fa-solid fa-building-columns"></i>
+            <span>Datos Bancarios y Fiscales</span>
             <span *ngIf="summary()!.settings?.bank_account_number" class="text-emerald-500 text-xs">●</span>
           </button>
         </div>
@@ -165,7 +168,9 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
         <!-- Tab 1: Desglose por Evento -->
         <div *ngIf="activeTab() === 'events'" class="space-y-4">
           <div *ngIf="summary()!.events.length === 0" class="py-16 text-center rounded-2xl border border-dashed border-dark/20 bg-white p-8 space-y-2">
-            <span class="text-4xl block">🎪</span>
+            <span class="text-4xl block text-dark/30">
+              <i class="fa-solid fa-masks-theater"></i>
+            </span>
             <p class="text-sm font-bold text-dark">No hay eventos registrados</p>
             <p class="text-xs text-dark/50">Crea tu primer espectáculo para comenzar a generar ingresos.</p>
           </div>
@@ -176,41 +181,38 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
                 <thead>
                   <tr class="bg-dark/5 border-b border-dark/10 font-bold text-dark uppercase tracking-wider text-[10px]">
                     <th class="p-3.5 pl-5">Evento</th>
-                    <th class="p-3.5">Boletos</th>
-                    <th class="p-3.5">Bruto</th>
+                    <th class="p-3.5">Fecha</th>
+                    <th class="p-3.5 text-center">Boletos Vendidos</th>
+                    <th class="p-3.5">Venta Bruta</th>
                     <th class="p-3.5">Comisión</th>
-                    <th class="p-3.5">Reembolsos</th>
-                    <th class="p-3.5 font-bold text-primary">Neto Liquidable</th>
-                    <th class="p-3.5">Pagado</th>
-                    <th class="p-3.5 pr-5 text-right font-black text-emerald-700">Saldo Pendiente</th>
+                    <th class="p-3.5">Neto Artista</th>
+                    <th class="p-3.5 pr-5 text-right">Acción</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-dark/5">
-                  <tr *ngFor="let ev of summary()!.events" class="hover:bg-dark/[0.02] transition-colors">
-                    <td class="p-3.5 pl-5">
-                      <div class="font-bold text-dark text-sm leading-tight">{{ ev.event_name }}</div>
-                      <div class="text-[11px] text-dark/50">{{ ev.venue_name || 'Recinto' }} · {{ ev.event_date | date:'mediumDate' }}</div>
+                  <tr *ngFor="let ev of summary()!.events" class="hover:bg-dark/[0.02]">
+                    <td class="p-3.5 pl-5 font-bold text-dark">
+                      {{ ev.event_name }}
                     </td>
-                    <td class="p-3.5 font-mono font-bold text-dark/80">
-                      {{ ev.tickets_sold }}
+                    <td class="p-3.5 text-dark/60 whitespace-nowrap">
+                      {{ ev.event_date | date:'mediumDate' }}
                     </td>
-                    <td class="p-3.5 font-mono text-dark/70">
+                    <td class="p-3.5 text-center font-bold font-mono">
+                      {{ ev.tickets_sold | number }}
+                    </td>
+                    <td class="p-3.5 font-mono text-dark/80">
                       \${{ ev.gross | number:'1.2-2' }}
                     </td>
                     <td class="p-3.5 font-mono text-slate-500">
-                      -\${{ ev.commission | number:'1.2-2' }}
+                      \${{ ev.commission | number:'1.2-2' }}
                     </td>
-                    <td class="p-3.5 font-mono" [class.text-rose-600]="ev.refunded > 0" [class.text-dark/40]="ev.refunded === 0">
-                      {{ ev.refunded > 0 ? '-\$' + (ev.refunded | number:'1.2-2') : '—' }}
-                    </td>
-                    <td class="p-3.5 font-mono font-extrabold text-primary">
+                    <td class="p-3.5 font-mono font-bold text-emerald-700">
                       \${{ ev.net | number:'1.2-2' }}
                     </td>
-                    <td class="p-3.5 font-mono text-emerald-700">
-                      \${{ ev.paid | number:'1.2-2' }}
-                    </td>
-                    <td class="p-3.5 pr-5 text-right font-mono font-black text-sm" [class.text-emerald-700]="ev.balance > 0" [class.text-dark/40]="ev.balance === 0">
-                      \${{ ev.balance | number:'1.2-2' }} MXN
+                    <td class="p-3.5 pr-5 text-right">
+                      <a [routerLink]="['/events', ev.event_id]" class="text-primary hover:underline font-bold">
+                        Ver Evento
+                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -222,7 +224,9 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
         <!-- Tab 2: Historial de Pagos Recibidos -->
         <div *ngIf="activeTab() === 'payouts'" class="space-y-4">
           <div *ngIf="summary()!.payouts.length === 0" class="py-16 text-center rounded-2xl border border-dashed border-dark/20 bg-white p-8 space-y-2">
-            <span class="text-4xl block">💳</span>
+            <span class="text-4xl block text-dark/30">
+              <i class="fa-solid fa-credit-card"></i>
+            </span>
             <p class="text-sm font-bold text-dark">No hay transferencias registradas</p>
             <p class="text-xs text-dark/50">Cuando la plataforma liquide tus balances por SPEI, verás aquí los comprobantes y folios de transferencia.</p>
           </div>
@@ -251,7 +255,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
                       {{ p.event_name || 'Liquidación General de Balance' }}
                     </td>
                     <td class="p-3.5 capitalize font-semibold text-dark/70">
-                      {{ p.payout_method === 'bank_transfer' ? '🏦 Transferencia SPEI' : p.payout_method }}
+                      {{ p.payout_method === 'bank_transfer' ? 'Transferencia SPEI' : p.payout_method }}
                     </td>
                     <td class="p-3.5 font-mono text-dark/80 font-bold">
                       {{ p.reference_code || '—' }}
@@ -260,8 +264,8 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
                       \${{ p.amount | number:'1.2-2' }} {{ p.currency }}
                     </td>
                     <td class="p-3.5">
-                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                        ✅ Completado
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        <i class="fa-solid fa-check text-[9px]"></i> Completado
                       </span>
                     </td>
                     <td class="p-3.5 pr-5 text-right">
@@ -270,9 +274,9 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
                         [href]="p.receipt_url"
                         target="_blank"
                         rel="noopener"
-                        class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition inline-flex items-center gap-1"
+                        class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition inline-flex items-center gap-1.5"
                       >
-                        <span>📄</span>
+                        <i class="fa-regular fa-file-pdf"></i>
                         <span>Ver Recibo</span>
                       </a>
                       <span *ngIf="!p.receipt_url" class="text-dark/30 text-[11px]">Sin comprobante</span>
@@ -296,7 +300,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           </div>
 
           <div class="p-4 rounded-2xl bg-cyan-50/50 border border-cyan-200 text-xs text-cyan-950 flex items-start gap-3">
-            <span class="text-lg shrink-0">🔒</span>
+            <i class="fa-solid fa-shield-halved text-cyan-700 text-base shrink-0 mt-0.5"></i>
             <p class="leading-relaxed">
               Tus datos bancarios se almacenan de forma segura bajo cifrado y solo son accesibles por el equipo de finanzas de TicketFlow para realizar dispersiones oficiales.
             </p>

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'accent';
+export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'accent' | 'outline';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
@@ -45,6 +45,7 @@ export class ButtonComponent {
       danger: 'bg-contrast text-white hover:bg-contrast/90 focus:ring-contrast',
       ghost: 'bg-transparent text-dark hover:bg-dark/10 focus:ring-dark',
       accent: 'bg-accent text-dark hover:bg-accent/90 focus:ring-accent',
+      outline: 'bg-transparent text-dark border border-dark/20 hover:bg-dark/5 focus:ring-primary',
     };
 
     return `${base} ${sizes[this.size]} ${variants[this.variant]}`;

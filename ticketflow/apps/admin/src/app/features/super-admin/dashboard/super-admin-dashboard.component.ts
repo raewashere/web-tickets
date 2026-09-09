@@ -30,7 +30,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           (click)="loadMetrics()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-rotate-right"></i>
           <span>Actualizar Datos</span>
         </button>
       </div>
@@ -54,7 +54,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Volumen Total (GMV)</span>
-              <span class="text-xl">💰</span>
+              <i class="fa-solid fa-coins text-amber-500 text-lg"></i>
             </div>
             <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
               \${{ metrics()!.total_gmv | number:'1.2-2' }} <span class="text-xs font-normal text-dark/50">MXN</span>
@@ -68,7 +68,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Comisiones TicketFlow</span>
-              <span class="text-xl">📈</span>
+              <i class="fa-solid fa-chart-line text-emerald-600 text-lg"></i>
             </div>
             <p class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono">
               \${{ metrics()!.total_platform_commission | number:'1.2-2' }} <span class="text-xs font-normal text-dark/50">MXN</span>
@@ -82,7 +82,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Boletos Emitidos</span>
-              <span class="text-xl">🎟️</span>
+              <i class="fa-solid fa-ticket text-cyan-600 text-lg"></i>
             </div>
             <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
               {{ metrics()!.total_tickets_sold | number }}
@@ -96,7 +96,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-dark/50 uppercase tracking-wider">Eventos Activos</span>
-              <span class="text-xl">🎪</span>
+              <i class="fa-solid fa-masks-theater text-indigo-600 text-lg"></i>
             </div>
             <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
               {{ metrics()!.active_events_count }}
@@ -113,8 +113,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-4">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-xl font-bold">
-                  📍
+                <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-lg font-bold">
+                  <i class="fa-solid fa-location-dot"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Recintos / Venues</h2>
@@ -140,7 +140,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 class="w-full mt-2 py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2"
               >
                 <span>Auditar y Verificar Recintos</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right"></i>
               </button>
             </a>
           </div>
@@ -148,8 +148,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <!-- Artists Box -->
           <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-4">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-accent/20 text-accent flex items-center justify-center text-xl font-bold">
-                🎤
+              <div class="w-10 h-10 rounded-2xl bg-accent/20 text-accent flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-microphone"></i>
               </div>
               <div>
                 <h2 class="font-black text-base text-dark">Artistas & Creadores</h2>
@@ -168,7 +168,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 class="w-full mt-2 py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2"
               >
                 <span>Gestionar Creadores y Roles</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right"></i>
               </button>
             </a>
           </div>
@@ -176,8 +176,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <!-- Users Box -->
           <div class="p-6 rounded-3xl bg-white border border-dark/10 shadow-sm space-y-4">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center text-xl font-bold">
-                👥
+              <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-users"></i>
               </div>
               <div>
                 <h2 class="font-black text-base text-dark">Usuarios Registrados</h2>
@@ -196,7 +196,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 class="w-full mt-2 py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2"
               >
                 <span>Ver Todos los Usuarios</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right"></i>
               </button>
             </a>
           </div>

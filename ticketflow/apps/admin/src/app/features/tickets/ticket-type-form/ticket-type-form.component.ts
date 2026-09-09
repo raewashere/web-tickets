@@ -101,9 +101,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
               <button
                 type="button"
                 (click)="autoSuggestSku()"
-                class="text-xs text-primary hover:underline font-semibold"
+                class="text-xs text-primary hover:underline font-semibold flex items-center gap-1"
               >
-                🪄 Sugerir SKU
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Sugerir SKU
               </button>
             </div>
             <input

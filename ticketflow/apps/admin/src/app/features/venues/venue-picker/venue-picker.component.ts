@@ -42,7 +42,7 @@ import {
           <!-- Search input -->
           <div class="relative flex-1">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-dark/40 text-sm">
-              🔍
+              <i class="fa-solid fa-magnifying-glass"></i>
             </span>
             <input
               type="text"
@@ -53,12 +53,15 @@ import {
             />
           </div>
 
-          <!-- New Venue Button -->
-          <a routerLink="/venues/new" target="_blank">
-            <tf-button type="button" variant="secondary" size="md">
-              + Nueva Sede
-            </tf-button>
-          </a>
+          <tf-button
+            type="button"
+            variant="ghost"
+            size="md"
+            (click)="searchQuery = ''; onSearchChange()"
+            *ngIf="searchQuery"
+          >
+            Limpiar
+          </tf-button>
         </div>
 
         <!-- Loading indicator -->
@@ -78,12 +81,14 @@ import {
               <div class="flex items-center gap-2">
                 <span class="font-bold text-sm text-dark">{{ venue.name }}</span>
                 <tf-badge *ngIf="venue.verified" variant="primary">
-                  ✓ Verificada
+                  <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
                 </tf-badge>
               </div>
-              <p class="text-xs text-dark/50">
-                {{ venue.venue_configurations.length }} configuraciones de aforo disponibles
-                <span *ngIf="venue.latitude && venue.longitude"> · 📍 GPS disponible</span>
+              <p class="text-xs text-dark/50 flex items-center gap-1.5 flex-wrap">
+                <span>{{ venue.venue_configurations.length }} configuraciones de aforo disponibles</span>
+                <span *ngIf="venue.latitude && venue.longitude" class="flex items-center gap-1">
+                  · <i class="fa-solid fa-location-dot text-primary text-[10px]"></i> GPS disponible
+                </span>
               </p>
             </div>
 
@@ -105,11 +110,14 @@ import {
           <div>
             <div class="flex items-center gap-2">
               <span class="text-xs font-bold uppercase tracking-wider text-primary">Sede Seleccionada</span>
-              <tf-badge *ngIf="selectedVenue()!.verified" variant="primary">✓ Verificada</tf-badge>
+              <tf-badge *ngIf="selectedVenue()!.verified" variant="primary">
+                <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
+              </tf-badge>
             </div>
             <h4 class="text-base font-extrabold text-dark mt-0.5">{{ selectedVenue()!.name }}</h4>
-            <p *ngIf="selectedVenue()!.latitude && selectedVenue()!.longitude" class="text-xs text-dark/60">
-              📍 {{ selectedVenue()!.latitude }}, {{ selectedVenue()!.longitude }}
+            <p *ngIf="selectedVenue()!.latitude && selectedVenue()!.longitude" class="text-xs text-dark/60 flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-location-dot text-primary text-[11px]"></i>
+              <span>{{ selectedVenue()!.latitude }}, {{ selectedVenue()!.longitude }}</span>
             </p>
           </div>
 
@@ -139,7 +147,7 @@ import {
               *ngFor="let cfg of selectedVenue()!.venue_configurations"
               [value]="cfg.id"
             >
-              {{ cfg.name }} (Capacidad: {{ (cfg.capacity || 0) | number }} personas) {{ cfg.is_default ? '★' : '' }}
+              {{ cfg.name }} (Capacidad: {{ (cfg.capacity || 0) | number }} personas) {{ cfg.is_default ? '(Predeterminado)' : '' }}
             </option>
           </select>
 

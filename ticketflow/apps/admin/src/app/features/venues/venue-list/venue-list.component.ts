@@ -56,17 +56,17 @@ import {
         <tf-stat-card
           label="Total de Sedes"
           [value]="venues().length"
-          icon="📍"
+          icon="fa-solid fa-location-dot"
         ></tf-stat-card>
         <tf-stat-card
           label="Sedes Verificadas"
           [value]="verifiedCount()"
-          icon="✓"
+          icon="fa-solid fa-circle-check"
         ></tf-stat-card>
         <tf-stat-card
           label="Total Configuraciones"
           [value]="totalConfigsCount()"
-          icon="🎭"
+          icon="fa-solid fa-shapes"
         ></tf-stat-card>
       </div>
 
@@ -74,7 +74,7 @@ import {
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="relative w-full sm:max-w-md">
           <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-dark/40 text-sm">
-            🔍
+            <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <input
             type="text"
@@ -101,9 +101,7 @@ import {
         *ngIf="errorMessage()"
         class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
       >
-        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
+        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -127,14 +125,14 @@ import {
                 class="w-full h-full object-cover object-center"
               />
               <div *ngIf="!venue.map_url" class="text-center text-dark/30">
-                <span class="text-4xl block">🏟️</span>
+                <span class="text-4xl block"><i class="fa-solid fa-landmark"></i></span>
                 <span class="text-xs font-medium mt-1 block">Sin plano subido</span>
               </div>
 
               <!-- Badge Top Right -->
               <div class="absolute top-3 right-3 flex items-center gap-1.5">
                 <tf-badge *ngIf="venue.verified" variant="primary">
-                  ✓ Verificada
+                  <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
                 </tf-badge>
               </div>
             </div>
@@ -147,7 +145,8 @@ import {
                 </h3>
 
                 <div *ngIf="venue.latitude && venue.longitude" class="flex items-center gap-1.5 text-xs text-dark/60 mt-1">
-                  <span>📍 GPS:</span>
+                  <i class="fa-solid fa-location-dot text-primary"></i>
+                  <span>GPS:</span>
                   <a
                     [href]="'https://www.google.com/maps?q=' + venue.latitude + ',' + venue.longitude"
                     target="_blank"
@@ -186,7 +185,7 @@ import {
 
             <a [routerLink]="['/venues', venue.id, 'edit']">
               <tf-button variant="ghost" size="sm" title="Editar Sede">
-                ✏️
+                <i class="fa-solid fa-pen-to-square"></i>
               </tf-button>
             </a>
           </div>
@@ -196,7 +195,9 @@ import {
       <!-- Empty State -->
       <tf-card *ngIf="!isLoading() && filteredVenues().length === 0">
         <div class="py-12 text-center text-dark/60">
-          <div class="text-5xl mb-3">📍</div>
+          <div class="text-5xl mb-3 text-dark/30">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
           <h3 class="text-lg font-bold text-dark">
             {{ searchQuery ? 'No se encontraron sedes' : 'Aún no hay sedes registradas' }}
           </h3>
@@ -208,7 +209,7 @@ import {
 
           <a routerLink="/venues/new" *ngIf="!searchQuery">
             <tf-button variant="primary" size="md">
-              + Registrar Primera Sede
+              <i class="fa-solid fa-plus mr-1.5"></i> Crear Primera Sede
             </tf-button>
           </a>
 

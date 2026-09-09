@@ -30,7 +30,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           (click)="loadUsers()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-arrows-rotate"></i>
           <span>Actualizar Usuarios</span>
         </button>
       </div>
@@ -44,7 +44,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             placeholder="Buscar por correo electrónico o ID de usuario..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">🔍</span>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-dark/40 text-xs"></i>
         </div>
 
         <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
@@ -125,7 +125,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <td class="py-4 px-4 sm:px-6">
                   <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-full bg-dark/10 text-dark font-bold flex items-center justify-center text-xs shrink-0">
-                      👤
+                      <i class="fa-solid fa-user"></i>
                     </div>
                     <div>
                       <span class="font-extrabold text-dark block">{{ user.email }}</span>
@@ -147,9 +147,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                     [class.text-white]="user.roles.includes('admin')"
                     [class.bg-dark/5]="!user.roles.includes('admin')"
                     [class.text-dark/40]="!user.roles.includes('admin')"
-                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50"
+                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50 inline-flex items-center gap-1.5"
                   >
-                    Admin {{ user.roles.includes('admin') ? '✓' : '+' }}
+                    <i [class]="user.roles.includes('admin') ? 'fa-solid fa-check' : 'fa-solid fa-plus'" class="text-[10px]"></i>
+                    <span>Admin</span>
                   </button>
                 </td>
 
@@ -163,9 +164,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                     [class.text-white]="user.roles.includes('artist')"
                     [class.bg-dark/5]="!user.roles.includes('artist')"
                     [class.text-dark/40]="!user.roles.includes('artist')"
-                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50"
+                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50 inline-flex items-center gap-1.5"
                   >
-                    Artista {{ user.roles.includes('artist') ? '✓' : '+' }}
+                    <i [class]="user.roles.includes('artist') ? 'fa-solid fa-check' : 'fa-solid fa-plus'" class="text-[10px]"></i>
+                    <span>Artista</span>
                   </button>
                 </td>
 
@@ -179,9 +181,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                     [class.text-white]="user.roles.includes('doorman')"
                     [class.bg-dark/5]="!user.roles.includes('doorman')"
                     [class.text-dark/40]="!user.roles.includes('doorman')"
-                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50"
+                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50 inline-flex items-center gap-1.5"
                   >
-                    Doorman {{ user.roles.includes('doorman') ? '✓' : '+' }}
+                    <i [class]="user.roles.includes('doorman') ? 'fa-solid fa-check' : 'fa-solid fa-plus'" class="text-[10px]"></i>
+                    <span>Doorman</span>
                   </button>
                 </td>
 
@@ -195,9 +198,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                     [class.text-white]="user.roles.includes('customer')"
                     [class.bg-dark/5]="!user.roles.includes('customer')"
                     [class.text-dark/40]="!user.roles.includes('customer')"
-                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50"
+                    class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50 inline-flex items-center gap-1.5"
                   >
-                    Cliente {{ user.roles.includes('customer') ? '✓' : '+' }}
+                    <i [class]="user.roles.includes('customer') ? 'fa-solid fa-check' : 'fa-solid fa-plus'" class="text-[10px]"></i>
+                    <span>Cliente</span>
                   </button>
                 </td>
               </tr>
@@ -208,7 +212,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
       <!-- Empty State -->
       <div *ngIf="!isLoading() && filteredUsers().length === 0" class="p-12 text-center bg-white rounded-2xl border border-dashed border-dark/20 space-y-2">
-        <span class="text-3xl">👥</span>
+        <span class="text-3xl block text-dark/30">
+          <i class="fa-solid fa-users"></i>
+        </span>
         <h3 class="font-bold text-dark text-base">No se encontraron usuarios</h3>
         <p class="text-xs text-dark/50">Ajusta los términos de búsqueda o filtros.</p>
       </div>

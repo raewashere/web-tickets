@@ -25,7 +25,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
     <div class="space-y-6">
       <div class="flex items-center justify-between pb-3 border-b border-slate-200">
         <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-          <span>🎟️</span> Selecciona tus Boletos
+          <i class="fa-solid fa-ticket text-cyan-600"></i> Selecciona tus Boletos
         </h3>
         <span class="text-xs text-slate-500 font-medium">
           Máx. 10 boletos
@@ -69,9 +69,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 *ngIf="t.available <= 0 && eventId"
                 type="button"
                 (click)="selectTierForWaitlist(t.id)"
-                class="text-[11px] font-bold text-cyan-600 hover:text-cyan-700 underline"
+                class="text-[11px] font-bold text-cyan-600 hover:text-cyan-700 underline flex items-center gap-1"
               >
-                🔔 Avisarme si se libera
+                <i class="fa-solid fa-bell"></i> Avisarme si se libera
               </button>
             </div>
           </div>
@@ -119,7 +119,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
       <!-- Empty State -->
       <div *ngIf="ticketTypes.length === 0" class="p-8 text-center text-slate-400 border border-dashed border-slate-300 rounded-2xl">
-        <span class="text-3xl block mb-1">🎫</span>
+        <i class="fa-solid fa-ticket text-3xl text-slate-300 block mb-1"></i>
         <span>Aún no hay localidades disponibles para la venta.</span>
       </div>
 
@@ -146,7 +146,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
           (click)="onProceed()"
         >
-          <span>Continuar con {{ totalCount }} {{ totalCount === 1 ? 'Boleto' : 'Boletos' }} →</span>
+          <span>Continuar con {{ totalCount }} {{ totalCount === 1 ? 'Boleto' : 'Boletos' }} <i class="fa-solid fa-arrow-right ml-1"></i></span>
         </button>
       </div>
 
@@ -160,7 +160,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             Lista de Espera Oficial
           </span>
           <h4 class="text-base font-black text-slate-900 flex items-center gap-1.5">
-            <span>🔔</span> ¿No alcanzaste boletos?
+            <i class="fa-solid fa-bell text-amber-600"></i> ¿No alcanzaste boletos?
           </h4>
           <p class="text-xs text-slate-600 leading-relaxed">
             Regístrate y recibe una alerta prioritaria en tu correo si se liberan reservaciones no pagadas o cancelaciones.
@@ -172,7 +172,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           *ngIf="waitlistSuccessMessage()"
           class="p-3.5 rounded-2xl bg-emerald-100/80 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2"
         >
-          <span>✅</span>
+          <i class="fa-solid fa-circle-check text-emerald-600"></i>
           <span>{{ waitlistSuccessMessage() }}</span>
         </div>
 
@@ -227,7 +227,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             class="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all shadow-sm flex items-center justify-center gap-2"
           >
             <tf-spinner *ngIf="isSubmittingWaitlist()" size="sm" color="white"></tf-spinner>
-            <span>{{ isSubmittingWaitlist() ? 'Registrando...' : '🔔 Avisarme al Liberarse Boletos' }}</span>
+            <span><i class="fa-solid fa-bell mr-1" *ngIf="!isSubmittingWaitlist()"></i>{{ isSubmittingWaitlist() ? 'Registrando...' : 'Avisarme al Liberarse Boletos' }}</span>
           </button>
         </div>
       </div>

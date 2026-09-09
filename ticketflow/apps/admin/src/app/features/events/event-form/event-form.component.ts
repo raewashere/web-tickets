@@ -83,7 +83,7 @@ import {
         class="p-5 rounded-2xl bg-accent/20 border border-accent/40 text-dark space-y-2"
       >
         <div class="flex items-center gap-2 font-bold text-sm">
-          <span>⚠️</span>
+          <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
           <span>Perfil de artista requerido</span>
         </div>
         <p class="text-xs text-dark/80">
@@ -336,7 +336,7 @@ import {
               (click)="saveEvent('published')"
               [disabled]="eventForm.invalid || isSubmitting()"
             >
-              <span>🚀 {{ isEditMode() ? 'Guardar y Publicar' : 'Publicar Evento' }}</span>
+              <span><i class="fa-solid fa-paper-plane mr-1.5"></i> {{ isEditMode() ? 'Guardar y Publicar' : 'Publicar Evento' }}</span>
             </tf-button>
           </div>
         </div>

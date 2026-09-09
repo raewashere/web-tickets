@@ -25,7 +25,7 @@ import {
   template: `
     <div class="min-h-screen bg-surface flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-2">
-        <span class="text-4xl block">🎟️</span>
+        <i class="fa-solid fa-ticket text-4xl text-primary block mb-2"></i>
         <h1 class="text-2xl font-black text-dark tracking-tight">TicketFlow</h1>
         <p class="text-xs text-dark/60 font-medium">Invitación al Control de Admisión</p>
       </div>
@@ -39,7 +39,7 @@ import {
 
         <!-- Error State -->
         <tf-card *ngIf="!isLoading() && errorMessage()" class="space-y-4 text-center">
-          <span class="text-4xl block">⚠️</span>
+          <i class="fa-solid fa-triangle-exclamation text-4xl text-rose-500 block mb-2"></i>
           <h3 class="text-base font-bold text-dark">{{ errorMessage() }}</h3>
           <p class="text-xs text-dark/60">
             Comunícate con el organizador del evento para solicitar una nueva invitación.
@@ -58,7 +58,7 @@ import {
               {{ invitation()!.events?.name || 'Evento Oficial' }}
             </h2>
             <p class="text-xs text-dark/60" *ngIf="invitation()!.events?.event_date">
-              📅 {{ invitation()!.events?.event_date | date:'EEEE d MMMM y, HH:mm' }} hrs
+              <i class="fa-regular fa-calendar mr-1"></i> {{ invitation()!.events?.event_date | date:'EEEE d MMMM y, HH:mm' }} hrs
             </p>
           </div>
 
@@ -76,7 +76,7 @@ import {
               <span class="font-bold block">Sesión Activa</span>
               <span>{{ auth.user()?.email }}</span>
             </div>
-            <span class="text-lg">✅</span>
+            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
           </div>
 
           <!-- Action Button -->
@@ -90,7 +90,7 @@ import {
               [disabled]="isProcessing()"
               (click)="onAcceptInvite()"
             >
-              <span *ngIf="!isProcessing()">✓ Aceptar Invitación y Entrar</span>
+              <span *ngIf="!isProcessing()" class="flex items-center justify-center gap-1.5"><i class="fa-solid fa-check"></i> Aceptar Invitación y Entrar</span>
               <tf-spinner *ngIf="isProcessing()" size="sm" color="dark"></tf-spinner>
             </tf-button>
 
@@ -102,7 +102,7 @@ import {
                 class="w-full"
                 (click)="onSignInWithGoogle()"
               >
-                <span>🌐 Iniciar Sesión con Google</span>
+                <span class="flex items-center justify-center gap-2"><i class="fa-brands fa-google"></i> Iniciar Sesión con Google</span>
               </tf-button>
 
               <a [routerLink]="['/login']" [queryParams]="{ returnUrl: currentUrl }">

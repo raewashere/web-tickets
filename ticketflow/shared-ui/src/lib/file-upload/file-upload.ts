@@ -24,7 +24,9 @@ import { CommonModule } from '@angular/common';
       />
 
       <ng-container *ngIf="!previewUrl">
-        <div class="text-4xl mb-2">📁</div>
+        <div class="text-3xl text-dark/40 mb-2">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
         <p class="text-dark font-medium">{{ label }}</p>
         <p class="text-dark/50 text-sm mt-1">{{ hint }}</p>
       </ng-container>

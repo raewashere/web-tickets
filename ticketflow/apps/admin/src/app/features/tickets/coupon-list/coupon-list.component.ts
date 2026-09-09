@@ -66,7 +66,7 @@ import {
         <div class="flex items-center gap-3">
           <a *ngIf="eventId" [routerLink]="['/events', eventId, 'tickets']">
             <tf-button variant="secondary" size="md">
-              🎟️ Ver Boletos
+              <i class="fa-solid fa-ticket mr-1.5"></i> Ver Boletos
             </tf-button>
           </a>
 
@@ -75,7 +75,7 @@ import {
             size="md"
             (click)="openCreateModal()"
           >
-            + Crear Cupón
+            <i class="fa-solid fa-plus mr-1.5"></i> Crear Cupón
           </tf-button>
         </div>
       </div>
@@ -85,17 +85,17 @@ import {
         <tf-stat-card
           label="Total de Cupones"
           [value]="coupons().length"
-          icon="🏷️"
+          icon="fa-solid fa-tags"
         ></tf-stat-card>
         <tf-stat-card
           label="Cupones Activos"
           [value]="activeCount()"
-          icon="✓"
+          icon="fa-solid fa-circle-check"
         ></tf-stat-card>
         <tf-stat-card
           label="Canjes Realizados"
           [value]="totalUsesCount()"
-          icon="👥"
+          icon="fa-solid fa-users"
         ></tf-stat-card>
       </div>
 
@@ -110,9 +110,7 @@ import {
         *ngIf="errorMessage()"
         class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
       >
-        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
+        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -139,15 +137,15 @@ import {
 
               <span
                 *ngIf="c.ticket_sku"
-                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-primary/20 text-dark border border-primary/30"
+                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-primary/20 text-dark border border-primary/30 flex items-center gap-1"
               >
-                🎟️ SKU: {{ c.ticket_sku }}
+                <i class="fa-solid fa-ticket text-[10px]"></i> SKU: {{ c.ticket_sku }}
               </span>
               <span
                 *ngIf="!c.ticket_sku"
                 class="text-xs px-2 py-0.5 rounded bg-dark/5 text-dark/50 font-medium"
               >
-                🌐 Todos los boletos
+                Todos los boletos
               </span>
             </div>
 
@@ -183,23 +181,23 @@ import {
               class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors text-xs flex items-center gap-1 font-semibold"
               title="Copiar código"
             >
-              📋 Copiar
+              <i class="fa-regular fa-copy"></i> Copiar
             </button>
             <button
               type="button"
               (click)="editCoupon(c)"
-              class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors"
+              class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors text-xs"
               title="Editar Cupón"
             >
-              ✏️
+              <i class="fa-solid fa-pen-to-square"></i>
             </button>
             <button
               type="button"
               (click)="deleteCoupon(c)"
-              class="p-2 rounded-xl text-contrast/70 hover:text-contrast hover:bg-contrast/10 transition-colors"
+              class="p-2 rounded-xl text-contrast/70 hover:text-contrast hover:bg-contrast/10 transition-colors text-xs"
               title="Eliminar Cupón"
             >
-              🗑️
+              <i class="fa-solid fa-trash-can"></i>
             </button>
           </div>
         </div>
@@ -208,13 +206,15 @@ import {
       <!-- Empty State -->
       <tf-card *ngIf="!isLoading() && coupons().length === 0">
         <div class="py-12 text-center text-dark/60">
-          <div class="text-5xl mb-3">🏷️</div>
+          <div class="text-5xl mb-3 text-dark/30">
+            <i class="fa-solid fa-tags"></i>
+          </div>
           <h3 class="text-lg font-bold text-dark">No hay cupones registrados</h3>
           <p class="text-sm text-dark/60 max-w-md mx-auto mt-1 mb-5">
             Crea códigos promocionales porcentuales (ej. 20% OFF) o cortesías directas para invitados especiales.
           </p>
           <tf-button variant="primary" size="md" (click)="openCreateModal()">
-            + Crear Primer Cupón
+            <i class="fa-solid fa-plus mr-1.5"></i> Crear Primer Cupón
           </tf-button>
         </div>
       </tf-card>

@@ -67,7 +67,7 @@ import {
         <div class="flex items-center gap-3">
           <a *ngIf="eventId" [routerLink]="['/events', eventId, 'coupons']">
             <tf-button variant="secondary" size="md">
-              🏷️ Ver Cupones
+              <i class="fa-solid fa-tags mr-1.5"></i> Ver Cupones
             </tf-button>
           </a>
 
@@ -76,7 +76,7 @@ import {
             size="md"
             (click)="openCreateModal()"
           >
-            + Nuevo Tipo de Boleto
+            <i class="fa-solid fa-plus mr-1.5"></i> Nuevo Tipo de Boleto
           </tf-button>
         </div>
       </div>
@@ -86,22 +86,22 @@ import {
         <tf-stat-card
           label="Tipos de Boleto"
           [value]="tickets().length"
-          icon="🎟️"
+          icon="fa-solid fa-ticket"
         ></tf-stat-card>
         <tf-stat-card
           label="Stock Total"
           [value]="totalStock()"
-          icon="📦"
+          icon="fa-solid fa-box-archive"
         ></tf-stat-card>
         <tf-stat-card
           label="Vendidos"
           [value]="totalSold()"
-          icon="💰"
+          icon="fa-solid fa-circle-dollar-to-slot"
         ></tf-stat-card>
         <tf-stat-card
           label="Disponibles"
           [value]="totalAvailable()"
-          icon="✓"
+          icon="fa-solid fa-circle-check"
         ></tf-stat-card>
       </div>
 
@@ -116,9 +116,7 @@ import {
         *ngIf="errorMessage()"
         class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
       >
-        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
+        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -177,18 +175,18 @@ import {
               <button
                 type="button"
                 (click)="editTicket(t)"
-                class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors"
+                class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors text-xs"
                 title="Editar Boleto"
               >
-                ✏️
+                <i class="fa-solid fa-pen-to-square"></i>
               </button>
               <button
                 type="button"
                 (click)="deleteTicket(t)"
-                class="p-2 rounded-xl text-contrast/70 hover:text-contrast hover:bg-contrast/10 transition-colors"
+                class="p-2 rounded-xl text-contrast/70 hover:text-contrast hover:bg-contrast/10 transition-colors text-xs"
                 title="Eliminar Boleto"
               >
-                🗑️
+                <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
           </div>
@@ -198,13 +196,15 @@ import {
       <!-- Empty State -->
       <tf-card *ngIf="!isLoading() && tickets().length === 0">
         <div class="py-12 text-center text-dark/60">
-          <div class="text-5xl mb-3">🎟️</div>
+          <div class="text-5xl mb-3 text-dark/30">
+            <i class="fa-solid fa-ticket"></i>
+          </div>
           <h3 class="text-lg font-bold text-dark">No hay tipos de boletos creados</h3>
           <p class="text-sm text-dark/60 max-w-md mx-auto mt-1 mb-5">
             Crea los diferentes niveles de acceso para este evento (ej. General, Preferente, VIP) indicando precio y cupo.
           </p>
           <tf-button variant="primary" size="md" (click)="openCreateModal()">
-            + Crear Primer Boleto
+            <i class="fa-solid fa-plus mr-1.5"></i> Crear Primer Boleto
           </tf-button>
         </div>
       </tf-card>

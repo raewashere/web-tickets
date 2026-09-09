@@ -75,7 +75,7 @@ declare global {
       <div *ngIf="currentLat !== null && currentLng !== null"
         class="flex items-center gap-3 p-3 rounded-xl bg-accent/10 border border-accent/30 text-xs text-dark"
       >
-        <span class="text-base">📍</span>
+        <i class="fa-solid fa-location-dot text-primary text-sm"></i>
         <span>
           Lat: <strong class="font-mono">{{ currentLat | number:'1.5-6' }}</strong>
           &nbsp;·&nbsp;

@@ -25,7 +25,6 @@ import {
     ReactiveFormsModule,
     ButtonComponent,
     CardComponent,
-    BadgeComponent,
     SpinnerComponent,
   ],
   template: `
@@ -34,7 +33,7 @@ import {
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 class="text-lg font-bold text-dark flex items-center gap-2">
-            <span>🛡️</span>
+            <i class="fa-solid fa-shield-halved text-primary"></i>
             <span>Personal de Control de Admisión</span>
           </h3>
           <p class="text-xs text-dark/60 mt-0.5">
@@ -47,7 +46,8 @@ import {
           (click)="showInviteForm.set(!showInviteForm())"
           class="px-3.5 py-2 rounded-xl bg-primary text-dark font-bold text-xs hover:bg-primary/90 transition-all flex items-center gap-1.5 shadow-xs"
         >
-          <span>{{ showInviteForm() ? '✕ Cancelar' : '+ Invitar Validador' }}</span>
+          <i [class]="showInviteForm() ? 'fa-solid fa-xmark' : 'fa-solid fa-user-plus'"></i>
+          <span>{{ showInviteForm() ? 'Cancelar' : 'Invitar Validador' }}</span>
         </button>
       </div>
 
@@ -76,7 +76,7 @@ import {
                 size="md"
                 [disabled]="inviteForm.invalid || isInviting()"
               >
-                <span *ngIf="!isInviting()">✉️ Enviar Invitación</span>
+                <span *ngIf="!isInviting()"><i class="fa-solid fa-paper-plane mr-1.5"></i> Enviar Invitación</span>
                 <tf-spinner *ngIf="isInviting()" size="sm" color="dark"></tf-spinner>
               </tf-button>
             </div>
@@ -88,8 +88,9 @@ import {
             </p>
           </div>
 
-          <p class="text-[11px] text-dark/60 bg-dark/5 p-3 rounded-xl leading-relaxed">
-            ℹ️ Al invitar al validador, se generará un enlace único. La persona podrá registrarse o iniciar sesión con Google/Correo para aceptar y acceder inmediatamente a la pantalla de escaneo de este evento.
+          <p class="text-[11px] text-dark/60 bg-dark/5 p-3 rounded-xl leading-relaxed flex items-start gap-2">
+            <i class="fa-solid fa-circle-info text-dark/40 mt-0.5 flex-shrink-0"></i>
+            <span>Al invitar al validador, se generará un enlace único. La persona podrá registrarse o iniciar sesión con Google/Correo para aceptar y acceder inmediatamente a la pantalla de escaneo de este evento.</span>
           </p>
         </form>
       </tf-card>
@@ -104,7 +105,9 @@ import {
         }"
       >
         <span>{{ feedbackMessage() }}</span>
-        <button type="button" (click)="feedbackMessage.set(null)" class="text-xs font-bold opacity-60 hover:opacity-100">✕</button>
+        <button type="button" (click)="feedbackMessage.set(null)" class="text-xs font-bold opacity-60 hover:opacity-100">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
       <!-- Loading State -->
@@ -118,65 +121,47 @@ import {
         <!-- 1. Active / Accepted Staff -->
         <tf-card>
           <div class="space-y-4">
-            <div class="flex items-center justify-between border-b border-dark/10 pb-3">
+            <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="text-sm font-bold text-dark">Personal Asignado</span>
+                <span class="text-sm font-bold text-dark">Validadores Activos</span>
                 <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
-                  {{ activeStaff().length }}
+                  {{ staffList().length }}
                 </span>
               </div>
             </div>
 
-            <div *ngIf="activeStaff().length === 0" class="py-6 text-center text-xs text-dark/50">
-              No hay validadores activos para este espectáculo todavía.
+            <div *ngIf="staffList().length === 0" class="py-6 text-center text-dark/40 text-xs">
+              No hay validadores activos para este evento aún.
             </div>
 
-            <div *ngIf="activeStaff().length > 0" class="divide-y divide-dark/10">
+            <div *ngIf="staffList().length > 0" class="divide-y divide-dark/10">
               <div
-                *ngFor="let member of activeStaff()"
-                class="py-3 flex items-center justify-between gap-3 text-xs"
+                *ngFor="let member of staffList()"
+                class="py-3 flex items-center justify-between gap-4 text-xs"
               >
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-primary/20 text-primary font-black flex items-center justify-center text-xs ring-1 ring-primary/30">
-                    <img
-                      *ngIf="member.profiles?.avatar_url"
-                      [src]="member.profiles!.avatar_url!"
-                      class="w-full h-full rounded-full object-cover"
-                      alt="Avatar"
-                    />
-                    <span *ngIf="!member.profiles?.avatar_url">
-                      {{ (member.profiles?.display_name || 'V')[0].toUpperCase() }}
-                    </span>
-                  </div>
-                  <div>
-                    <span class="font-bold text-dark block">
-                      {{ member.profiles?.display_name || 'Validador Oficial' }}
-                    </span>
-                    <span class="text-[10px] text-dark/50">
-                      Asignado: {{ member.created_at | date:'dd/MM/yyyy HH:mm' }}
-                    </span>
-                  </div>
+                <div>
+                  <p class="font-bold text-dark">
+                    {{ member.profiles?.display_name || 'Validador' }}
+                  </p>
+                  <p class="text-[11px] text-dark/50">ID: {{ member.user_id.substring(0, 8) }}</p>
                 </div>
 
-                <div class="flex items-center gap-3">
-                  <tf-badge variant="success">Activo</tf-badge>
-                  <button
-                    type="button"
-                    (click)="onRevokeStaff(member.id)"
-                    class="text-xs text-contrast hover:underline font-bold"
-                  >
-                    Revocar
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  (click)="onRevokeStaff(member.id)"
+                  class="px-3 py-1 rounded-lg hover:bg-rose-50 text-contrast font-bold text-xs transition-colors"
+                >
+                  Remover
+                </button>
               </div>
             </div>
           </div>
         </tf-card>
 
         <!-- 2. Pending Invitations -->
-        <tf-card *ngIf="invitations().length > 0">
+        <tf-card *ngIf="pendingInvitations().length > 0">
           <div class="space-y-4">
-            <div class="flex items-center justify-between border-b border-dark/10 pb-3">
+            <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="text-sm font-bold text-dark">Invitaciones Pendientes</span>
                 <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">
@@ -201,9 +186,9 @@ import {
                   <button
                     type="button"
                     (click)="copyInviteLink(inv.token)"
-                    class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition-colors"
+                    class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition-colors flex items-center gap-1"
                   >
-                    📋 Copiar Enlace
+                    <i class="fa-regular fa-copy"></i> Copiar Enlace
                   </button>
                   <button
                     type="button"

@@ -20,7 +20,7 @@ import type { SearchFilterParams } from './search.service';
     <div class="space-y-6 p-6 rounded-3xl border border-slate-200 bg-white shadow-sm">
       <div class="flex items-center justify-between pb-4 border-b border-slate-200">
         <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
-          <span>⚡</span> Filtros
+          <i class="fa-solid fa-sliders text-cyan-600"></i> Filtros
         </h3>
 
         <button

@@ -30,7 +30,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           (click)="loadVenues()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-rotate-right"></i>
           <span>Actualizar Recintos</span>
         </button>
       </div>
@@ -45,7 +45,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             placeholder="Buscar por nombre de recinto o correo del creador..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">🔍</span>
+          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
         </div>
 
         <!-- Filter tabs -->
@@ -70,7 +70,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             [class.text-amber-800]="selectedFilter() !== 'pending'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
-            Pendientes ({{ pendingCount() }})
+            Por Verificar ({{ pendingCount() }})
           </button>
           <button
             type="button"
@@ -87,9 +87,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
-        <tf-spinner size="lg"></tf-spinner>
-        <p class="text-xs text-dark/50">Cargando catálogo de recintos...</p>
+      <div *ngIf="isLoading()" class="py-20 flex flex-col items-center justify-center gap-3">
+        <tf-spinner size="lg" color="primary"></tf-spinner>
+        <span class="text-xs text-dark/60 font-medium">Cargando recintos y estadísticas...</span>
       </div>
 
       <!-- Error State -->
@@ -118,12 +118,12 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <td class="py-4 px-4 sm:px-6">
                   <div class="flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0">
-                      📍
+                      <i class="fa-solid fa-location-dot"></i>
                     </div>
                     <div>
                       <div class="font-extrabold text-dark flex items-center gap-1.5">
                         <span>{{ venue.name }}</span>
-                        <span *ngIf="venue.verified" class="text-emerald-600 text-xs" title="Recinto Verificado">✓</span>
+                        <i *ngIf="venue.verified" class="fa-solid fa-check text-emerald-600 text-xs" title="Recinto Verificado"></i>
                       </div>
                       <span class="text-[11px] text-dark/40 font-mono">ID: {{ venue.id.substring(0, 8) }}</span>
                     </div>
@@ -156,10 +156,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                       [href]="'https://www.google.com/maps/dir/?api=1&destination=' + venue.latitude + ',' + venue.longitude"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-primary hover:underline font-bold text-xs flex items-center gap-1"
+                      class="text-primary hover:underline font-bold text-xs flex items-center gap-1.5"
                     >
-                      <span>🗺️</span>
-                      <span>Google Maps ↗</span>
+                      <i class="fa-solid fa-map-location-dot"></i>
+                      <span>Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></span>
                     </a>
                   </div>
                   <span *ngIf="!venue.latitude && !venue.longitude" class="text-dark/40 text-xs">
@@ -178,15 +178,15 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <td class="py-4 px-4 text-center">
                   <span
                     *ngIf="venue.verified"
-                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-extrabold"
                   >
-                    <span>✅</span> Verificado
+                    <i class="fa-solid fa-circle-check"></i> Verificado
                   </span>
                   <span
                     *ngIf="!venue.verified"
-                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold"
                   >
-                    <span>⏳</span> Pendiente
+                    <i class="fa-solid fa-clock"></i> Pendiente
                   </span>
                 </td>
 
@@ -216,7 +216,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
       <!-- Empty State -->
       <div *ngIf="!isLoading() && filteredVenues().length === 0" class="p-12 text-center bg-white rounded-2xl border border-dashed border-dark/20 space-y-2">
-        <span class="text-3xl">📍</span>
+        <i class="fa-solid fa-location-dot text-3xl text-dark/40 block mb-2"></i>
         <h3 class="font-bold text-dark text-base">No se encontraron recintos</h3>
         <p class="text-xs text-dark/50">Prueba cambiando los términos del buscador o el filtro de estado.</p>
       </div>

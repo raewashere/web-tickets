@@ -52,7 +52,7 @@ interface PayPalButtonsOptions {
       <!-- Steps Indicator -->
       <div class="flex items-center justify-center gap-3 sm:gap-6 text-xs font-bold">
         <a routerLink="/checkout" class="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium">
-          <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 font-black flex items-center justify-center text-xs">✓</span>
+          <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 font-black flex items-center justify-center text-xs"><i class="fa-solid fa-check text-[10px]"></i></span>
           <span>Carrito</span>
         </a>
         <div class="w-8 sm:w-12 h-0.5 bg-cyan-500"></div>
@@ -68,7 +68,7 @@ interface PayPalButtonsOptions {
       </div>
 
       <div *ngIf="!checkout.cart()" class="py-16 text-center space-y-3 bg-white rounded-3xl border border-dashed border-slate-300 p-8">
-        <span class="text-4xl block">⚠️</span>
+        <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 block mb-2"></i>
         <p class="text-sm text-slate-500">No se encontró una orden activa en el carrito.</p>
         <a routerLink="/search">
           <button
@@ -101,7 +101,7 @@ interface PayPalButtonsOptions {
               *ngIf="errorMessage()"
               class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2"
             >
-              <span>⚠️</span>
+              <i class="fa-solid fa-triangle-exclamation text-rose-600 shrink-0"></i>
               <span>{{ errorMessage() }}</span>
             </div>
 
@@ -116,7 +116,7 @@ interface PayPalButtonsOptions {
 
             <!-- 1. Zero-cost courtesy flow -->
             <div *ngIf="checkout.total() === 0 && !isProcessing()" class="p-6 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-4">
-              <div class="text-3xl">🎁</div>
+              <i class="fa-solid fa-gift text-3xl text-amber-500 block mb-2"></i>
               <h3 class="font-extrabold text-base text-slate-900">Cortesía 100% Bonificada</h3>
               <p class="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
                 Tu orden tiene un costo de $0.00 MXN gracias al cupón o cortesía aplicado. No requieres ingresar métodos de pago.
@@ -136,7 +136,7 @@ interface PayPalButtonsOptions {
               <div class="p-5 rounded-2xl border-2 border-cyan-500/40 bg-cyan-50/30 space-y-4">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
-                    <span class="text-2xl">🅿️</span>
+                    <i class="fa-brands fa-paypal text-2xl text-[#003087]"></i>
                     <div>
                       <span class="font-bold text-sm text-slate-900 block">PayPal Express Checkout</span>
                       <span class="text-[11px] text-slate-500">Tarjetas de Crédito, Débito o Saldo PayPal</span>
@@ -159,7 +159,7 @@ interface PayPalButtonsOptions {
                     *ngIf="!paypalLoading() && paypalError()"
                     class="p-3.5 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 text-xs text-center"
                   >
-                    ⚠️ {{ paypalError() }}
+                    <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-600"></i> {{ paypalError() }}
                     <button (click)="retryPayPal()" class="ml-2 underline font-bold">Reintentar</button>
                   </div>
                 </div>

@@ -14,7 +14,7 @@ import { AuthService } from '@ticketflow/data-access';
         <!-- Brand Logo -->
         <a routerLink="/" class="flex items-center gap-3 group flex-shrink-0">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-            <span class="text-slate-950 font-black text-lg leading-none">🎫</span>
+            <i class="fa-solid fa-ticket text-slate-950 text-lg"></i>
           </div>
           <span class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center select-none">
             Ticket<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-300 ml-0.5">Flow</span>
@@ -25,7 +25,7 @@ import { AuthService } from '@ticketflow/data-access';
         <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
           <form (ngSubmit)="onSearchSubmit()" class="w-full relative">
             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-sm">
-              🔍
+              <i class="fa-solid fa-magnifying-glass"></i>
             </span>
             <input
               type="text"
@@ -50,7 +50,7 @@ import { AuthService } from '@ticketflow/data-access';
                 type="button"
                 class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-bold border border-slate-700 transition-colors shadow-sm"
               >
-                🎟️ Mis Boletos
+                <i class="fa-solid fa-ticket text-cyan-400"></i> Mis Boletos
               </button>
             </a>
 
@@ -78,9 +78,7 @@ import { AuthService } from '@ticketflow/data-access';
                 <span class="max-w-[110px] truncate text-slate-200">
                   {{ userName }}
                 </span>
-                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+                <i class="fa-solid fa-chevron-down text-slate-400 text-[10px]"></i>
               </button>
 
               <!-- Dropdown -->
@@ -98,17 +96,19 @@ import { AuthService } from '@ticketflow/data-access';
                 <a
                   routerLink="/my-tickets"
                   (click)="showMenu.set(false)"
-                  class="block px-4 py-2.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                  class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
                 >
-                  🎟️ Mis Boletos Comprados
+                  <i class="fa-solid fa-ticket text-cyan-400"></i>
+                  <span>Mis Boletos Comprados</span>
                 </a>
 
                 <button
                   type="button"
                   (click)="onLogout()"
-                  class="w-full text-left px-4 py-2.5 text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors border-t border-slate-800"
+                  class="w-full text-left px-4 py-2.5 text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors border-t border-slate-800 flex items-center gap-2"
                 >
-                  🚪 Cerrar Sesión
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <span>Cerrar Sesión</span>
                 </button>
               </div>
             </div>
@@ -159,7 +159,7 @@ import { AuthService } from '@ticketflow/data-access';
             class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-400 text-xs"
           />
           <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-xs">
-            🔍
+            <i class="fa-solid fa-magnifying-glass"></i>
           </span>
         </form>
 
@@ -176,16 +176,18 @@ import { AuthService } from '@ticketflow/data-access';
             <a
               routerLink="/my-tickets"
               (click)="mobileMenuOpen.set(false)"
-              class="block px-3 py-2 rounded-xl text-sm font-semibold text-cyan-400 hover:bg-slate-800"
+              class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-cyan-400 hover:bg-slate-800"
             >
-              🎟️ Mis Boletos
+              <i class="fa-solid fa-ticket"></i>
+              <span>Mis Boletos</span>
             </a>
             <button
               type="button"
               (click)="onLogout()"
-              class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10"
+              class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 flex items-center gap-2"
             >
-              🚪 Cerrar Sesión
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Cerrar Sesión</span>
             </button>
           </ng-container>
 

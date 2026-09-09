@@ -58,7 +58,8 @@ declare global {
             <span class="text-dark font-semibold">Control de Acceso</span>
           </nav>
           <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight flex items-center gap-2">
-            <span>🛡️</span> Control de Acceso & Validador QR
+            <i class="fa-solid fa-shield-halved text-primary"></i>
+            <span>Control de Acceso & Validador QR</span>
           </h1>
           <p class="text-xs sm:text-sm text-dark/60 mt-1">
             Escanea los boletos de los asistentes en tiempo real y valida su ingreso al recinto.
@@ -83,8 +84,8 @@ declare global {
         </div>
 
         <!-- Event Badge (Doorman Mode) -->
-        <div *ngIf="isDoormanMode()" class="w-full sm:w-auto flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-primary/15 border border-primary/30 text-dark">
-          <span class="text-base">🎯</span>
+        <div *ngIf="isDoormanMode()" class="w-full sm:w-auto flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-primary/15 border border-primary/30 text-dark">
+          <i class="fa-solid fa-bullseye text-primary text-lg"></i>
           <div>
             <span class="text-[10px] uppercase tracking-wider font-extrabold text-primary block">Evento Asignado</span>
             <span class="text-xs font-black">{{ events()[0]?.name || 'Cargando espectáculo...' }}</span>
@@ -94,7 +95,9 @@ declare global {
 
       <!-- No event selected prompt -->
       <div *ngIf="!selectedEventId()" class="py-16 text-center rounded-3xl border border-dashed border-dark/20 p-8 bg-surface space-y-3">
-        <span class="text-4xl block">🎪</span>
+        <span class="text-4xl block text-dark/30">
+          <i class="fa-solid fa-calendar-days"></i>
+        </span>
         <h3 class="text-base font-bold text-dark">Selecciona un evento para iniciar el control de acceso</h3>
         <p class="text-xs text-dark/60 max-w-sm mx-auto">
           Elige el show correspondiente en el selector superior para comenzar a validar los códigos QR de los boletos.
@@ -155,7 +158,9 @@ declare global {
 
                   <!-- Camera inactive state -->
                   <div *ngIf="!isCameraActive()" class="text-center p-6 space-y-3 text-surface/70">
-                    <span class="text-4xl block">📷</span>
+                    <span class="text-4xl block opacity-60">
+                      <i class="fa-solid fa-camera"></i>
+                    </span>
                     <p class="text-xs">La cámara está apagada o no se han concedido permisos.</p>
                     <tf-button
                       type="button"
@@ -175,17 +180,19 @@ declare global {
                       type="button"
                       *ngIf="isCameraActive()"
                       (click)="stopCamera()"
-                      class="px-3 py-1.5 rounded-xl bg-dark/10 text-dark hover:bg-dark/20 text-xs font-bold transition-colors"
+                      class="px-3 py-1.5 rounded-xl bg-dark/10 text-dark hover:bg-dark/20 text-xs font-bold transition-colors flex items-center gap-1.5"
                     >
-                      ⏹ Detener Cámara
+                      <i class="fa-solid fa-stop text-xs"></i>
+                      <span>Detener Cámara</span>
                     </button>
                     <button
                       type="button"
                       *ngIf="!isCameraActive()"
                       (click)="startCamera()"
-                      class="px-3 py-1.5 rounded-xl bg-primary text-dark hover:bg-primary/90 text-xs font-bold transition-colors"
+                      class="px-3 py-1.5 rounded-xl bg-primary text-dark hover:bg-primary/90 text-xs font-bold transition-colors flex items-center gap-1.5"
                     >
-                      ▶ Iniciar Cámara
+                      <i class="fa-solid fa-play text-xs"></i>
+                      <span>Iniciar Cámara</span>
                     </button>
                   </div>
 
@@ -239,17 +246,11 @@ declare global {
             >
               <div class="flex items-center gap-3">
                 <span class="text-3xl">
-                  {{
-                    lastResult()!.result === 'valid'
-                      ? '✅'
-                      : lastResult()!.result === 'already_used'
-                      ? '⚠️'
-                      : lastResult()!.result === 'doors_not_open'
-                      ? '⏰'
-                      : lastResult()!.result === 'event_ended'
-                      ? '⌛'
-                      : '❌'
-                  }}
+                  <i *ngIf="lastResult()!.result === 'valid'" class="fa-solid fa-circle-check text-green-600"></i>
+                  <i *ngIf="lastResult()!.result === 'already_used'" class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                  <i *ngIf="lastResult()!.result === 'doors_not_open'" class="fa-solid fa-clock text-blue-600"></i>
+                  <i *ngIf="lastResult()!.result === 'event_ended'" class="fa-solid fa-hourglass-end text-purple-600"></i>
+                  <i *ngIf="!['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)" class="fa-solid fa-circle-xmark text-red-600"></i>
                 </span>
                 <div>
                   <h3 class="font-black text-lg leading-tight">
@@ -295,7 +296,12 @@ declare global {
               <div *ngIf="recentLogs().length > 0" class="divide-y divide-dark/10 -mx-4 -my-2 text-xs">
                 <div *ngFor="let log of recentLogs()" class="p-3 flex items-center justify-between hover:bg-dark/5 transition-colors">
                   <div class="flex items-center gap-2.5">
-                    <span>{{ log.result === 'valid' ? '🟢' : (log.result === 'already_used' ? '🟡' : (log.result === 'event_ended' ? '⌛' : '🔴')) }}</span>
+                    <span>
+                      <i *ngIf="log.result === 'valid'" class="fa-solid fa-circle text-green-500 text-xs"></i>
+                      <i *ngIf="log.result === 'already_used'" class="fa-solid fa-circle text-amber-500 text-xs"></i>
+                      <i *ngIf="log.result === 'event_ended'" class="fa-solid fa-hourglass-end text-purple-500 text-xs"></i>
+                      <i *ngIf="!['valid', 'already_used', 'event_ended'].includes(log.result)" class="fa-solid fa-circle text-red-500 text-xs"></i>
+                    </span>
                     <div>
                       <p class="font-bold text-dark leading-tight">{{ log.message }}</p>
                       <span class="font-mono text-[10px] text-dark/40">{{ log.scanned_code }}</span>

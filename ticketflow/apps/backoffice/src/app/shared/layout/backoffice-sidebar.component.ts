@@ -31,8 +31,8 @@ interface NavItem {
       <!-- Brand Header -->
       <div class="flex items-center justify-between h-16 px-6 border-b border-white/10 bg-black/40">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-accent text-dark font-black text-xl flex items-center justify-center shadow-md">
-            ⚡
+          <div class="w-9 h-9 rounded-xl bg-accent text-dark font-black text-base flex items-center justify-center shadow-md">
+            <i class="fa-solid fa-bolt"></i>
           </div>
           <div>
             <h1 class="font-black text-lg tracking-tight text-white leading-none">TicketFlow</h1>
@@ -62,7 +62,7 @@ interface NavItem {
           class="flex items-center gap-3 px-4 py-3 rounded-xl text-surface/70 hover:text-white hover:bg-white/5 transition-all text-sm group"
           (click)="closeSidebar.emit()"
         >
-          <span class="text-lg group-hover:scale-110 transition-transform">{{ item.icon }}</span>
+          <i [class]="item.icon + ' text-base group-hover:scale-110 transition-transform w-5 text-center'"></i>
           <span>{{ item.label }}</span>
         </a>
       </nav>
@@ -106,13 +106,13 @@ export class BackofficeSidebarComponent {
   @Output() closeSidebar = new EventEmitter<void>();
 
   readonly navItems: NavItem[] = [
-    { label: 'Métricas Globales', route: '/dashboard', icon: '📊', exact: true },
-    { label: 'Eventos Globales', route: '/events', icon: '🎪' },
-    { label: 'Artistas & Finanzas', route: '/artists', icon: '🎤' },
-    { label: 'Liquidaciones / Payouts', route: '/payouts', icon: '💳' },
-    { label: 'Gestión de Reembolsos', route: '/refunds', icon: '💸' },
-    { label: 'Moderar Recintos', route: '/venues', icon: '📍' },
-    { label: 'Usuarios y Roles', route: '/users', icon: '👥' },
+    { label: 'Métricas Globales', route: '/dashboard', icon: 'fa-solid fa-chart-pie', exact: true },
+    { label: 'Eventos Globales', route: '/events', icon: 'fa-solid fa-calendar-days' },
+    { label: 'Artistas & Finanzas', route: '/artists', icon: 'fa-solid fa-microphone-lines' },
+    { label: 'Liquidaciones / Payouts', route: '/payouts', icon: 'fa-solid fa-credit-card' },
+    { label: 'Gestión de Reembolsos', route: '/refunds', icon: 'fa-solid fa-rotate-left' },
+    { label: 'Moderar Recintos', route: '/venues', icon: 'fa-solid fa-location-dot' },
+    { label: 'Usuarios y Roles', route: '/users', icon: 'fa-solid fa-users-gear' },
   ];
 
   get userInitial(): string {

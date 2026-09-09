@@ -38,7 +38,7 @@ declare global { interface Window { L?: LeafletStatic; } }
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-extrabold text-dark flex items-center gap-2">
-          🗺️ Ubicación del Recinto
+          <i class="fa-solid fa-map-location-dot text-cyan-600"></i> Ubicación del Recinto
         </h3>
         <a
           *ngIf="lat && lng"
@@ -47,7 +47,7 @@ declare global { interface Window { L?: LeafletStatic; } }
           rel="noopener noreferrer"
           class="text-xs font-bold text-primary hover:underline flex items-center gap-1"
         >
-          Cómo llegar ↗
+          Cómo llegar <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
         </a>
       </div>
 
@@ -58,8 +58,8 @@ declare global { interface Window { L?: LeafletStatic; } }
       ></div>
 
       <!-- Venue name -->
-      <p *ngIf="venueName" class="text-xs text-dark/60 flex items-center gap-1">
-        <span>📍</span>
+      <p *ngIf="venueName" class="text-xs text-dark/60 flex items-center gap-1.5">
+        <i class="fa-solid fa-location-dot text-slate-400"></i>
         <span>{{ venueName }}</span>
       </p>
     </div>

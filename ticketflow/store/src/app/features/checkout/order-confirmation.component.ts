@@ -35,7 +35,7 @@ import {
         <!-- Success Hero Header -->
         <div class="text-center space-y-4">
           <div class="inline-flex w-20 h-20 rounded-full bg-primary/20 text-primary items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
-            ✓
+            <i class="fa-solid fa-check"></i>
           </div>
 
           <h1 class="text-3xl sm:text-4xl font-black text-dark tracking-tight">
@@ -59,7 +59,7 @@ import {
             <span class="text-[10px] font-bold uppercase tracking-wider text-primary block">Detalles del Espectáculo</span>
             <h2 class="text-xl font-extrabold text-dark">{{ order()!.events?.name }}</h2>
             <p class="text-xs text-dark/60">
-              📅 {{ order()!.events?.event_date | date:'fullDate' }} · {{ order()!.events?.event_date | date:'shortTime' }} hrs
+              <i class="fa-regular fa-calendar mr-1"></i> {{ order()!.events?.event_date | date:'fullDate' }} · {{ order()!.events?.event_date | date:'shortTime' }} hrs
             </p>
           </div>
 
@@ -109,13 +109,13 @@ import {
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <a [routerLink]="['/my-tickets', order()!.id]" class="w-full sm:w-auto">
             <tf-button variant="primary" size="lg" class="w-full sm:w-auto">
-              📲 Ver Pase Digital (QR & PDF)
+              <i class="fa-solid fa-qrcode mr-1.5"></i> Ver Pase Digital (QR & PDF)
             </tf-button>
           </a>
 
           <a routerLink="/my-tickets" class="w-full sm:w-auto">
             <tf-button variant="secondary" size="lg" class="w-full sm:w-auto">
-              🎟️ Todos Mis Boletos
+              <i class="fa-solid fa-ticket mr-1.5"></i> Todos Mis Boletos
             </tf-button>
           </a>
 

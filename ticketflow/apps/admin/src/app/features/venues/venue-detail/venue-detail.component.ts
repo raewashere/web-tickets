@@ -49,7 +49,7 @@ import {
               {{ venue()?.name }}
             </h1>
             <tf-badge *ngIf="venue()?.verified" variant="primary">
-              ✓ Verificada
+              <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
             </tf-badge>
           </div>
         </div>
@@ -58,11 +58,11 @@ import {
         <div class="flex items-center gap-3" *ngIf="venue()">
           <a [routerLink]="['/venues', venue()!.id, 'edit']">
             <tf-button variant="secondary" size="sm">
-              ✏️ Editar Sede
+              <i class="fa-solid fa-pen mr-1.5"></i> Editar Sede
             </tf-button>
           </a>
           <tf-button variant="danger" size="sm" (click)="onDeleteVenue()" [disabled]="isDeletingVenue()">
-            🗑️ Eliminar
+            <i class="fa-solid fa-trash mr-1.5"></i> Eliminar
           </tf-button>
         </div>
       </div>
@@ -78,9 +78,7 @@ import {
         *ngIf="errorMessage()"
         class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
       >
-        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
+        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -102,10 +100,9 @@ import {
                   rel="noopener noreferrer"
                   class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-dark/5 hover:bg-dark/10 text-xs font-semibold text-dark transition-colors"
                 >
-                  <span>📍 Ver en Google Maps</span>
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
+                  <i class="fa-solid fa-location-dot text-primary"></i>
+                  <span>Ver en Google Maps</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                 </a>
               </div>
 
@@ -134,17 +131,17 @@ import {
                 [href]="venue()!.map_url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-xs text-primary hover:underline font-semibold flex items-center gap-1 justify-center"
+                class="text-xs text-primary hover:underline font-semibold flex items-center gap-1.5 justify-center"
               >
                 <span>Ver plano en tamaño completo</span>
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
               </a>
             </div>
 
             <div *ngIf="!venue()!.map_url" class="py-8 text-center text-dark/40 text-xs">
-              <div class="text-3xl mb-1">🗺️</div>
+              <div class="text-3xl mb-1 text-dark/30">
+                <i class="fa-regular fa-map"></i>
+              </div>
               <span>No se ha subido un plano o croquis para esta sede.</span>
             </div>
           </tf-card>
@@ -166,33 +163,31 @@ import {
                 size="sm"
                 (click)="openConfigModal()"
               >
-                + Nuevo Aforo
+                <i class="fa-solid fa-plus mr-1"></i> Agregar Aforo
               </tf-button>
             </div>
 
             <!-- Configurations List -->
-            <div *ngIf="configurations().length > 0" class="space-y-3">
+            <div *ngIf="configurations().length > 0" class="divide-y divide-dark/10">
               <div
                 *ngFor="let cfg of configurations()"
-                class="p-4 rounded-xl border border-dark/10 bg-dark/5 hover:border-dark/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                class="py-4 flex items-center justify-between gap-4 first:pt-0 last:pb-0"
               >
                 <div class="space-y-1">
                   <div class="flex items-center gap-2">
-                    <span class="font-bold text-dark text-sm">{{ cfg.name }}</span>
-                    <tf-badge *ngIf="cfg.is_default" variant="accent">
-                      Predeterminado
-                    </tf-badge>
+                    <h4 class="font-bold text-sm text-dark">{{ cfg.name }}</h4>
+                    <tf-badge *ngIf="cfg.is_default" variant="primary">Predeterminado</tf-badge>
                   </div>
-                  <p *ngIf="cfg.description" class="text-xs text-dark/60 max-w-md">
+                  <p *ngIf="cfg.description" class="text-xs text-dark/60">
                     {{ cfg.description }}
                   </p>
                 </div>
 
                 <div class="flex items-center gap-4">
-                  <!-- Capacity pill -->
+                  <!-- Capacity Counter -->
                   <div class="text-right">
-                    <span class="text-xs text-dark/50 block">Capacidad:</span>
-                    <span class="font-extrabold text-sm text-dark font-mono">
+                    <span class="text-[10px] uppercase font-bold text-dark/50 block">Capacidad</span>
+                    <span class="font-mono font-extrabold text-sm text-dark">
                       {{ (cfg.capacity || 0) | number }} personas
                     </span>
                   </div>
@@ -205,7 +200,7 @@ import {
                       title="Editar configuración"
                       class="p-2 rounded-lg text-dark/60 hover:text-dark hover:bg-dark/10 transition-colors text-xs"
                     >
-                      ✏️
+                      <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button
                       type="button"
@@ -213,7 +208,7 @@ import {
                       title="Eliminar configuración"
                       class="p-2 rounded-lg text-contrast/60 hover:text-contrast hover:bg-contrast/10 transition-colors text-xs"
                     >
-                      🗑️
+                      <i class="fa-solid fa-trash-can"></i>
                     </button>
                   </div>
                 </div>
@@ -222,13 +217,15 @@ import {
 
             <!-- Empty State for Configurations -->
             <div *ngIf="configurations().length === 0" class="py-12 text-center text-dark/60">
-              <div class="text-4xl mb-2">🎭</div>
+              <div class="text-4xl mb-2 text-dark/30">
+                <i class="fa-solid fa-shapes"></i>
+              </div>
               <h4 class="text-sm font-bold text-dark">No hay configuraciones de aforo</h4>
               <p class="text-xs text-dark/50 max-w-sm mx-auto mt-1 mb-4">
                 Define al menos una capacidad (ej. "Aforo Completo") para poder asignar esta sede a tus eventos.
               </p>
               <tf-button variant="primary" size="sm" (click)="openConfigModal()">
-                Crear Primera Configuración
+                <i class="fa-solid fa-plus mr-1"></i> Crear Primera Configuración
               </tf-button>
             </div>
           </tf-card>

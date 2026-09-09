@@ -27,7 +27,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           routerLink="/my-tickets"
           class="inline-flex items-center gap-2 text-xs font-bold text-dark/60 hover:text-primary transition-colors"
         >
-          ← Volver a Mis Boletos
+          <i class="fa-solid fa-arrow-left"></i> Volver a Mis Boletos
         </a>
 
         <button
@@ -36,7 +36,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           (click)="printPass()"
           class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark/10 hover:bg-dark/20 text-dark text-xs font-bold transition-colors"
         >
-          <span>🖨️</span>
+          <i class="fa-solid fa-print"></i>
           <span>Imprimir / Guardar PDF</span>
         </button>
       </div>
@@ -48,7 +48,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
         [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
       >
         <div class="flex items-center gap-3 text-sm font-semibold">
-          <span>{{ feedbackType() === 'success' ? '✅' : '⚠️' }}</span>
+          <i class="fa-solid" [ngClass]="feedbackType() === 'success' ? 'fa-circle-check text-emerald-600' : 'fa-triangle-exclamation text-rose-600'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -56,7 +56,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           (click)="feedbackMessage.set(null)"
           class="text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5"
         >
-          ✕
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
@@ -68,7 +68,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
 
       <!-- Not found -->
       <div *ngIf="!isLoading() && !order()" class="py-16 text-center space-y-3 print:hidden">
-        <span class="text-4xl block">🎫</span>
+        <i class="fa-solid fa-ticket text-4xl text-slate-300 block mb-2"></i>
         <p class="text-dark/60 text-sm">No se encontró la orden solicitada.</p>
         <a routerLink="/my-tickets">
           <tf-button variant="primary" size="sm">Ver Mis Boletos</tf-button>
@@ -86,9 +86,9 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             </p>
             <h1 class="text-2xl font-black text-dark">{{ order()!.events?.name }}</h1>
             <p class="text-sm text-dark/60 mt-0.5">
-              📍 {{ order()!.events?.venues?.name }}
+              <i class="fa-solid fa-location-dot mr-1"></i> {{ order()!.events?.venues?.name }}
               &nbsp;·&nbsp;
-              📅 {{ order()!.events?.event_date | date:'mediumDate' }}
+              <i class="fa-regular fa-calendar mr-1"></i> {{ order()!.events?.event_date | date:'mediumDate' }}
             </p>
           </div>
 
@@ -98,19 +98,19 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
               *ngIf="order()!.status === 'refunded'"
               class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
             >
-              💸 Reembolsado
+              <i class="fa-solid fa-money-bill-transfer mr-1"></i> Reembolsado
             </span>
             <span
               *ngIf="order()!.status === 'confirmed' && currentRefund?.status === 'pending'"
               class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"
             >
-              ⏳ En Revisión de Reembolso
+              <i class="fa-solid fa-clock mr-1"></i> En Revisión de Reembolso
             </span>
             <span
               *ngIf="order()!.status === 'confirmed' && currentRefund?.status === 'rejected'"
               class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200"
             >
-              ❌ Reembolso Rechazado
+              <i class="fa-solid fa-circle-xmark mr-1"></i> Reembolso Rechazado
             </span>
             <tf-badge *ngIf="order()!.status === 'confirmed' && !currentRefund" variant="success">
               Confirmada
@@ -130,7 +130,9 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
         >
           <div class="flex items-center justify-between font-bold">
             <span>
-              {{ currentRefund.status === 'pending' ? '⏳ Tu solicitud de reembolso está en revisión por el organizador' : currentRefund.status === 'approved' || order()!.status === 'refunded' ? '✅ Reembolso completado con éxito' : '❌ Solicitud de reembolso rechazada' }}
+              <ng-container *ngIf="currentRefund.status === 'pending'"><i class="fa-solid fa-clock mr-1"></i> Tu solicitud de reembolso está en revisión por el organizador</ng-container>
+              <ng-container *ngIf="currentRefund.status === 'approved' || order()!.status === 'refunded'"><i class="fa-solid fa-circle-check mr-1"></i> Reembolso completado con éxito</ng-container>
+              <ng-container *ngIf="currentRefund.status === 'rejected'"><i class="fa-solid fa-circle-xmark mr-1"></i> Solicitud de reembolso rechazada</ng-container>
             </span>
             <span class="font-mono text-[11px] opacity-75">{{ currentRefund.created_at | date:'medium' }}</span>
           </div>
@@ -160,7 +162,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
                 {{ order()!.events?.name }}
               </span>
             </div>
-            <span class="text-2xl">{{ order()!.status === 'refunded' ? '🚫' : '🎟️' }}</span>
+            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban' : 'fa-ticket'"></i></span>
           </div>
 
           <!-- QR area -->
@@ -170,7 +172,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
               *ngIf="order()!.status === 'refunded'"
               class="w-full p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-center space-y-1"
             >
-              <p class="font-black text-sm uppercase tracking-wider">⛔ Este pase ha sido reembolsado y cancelado</p>
+              <p class="font-black text-sm uppercase tracking-wider flex items-center justify-center gap-1.5"><i class="fa-solid fa-ban text-rose-600"></i> Este pase ha sido reembolsado y cancelado</p>
               <p class="text-[11px] text-rose-600">No es válido para el acceso al recinto.</p>
             </div>
 
@@ -258,7 +260,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             (click)="printPass()"
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-dark text-surface hover:bg-black font-bold text-xs transition-all shadow-md"
           >
-            <span>🖨️</span>
+            <i class="fa-solid fa-print"></i>
             <span>Imprimir / Descargar en PDF</span>
           </button>
 
@@ -268,13 +270,13 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             (click)="showRefundModal.set(true)"
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-all shadow-sm"
           >
-            <span>💸</span>
+            <i class="fa-solid fa-money-bill-transfer"></i>
             <span>Solicitar Reembolso</span>
           </button>
         </div>
 
         <p *ngIf="order()!.status === 'confirmed'" class="text-center text-xs text-dark/40 print:hidden">
-          💡 Puedes imprimir esta página o tomar captura de pantalla para acceder sin internet.
+          <i class="fa-regular fa-lightbulb text-amber-500 mr-1"></i> Puedes imprimir esta página o tomar captura de pantalla para acceder sin internet.
         </p>
       </div>
 
@@ -290,7 +292,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             (click)="closeRefundModal()"
             class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 font-bold flex items-center justify-center transition-colors"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
@@ -309,7 +311,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           <!-- Notice Alert -->
           <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
             <p class="font-bold flex items-center gap-1.5">
-              <span>⚠️</span> Políticas de Devolución:
+              <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Políticas de Devolución:
             </p>
             <p class="text-[11px] leading-relaxed">
               Tu solicitud será evaluada por el organizador del evento. Una vez aprobado, el importe se reintegrará y los boletos quedarán inválidos de forma permanente.

@@ -51,7 +51,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         *ngIf="errorMessage()"
         class="p-8 rounded-3xl bg-rose-50 border border-rose-200 text-rose-700 text-center space-y-4 max-w-md mx-auto"
       >
-        <span class="text-4xl block">😕</span>
+        <i class="fa-solid fa-triangle-exclamation text-4xl text-rose-500 block mb-2"></i>
         <h3 class="text-lg font-bold">{{ errorMessage() }}</h3>
         <a routerLink="/search">
           <button
@@ -77,7 +77,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 class="w-full h-full object-cover object-center"
               />
               <div *ngIf="!event()!.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                <span class="text-6xl">🎸</span>
+                <i class="fa-solid fa-guitar text-6xl text-slate-300"></i>
                 <span class="text-sm font-bold mt-2 text-slate-500">TicketFlow Live Session</span>
               </div>
 
@@ -92,7 +92,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               <!-- Artist and Show Name -->
               <div class="space-y-2">
                 <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-600">
-                  <span>🎤 Artista Principal</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-microphone"></i> Artista Principal</span>
                   <span class="text-slate-300">·</span>
                   <span class="text-slate-700">{{ event()!.artists?.name }}</span>
                 </div>
@@ -121,7 +121,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
                   <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">Recinto & Aforo</span>
                   <p class="font-extrabold text-slate-900 text-base flex items-center gap-1.5 truncate">
-                    <span>📍</span>
+                    <i class="fa-solid fa-location-dot text-slate-400"></i>
                     <span class="truncate">{{ event()!.venues?.name || 'Recinto por confirmar' }}</span>
                   </p>
                   <p class="text-xs text-slate-600">
@@ -145,7 +145,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               <!-- Fallback: simple link if no coordinates -->
               <div *ngIf="!event()!.venues?.latitude && !event()!.venues?.longitude && event()!.venues?.name" class="pt-1">
                 <p class="text-xs text-slate-500 flex items-center gap-1">
-                  <span>📍</span>
+                  <i class="fa-solid fa-location-dot text-slate-400"></i>
                   <span>{{ event()!.venues!.name }}</span>
                 </p>
               </div>
@@ -163,7 +163,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <!-- Venue Croquis/Floor Plan Card if available -->
           <div *ngIf="event()!.venues?.map_url" class="p-6 rounded-3xl border border-slate-200 bg-white space-y-4 shadow-sm">
             <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
-              <span>🏟️</span> Croquis del Recinto
+              <i class="fa-solid fa-map-location-dot text-cyan-600"></i> Croquis del Recinto
             </h3>
             <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 aspect-[16/9] relative">
               <img
@@ -206,7 +206,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <!-- Artist Photo Gallery -->
             <div *ngIf="event()!.artists?.gallery_urls && event()!.artists!.gallery_urls!.length > 0" class="space-y-3 border-t border-slate-100 pt-4">
               <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                <span>📸</span> Galería de Fotos
+                <i class="fa-solid fa-camera text-slate-500"></i> Galería de Fotos
               </h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 <div
@@ -233,7 +233,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               *ngIf="isEventEnded()"
               class="p-6 sm:p-7 rounded-3xl border border-amber-200 bg-amber-50 shadow-md space-y-3 text-center"
             >
-              <span class="text-4xl block">⌛</span>
+              <i class="fa-solid fa-hourglass-end text-4xl text-amber-600 block mb-2"></i>
               <h3 class="text-lg font-black text-amber-950">Evento Finalizado</h3>
               <p class="text-xs text-amber-800 leading-relaxed">
                 Este espectáculo concluyó o la vigencia para adquirir boletos ha expirado.
@@ -255,7 +255,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 *ngIf="reserveError()"
                 class="mb-4 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2"
               >
-                <span class="shrink-0 mt-0.5">⚠️</span>
+                <i class="fa-solid fa-triangle-exclamation shrink-0 mt-0.5 text-rose-600"></i>
                 <span>{{ reserveError() }}</span>
               </div>
 
@@ -276,7 +276,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <!-- Guarantee Box -->
             <div class="p-5 rounded-2xl bg-slate-100 border border-slate-200 space-y-2 text-xs text-slate-600 shadow-sm">
               <div class="font-bold text-slate-900 flex items-center gap-1.5">
-                <span>🛡️</span>
+                <i class="fa-solid fa-shield-halved text-cyan-600"></i>
                 <span>Garantía TicketFlow</span>
               </div>
               <p class="leading-relaxed">
@@ -302,9 +302,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="selectedGalleryPhoto.set(null)"
-            class="absolute top-4 right-4 w-9 h-9 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center text-lg transition"
+            class="absolute top-4 right-4 w-9 h-9 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center text-sm transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
       </div>

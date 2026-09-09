@@ -48,7 +48,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent shadow-sm transition-all"
             />
             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-sm">
-              🔍
+              <i class="fa-solid fa-magnifying-glass"></i>
             </span>
             <button
               type="button"
@@ -116,7 +116,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             *ngIf="!isLoading() && results() && results()!.events.length === 0"
             class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm"
           >
-            <span class="text-5xl block mb-2">🔍</span>
+            <i class="fa-solid fa-magnifying-glass text-4xl text-slate-400 block mb-3"></i>
             <h3 class="text-lg font-bold text-slate-900">No se encontraron eventos</h3>
             <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-1 mb-4">
               Prueba modificando tus términos de búsqueda o eliminando los filtros de categoría y fecha.
@@ -137,11 +137,11 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           >
             <button
               type="button"
-              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors"
+              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1.5"
               [disabled]="results()!.page <= 1"
               (click)="changePage(results()!.page - 1)"
             >
-              ← Anterior
+              <i class="fa-solid fa-arrow-left"></i> Anterior
             </button>
 
             <span class="text-xs font-bold text-slate-700">
@@ -150,11 +150,11 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
             <button
               type="button"
-              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors"
+              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1.5"
               [disabled]="results()!.page >= results()!.totalPages"
               (click)="changePage(results()!.page + 1)"
             >
-              Siguiente →
+              Siguiente <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -175,7 +175,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="closeArtistModal()"
             class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm font-bold transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
@@ -211,7 +211,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <!-- Gallery Photos -->
           <div *ngIf="selectedArtist()?.gallery_urls && selectedArtist()!.gallery_urls!.length > 0" class="space-y-3 border-t border-slate-100 pt-4">
             <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-              <span>📸</span> Galería de Fotos
+              <i class="fa-solid fa-camera text-slate-500"></i> Galería de Fotos
             </h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div
@@ -245,9 +245,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="selectedGalleryPhoto.set(null)"
-            class="absolute top-4 right-4 w-9 h-9 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center text-lg transition"
+            class="absolute top-4 right-4 w-9 h-9 bg-black/70 hover:bg-black text-white rounded-full flex items-center justify-center text-sm transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
       </div>

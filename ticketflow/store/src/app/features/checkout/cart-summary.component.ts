@@ -44,7 +44,7 @@ import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.compone
         *ngIf="!checkout.cart() || checkout.cart()!.items.length === 0"
         class="py-20 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm space-y-4"
       >
-        <span class="text-5xl block">🛒</span>
+        <i class="fa-solid fa-cart-shopping text-5xl text-slate-300 block mb-2"></i>
         <h3 class="text-lg font-bold text-slate-900">Tu carrito está vacío</h3>
         <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
           No tienes boletos reservados en este momento. Explora nuestra cartelera para conseguir tus entradas.
@@ -113,7 +113,7 @@ import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.compone
             <!-- Coupon Code Section -->
             <div class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-4">
               <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
-                <span>🏷️</span> Código Promocional o Cortesía
+                <i class="fa-solid fa-tag text-cyan-600"></i> Código Promocional o Cortesía
               </h3>
 
               <!-- If coupon applied -->
@@ -126,7 +126,7 @@ import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.compone
                     <span class="font-mono font-black text-sm text-emerald-800 uppercase">
                       {{ checkout.appliedCoupon()!.code }}
                     </span>
-                    <span class="text-xs font-bold text-emerald-700">✓ Cupón Aplicado</span>
+                    <span class="text-xs font-bold text-emerald-700"><i class="fa-solid fa-check mr-1"></i>Cupón Aplicado</span>
                     <span
                       *ngIf="checkout.appliedCoupon()!.ticket_sku"
                       class="text-[10px] font-mono font-bold bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded"
@@ -211,13 +211,13 @@ import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.compone
                     type="button"
                     class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
                   >
-                    <span>Proceder al Pago Seguro →</span>
+                    <span>Proceder al Pago Seguro <i class="fa-solid fa-arrow-right ml-1"></i></span>
                   </button>
                 </a>
               </div>
 
               <div class="pt-2 text-[10px] text-slate-400 text-center space-y-1">
-                <p>🔒 Transacción cifrada vía SSL de 256 bits.</p>
+                <p><i class="fa-solid fa-lock text-cyan-400 mr-1"></i> Transacción cifrada vía SSL de 256 bits.</p>
                 <p>Aceptamos PayPal, tarjetas de crédito y débito.</p>
               </div>
             </div>

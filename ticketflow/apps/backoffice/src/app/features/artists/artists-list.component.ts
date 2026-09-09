@@ -31,7 +31,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           (click)="loadArtists()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-arrows-rotate"></i>
           <span>Actualizar Lista</span>
         </button>
       </div>
@@ -45,7 +45,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             placeholder="Buscar por artista, email o RFC..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">🔍</span>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-dark/40 text-xs"></i>
         </div>
 
         <div class="flex items-center gap-2 w-full md:w-auto">
@@ -111,7 +111,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                       class="w-10 h-10 rounded-full object-cover border border-dark/10 shadow-xs flex-shrink-0"
                     />
                     <div *ngIf="!artist.photo_url" class="w-10 h-10 rounded-full bg-accent/20 text-accent font-bold flex items-center justify-center text-sm flex-shrink-0">
-                      🎤
+                      <i class="fa-solid fa-microphone-lines"></i>
                     </div>
                     <div>
                       <span class="font-extrabold text-dark block">{{ artist.artist_name }}</span>
@@ -163,7 +163,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
       <!-- Empty State -->
       <div *ngIf="!isLoading() && filteredArtists().length === 0" class="p-12 text-center bg-white rounded-2xl border border-dashed border-dark/20 space-y-2">
-        <span class="text-3xl">🎤</span>
+        <span class="text-3xl block text-dark/30">
+          <i class="fa-solid fa-microphone-lines"></i>
+        </span>
         <h3 class="font-bold text-dark text-base">No se encontraron artistas</h3>
         <p class="text-xs text-dark/50">Ajusta los términos de búsqueda o filtros.</p>
       </div>

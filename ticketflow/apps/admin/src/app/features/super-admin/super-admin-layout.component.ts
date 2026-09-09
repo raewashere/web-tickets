@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="bg-dark text-white font-black shadow-sm"
             class="px-4 py-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/5 font-bold transition whitespace-nowrap flex items-center gap-2"
           >
-            <span>📊</span>
+            <i class="fa-solid fa-chart-pie"></i>
             <span>Métricas Globales</span>
           </a>
 
@@ -26,7 +26,7 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="bg-dark text-white font-black shadow-sm"
             class="px-4 py-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/5 font-bold transition whitespace-nowrap flex items-center gap-2"
           >
-            <span>📍</span>
+            <i class="fa-solid fa-location-dot"></i>
             <span>Moderar Recintos</span>
           </a>
 
@@ -35,7 +35,7 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="bg-dark text-white font-black shadow-sm"
             class="px-4 py-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/5 font-bold transition whitespace-nowrap flex items-center gap-2"
           >
-            <span>👥</span>
+            <i class="fa-solid fa-users-gear"></i>
             <span>Gestionar Usuarios & Roles</span>
           </a>
         </nav>

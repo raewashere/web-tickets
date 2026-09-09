@@ -39,7 +39,7 @@ import {
 
         <div *ngIf="artist() && !isEditing()">
           <tf-button variant="primary" (onClick)="isEditing.set(true)">
-            <span class="mr-1.5">✏️</span>
+            <i class="fa-solid fa-pen mr-1.5"></i>
             Editar Perfil
           </tf-button>
         </div>
@@ -51,15 +51,15 @@ import {
         class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between"
       >
         <div class="flex items-center gap-2">
-          <span class="text-lg">✅</span>
+          <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
           <span>{{ notification() }}</span>
         </div>
         <button
           type="button"
           (click)="notification.set(null)"
-          class="text-emerald-700 hover:text-emerald-900 font-bold text-lg"
+          class="text-emerald-700 hover:text-emerald-900"
         >
-          ×
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
@@ -72,7 +72,7 @@ import {
       <!-- Edit Mode Form -->
       <div *ngIf="!isLoading() && (isEditing() || !artist())">
         <div *ngIf="!artist()" class="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/20 text-dark text-sm">
-          <p class="font-bold text-dark mb-1">¡Bienvenido a TicketFlow! 👋</p>
+          <p class="font-bold text-dark mb-1">¡Bienvenido a TicketFlow!</p>
           <p class="text-dark/70">
             Completa los datos de tu perfil de artista para comenzar a crear y publicar tus eventos.
           </p>
@@ -177,9 +177,9 @@ import {
             <button
               type="button"
               (click)="selectedGalleryPhoto.set(null)"
-              class="absolute top-4 right-4 w-9 h-9 bg-black/60 text-white rounded-full flex items-center justify-center text-lg hover:bg-black/90 transition"
+              class="absolute top-4 right-4 w-9 h-9 bg-black/60 text-white rounded-full flex items-center justify-center hover:bg-black/90 transition"
             >
-              ✕
+              <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
         </div>

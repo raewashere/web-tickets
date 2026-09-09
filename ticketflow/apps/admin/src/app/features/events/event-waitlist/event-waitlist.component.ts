@@ -15,8 +15,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-dark/10">
         <div>
           <div class="flex items-center gap-2">
-            <h3 class="text-base sm:text-lg font-bold text-dark">
-              🔔 Lista de Espera
+            <h3 class="text-base sm:text-lg font-bold text-dark flex items-center gap-2">
+              <i class="fa-solid fa-bell text-amber-500"></i> Lista de Espera
             </h3>
             <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800 border border-amber-200">
               {{ pendingCount() }} pendientes
@@ -34,7 +34,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             class="px-2.5 py-1.5 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-xs transition"
             title="Refrescar lista"
           >
-            🔄
+            <i class="fa-solid fa-rotate-right" [class.animate-spin]="isLoading()"></i>
           </button>
 
           <button
@@ -43,7 +43,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="openNotifyModal()"
             class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-sm transition flex items-center gap-1.5"
           >
-            <span>📢</span>
+            <i class="fa-solid fa-bullhorn"></i>
             <span>Notificar Siguientes</span>
           </button>
         </div>
@@ -56,7 +56,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'"
       >
         <span>{{ feedbackMessage() }}</span>
-        <button type="button" (click)="feedbackMessage.set(null)" class="text-xs px-1 hover:opacity-75">✕</button>
+        <button type="button" (click)="feedbackMessage.set(null)" class="text-xs px-1 hover:opacity-75">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
       <!-- Loading State -->
@@ -67,7 +69,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
       <!-- Empty State -->
       <div *ngIf="!isLoading() && entries().length === 0" class="py-8 text-center text-dark/50 space-y-1">
-        <span class="text-3xl block">📋</span>
+        <span class="text-3xl block text-dark/30">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </span>
         <p class="text-xs font-semibold">No hay usuarios registrados en la lista de espera.</p>
         <p class="text-[11px] text-dark/40">Cuando las localidades se agoten, los compradores podrán anotarse aquí.</p>
       </div>
@@ -83,51 +87,40 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <th class="p-2.5">Localidad</th>
                 <th class="p-2.5">Teléfono</th>
                 <th class="p-2.5">Fecha</th>
-                <th class="p-2.5 pr-3 text-right">Estado</th>
+                <th class="p-2.5 text-center">Estado</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-dark/5">
-              <tr *ngFor="let entry of entries(); let i = index" class="hover:bg-dark/[0.02]">
-                <!-- Queue Position -->
-                <td class="p-2.5 pl-3 text-center font-mono font-bold text-dark/60">
-                  #{{ i + 1 }}
-                </td>
-
-                <!-- Customer Info -->
+            <tbody class="divide-y divide-dark/5 text-dark">
+              <tr *ngFor="let entry of entries(); let i = index" class="hover:bg-dark/5 transition">
+                <td class="p-2.5 pl-3 text-center font-black text-dark/40">#{{ i + 1 }}</td>
                 <td class="p-2.5">
-                  <div class="font-bold text-dark">{{ entry.user_display_name || 'Comprador' }}</div>
-                  <div class="text-[10px] text-dark/50">{{ entry.email }}</div>
+                  <p class="font-bold">{{ entry.user_display_name || 'Usuario' }}</p>
+                  <p class="text-[11px] text-dark/50">{{ entry.email }}</p>
                 </td>
-
-                <!-- Ticket Tier -->
-                <td class="p-2.5 font-semibold text-dark/80">
-                  {{ entry.ticket_type_name }}
+                <td class="p-2.5">
+                  <span class="font-medium px-2 py-0.5 rounded-md bg-dark/5 text-dark/80 text-[11px]">
+                    {{ entry.ticket_type_name || 'Cualquier localidad' }}
+                  </span>
                 </td>
-
-                <!-- Phone -->
-                <td class="p-2.5 text-dark/60 font-mono text-[11px]">
-                  {{ entry.phone_number || '—' }}
+                <td class="p-2.5 text-dark/70 font-mono text-[11px]">
+                  {{ entry.phone_number || '-' }}
                 </td>
-
-                <!-- Registered At -->
-                <td class="p-2.5 text-dark/50 whitespace-nowrap text-[11px]">
-                  {{ entry.created_at | date:'shortDate' }}
+                <td class="p-2.5 text-dark/50 text-[11px]">
+                  {{ entry.created_at | date:'short' }}
                 </td>
-
-                <!-- Status Badge -->
-                <td class="p-2.5 pr-3 text-right">
+                <td class="p-2.5 text-center">
                   <span
                     *ngIf="entry.status === 'pending'"
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800"
                   >
-                    ⏳ Pendiente
+                    <i class="fa-regular fa-clock text-[9px]"></i> Pendiente
                   </span>
                   <span
                     *ngIf="entry.status === 'notified'"
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800"
                     [title]="'Notificado: ' + (entry.notified_at | date:'medium')"
                   >
-                    🔔 Notificado
+                    <i class="fa-solid fa-bell text-[9px]"></i> Notificado
                   </span>
                 </td>
               </tr>
@@ -147,7 +140,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="showNotifyModal.set(false)"
             class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
@@ -190,8 +183,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               </div>
             </div>
 
-            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px] leading-relaxed">
-              💡 <strong>Regla FIFO:</strong> Se notificará en estricto orden cronológico a los primeros {{ notifyBatchSize }} usuarios registrados pendientes.
+            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px] leading-relaxed flex items-start gap-2">
+              <i class="fa-solid fa-lightbulb text-amber-600 mt-0.5 flex-shrink-0"></i>
+              <span><strong>Regla FIFO:</strong> Se notificará en estricto orden cronológico a los primeros {{ notifyBatchSize }} usuarios registrados pendientes.</span>
             </div>
           </div>
 

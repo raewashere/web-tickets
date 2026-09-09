@@ -58,22 +58,22 @@ import {
         <tf-stat-card
           label="Total Eventos"
           [value]="events().length"
-          icon="🎪"
+          icon="fa-solid fa-calendar-days"
         ></tf-stat-card>
         <tf-stat-card
           label="Publicados"
           [value]="publishedCount()"
-          icon="🚀"
+          icon="fa-solid fa-circle-check"
         ></tf-stat-card>
         <tf-stat-card
           label="Borradores"
           [value]="draftCount()"
-          icon="📝"
+          icon="fa-solid fa-pen-ruler"
         ></tf-stat-card>
         <tf-stat-card
           label="Completados"
           [value]="completedCount()"
-          icon="✓"
+          icon="fa-solid fa-flag-checkered"
         ></tf-stat-card>
       </div>
 
@@ -99,7 +99,7 @@ import {
         <!-- Search Input -->
         <div class="relative w-full md:max-w-xs">
           <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-dark/40 text-sm">
-            🔍
+            <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <input
             type="text"
@@ -119,12 +119,9 @@ import {
       <!-- Error State -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm"
       >
-        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
-        <span>{{ errorMessage() }}</span>
+        {{ errorMessage() }}
       </div>
 
       <!-- Events Grid -->
@@ -134,7 +131,7 @@ import {
       >
         <div
           *ngFor="let ev of filteredEvents()"
-          class="rounded-2xl border border-dark/10 bg-surface hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col justify-between"
+          class="bg-surface border border-dark/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
         >
           <div>
             <!-- Flyer Preview Header -->
@@ -146,7 +143,7 @@ import {
                 class="w-full h-full object-cover object-center"
               />
               <div *ngIf="!ev.flyer_url" class="text-center text-dark/30">
-                <span class="text-5xl block">🎨</span>
+                <span class="text-5xl block"><i class="fa-solid fa-palette"></i></span>
                 <span class="text-xs font-semibold mt-1 block">Sin afiche promocional</span>
               </div>
 
@@ -174,7 +171,7 @@ import {
 
                 <!-- Date & Time -->
                 <p class="text-xs font-semibold text-dark/80 mt-1 flex items-center gap-1.5">
-                  <span>📅</span>
+                  <i class="fa-regular fa-calendar text-dark/50"></i>
                   <span>{{ ev.event_date | date:'mediumDate' }} · {{ ev.event_date | date:'shortTime' }} hrs</span>
                 </p>
               </div>
@@ -182,10 +179,12 @@ import {
               <!-- Venue and config -->
               <div class="p-2.5 rounded-xl bg-dark/5 border border-dark/10 space-y-1 text-xs">
                 <div class="flex items-center justify-between text-dark">
-                  <span class="font-bold flex items-center gap-1">
-                    📍 {{ ev.venues?.name || 'Recinto no definido' }}
+                  <span class="font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-location-dot text-dark/50"></i> {{ ev.venues?.name || 'Recinto no definido' }}
                   </span>
-                  <tf-badge *ngIf="ev.venues?.verified" variant="primary">✓</tf-badge>
+                  <tf-badge *ngIf="ev.venues?.verified" variant="primary">
+                    <i class="fa-solid fa-check text-[10px]"></i>
+                  </tf-badge>
                 </div>
                 <div class="text-[11px] text-dark/60 flex items-center justify-between">
                   <span>Aforo: {{ ev.venue_configurations?.name || 'Estándar' }}</span>
@@ -207,7 +206,7 @@ import {
 
             <a [routerLink]="['/events', ev.id, 'edit']">
               <tf-button variant="ghost" size="sm" title="Editar Evento">
-                ✏️
+                <i class="fa-solid fa-pen-to-square"></i>
               </tf-button>
             </a>
           </div>
@@ -217,7 +216,9 @@ import {
       <!-- Empty State -->
       <tf-card *ngIf="!isLoading() && filteredEvents().length === 0">
         <div class="py-12 text-center text-dark/60">
-          <div class="text-5xl mb-3">🎪</div>
+          <div class="text-5xl mb-3 text-dark/30">
+            <i class="fa-solid fa-masks-theater"></i>
+          </div>
           <h3 class="text-lg font-bold text-dark">
             {{ searchQuery || activeTab !== 'all' ? 'No se encontraron eventos' : 'Aún no tienes eventos registrados' }}
           </h3>
@@ -229,7 +230,7 @@ import {
 
           <a routerLink="/events/new" *ngIf="!searchQuery && activeTab === 'all'">
             <tf-button variant="primary" size="md">
-              + Crear Primer Evento
+              <i class="fa-solid fa-plus mr-1.5"></i> Crear Primer Evento
             </tf-button>
           </a>
 

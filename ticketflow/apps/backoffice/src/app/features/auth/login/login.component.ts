@@ -13,8 +13,8 @@ import { SupabaseService, AuthService } from '@ticketflow/data-access';
       <div class="w-full max-w-md bg-[#161b22] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
         <!-- Logo and Header -->
         <div class="text-center space-y-2">
-          <div class="w-14 h-14 rounded-2xl bg-accent text-dark font-black text-3xl flex items-center justify-center mx-auto shadow-lg">
-            ⚡
+          <div class="w-14 h-14 rounded-2xl bg-accent text-dark font-black text-2xl flex items-center justify-center mx-auto shadow-lg">
+            <i class="fa-solid fa-bolt"></i>
           </div>
           <h1 class="text-2xl font-black text-white tracking-tight">TicketFlow Backoffice</h1>
           <p class="text-xs text-white/60">Acceso exclusivo para Super Administradores</p>

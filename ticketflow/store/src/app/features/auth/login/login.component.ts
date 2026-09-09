@@ -25,7 +25,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <!-- Brand Header -->
         <div class="text-center space-y-2">
           <div class="inline-flex w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-indigo-600 items-center justify-center shadow-lg shadow-cyan-500/20 mb-1">
-            <span class="text-slate-950 font-black text-2xl">🎫</span>
+            <i class="fa-solid fa-ticket text-slate-950 font-black text-xl"></i>
           </div>
           <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             Inicia Sesión en TicketFlow

@@ -14,7 +14,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 
         <!-- Animated Check Badge -->
         <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-emerald-50 border-2 border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto text-4xl sm:text-5xl shadow-inner">
-          🎉
+          <i class="fa-solid fa-circle-check"></i>
         </div>
 
         <div class="space-y-3">
@@ -36,7 +36,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
               type="button"
               class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2"
             >
-              <span>🎟️</span>
+              <i class="fa-solid fa-ticket"></i>
               <span>Ver Mis Boletos y QR</span>
             </button>
           </a>
@@ -46,7 +46,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
               type="button"
               class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2"
             >
-              <span>🔍</span>
+              <i class="fa-solid fa-magnifying-glass"></i>
               <span>Seguir Explorando Eventos</span>
             </button>
           </a>
@@ -57,8 +57,8 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Item 1 -->
         <div class="p-6 rounded-3xl border border-slate-200 bg-white space-y-3 shadow-sm">
-          <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl">
-            📱
+          <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-mobile-screen"></i>
           </div>
           <h2 class="font-extrabold text-base text-slate-900">Boleto Digital QR</h2>
           <p class="text-xs text-slate-600 leading-relaxed">
@@ -68,8 +68,8 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 
         <!-- Item 2 -->
         <div class="p-6 rounded-3xl border border-slate-200 bg-white space-y-3 shadow-sm">
-          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
-            ✉️
+          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg">
+            <i class="fa-regular fa-envelope"></i>
           </div>
           <h2 class="font-extrabold text-base text-slate-900">Respaldo por Correo</h2>
           <p class="text-xs text-slate-600 leading-relaxed">
@@ -79,8 +79,8 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 
         <!-- Item 3 -->
         <div class="p-6 rounded-3xl border border-slate-200 bg-white space-y-3 shadow-sm">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
-            🛡️
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-shield-halved"></i>
           </div>
           <h2 class="font-extrabold text-base text-slate-900">Garantía 100%</h2>
           <p class="text-xs text-slate-600 leading-relaxed">

@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
           <div class="space-y-4 md:col-span-2">
             <div class="flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-indigo-600 flex items-center justify-center shadow-md shadow-cyan-500/20">
-                <span class="text-slate-950 font-black text-sm">🎫</span>
+                <i class="fa-solid fa-ticket text-slate-950 text-sm"></i>
               </div>
               <span class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center">
                 Ticket<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-300 ml-0.5">Flow</span>
@@ -24,9 +24,9 @@ import { RouterModule } from '@angular/router';
               La plataforma moderna y segura para compra directa de entradas a conciertos, festivales y espectáculos. Boletos 100% garantizados.
             </p>
             <div class="flex items-center gap-3 pt-2 text-xs text-slate-400">
-              <span class="flex items-center gap-1.5"><span class="text-cyan-400">🔒</span> Pagos cifrados SSL</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-cyan-400"></i> Pagos cifrados SSL</span>
               <span>·</span>
-              <span class="flex items-center gap-1.5"><span class="text-amber-400">💳</span> PayPal Verified</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-amber-400"></i> PayPal Verified</span>
             </div>
           </div>
 

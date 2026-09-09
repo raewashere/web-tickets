@@ -33,7 +33,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <div class="max-w-5xl mx-auto text-center space-y-6 sm:space-y-8 relative z-10">
           <!-- Hero Badge -->
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-amber-400 text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
-            <span>✨</span>
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
             <span>La nueva forma de vivir la música en vivo</span>
           </div>
 
@@ -53,7 +53,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <!-- Central Search Bar -->
           <form (ngSubmit)="onSearchSubmit()" class="max-w-2xl mx-auto relative group pt-2">
             <div class="flex items-center bg-white rounded-2xl shadow-2xl p-2 sm:p-2.5 border-2 border-slate-200 focus-within:border-cyan-500 focus-within:ring-4 focus-within:ring-cyan-500/20 transition-all">
-              <span class="pl-3 pr-2 text-slate-400 text-lg">🔍</span>
+              <span class="pl-3 pr-2 text-slate-400 text-sm">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
               <input
                 type="text"
                 [(ngModel)]="searchQuery"
@@ -74,9 +76,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
             <a
               routerLink="/search"
-              class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 transition-colors shadow-sm"
+              class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 transition-colors shadow-sm flex items-center gap-1.5"
             >
-              🔥 Todos los Shows
+              <i class="fa-solid fa-fire text-amber-400"></i> Todos los Shows
             </a>
             <a
               *ngFor="let cat of eventTypes()"
@@ -95,7 +97,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
             <div class="flex items-center gap-2 text-cyan-600 text-xs font-extrabold uppercase tracking-wider">
-              <span>🎟️</span>
+              <i class="fa-solid fa-ticket"></i>
               <span>Cartelera Oficial</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
@@ -105,9 +107,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
           <a routerLink="/search" class="text-xs sm:text-sm font-bold text-cyan-600 hover:text-cyan-700 flex items-center gap-1">
             <span>Ver toda la cartelera</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
           </a>
         </div>
 
@@ -133,7 +133,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           *ngIf="!isLoading() && events().length === 0"
           class="py-16 text-center rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm"
         >
-          <span class="text-5xl block mb-2">🎪</span>
+          <span class="text-5xl block mb-2 text-slate-300">
+            <i class="fa-solid fa-masks-theater"></i>
+          </span>
           <h3 class="text-lg font-bold text-slate-900">No hay eventos publicados por el momento</h3>
           <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mt-1">
             Muy pronto se publicarán nuevas fechas de conciertos y festivales. ¡Vuelve a consultar!
@@ -155,8 +157,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div class="p-6 sm:p-7 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl font-bold">
-                🎫
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-ticket"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-white">Boletos 100% Oficiales</h3>
               <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
@@ -165,8 +167,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             </div>
 
             <div class="p-6 sm:p-7 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-2xl font-bold">
-                ⚡
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-bolt"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-white">Acceso Rápido en tu Móvil</h3>
               <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
@@ -175,8 +177,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             </div>
 
             <div class="p-6 sm:p-7 rounded-2xl bg-slate-800/60 border border-slate-700/60 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center text-2xl font-bold">
-                🔒
+              <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-shield-halved"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-white">Pagos Seguros vía PayPal</h3>
               <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
@@ -203,9 +205,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex-shrink-0">
             <button
               type="button"
-              class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20"
+              class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2"
             >
-              Comenzar a Vender Boletos →
+              <span>Comenzar a Vender Boletos</span>
+              <i class="fa-solid fa-arrow-right"></i>
             </button>
           </a>
         </div>

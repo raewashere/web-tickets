@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
         <div class="relative inline-block">
           <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-slate-900 border-2 border-slate-800 shadow-2xl flex items-center justify-center mx-auto relative overflow-hidden group">
             <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-transparent to-rose-500/20 opacity-80"></div>
-            <span class="text-5xl sm:text-6xl select-none" role="img" aria-label="Boleto rasgado o perdido">🎫</span>
+            <i class="fa-solid fa-ticket text-5xl sm:text-6xl text-cyan-400"></i>
             <div class="absolute -bottom-2 -right-2 bg-rose-500 text-white text-xs font-black px-2 py-0.5 rounded-full shadow">
               404
             </div>
@@ -40,7 +40,7 @@ import { RouterModule } from '@angular/router';
               type="button"
               class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
             >
-              <span>🏠</span>
+              <i class="fa-solid fa-house"></i>
               <span>Ir al Inicio</span>
             </button>
           </a>
@@ -50,7 +50,7 @@ import { RouterModule } from '@angular/router';
               type="button"
               class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
             >
-              <span>🔍</span>
+              <i class="fa-solid fa-magnifying-glass"></i>
               <span>Explorar Cartelera</span>
             </button>
           </a>

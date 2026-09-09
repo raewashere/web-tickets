@@ -147,7 +147,7 @@ interface CityPreset {
                   (click)="applyPreset(city)"
                   class="px-2.5 py-1 rounded-lg text-xs font-medium bg-dark/5 text-dark/80 hover:bg-primary/20 hover:text-dark border border-dark/10 transition-colors"
                 >
-                  📍 {{ city.name }}
+                  <i class="fa-solid fa-location-dot text-primary mr-1"></i> {{ city.name }}
                 </button>
               </div>
             </div>

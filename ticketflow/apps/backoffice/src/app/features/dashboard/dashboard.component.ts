@@ -30,7 +30,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           (click)="loadMetrics()"
           class="px-4 py-2.5 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs sm:text-sm shadow-sm transition flex items-center gap-2 self-start sm:self-auto flex-shrink-0"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-arrows-rotate"></i>
           <span>Actualizar Datos</span>
         </button>
       </div>
@@ -54,7 +54,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Volumen Total (GMV)</span>
-              <span class="text-xl p-2 rounded-xl bg-amber-500/10">💰</span>
+              <span class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-sack-dollar"></i>
+              </span>
             </div>
             <div class="space-y-1">
               <p class="text-2xl sm:text-3xl font-black text-dark font-mono truncate">
@@ -70,7 +72,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Comisiones TicketFlow</span>
-              <span class="text-xl p-2 rounded-xl bg-emerald-500/10">📈</span>
+              <span class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-chart-line"></i>
+              </span>
             </div>
             <div class="space-y-1">
               <p class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono truncate">
@@ -86,7 +90,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Boletos Emitidos</span>
-              <span class="text-xl p-2 rounded-xl bg-cyan-500/10">🎟️</span>
+              <span class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-ticket"></i>
+              </span>
             </div>
             <div class="space-y-1">
               <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
@@ -102,7 +108,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-5 sm:p-6 rounded-3xl bg-white border border-dark/10 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold text-dark/50 uppercase tracking-wider">Eventos Activos</span>
-              <span class="text-xl p-2 rounded-xl bg-purple-500/10">🎪</span>
+              <span class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-calendar-check"></i>
+              </span>
             </div>
             <div class="space-y-1">
               <p class="text-2xl sm:text-3xl font-black text-dark font-mono">
@@ -122,7 +130,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="space-y-3">
               <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
-                  💳
+                  <i class="fa-solid fa-credit-card"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Liquidaciones & Pagos</h2>
@@ -140,7 +148,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>Gestionar Liquidaciones</span>
-                  <span>→</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
               </a>
             </div>
@@ -151,7 +159,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="space-y-3">
               <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
-                  🎤
+                  <i class="fa-solid fa-microphone-lines"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Directorio de Artistas</h2>
@@ -169,7 +177,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>Ver Directorio</span>
-                  <span>→</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
               </a>
             </div>
@@ -180,7 +188,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="space-y-3">
               <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
-                  💸
+                  <i class="fa-solid fa-rotate-left"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Reembolsos Globales</h2>
@@ -198,7 +206,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>Auditar Reembolsos</span>
-                  <span>→</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
               </a>
             </div>
@@ -209,7 +217,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="space-y-3">
               <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
-                  📍
+                  <i class="fa-solid fa-location-dot"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Recintos y Sedes</h2>
@@ -228,7 +236,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>Auditar Sedes</span>
-                  <span>→</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
               </a>
             </div>
@@ -239,7 +247,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="space-y-3">
               <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
-                  👥
+                  <i class="fa-solid fa-users-gear"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Usuarios & Roles</h2>
@@ -258,7 +266,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>Administrar Usuarios</span>
-                  <span>→</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
               </a>
             </div>
@@ -269,7 +277,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             <div class="space-y-3">
               <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center text-xl font-bold flex-shrink-0">
-                  🎪
+                  <i class="fa-solid fa-calendar-days"></i>
                 </div>
                 <div>
                   <h2 class="font-black text-base text-dark">Catálogo de Eventos</h2>
@@ -288,7 +296,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   class="w-full py-2.5 px-4 rounded-xl bg-dark hover:bg-dark/90 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>Ver Todos los Eventos</span>
-                  <span>→</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
               </a>
             </div>

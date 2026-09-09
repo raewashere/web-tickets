@@ -62,7 +62,7 @@ interface NavItem {
           class="flex items-center gap-3 px-4 py-3 rounded-lg text-surface/70 hover:text-white hover:bg-white/5 transition-all text-sm group"
           (click)="closeSidebar.emit()"
         >
-          <span class="text-lg group-hover:scale-110 transition-transform">{{ item.icon }}</span>
+          <i [class]="item.icon + ' text-base group-hover:scale-110 transition-transform w-5 text-center'"></i>
           <span>{{ item.label }}</span>
         </a>
       </nav>
@@ -108,13 +108,13 @@ export class SidebarComponent {
   @Output() closeSidebar = new EventEmitter<void>();
 
   private readonly artistNavItems: NavItem[] = [
-    { label: 'Panel Principal', route: '/dashboard', icon: '📊', exact: true },
-    { label: 'Perfil de Artista', route: '/artist/profile', icon: '🎤' },
-    { label: 'Mis Eventos', route: '/events', icon: '🎪' },
-    { label: 'Finanzas & Pagos', route: '/finances', icon: '🏦' },
-    { label: 'Reembolsos', route: '/refunds', icon: '💸' },
-    { label: 'Control de Acceso', route: '/access-control', icon: '🛡️' },
-    { label: 'Sedes & Lugares', route: '/venues', icon: '📍' },
+    { label: 'Panel Principal', route: '/dashboard', icon: 'fa-solid fa-chart-pie', exact: true },
+    { label: 'Perfil de Artista', route: '/artist/profile', icon: 'fa-solid fa-microphone-lines' },
+    { label: 'Mis Eventos', route: '/events', icon: 'fa-solid fa-calendar-days' },
+    { label: 'Finanzas & Pagos', route: '/finances', icon: 'fa-solid fa-building-columns' },
+    { label: 'Reembolsos', route: '/refunds', icon: 'fa-solid fa-rotate-left' },
+    { label: 'Control de Acceso', route: '/access-control', icon: 'fa-solid fa-shield-halved' },
+    { label: 'Sedes & Lugares', route: '/venues', icon: 'fa-solid fa-location-dot' },
   ];
 
   get visibleNavItems(): NavItem[] {

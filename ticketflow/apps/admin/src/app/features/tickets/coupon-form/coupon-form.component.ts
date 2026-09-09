@@ -81,9 +81,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
               <button
                 type="button"
                 (click)="autoGenerateCode()"
-                class="text-xs text-primary hover:underline font-semibold"
+                class="text-xs text-primary hover:underline font-semibold flex items-center gap-1"
               >
-                🎲 Generar Código
+                <i class="fa-solid fa-dice"></i> Generar Código
               </button>
             </div>
             <input
@@ -137,14 +137,14 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
           <!-- Ticket Type / SKU association -->
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
-              🎟️ Aplicar a Tipo de Boleto (por SKU)
+            <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5 flex items-center gap-1.5">
+              <i class="fa-solid fa-ticket text-primary"></i> Aplicar a Tipo de Boleto (por SKU)
             </label>
             <select
               formControlName="ticket_sku"
               class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
             >
-              <option value="">🌐 Todos los tipos de boleto (Sin restricción de SKU)</option>
+              <option value="">Todos los tipos de boleto (Sin restricción de SKU)</option>
               <option *ngFor="let tt of ticketTypes()" [value]="tt.sku">
                 {{ tt.name }} (SKU: {{ tt.sku }}) — \${{ tt.price | number:'1.2-2' }} MXN
               </option>

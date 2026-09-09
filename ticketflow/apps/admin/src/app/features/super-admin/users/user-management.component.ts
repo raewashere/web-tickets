@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SuperAdminService } from '../super-admin.service';
 import type { SuperAdminUserItem, RoleType } from '@ticketflow/models';
-import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, SpinnerComponent, BadgeComponent],
+  imports: [CommonModule, FormsModule, SpinnerComponent],
   template: `
     <div class="space-y-6">
       <!-- Header -->
@@ -30,7 +30,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
           (click)="loadUsers()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-rotate-right"></i>
           <span>Actualizar Cuentas</span>
         </button>
       </div>
@@ -45,7 +45,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             placeholder="Buscar por correo o nombre de usuario..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">🔍</span>
+          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
         </div>
 
         <!-- Role Filter Tabs -->
@@ -66,8 +66,8 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             (click)="selectedRoleFilter.set('admin')"
             [class.bg-contrast]="selectedRoleFilter() === 'admin'"
             [class.text-white]="selectedRoleFilter() === 'admin'"
-            [class.bg-contrast/10]="selectedRoleFilter() !== 'admin'"
-            [class.text-contrast]="selectedRoleFilter() !== 'admin'"
+            [class.bg-dark/5]="selectedRoleFilter() !== 'admin'"
+            [class.text-dark]="selectedRoleFilter() !== 'admin'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Admins
@@ -76,8 +76,8 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             type="button"
             (click)="selectedRoleFilter.set('artist')"
             [class.bg-accent]="selectedRoleFilter() === 'artist'"
-            [class.text-dark]="selectedRoleFilter() === 'artist'"
-            [class.bg-accent/20]="selectedRoleFilter() !== 'artist'"
+            [class.text-white]="selectedRoleFilter() === 'artist'"
+            [class.bg-dark/5]="selectedRoleFilter() !== 'artist'"
             [class.text-dark]="selectedRoleFilter() !== 'artist'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
@@ -87,8 +87,8 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             type="button"
             (click)="selectedRoleFilter.set('doorman')"
             [class.bg-primary]="selectedRoleFilter() === 'doorman'"
-            [class.text-dark]="selectedRoleFilter() === 'doorman'"
-            [class.bg-primary/20]="selectedRoleFilter() !== 'doorman'"
+            [class.text-white]="selectedRoleFilter() === 'doorman'"
+            [class.bg-dark/5]="selectedRoleFilter() !== 'doorman'"
             [class.text-dark]="selectedRoleFilter() !== 'doorman'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
@@ -98,9 +98,9 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
-        <tf-spinner size="lg"></tf-spinner>
-        <p class="text-xs text-dark/50">Cargando directorio de usuarios...</p>
+      <div *ngIf="isLoading()" class="py-20 flex flex-col items-center justify-center gap-3">
+        <tf-spinner size="lg" color="primary"></tf-spinner>
+        <span class="text-xs text-dark/60 font-medium">Cargando directorio de usuarios...</span>
       </div>
 
       <!-- Error State -->
@@ -115,68 +115,65 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             <thead class="bg-dark/5 border-b border-dark/10 text-dark/60 font-bold uppercase text-[10px] tracking-wider">
               <tr>
                 <th class="py-3.5 px-4 sm:px-6">Usuario</th>
-                <th class="py-3.5 px-4">Correo Electrónico</th>
                 <th class="py-3.5 px-4">Roles Activos</th>
-                <th class="py-3.5 px-4">Fecha de Registro</th>
-                <th class="py-3.5 px-4 sm:px-6 text-right">Acciones de Rol</th>
+                <th class="py-3.5 px-4">Fecha Registro</th>
+                <th class="py-3.5 px-4 sm:px-6 text-right">Acción</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-dark/10">
               <tr *ngFor="let u of filteredUsers()" class="hover:bg-dark/[0.02] transition">
-                <!-- User Profile & Avatar -->
+                <!-- Name & Avatar -->
                 <td class="py-4 px-4 sm:px-6">
                   <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-dark text-white flex items-center justify-center font-bold text-sm overflow-hidden shrink-0 border border-dark/10">
+                    <div class="w-9 h-9 rounded-full bg-dark/5 border border-dark/10 overflow-hidden flex items-center justify-center font-black text-xs text-dark shrink-0">
                       <img
                         *ngIf="u.avatar_url"
                         [src]="u.avatar_url"
-                        [alt]="u.display_name || u.email"
+                        [alt]="'Avatar de ' + (u.display_name || u.email)"
                         class="w-full h-full object-cover"
                       />
-                      <span *ngIf="!u.avatar_url">{{ getInitial(u) }}</span>
+                      <span *ngIf="!u.avatar_url">
+                        {{ (u.display_name || u.email || 'U').charAt(0).toUpperCase() }}
+                      </span>
                     </div>
                     <div>
-                      <p class="font-extrabold text-dark leading-tight">
-                        {{ u.display_name || 'Sin nombre registrado' }}
-                      </p>
-                      <span class="text-[11px] text-dark/40 font-mono">ID: {{ u.id.substring(0, 8) }}</span>
+                      <p class="font-bold text-dark leading-tight">{{ u.display_name || 'Sin nombre asignado' }}</p>
+                      <p class="text-[11px] text-dark/50 font-mono">{{ u.email }}</p>
                     </div>
                   </div>
-                </td>
-
-                <!-- Email -->
-                <td class="py-4 px-4">
-                  <span class="font-medium text-dark">{{ u.email }}</span>
                 </td>
 
                 <!-- Roles Badges -->
                 <td class="py-4 px-4">
                   <div class="flex flex-wrap gap-1.5">
                     <span
-                      *ngFor="let r of u.roles"
-                      [class.bg-contrast/15]="r === 'admin'"
-                      [class.text-contrast]="r === 'admin'"
-                      [class.border-contrast/30]="r === 'admin'"
-                      [class.bg-accent/20]="r === 'artist'"
-                      [class.text-dark]="r === 'artist'"
-                      [class.border-accent/40]="r === 'artist'"
-                      [class.bg-primary/20]="r === 'doorman'"
-                      [class.text-dark]="r === 'doorman'"
-                      [class.border-primary/40]="r === 'doorman'"
-                      [class.bg-dark/5]="r === 'customer'"
-                      [class.text-dark/70]="r === 'customer'"
-                      [class.border-dark/10]="r === 'customer'"
-                      class="px-2 py-0.5 rounded-md text-[11px] font-bold border uppercase tracking-wider"
+                      *ngIf="u.roles.includes('admin')"
+                      class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-contrast/15 text-contrast border border-contrast/20"
                     >
-                      {{ r }}
+                      Admin
                     </span>
-                    <span *ngIf="u.roles.length === 0" class="text-xs text-dark/40">
-                      customer (default)
+                    <span
+                      *ngIf="u.roles.includes('artist')"
+                      class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-accent/15 text-accent border border-accent/20"
+                    >
+                      Artista
+                    </span>
+                    <span
+                      *ngIf="u.roles.includes('doorman')"
+                      class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/15 text-primary border border-primary/20"
+                    >
+                      Doorman
+                    </span>
+                    <span
+                      *ngIf="u.roles.includes('customer') || u.roles.length === 0"
+                      class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-dark/5 text-dark/70"
+                    >
+                      Comprador
                     </span>
                   </div>
                 </td>
 
-                <!-- Registration Date -->
+                <!-- Registered Date -->
                 <td class="py-4 px-4">
                   <span class="text-xs text-dark/60">
                     {{ u.created_at | date:'mediumDate' }}
@@ -188,9 +185,10 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="openRoleModal(u)"
-                    class="px-3 py-1.5 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-xs transition border border-dark/10"
+                    class="px-3 py-1.5 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-xs transition border border-dark/10 flex items-center gap-1.5 ml-auto"
                   >
-                    ⚙️ Gestionar Roles
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Gestionar Roles</span>
                   </button>
                 </td>
               </tr>
@@ -201,7 +199,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
 
       <!-- Empty State -->
       <div *ngIf="!isLoading() && filteredUsers().length === 0" class="p-12 text-center bg-white rounded-2xl border border-dashed border-dark/20 space-y-2">
-        <span class="text-3xl">👥</span>
+        <i class="fa-solid fa-users text-3xl text-dark/40 block mb-2"></i>
         <h3 class="font-bold text-dark text-base">No se encontraron usuarios</h3>
         <p class="text-xs text-dark/50">Prueba cambiando los términos del buscador o el filtro de rol.</p>
       </div>
@@ -221,7 +219,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             (click)="closeRoleModal()"
             class="absolute top-4 right-4 w-8 h-8 rounded-full bg-dark/5 hover:bg-dark/10 text-dark flex items-center justify-center text-sm font-bold transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Modal Header -->
@@ -239,7 +237,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             <label class="flex items-center justify-between p-3.5 rounded-2xl border border-dark/10 hover:border-contrast/40 transition cursor-pointer bg-dark/[0.01]">
               <div class="space-y-0.5">
                 <span class="font-bold text-dark text-sm flex items-center gap-1.5">
-                  <span class="text-contrast">⚡</span> Super-Administrador (admin)
+                  <i class="fa-solid fa-bolt text-contrast"></i> Super-Administrador (admin)
                 </span>
                 <p class="text-xs text-dark/50">Acceso total a métricas, moderación de recintos y gestión de usuarios.</p>
               </div>
@@ -255,7 +253,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             <label class="flex items-center justify-between p-3.5 rounded-2xl border border-dark/10 hover:border-accent/40 transition cursor-pointer bg-dark/[0.01]">
               <div class="space-y-0.5">
                 <span class="font-bold text-dark text-sm flex items-center gap-1.5">
-                  <span class="text-accent">🎤</span> Artista / Creador (artist)
+                  <i class="fa-solid fa-microphone text-accent"></i> Artista / Creador (artist)
                 </span>
                 <p class="text-xs text-dark/50">Creación de eventos, tipos de boletos, cupones y recintos.</p>
               </div>
@@ -271,7 +269,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             <label class="flex items-center justify-between p-3.5 rounded-2xl border border-dark/10 hover:border-primary/40 transition cursor-pointer bg-dark/[0.01]">
               <div class="space-y-0.5">
                 <span class="font-bold text-dark text-sm flex items-center gap-1.5">
-                  <span class="text-primary">🛡️</span> Control de Acceso (doorman)
+                  <i class="fa-solid fa-shield-halved text-primary"></i> Control de Acceso (doorman)
                 </span>
                 <p class="text-xs text-dark/50">Validación y escaneo de códigos QR en puertas de eventos asignados.</p>
               </div>
@@ -287,7 +285,7 @@ import { SpinnerComponent, BadgeComponent } from '@ticketflow/shared-ui';
             <label class="flex items-center justify-between p-3.5 rounded-2xl border border-dark/10 hover:border-dark/30 transition cursor-pointer bg-dark/[0.01]">
               <div class="space-y-0.5">
                 <span class="font-bold text-dark text-sm flex items-center gap-1.5">
-                  <span>🎫</span> Comprador (customer)
+                  <i class="fa-solid fa-ticket text-dark"></i> Comprador (customer)
                 </span>
                 <p class="text-xs text-dark/50">Rol base para compra de boletos en la tienda.</p>
               </div>

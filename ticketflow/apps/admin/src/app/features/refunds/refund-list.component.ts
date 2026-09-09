@@ -32,7 +32,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           (click)="loadRefundRequests()"
           class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <span>🔄</span>
+          <i class="fa-solid fa-rotate-right" [class.animate-spin]="isLoading()"></i>
           <span>Actualizar Lista</span>
         </button>
       </div>
@@ -43,8 +43,8 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
         class="p-4 rounded-2xl flex items-center justify-between transition-all"
         [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
       >
-        <div class="flex items-center gap-3 text-xs sm:text-sm font-semibold">
-          <span>{{ feedbackType() === 'success' ? '✅' : '⚠️' }}</span>
+        <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold">
+          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-emerald-600' : 'fa-solid fa-triangle-exclamation text-rose-600'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -52,7 +52,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           (click)="feedbackMessage.set(null)"
           class="text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5"
         >
-          ✕
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
@@ -67,21 +67,30 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
         <!-- Pending -->
         <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/70 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">Pendientes ⏳</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 flex items-center justify-between">
+            <span>Pendientes</span>
+            <i class="fa-regular fa-clock text-xs"></i>
+          </span>
           <p class="text-xl sm:text-2xl font-black text-amber-700">{{ countPending() }}</p>
           <span class="text-[10px] text-amber-600/70 font-medium">Requieren resolución</span>
         </div>
 
         <!-- Approved -->
         <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/70 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">Aprobadas ✅</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 flex items-center justify-between">
+            <span>Aprobadas</span>
+            <i class="fa-solid fa-circle-check text-xs"></i>
+          </span>
           <p class="text-xl sm:text-2xl font-black text-emerald-700">{{ countApproved() }}</p>
           <span class="text-[10px] text-emerald-600/70 font-medium">Stock restablecido</span>
         </div>
 
         <!-- Rejected -->
         <div class="p-4 rounded-2xl bg-rose-50/50 border border-rose-200/70 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 block">Rechazadas ❌</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 flex items-center justify-between">
+            <span>Rechazadas</span>
+            <i class="fa-solid fa-circle-xmark text-xs"></i>
+          </span>
           <p class="text-xl sm:text-2xl font-black text-rose-700">{{ countRejected() }}</p>
           <span class="text-[10px] text-rose-600/70 font-medium">Boletos vigentes</span>
         </div>
@@ -104,7 +113,9 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             placeholder="Buscar por cliente, correo, orden o evento..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">🔍</span>
+          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
         </div>
 
         <!-- Filter tabs -->
@@ -123,33 +134,35 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <button
             type="button"
             (click)="selectedFilter.set('pending')"
-            [class.bg-amber-600]="selectedFilter() === 'pending'"
+            [class.bg-dark]="selectedFilter() === 'pending'"
             [class.text-white]="selectedFilter() === 'pending'"
-            [class.bg-amber-50]="selectedFilter() !== 'pending'"
-            [class.text-amber-700]="selectedFilter() !== 'pending'"
-            class="px-3 py-1.5 rounded-lg text-xs font-bold transition border border-amber-200"
+            [class.bg-dark/5]="selectedFilter() !== 'pending'"
+            [class.text-dark]="selectedFilter() !== 'pending'"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
           >
-            Pendientes ({{ countPending() }})
+            <span>Pendientes</span>
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span>({{ countPending() }})</span>
           </button>
           <button
             type="button"
             (click)="selectedFilter.set('approved')"
-            [class.bg-emerald-600]="selectedFilter() === 'approved'"
+            [class.bg-dark]="selectedFilter() === 'approved'"
             [class.text-white]="selectedFilter() === 'approved'"
-            [class.bg-emerald-50]="selectedFilter() !== 'approved'"
-            [class.text-emerald-700]="selectedFilter() !== 'approved'"
-            class="px-3 py-1.5 rounded-lg text-xs font-bold transition border border-emerald-200"
+            [class.bg-dark/5]="selectedFilter() !== 'approved'"
+            [class.text-dark]="selectedFilter() !== 'approved'"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Aprobadas ({{ countApproved() }})
           </button>
           <button
             type="button"
             (click)="selectedFilter.set('rejected')"
-            [class.bg-rose-600]="selectedFilter() === 'rejected'"
+            [class.bg-dark]="selectedFilter() === 'rejected'"
             [class.text-white]="selectedFilter() === 'rejected'"
-            [class.bg-rose-50]="selectedFilter() !== 'rejected'"
-            [class.text-rose-700]="selectedFilter() !== 'rejected'"
-            class="px-3 py-1.5 rounded-lg text-xs font-bold transition border border-rose-200"
+            [class.bg-dark/5]="selectedFilter() !== 'rejected'"
+            [class.text-dark]="selectedFilter() !== 'rejected'"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Rechazadas ({{ countRejected() }})
           </button>
@@ -167,7 +180,9 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
         *ngIf="!isLoading() && filteredRequests().length === 0"
         class="py-16 text-center rounded-2xl border border-dashed border-dark/20 bg-white p-8 space-y-3"
       >
-        <span class="text-4xl block">💸</span>
+        <span class="text-4xl block text-dark/30">
+          <i class="fa-solid fa-money-bill-transfer"></i>
+        </span>
         <h3 class="text-base font-bold text-dark">No hay solicitudes para mostrar</h3>
         <p class="text-xs text-dark/50 max-w-sm mx-auto">
           No se encontraron solicitudes de reembolso con los filtros de búsqueda actuales.
@@ -229,21 +244,21 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                 <td class="p-3.5">
                   <span
                     *ngIf="req.status === 'pending'"
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200"
                   >
-                    ⏳ Pendiente
+                    <i class="fa-regular fa-clock text-[9px]"></i> Pendiente
                   </span>
                   <span
                     *ngIf="req.status === 'approved'"
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200"
                   >
-                    ✅ Aprobada
+                    <i class="fa-solid fa-check text-[9px]"></i> Aprobada
                   </span>
                   <span
                     *ngIf="req.status === 'rejected'"
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200"
                   >
-                    ❌ Rechazada
+                    <i class="fa-solid fa-xmark text-[9px]"></i> Rechazada
                   </span>
                 </td>
 
@@ -299,7 +314,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             (click)="closeModal()"
             class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Modal Title -->
@@ -323,8 +338,9 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             class="p-3.5 rounded-2xl text-xs space-y-1"
             [ngClass]="modalIsApproval() ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-rose-50 border border-rose-200 text-rose-900'"
           >
-            <p class="font-bold">
-              {{ modalIsApproval() ? '⚡ Al aprobar esta solicitud:' : '⚠️ Al rechazar esta solicitud:' }}
+            <p class="font-bold flex items-center gap-1.5">
+              <i [class]="modalIsApproval() ? 'fa-solid fa-bolt text-emerald-600' : 'fa-solid fa-triangle-exclamation text-rose-600'"></i>
+              <span>{{ modalIsApproval() ? 'Al aprobar esta solicitud:' : 'Al rechazar esta solicitud:' }}</span>
             </p>
             <ul class="list-disc list-inside space-y-0.5 text-[11px]">
               <li *ngIf="modalIsApproval()">El estado de la orden pasará a <strong>reembolsada</strong>.</li>
@@ -394,7 +410,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             (click)="detailModalRequest.set(null)"
             class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
           >
-            ✕
+            <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
@@ -429,10 +445,11 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             <div>
               <span class="text-dark/50 text-[10px] uppercase font-bold block">Estado Actual</span>
               <span
-                class="inline-block font-bold text-[11px]"
+                class="inline-flex items-center gap-1 font-bold text-[11px]"
                 [ngClass]="detailModalRequest()!.status === 'approved' ? 'text-emerald-700' : 'text-rose-700'"
               >
-                {{ detailModalRequest()!.status === 'approved' ? '✅ Aprobada' : '❌ Rechazada' }}
+                <i [class]="detailModalRequest()!.status === 'approved' ? 'fa-solid fa-check text-[10px]' : 'fa-solid fa-xmark text-[10px]'"></i>
+                <span>{{ detailModalRequest()!.status === 'approved' ? 'Aprobada' : 'Rechazada' }}</span>
               </span>
             </div>
           </div>
