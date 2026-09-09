@@ -80,6 +80,9 @@
 | **UX-1** | Store + Admin | Skeleton Screens / Estados de carga | `skeleton.ts`, `home.component.ts`, `search-results.component.ts`, `dashboard.component.ts` |
 | **UX-2** | Store + Admin | Toast Notifications Contextuales | `toast.ts`, `app.html`, `admin-shell.component.ts`, `artist-form.component.ts`, `event-form.component.ts` |
 | **UX-3** | Store | Confirmación de Compra Animada (Canvas Confetti, Resumen de Pago & Toast) | `thank-you.component.ts` |
+| **UX-4** | Store | Cuenta Regresiva Mejorada en Carrito & Alertas de Expiración | `countdown-timer.component.ts`, `cart-summary.component.ts`, `payment.component.ts` |
+| **UX-5** | Store | Compartir Evento en Redes Social (Native Share, Copiar Enlace, WhatsApp, X, FB) | `event-detail.component.ts` |
+| **UX-6** | Store | Filtros de Búsqueda Colapsables en Móvil (Slide-Over Drawer) | `search-results.component.ts`, `filter-panel.component.ts` |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 
 ---
