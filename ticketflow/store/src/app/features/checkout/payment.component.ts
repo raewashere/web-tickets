@@ -203,18 +203,18 @@ interface PayPalButtonsOptions {
             <div class="space-y-1 pt-2 border-t border-slate-800 text-xs">
               <div class="flex justify-between text-slate-400">
                 <span>Subtotal</span>
-                <span class="font-mono">${{ checkout.subtotal() | number:'1.2-2' }}</span>
+                <span class="font-mono">\${{ checkout.subtotal() | number:'1.2-2' }}</span>
               </div>
               <div *ngIf="checkout.discount() > 0" class="flex justify-between text-amber-400">
                 <span>Descuento</span>
-                <span class="font-mono">-${{ checkout.discount() | number:'1.2-2' }}</span>
+                <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }}</span>
               </div>
             </div>
 
             <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
               <span class="font-bold text-white">Total:</span>
               <span class="text-xl font-black text-amber-400 font-mono">
-                ${{ checkout.total() | number:'1.2-2' }} MXN
+                \${{ checkout.total() | number:'1.2-2' }} MXN
               </span>
             </div>
           </div>

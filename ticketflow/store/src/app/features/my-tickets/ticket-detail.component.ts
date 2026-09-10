@@ -222,15 +222,15 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             <div class="w-full space-y-1 border-t border-dark/10 pt-3 text-xs">
               <div class="flex justify-between text-dark/60">
                 <span>Subtotal</span>
-                <span class="font-mono">${{ order()!.subtotal | number:'1.2-2' }}</span>
+                <span class="font-mono">\${{ order()!.subtotal | number:'1.2-2' }}</span>
               </div>
               <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-accent font-bold">
                 <span>Descuento</span>
-                <span class="font-mono">-${{ order()!.discount_amount | number:'1.2-2' }}</span>
+                <span class="font-mono">-\${{ order()!.discount_amount | number:'1.2-2' }}</span>
               </div>
               <div class="flex justify-between font-black text-dark text-sm pt-1 border-t border-dark/10">
                 <span>Total {{ order()!.status === 'refunded' ? 'reembolsado' : 'pagado' }}</span>
-                <span class="font-mono text-primary print:text-black">${{ order()!.total | number:'1.2-2' }} MXN</span>
+                <span class="font-mono text-primary print:text-black">\${{ order()!.total | number:'1.2-2' }} MXN</span>
               </div>
             </div>
           </div>

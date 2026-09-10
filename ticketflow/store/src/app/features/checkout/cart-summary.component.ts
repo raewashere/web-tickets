@@ -185,18 +185,18 @@ import { ToastService } from '@ticketflow/shared-ui';
               <div class="space-y-3 text-xs">
                 <div class="flex items-center justify-between text-slate-400">
                   <span>Subtotal Boletos:</span>
-                  <span class="font-mono font-bold text-white">${{ checkout.subtotal() | number:'1.2-2' }} MXN</span>
+                  <span class="font-mono font-bold text-white">\${{ checkout.subtotal() | number:'1.2-2' }} MXN</span>
                 </div>
 
                 <div *ngIf="checkout.discount() > 0" class="flex items-center justify-between text-amber-400 font-bold">
                   <span>Descuento Cupón:</span>
-                  <span class="font-mono">-${{ checkout.discount() | number:'1.2-2' }} MXN</span>
+                  <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }} MXN</span>
                 </div>
 
                 <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
                   <span class="font-bold text-sm text-white">Total a Pagar:</span>
                   <span class="text-2xl font-black text-cyan-400 font-mono">
-                    ${{ checkout.total() | number:'1.2-2' }} MXN
+                    \${{ checkout.total() | number:'1.2-2' }} MXN
                   </span>
                 </div>
                 <p class="text-[10px] text-slate-400 text-right">Precio final con IVA y tarifa de servicio incluida.</p>

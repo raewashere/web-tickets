@@ -11,7 +11,7 @@ import { SearchService, SearchFilterParams, SearchResult } from './search.servic
 import { FilterPanelComponent } from './filter-panel.component';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
 import type { EventType } from '@ticketflow/models';
-import { SpinnerComponent, SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
+import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-search-results',
@@ -22,7 +22,6 @@ import { SpinnerComponent, SkeletonComponent, EmptyStateComponent } from '@ticke
     FormsModule,
     FilterPanelComponent,
     EventCardComponent,
-    SpinnerComponent,
     SkeletonComponent,
     EmptyStateComponent,
   ],

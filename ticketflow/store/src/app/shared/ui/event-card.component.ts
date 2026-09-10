@@ -62,7 +62,7 @@ export type StoreEventItem = EventWithRelations & {
               title="Ver perfil del artista"
             >
               <span class="w-2 h-2 rounded-full bg-cyan-500 inline-block shrink-0"></span>
-              <span class="truncate font-bold text-slate-700 group-hover/artist:text-cyan-600">{{ event.artists?.name }}</span>
+              <span class="truncate font-bold text-slate-700 group-hover/artist:text-cyan-600">{{ event.artists.name }}</span>
               <span class="text-[10px] text-cyan-600 shrink-0 font-medium opacity-80 group-hover/artist:opacity-100 flex items-center gap-0.5">· Ver perfil <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></span>
             </button>
             <span *ngIf="!event.artists" class="text-slate-400">Artista Invitado</span>

@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeService } from './home.service';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
 import type { EventType } from '@ticketflow/models';
-import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
+import { SkeletonComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-home',
@@ -20,7 +20,6 @@ import { SpinnerComponent, SkeletonComponent } from '@ticketflow/shared-ui';
     RouterModule,
     FormsModule,
     EventCardComponent,
-    SpinnerComponent,
     SkeletonComponent,
   ],
   template: `
