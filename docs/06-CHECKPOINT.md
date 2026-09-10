@@ -103,8 +103,8 @@
 |------|------------|:------:|-----------------------|
 | **Fase 1** | Base de Datos (Migración 021) | ✅ Completado | Tabla `orders` actualizada, RPC `get_order_by_access_token` y `create_order_atomic` adaptados |
 | **Fase 2** | Edge Functions | ✅ Completado | Auth opcional, soporte para `guestEmail`/`guestName` y dispatcher placeholder N8N |
-| **Fase 3** | Store UI | 🟡 Pendiente | `GuestCheckoutService`, toggle de invitado en checkout, `PublicTicketComponent` y ruta `/ticket/:orderId` |
-| **Fase 4** | Workflow N8N | 🟡 Pendiente | Configuración de Webhook Trigger en N8N y plantilla HTML de correo con QR |
+| **Fase 3** | Store UI | ✅ Completado | Formulario e insumos de invitado en checkout (`guestEmail`/`guestName`), validaciones, `PublicTicketComponent` y ruta pública `/ticket/:orderId` con token |
+| **Fase 4** | Workflow N8N | ✅ Completado | Dispatcher HTTP enriquecido en Edge Function `create-order`, plantilla HTML de correo responsiva (`docs/n8n/ticket-email-template.html`) y JSON de flujo exportable N8N (`docs/n8n/ticketflow-n8n-workflow.json`) |
 
 ---
 

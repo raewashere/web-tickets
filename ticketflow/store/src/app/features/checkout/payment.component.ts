@@ -331,22 +331,33 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
           const session = await this.supabase.auth.getSession();
           const token   = session.data.session?.access_token;
-          if (!token) throw new Error('Sesión de usuario no válida.');
+          const gEmail  = this.checkout.guestEmail();
+          const gName   = this.checkout.guestName();
+
+          if (!token && (!gEmail || !gEmail.trim())) {
+            throw new Error('Correo electrónico de invitado requerido.');
+          }
+
+          const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+          };
+          if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
 
           const supabaseUrl = (this.supabase as unknown as { supabaseUrl: string }).supabaseUrl
             ?? 'https://kevgwhiosnyemaftbjqs.supabase.co';
 
           const res = await fetch(`${supabaseUrl}/functions/v1/create-paypal-order`, {
             method:  'POST',
-            headers: {
-              'Content-Type':  'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
+            headers,
             body: JSON.stringify({
               eventId:   c.eventId,
               eventName: c.eventName,
               amountMXN: this.checkout.total(),
               sessionId: c.sessionId,
+              guestEmail: token ? null : gEmail.trim(),
+              guestName:  token ? null : (gName.trim() || gEmail.trim()),
             }),
           });
 
@@ -365,8 +376,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.errorMessage.set(null);
 
           try {
-            const order = await this.checkout.finalizeOrder(data.orderID, false);
-            this.router.navigate(['/checkout/confirmation', order.id]);
+            const result = await this.checkout.finalizeOrder(data.orderID, false);
+            if (result.order?.access_token) {
+              this.router.navigate(['/ticket', result.order.id], {
+                queryParams: { token: result.order.access_token },
+              });
+            } else {
+              this.router.navigate(['/checkout/confirmation', result.order.id]);
+            }
           } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Error al procesar la orden.';
             this.errorMessage.set(msg);
@@ -425,8 +442,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.errorMessage.set(null);
 
     try {
-      const order = await this.checkout.finalizeOrder('', true);
-      this.router.navigate(['/checkout/confirmation', order.id]);
+      const result = await this.checkout.finalizeOrder('', true);
+      if (result.order?.access_token) {
+        this.router.navigate(['/ticket', result.order.id], {
+          queryParams: { token: result.order.access_token },
+        });
+      } else {
+        this.router.navigate(['/checkout/confirmation', result.order.id]);
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al procesar la cortesía.';
       this.errorMessage.set(msg);

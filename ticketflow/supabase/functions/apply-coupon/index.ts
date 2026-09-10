@@ -44,28 +44,9 @@ serve(async (req: Request) => {
   }
 
   try {
-    // 1. Authenticate
+    // 1. Resolve caller identity (optional auth for guest support)
     const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      });
-    }
-
-    const supabaseAnon = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_ANON_KEY')!,
-      { global: { headers: { Authorization: authHeader } } },
-    );
-
-    const { data: { user }, error: authError } = await supabaseAnon.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      });
-    }
+    // Coupon validation uses admin client to verify validity regardless of auth status
 
     // 2. Parse body
     const body = await req.json() as {

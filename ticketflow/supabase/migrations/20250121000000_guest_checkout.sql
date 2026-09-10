@@ -72,6 +72,8 @@ CREATE POLICY "Guest read order by access_token"
 -- Uses SECURITY DEFINER so it can read the order without the caller needing
 -- a matching RLS policy. The (order_id + token) pair prevents enumeration.
 -- ---------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS get_order_by_access_token(UUID, TEXT);
+
 CREATE OR REPLACE FUNCTION get_order_by_access_token(
   p_order_id UUID,
   p_token    TEXT
@@ -94,9 +96,11 @@ BEGIN
     'created_at',      o.created_at,
     'event', jsonb_build_object(
       'id',          e.id,
-      'title',       e.title,
+      'name',        e.name,
+      'title',       e.name,
       'event_date',  e.event_date,
-      'cover_image', e.cover_image,
+      'flyer_url',   e.flyer_url,
+      'cover_image', e.flyer_url,
       'venue',       jsonb_build_object(
         'name',      v.name
       )
@@ -151,6 +155,9 @@ GRANT EXECUTE ON FUNCTION get_order_by_access_token(UUID, TEXT) TO anon, authent
 -- N8N webhook call is left as a placeholder comment — the Edge Function
 -- `create-order` will handle the HTTP call to N8N after this function returns.
 -- ---------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS create_order_atomic(UUID, UUID, TEXT, UUID, TEXT, TEXT);
+DROP FUNCTION IF EXISTS create_order_atomic(UUID, UUID, TEXT, UUID, TEXT, TEXT, TEXT, TEXT);
+
 CREATE OR REPLACE FUNCTION create_order_atomic(
   p_customer_id       UUID    DEFAULT NULL,
   p_event_id          UUID    DEFAULT NULL,

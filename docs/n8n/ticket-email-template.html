@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Tus Boletos Oficiales - TicketFlow!</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      border: 1px solid #e2e8f0;
+    }
+    .header {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background-color: rgba(6, 182, 212, 0.15);
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 900;
+      margin: 0;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+    .content {
+      padding: 32px 24px;
+    }
+    .event-card {
+      background-color: #f1f5f9;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .event-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+    }
+    .event-meta {
+      font-size: 13px;
+      color: #475569;
+      margin: 4px 0;
+    }
+    .qr-section {
+      text-align: center;
+      padding: 24px;
+      background-color: #ffffff;
+      border: 2px dashed #cbd5e1;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .qr-image {
+      width: 220px;
+      height: 220px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .auth-code {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 1px;
+    }
+    .btn-container {
+      text-align: center;
+      margin: 28px 0;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
+    }
+    .table-container {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .table-container th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #64748b;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .table-container td {
+      padding: 12px 0;
+      font-size: 13px;
+      color: #334155;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .footer {
+      background-color: #f8fafc;
+      padding: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="badge">Compra Confirmada</div>
+      <h1 class="title">¡Aquí tienes tus entradas oficiales!</h1>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <p style="font-size: 14px; color: #334155; margin-top: 0;">
+        Hola <strong>{{ $json.recipientName }}</strong>,
+      </p>
+      <p style="font-size: 14px; color: #475569; leading-relaxed: 1.5;">
+        Agradecemos tu compra en <strong>TicketFlow</strong>. Hemos emitido tu pase de acceso digital con código QR. Presenta este correo o el pase digital al ingresar al recinto.
+      </p>
+
+      <!-- Event Card -->
+      <div class="event-card">
+        <h2 class="event-title">{{ $json.eventName }}</h2>
+        <div class="event-meta">📍 <strong>Recinto:</strong> {{ $json.venueName }}</div>
+        <div class="event-meta">📅 <strong>Fecha:</strong> {{ $json.eventDate }}</div>
+        <div class="event-meta">🎫 <strong>Orden:</strong> #{{ $json.orderId }}</div>
+      </div>
+
+      <!-- QR Box -->
+      <div class="qr-section">
+        <img class="qr-image" src="{{ $json.qrImageUrl }}" alt="Código QR de Acceso" />
+        <div class="auth-code">AUTH: {{ $json.orderId }}</div>
+        <p style="font-size: 11px; color: #64748b; margin-top: 8px; margin-bottom: 0;">
+          Escanea este código QR en la puerta del evento para validar tu entrada.
+        </p>
+      </div>
+
+      <!-- Primary Action Button -->
+      <div class="btn-container">
+        <a href="{{ $json.ticketUrl }}" target="_blank" class="btn-primary">
+          Ver Pase Digital y PDF en TicketFlow →
+        </a>
+      </div>
+
+      <!-- Order Items Table -->
+      <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 12px;">Desglose de Boletos Adquiridos</h3>
+      <table class="table-container">
+        <thead>
+          <tr>
+            <th>Localidad</th>
+            <th style="text-align: center;">Cantidad</th>
+            <th style="text-align: right;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each $json.items}}
+          <tr>
+            <td><strong>{{ this.name }}</strong></td>
+            <td style="text-align: center;">{{ this.quantity }}x</td>
+            <td style="text-align: right; font-family: monospace;">${{ this.total }} MXN</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <!-- Total summary -->
+      <div style="text-align: right; font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 16px;">
+        Total Pagado: <span style="color: #0284c7; font-family: monospace;">${{ $json.total }} MXN</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p style="margin: 0 0 6px 0;">TicketFlow Plataforma Oficial de Boleta Digital</p>
+      <p style="margin: 0;">Si tienes preguntas sobre tu orden, contacta a soporte o consulta tu enlace directo.</p>
+    </div>
+  </div>
+</body>
+</html>

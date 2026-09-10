@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { SupabaseService } from '@ticketflow/data-access';
+import { SupabaseService, AuthService } from '@ticketflow/data-access';
 import type { OrderWithRelations } from '@ticketflow/models';
 import {
   ButtonComponent,
@@ -107,13 +107,28 @@ import {
 
         <!-- Action CTAs -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <a [routerLink]="['/my-tickets', order()!.id]" class="w-full sm:w-auto">
+          <a
+            *ngIf="auth.user()"
+            [routerLink]="['/my-tickets', order()!.id]"
+            class="w-full sm:w-auto"
+          >
             <tf-button variant="primary" size="lg" class="w-full sm:w-auto">
               <i class="fa-solid fa-qrcode mr-1.5"></i> Ver Pase Digital (QR & PDF)
             </tf-button>
           </a>
 
-          <a routerLink="/my-tickets" class="w-full sm:w-auto">
+          <a
+            *ngIf="!auth.user() && order()?.access_token"
+            [routerLink]="['/ticket', order()!.id]"
+            [queryParams]="{ token: order()!.access_token }"
+            class="w-full sm:w-auto"
+          >
+            <tf-button variant="primary" size="lg" class="w-full sm:w-auto">
+              <i class="fa-solid fa-qrcode mr-1.5"></i> Ver Pase Digital de Invitado
+            </tf-button>
+          </a>
+
+          <a *ngIf="auth.user()" routerLink="/my-tickets" class="w-full sm:w-auto">
             <tf-button variant="secondary" size="lg" class="w-full sm:w-auto">
               <i class="fa-solid fa-ticket mr-1.5"></i> Todos Mis Boletos
             </tf-button>
@@ -132,9 +147,10 @@ import {
 export class OrderConfirmationComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly supabase = inject(SupabaseService).client;
+  readonly auth = inject(AuthService);
 
   readonly isLoading = signal(true);
-  readonly order = signal<OrderWithRelations | null>(null);
+  readonly order = signal<(OrderWithRelations & { access_token?: string }) | null>(null);
 
   async ngOnInit(): Promise<void> {
     const orderId = this.route.snapshot.paramMap.get('orderId');
@@ -155,7 +171,7 @@ export class OrderConfirmationComponent implements OnInit {
       if (error) {
         console.error('Error fetching confirmed order:', error);
       } else {
-        this.order.set(data as OrderWithRelations);
+        this.order.set(data as OrderWithRelations & { access_token?: string });
       }
     } finally {
       this.isLoading.set(false);

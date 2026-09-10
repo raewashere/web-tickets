@@ -73,9 +73,32 @@ export class CheckoutService {
     Math.max(0, this.subtotal() - this.discount())
   );
 
+  readonly guestEmail = signal<string>('');
+  readonly guestName  = signal<string>('');
+
   constructor() {
     this.loadCart();
+    this.loadGuestInfo();
     this.loadCommissionRate();
+  }
+
+  loadGuestInfo(): void {
+    try {
+      const raw = sessionStorage.getItem('tf_guest_info');
+      if (raw) {
+        const parsed = JSON.parse(raw) as { email?: string; name?: string };
+        if (parsed.email) this.guestEmail.set(parsed.email);
+        if (parsed.name)  this.guestName.set(parsed.name);
+      }
+    } catch (e) {
+      console.error('Error loading guest info:', e);
+    }
+  }
+
+  setGuestInfo(email: string, name: string): void {
+    this.guestEmail.set(email.trim());
+    this.guestName.set(name.trim());
+    sessionStorage.setItem('tf_guest_info', JSON.stringify({ email: email.trim(), name: name.trim() }));
   }
 
   async loadCommissionRate(): Promise<void> {
@@ -128,17 +151,18 @@ export class CheckoutService {
 
     const session = await this.supabase.auth.getSession();
     const token   = session.data.session?.access_token;
-    if (!token) {
-      return { valid: false, message: 'Sesión de usuario no válida.' };
+
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
 
     try {
       const res = await fetch(`${this.supabaseUrl}/functions/v1/apply-coupon`, {
         method:  'POST',
-        headers: {
-          'Content-Type':  'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
+        headers,
         body: JSON.stringify({
           code,
           eventId:  c.eventId,
@@ -188,38 +212,55 @@ export class CheckoutService {
   // Finalize order — delegates to Edge Function (server-side atomic)
   // ---------------------------------------------------------------------------
 
-  async finalizeOrder(paypalOrderId: string, isFree = false): Promise<Order> {
+  async finalizeOrder(
+    paypalOrderId: string,
+    isFree = false
+  ): Promise<{ order: Order & { access_token?: string }; ticketUrl?: string; isGuest?: boolean }> {
     const c    = this.cart();
     const user = this.auth.user();
+    const gEmail = this.guestEmail();
+    const gName  = this.guestName();
 
-    if (!c || !user) {
-      throw new Error('Sesión de compra o usuario no válido.');
+    if (!c) {
+      throw new Error('Sesión de compra no válida.');
+    }
+
+    if (!user && (!gEmail || !gEmail.trim())) {
+      throw new Error('Por favor proporciona tu correo electrónico para enviarte los boletos.');
     }
 
     const session = await this.supabase.auth.getSession();
     const token   = session.data.session?.access_token;
-    if (!token) {
-      throw new Error('Sesión de usuario no válida.');
+
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
 
     const coup = this.appliedCoupon();
 
     const res = await fetch(`${this.supabaseUrl}/functions/v1/create-order`, {
       method:  'POST',
-      headers: {
-        'Content-Type':  'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
+      headers,
       body: JSON.stringify({
         paypalOrderId,
         sessionId:  c.sessionId,
         eventId:    c.eventId,
         couponId:   coup ? coup.id : null,
         isFree,
+        guestEmail: user ? null : gEmail.trim(),
+        guestName:  user ? null : (gName.trim() || gEmail.trim()),
       }),
     });
 
-    const result = await res.json() as { order?: Order; error?: string };
+    const result = await res.json() as {
+      order?: Order & { access_token?: string };
+      ticketUrl?: string;
+      isGuest?: boolean;
+      error?: string;
+    };
 
     if (!res.ok || !result.order) {
       throw new Error(result.error ?? 'No se pudo completar la orden.');
@@ -228,7 +269,7 @@ export class CheckoutService {
     // Clear cart after successful server-side order creation
     this.clearCart();
 
-    return result.order;
+    return result;
   }
 
   // ---------------------------------------------------------------------------

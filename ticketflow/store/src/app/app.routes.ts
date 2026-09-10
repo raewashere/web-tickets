@@ -60,7 +60,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'checkout',
-    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -97,6 +96,17 @@ export const appRoutes: Route[] = [
           ),
       },
     ],
+  },
+  {
+    path: 'ticket/:orderId',
+    data: {
+      title: 'Pase Digital y Entrada con Código QR',
+      description: 'Consulta tu pase de acceso digital y código QR oficial para el recinto.',
+    },
+    loadComponent: () =>
+      import('./features/public-ticket/public-ticket.component').then(
+        (m) => m.PublicTicketComponent
+      ),
   },
   {
     path: 'my-tickets',

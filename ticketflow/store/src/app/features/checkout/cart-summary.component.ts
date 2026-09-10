@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CheckoutService } from './checkout.service';
 import { CountdownTimerComponent } from '../../shared/ui/countdown-timer.component';
 import { ToastService } from '@ticketflow/shared-ui';
+import { AuthService } from '@ticketflow/data-access';
 
 @Component({
   selector: 'store-cart-summary',
@@ -81,8 +82,81 @@ import { ToastService } from '@ticketflow/shared-ui';
 
         <!-- Main 2-column Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          <!-- Left: Items List & Coupon Box -->
+          <!-- Left: Items List & Buyer Info & Coupon Box -->
           <div class="lg:col-span-2 space-y-6">
+
+            <!-- Buyer Info Card (Guest Checkout / Auth User) -->
+            <div class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
+                  <i class="fa-solid fa-user-check text-cyan-600"></i> Datos de Entrega de Boletos
+                </h3>
+                <span
+                  *ngIf="auth.user()"
+                  class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-circle-check"></i> Cuenta Autenticada
+                </span>
+                <span
+                  *ngIf="!auth.user()"
+                  class="text-[10px] font-bold uppercase tracking-wider text-cyan-800 bg-cyan-100 px-2.5 py-1 rounded-full flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-bolt"></i> Compra como Invitado
+                </span>
+              </div>
+
+              <!-- Authenticated User Display -->
+              <div *ngIf="auth.user()" class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+                <div>
+                  <span class="font-bold text-slate-900 block">
+                    {{ auth.user()?.user_metadata?.['full_name'] || 'Usuario Registrado' }}
+                  </span>
+                  <span class="text-slate-600 font-mono">{{ auth.user()?.email }}</span>
+                </div>
+                <span class="text-[11px] text-slate-500">Tus entradas llegarán a este correo.</span>
+              </div>
+
+              <!-- Guest Form (Unauthenticated) -->
+              <div *ngIf="!auth.user()" class="space-y-4 pt-1">
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  No necesitas crear una cuenta. Ingresa tu nombre y correo para recibir el enlace de acceso directo y tus códigos QR.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div class="space-y-1.5">
+                    <label class="font-bold text-slate-700 block">Nombre Completo *</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="guestNameInput"
+                      placeholder="Ej. María García"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    />
+                  </div>
+
+                  <div class="space-y-1.5">
+                    <label class="font-bold text-slate-700 block">Correo Electrónico *</label>
+                    <input
+                      type="email"
+                      [(ngModel)]="guestEmailInput"
+                      placeholder="ejemplo@correo.com"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    />
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-between text-xs">
+                  <span class="text-sky-900 font-medium">¿Ya tienes una cuenta de TicketFlow?</span>
+                  <a routerLink="/login" class="font-extrabold text-cyan-700 hover:underline">
+                    Iniciar Sesión <i class="fa-solid fa-arrow-right ml-1"></i>
+                  </a>
+                </div>
+
+                <p *ngIf="buyerError()" class="text-xs text-rose-600 font-semibold flex items-center gap-1">
+                  <i class="fa-solid fa-triangle-exclamation"></i> {{ buyerError() }}
+                </p>
+              </div>
+            </div>
+
             <!-- Items Table/Card -->
             <div class="p-6 sm:p-7 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-4">
               <h3 class="font-extrabold text-base text-slate-900">Localidades Seleccionadas</h3>
@@ -203,14 +277,13 @@ import { ToastService } from '@ticketflow/shared-ui';
               </div>
 
               <div class="pt-2">
-                <a routerLink="/checkout/payment">
-                  <button
-                    type="button"
-                    class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
-                  >
-                    <span>Proceder al Pago Seguro <i class="fa-solid fa-arrow-right ml-1"></i></span>
-                  </button>
-                </a>
+                <button
+                  type="button"
+                  (click)="proceedToPayment()"
+                  class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
+                >
+                  <span>Proceder al Pago Seguro <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                </button>
               </div>
 
               <div class="pt-2 text-[10px] text-slate-400 text-center space-y-1">
@@ -256,15 +329,21 @@ import { ToastService } from '@ticketflow/shared-ui';
 })
 export class CartSummaryComponent implements OnInit {
   readonly checkout = inject(CheckoutService);
+  readonly auth     = inject(AuthService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 
   couponCodeInput = '';
+  guestNameInput = '';
+  guestEmailInput = '';
   readonly isCheckingCoupon = signal(false);
   readonly couponError = signal<string | null>(null);
+  readonly buyerError  = signal<string | null>(null);
 
   ngOnInit(): void {
     this.checkout.loadCart();
+    this.guestNameInput  = this.checkout.guestName();
+    this.guestEmailInput = this.checkout.guestEmail();
   }
 
   async applyCoupon(): Promise<void> {
@@ -285,6 +364,25 @@ export class CartSummaryComponent implements OnInit {
     }
   }
 
+  proceedToPayment(): void {
+    this.buyerError.set(null);
+
+    // If user is not authenticated, validate guest input
+    if (!this.auth.user()) {
+      if (!this.guestNameInput.trim()) {
+        this.buyerError.set('Por favor ingresa tu nombre completo.');
+        return;
+      }
+      if (!this.guestEmailInput.trim() || !this.guestEmailInput.includes('@')) {
+        this.buyerError.set('Por favor ingresa un correo electrónico válido para enviar tus boletos.');
+        return;
+      }
+      this.checkout.setGuestInfo(this.guestEmailInput, this.guestNameInput);
+    }
+
+    this.router.navigate(['/checkout/payment']);
+  }
+
   async onTimerExpired(): Promise<void> {
     this.toast.error(
       'Reserva Expirada',
@@ -294,3 +392,4 @@ export class CartSummaryComponent implements OnInit {
     this.router.navigate(['/search']);
   }
 }
+

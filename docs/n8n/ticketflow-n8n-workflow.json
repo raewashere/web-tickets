@@ -1,0 +1,143 @@
+{
+  "name": "TicketFlow — Entradas & Confirmación por Correo (Guest & Auth)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ticketflow-order-webhook",
+        "options": {}
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "ticketflow-order-webhook-id"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "orderId",
+              "value": "={{ $json.body.orderId }}"
+            },
+            {
+              "name": "recipientEmail",
+              "value": "={{ $json.body.recipientEmail }}"
+            },
+            {
+              "name": "recipientName",
+              "value": "={{ $json.body.recipientName }}"
+            },
+            {
+              "name": "eventName",
+              "value": "={{ $json.body.eventName }}"
+            },
+            {
+              "name": "venueName",
+              "value": "={{ $json.body.venueName }}"
+            },
+            {
+              "name": "eventDate",
+              "value": "={{ $json.body.eventDate }}"
+            },
+            {
+              "name": "ticketUrl",
+              "value": "={{ $json.body.ticketUrl }}"
+            },
+            {
+              "name": "qrImageUrl",
+              "value": "={{ $json.body.qrImageUrl }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "total",
+              "value": "={{ $json.body.total }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Parse Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "boletos@ticketflow.com",
+        "toEmail": "={{ $json.recipientEmail }}",
+        "subject": "=¡Tus Entradas Oficiales para {{ $json.eventName }}! - TicketFlow",
+        "html": "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\"><title>Tus Boletos TicketFlow</title></head><body style=\"font-family: sans-serif; background: #f8fafc; padding: 20px;\"><div style=\"max-width: 600px; margin: auto; background: #fff; border-radius: 16px; padding: 24px; border: 1px solid #e2e8f0;\"><h2 style=\"color: #0f172a;\">¡Hola {{ $json.recipientName }}!</h2><p>Aquí tienes tus entradas oficiales para <strong>{{ $json.eventName }}</strong>.</p><div style=\"background: #f1f5f9; padding: 16px; border-radius: 12px; margin: 16px 0;\"><p>📍 <strong>Recinto:</strong> {{ $json.venueName }}</p><p>📅 <strong>Fecha:</strong> {{ $json.eventDate }}</p><p>🎫 <strong>Orden:</strong> #{{ $json.orderId }}</p></div><div style=\"text-align: center; margin: 24px 0;\"><img src=\"{{ $json.qrImageUrl }}\" width=\"220\" height=\"220\" alt=\"QR Acceso\" style=\"border-radius: 12px;\"><br><a href=\"{{ $json.ticketUrl }}\" style=\"display: inline-block; background: #06b6d4; color: #0f172a; font-weight: bold; padding: 14px 28px; border-radius: 12px; text-decoration: none; margin-top: 16px;\">Ver Pase Digital en TicketFlow →</a></div></div></body></html>",
+        "options": {}
+      },
+      "name": "Send Email Node (Gmail / SendGrid / SMTP / Resend)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        720,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"orderId\": \"{{ $json.orderId }}\",
+        \"message\": \"Ticket email dispatched successfully\"\n}",
+        "options": {}
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        960,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Parse Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Payload": {
+      "main": [
+        [
+          {
+            "node": "Send Email Node (Gmail / SendGrid / SMTP / Resend)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email Node (Gmail / SendGrid / SMTP / Resend)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

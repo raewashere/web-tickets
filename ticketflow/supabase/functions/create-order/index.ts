@@ -73,16 +73,21 @@ async function dispatchN8NTicketWebhook(payload: {
   recipientEmail: string;
   recipientName:  string;
   eventId:        string;
+  eventName?:     string;
+  eventDate?:     string | null;
+  venueName?:     string;
+  subtotal?:      number;
+  discount?:      number;
+  total?:         number;
+  items?:         Array<{ quantity: number; unit_price: number; total: number; name?: string }>;
   ticketUrl:      string;
+  qrImageUrl:     string;
 }): Promise<void> {
   const n8nUrl = Deno.env.get('N8N_TICKET_WEBHOOK_URL');
 
-  // PLACEHOLDER: If the env var is not configured, log and skip silently.
-  // Once the N8N workflow is ready, set N8N_TICKET_WEBHOOK_URL in
-  // Supabase Dashboard → Edge Functions → Secrets and it will activate.
   if (!n8nUrl) {
-    console.log('[N8N PLACEHOLDER] N8N_TICKET_WEBHOOK_URL not set — skipping ticket email dispatch.');
-    console.log('[N8N PLACEHOLDER] Would have sent:', JSON.stringify(payload));
+    console.log('[N8N DISPATCHER] N8N_TICKET_WEBHOOK_URL not set — skipping ticket email webhook.');
+    console.log('[N8N DISPATCHER] Payload ready:', JSON.stringify(payload));
     return;
   }
 
@@ -265,6 +270,21 @@ serve(async (req: Request) => {
     const recipientName  = guestName ?? user?.email ?? 'Cliente';
     const storeBaseUrl   = Deno.env.get('STORE_BASE_URL') ?? 'https://tu-dominio.com';
     const ticketUrl      = `${storeBaseUrl}/ticket/${order.id}?token=${order.access_token}`;
+    const qrImageUrl     = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=TICKETFLOW-AUTH-${order.id}`;
+
+    // Query full order details for rich webhook payload
+    const { data: fullOrder } = await supabaseAdmin
+      .from('orders')
+      .select('*, events(name, event_date, venues(name)), order_items(quantity, unit_price, total, ticket_types(name))')
+      .eq('id', order.id)
+      .maybeSingle();
+
+    const itemsFormatted = (fullOrder?.order_items || []).map((item: any) => ({
+      quantity:   item.quantity,
+      unit_price: item.unit_price,
+      total:      item.total,
+      name:       item.ticket_types?.name ?? 'Localidad',
+    }));
 
     // Non-blocking dispatch — does not delay the HTTP response
     dispatchN8NTicketWebhook({
@@ -273,7 +293,15 @@ serve(async (req: Request) => {
       recipientEmail,
       recipientName,
       eventId,
+      eventName:      fullOrder?.events?.name ?? 'Espectáculo en Vivo',
+      eventDate:      fullOrder?.events?.event_date ?? null,
+      venueName:      fullOrder?.events?.venues?.name ?? 'Recinto Confirmado',
+      subtotal:       fullOrder?.subtotal ?? 0,
+      discount:       fullOrder?.discount_amount ?? 0,
+      total:          fullOrder?.total ?? 0,
+      items:          itemsFormatted,
       ticketUrl,
+      qrImageUrl,
     });
 
     // For authenticated users, also invoke the existing send-ticket-email function
