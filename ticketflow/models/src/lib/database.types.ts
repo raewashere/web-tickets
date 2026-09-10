@@ -154,6 +154,11 @@ export interface Order {
   total: number;
   payment_provider: string;
   payment_reference: string | null;
+  /** Present when the purchase was made without an account */
+  guest_email: string | null;
+  guest_name: string | null;
+  /** Unique token for public ticket access (/ticket/:id?token=...) */
+  access_token: string;
   created_at: string;
   updated_at: string;
 }

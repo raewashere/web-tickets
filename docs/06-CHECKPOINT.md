@@ -1,7 +1,7 @@
 # 📋 Checkpoint — Estado del Proyecto TicketFlow
 
-> **Fecha:** 09 de septiembre de 2026  
-> **Sesión:** Meta Pixel por Artista (M15) y Suite de Mejoras UX (UX-1 a UX-11) — Desplegadas e Integradas ✅
+> **Fecha:** 10 de septiembre de 2026  
+> **Sesión:** Guest Checkout (Compra como Invitado) + Integración N8N — Fases 1 y 2 Completadas ✅
 
 ---
 
@@ -34,6 +34,8 @@
 | `20250111000000_coupon_ticket_sku.sql` | ✅ Aplicada | Cupones asociados por SKU (`ticket_sku`) y descuento proporcional atómico |
 | `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
 | `20250119000000_artist_meta_pixel.sql` | ✅ Lista | Columna `meta_pixel_id TEXT` en `artists` para Pixel de Meta por artista |
+| `20250120000000_fix_commission_pricing_model.sql` | ✅ Lista | Corrección del modelo de comisión (retención en lugar de sobrecargo) |
+| `20250121000000_guest_checkout.sql` | ✅ Lista | **Guest Checkout (Fase 1):** `orders.customer_id` nullable, campos `guest_email`, `guest_name`, `access_token`, RLS token policy, RPC `get_order_by_access_token` y `create_order_atomic` actualizado |
 | `20250113000000_super_admin.sql` | ✅ Aplicada | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
 | `20250114000000_refund_requests.sql` | ✅ Aplicada | Sistema de solicitudes de reembolso, RLS y RPCs de aprobación/rechazo atómico |
 | `20250116000000_payouts_and_settlements.sql` | ✅ Aplicada | Control de pagos a artistas, liquidaciones netas, datos bancarios/fiscales y dispersiones |
@@ -52,8 +54,8 @@
 
 | Función | Estado | Descripción |
 |---------|--------|-------------|
-| `create-paypal-order` | ✅ Desplegada | Crea orden PayPal sandbox/live, verifica locks activos |
-| `create-order` | ✅ Desplegada | Captura pago PayPal y llama `create_order_atomic` |
+| `create-paypal-order` | ✅ Actualizada | Soporta compras de usuarios autenticados e invitados (`guestEmail`/`guestName`) sin JWT obligatorio |
+| `create-order` | ✅ Actualizada | Procesa pagos de usuarios e invitados, llama `create_order_atomic`, retorna `ticketUrl` e incluye dispatcher placeholder N8N |
 | `apply-coupon` | ✅ Actualizada | Valida y aplica cupones globales, por evento o por `ticket_sku` |
 | `send-ticket-email` | ✅ Creada | Envío de confirmación de compra y resumen de acceso por correo |
 | `send-staff-invite` | 🟡 Pendiente | Envío de invitación a Doormen (considerando Webhook en N8N) |
@@ -90,6 +92,19 @@
 | **UX-11** | Store + Admin | Transiciones de Navegación Fluidas (View Transitions API) | `app.config.ts`, `app.css` |
 | **M16** | Store + Admin + DB | Corrección del Modelo de Precios y Retención de Comisión (El comprador paga exactamente el precio del artista; la comisión se retiene del saldo neto) | `checkout.service.ts`, `cart-summary.*`, `payment.*`, `send-ticket-email`, migración 020 |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
+| **GC-1** | DB | Migración 021 Guest Checkout (`orders.customer_id` NULLABLE, `guest_email`, `guest_name`, `access_token`, RLS, RPC `get_order_by_access_token`) | `20250121000000_guest_checkout.sql`, `database.types.ts` |
+| **GC-2** | Edge Functions | `create-paypal-order` & `create-order` actualizados con soporte de invitado y dispatcher N8N placeholder | `create-paypal-order/index.ts`, `create-order/index.ts` |
+
+---
+
+## 🎟️ Estado de Guest Checkout + N8N (En Desarrollo)
+
+| Fase | Componente | Estado | Detalles / Pendientes |
+|------|------------|:------:|-----------------------|
+| **Fase 1** | Base de Datos (Migración 021) | ✅ Completado | Tabla `orders` actualizada, RPC `get_order_by_access_token` y `create_order_atomic` adaptados |
+| **Fase 2** | Edge Functions | ✅ Completado | Auth opcional, soporte para `guestEmail`/`guestName` y dispatcher placeholder N8N |
+| **Fase 3** | Store UI | 🟡 Pendiente | `GuestCheckoutService`, toggle de invitado en checkout, `PublicTicketComponent` y ruta `/ticket/:orderId` |
+| **Fase 4** | Workflow N8N | 🟡 Pendiente | Configuración de Webhook Trigger en N8N y plantilla HTML de correo con QR |
 
 ---
 

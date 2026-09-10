@@ -34,9 +34,12 @@
 - [x] **[M3] QR realmente escaneable por cámara**
   - **Completado:** Se integró la librería `qrcode` con nivel de corrección H y renderizado HD asíncrono en `ticket-detail` y `my-tickets`.
 
-- [ ] **Envío de invitaciones Doorman y correos de confirmación (Alternativa N8N Webhook)**
-  - **Estado:** Pendiente de estabilización en producción.
-  - **Alternativa propuesta:** Implementar un Webhook hacia N8N para procesar el envío de correos y automatizaciones de forma desacoplada y confiable.
+- [ ] **Guest Checkout (Compra sin Cuenta) & Entrega de Boletos vía N8N**
+  - **Estado:** En desarrollo (Fases 1 y 2 completadas ✅ | Fases 3 y 4 pendientes 🟡)
+  - **Fase 1 (BD):** Migración 021 (`orders.customer_id` NULLABLE, `guest_email`, `guest_name`, `access_token`, RLS token policy, RPC `get_order_by_access_token`).
+  - **Fase 2 (Edge Functions):** `create-paypal-order` y `create-order` adaptados con auth opcional + dispatcher placeholder N8N.
+  - **Fase 3 (Store UI - Pendiente):** `GuestCheckoutService`, toggle de invitado en checkout, `PublicTicketComponent` y ruta `/ticket/:orderId`.
+  - **Fase 4 (N8N Workflow - Pendiente):** Webhook Trigger en N8N y plantilla HTML de correo con QR.
 
 - [x] **[M5] Fix redirect a login al intentar comprar**
   - **Completado:** Se corrigió la URL en `event-detail.component.ts` a `/events/:id`.
