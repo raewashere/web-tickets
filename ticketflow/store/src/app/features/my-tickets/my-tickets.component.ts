@@ -200,7 +200,7 @@ import {
                   <img
                     *ngIf="order.events?.flyer_url"
                     [src]="order.events!.flyer_url"
-                    [alt]="'Flyer del concierto ' + (order.events?.name || 'evento')"
+                    [alt]="'Flyer del concierto ' + (order.events!.name || 'evento')"
                     class="w-full h-full object-cover"
                   />
                   <div *ngIf="!order.events?.flyer_url" class="w-full h-full flex items-center justify-center text-2xl text-slate-400">

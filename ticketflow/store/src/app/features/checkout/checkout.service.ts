@@ -269,7 +269,11 @@ export class CheckoutService {
     // Clear cart after successful server-side order creation
     this.clearCart();
 
-    return result;
+    return {
+      order: result.order,
+      ticketUrl: result.ticketUrl,
+      isGuest: result.isGuest,
+    };
   }
 
   // ---------------------------------------------------------------------------
