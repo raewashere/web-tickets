@@ -214,7 +214,7 @@ import {
                     {{ order.events?.artists?.name }}
                   </span>
                   <h3 class="text-lg font-black text-slate-900 leading-snug">
-                    {{ order.events.name }}
+                    {{ order.events?.name }}
                   </h3>
                   <p class="text-xs text-slate-500">
                     <i class="fa-solid fa-location-dot mr-1"></i> {{ order.events?.venues?.name || 'Recinto Confirmado' }}
