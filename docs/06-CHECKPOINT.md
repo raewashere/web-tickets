@@ -1,7 +1,7 @@
 # 📋 Checkpoint — Estado del Proyecto TicketFlow
 
-> **Fecha:** 10 de septiembre de 2026  
-> **Sesión:** Guest Checkout (Compra como Invitado) + Integración N8N — Fases 1 y 2 Completadas ✅
+> **Fecha:** 11 de septiembre de 2026  
+> **Sesión:** Guest Checkout (Fases 1-4 Completadas ✅) + Integración N8N + Fix Modo Oscuro Reactivo + Correcciones de Despliegue en Vercel y Postgres
 
 ---
 
@@ -35,7 +35,7 @@
 | `20250112000000_artist_gallery.sql` | ✅ Aplicada | Columna `gallery_urls TEXT[]` en `artists` para multi-fotos |
 | `20250119000000_artist_meta_pixel.sql` | ✅ Lista | Columna `meta_pixel_id TEXT` en `artists` para Pixel de Meta por artista |
 | `20250120000000_fix_commission_pricing_model.sql` | ✅ Lista | Corrección del modelo de comisión (retención en lugar de sobrecargo) |
-| `20250121000000_guest_checkout.sql` | ✅ Lista | **Guest Checkout (Fase 1):** `orders.customer_id` nullable, campos `guest_email`, `guest_name`, `access_token`, RLS token policy, RPC `get_order_by_access_token` y `create_order_atomic` actualizado |
+| `20250121000000_guest_checkout.sql` | ✅ Lista | **Guest Checkout (Fases 1 a 4):** `orders.customer_id` nullable, campos `guest_email`, `guest_name`, `access_token`, RLS token policy, RPC `get_order_by_access_token`, `DROP FUNCTION` explícitos para fix error 42725 y `create_order_atomic` actualizado |
 | `20250113000000_super_admin.sql` | ✅ Aplicada | RPCs de Super-Admin: usuarios, roles, métricas globales y moderación de recintos |
 | `20250114000000_refund_requests.sql` | ✅ Aplicada | Sistema de solicitudes de reembolso, RLS y RPCs de aprobación/rechazo atómico |
 | `20250116000000_payouts_and_settlements.sql` | ✅ Aplicada | Control de pagos a artistas, liquidaciones netas, datos bancarios/fiscales y dispersiones |
@@ -55,10 +55,10 @@
 | Función | Estado | Descripción |
 |---------|--------|-------------|
 | `create-paypal-order` | ✅ Actualizada | Soporta compras de usuarios autenticados e invitados (`guestEmail`/`guestName`) sin JWT obligatorio |
-| `create-order` | ✅ Actualizada | Procesa pagos de usuarios e invitados, llama `create_order_atomic`, retorna `ticketUrl` e incluye dispatcher placeholder N8N |
-| `apply-coupon` | ✅ Actualizada | Valida y aplica cupones globales, por evento o por `ticket_sku` |
+| `create-order` | ✅ Actualizada | Procesa pagos de usuarios e invitados, llama `create_order_atomic`, retorna `ticketUrl` e incluye dispatcher HTTP con payload enriquecido para N8N |
+| `apply-coupon` | ✅ Actualizada | Valida y aplica cupones globales, por evento o por `ticket_sku` (soporta peticiones de invitados) |
 | `send-ticket-email` | ✅ Creada | Envío de confirmación de compra y resumen de acceso por correo |
-| `send-staff-invite` | 🟡 Pendiente | Envío de invitación a Doormen (considerando Webhook en N8N) |
+| `send-staff-invite` | ✅ Creada | Envío de invitación a Doormen |
 
 ### Mejoras Implementadas
 
@@ -85,7 +85,7 @@
 | **UX-4** | Store | Cuenta Regresiva Mejorada en Carrito & Alertas de Expiración | `countdown-timer.component.ts`, `cart-summary.component.ts`, `payment.component.ts` |
 | **UX-5** | Store | Compartir Evento en Redes Social (Native Share, Copiar Enlace, WhatsApp, X, FB) | `event-detail.component.ts` |
 | **UX-6** | Store | Filtros de Búsqueda Colapsables en Móvil (Slide-Over Drawer) | `search-results.component.ts`, `filter-panel.component.ts` |
-| **UX-7** | Store + Admin | Modo Oscuro / Dark Mode Toggle & Preference | `theme.service.ts`, `navbar.component.ts`, `topbar.component.ts`, `tailwind.config.js` |
+| **UX-7** | Store + Admin | Modo Oscuro / Dark Mode Toggle & Preference Reactivo | `theme.service.ts` (Angular `effect()`), `styles.css` (Reglas globales `.dark`), `navbar.component.ts`, `topbar.component.ts`, `admin-shell.component.ts` |
 | **UX-8** | Store | Preview del QR con Candado Previo al Pago | `cart-summary.component.ts`, `payment.component.ts` |
 | **UX-9** | Admin | Dashboard del Artista con Gráficas de Ventas | `dashboard.component.ts` |
 | **UX-10** | Store + Admin | Componente de Estado Vacío Ilustrado (`tf-empty-state`) | `empty-state.ts`, `search-results.component.ts`, `my-tickets.component.ts`, `event-list.component.ts` |
@@ -93,42 +93,35 @@
 | **M16** | Store + Admin + DB | Corrección del Modelo de Precios y Retención de Comisión (El comprador paga exactamente el precio del artista; la comisión se retiene del saldo neto) | `checkout.service.ts`, `cart-summary.*`, `payment.*`, `send-ticket-email`, migración 020 |
 | **UI** | Store | Fix contenedor contador de boletos | `ticket-selector.component.ts` |
 | **GC-1** | DB | Migración 021 Guest Checkout (`orders.customer_id` NULLABLE, `guest_email`, `guest_name`, `access_token`, RLS, RPC `get_order_by_access_token`) | `20250121000000_guest_checkout.sql`, `database.types.ts` |
-| **GC-2** | Edge Functions | `create-paypal-order` & `create-order` actualizados con soporte de invitado y dispatcher N8N placeholder | `create-paypal-order/index.ts`, `create-order/index.ts` |
+| **GC-2** | Edge Functions | `create-paypal-order` & `create-order` actualizados con soporte de invitado y dispatcher N8N con payload enriquecido | `create-paypal-order/index.ts`, `create-order/index.ts` |
+| **GC-3** | Store UI | Formulario e insumos de invitado en checkout (`guestEmail`/`guestName`), validaciones en `CheckoutService`, `PublicTicketComponent` y ruta pública `/ticket/:orderId` con token | `cart-summary.*`, `payment.*`, `checkout.service.ts`, `public-ticket.*`, `app.routes.ts` |
+| **GC-4** | N8N Workflow | Plantilla HTML de correo responsiva (`docs/n8n/ticket-email-template.html`) y JSON de flujo exportable N8N (`docs/n8n/ticketflow-n8n-workflow.json`) | `docs/n8n/*` |
+| **FIX-1** | DB SQL | Resolución de ambigüedad Postgres (error 42725) mediante `DROP FUNCTION` explícitos y corrección de columnas en migración 021 | `20250121000000_guest_checkout.sql` |
+| **FIX-2** | Store App | Corrección de firmas TypeScript estrictas (`TS2322`) en `finalizeOrder` y diagnósticos Angular (`NG8107`) para compilación limpia en Vercel | `checkout.service.ts`, `my-tickets.component.ts` |
 
 ---
 
-## 🎟️ Estado de Guest Checkout + N8N (En Desarrollo)
+## 🎟️ Estado de Guest Checkout + N8N (Completado ✅)
 
-| Fase | Componente | Estado | Detalles / Pendientes |
-|------|------------|:------:|-----------------------|
+| Fase | Componente | Estado | Detalles |
+|------|------------|:------:|----------|
 | **Fase 1** | Base de Datos (Migración 021) | ✅ Completado | Tabla `orders` actualizada, RPC `get_order_by_access_token` y `create_order_atomic` adaptados |
-| **Fase 2** | Edge Functions | ✅ Completado | Auth opcional, soporte para `guestEmail`/`guestName` y dispatcher placeholder N8N |
+| **Fase 2** | Edge Functions | ✅ Completado | Auth opcional, soporte para `guestEmail`/`guestName` y dispatcher N8N enriquecido |
 | **Fase 3** | Store UI | ✅ Completado | Formulario e insumos de invitado en checkout (`guestEmail`/`guestName`), validaciones, `PublicTicketComponent` y ruta pública `/ticket/:orderId` con token |
 | **Fase 4** | Workflow N8N | ✅ Completado | Dispatcher HTTP enriquecido en Edge Function `create-order`, plantilla HTML de correo responsiva (`docs/n8n/ticket-email-template.html`) y JSON de flujo exportable N8N (`docs/n8n/ticketflow-n8n-workflow.json`) |
 
 ---
 
-## 🏗️ Especificación de Próximos Módulos (En Backlog)
+## 🏗️ Pendientes de Infraestructura & Dominio
 
-### 1. Módulo de Super-Admin Central
-- **Moderación de Recintos:** Vista para revisar recintos registrados y activar el check de verificación `venues.verified`.
-- **Gestión Global de Usuarios:** Listado central de usuarios con asignación y revocación manual de roles (`admin`, `artist`, `doorman`, `customer`) en `user_roles`.
-- **Métricas Globales:** Tablero con GMV total, comisiones netas de plataforma, eventos publicados y total de entradas vendidas.
-
-### 2. Gestión de Solicitudes de Reembolso
-- **Flujo Comprador (Store):** Botón *"Solicitar Reembolso"* en *Mis Boletos* con captura de motivo.
-- **Panel de Aprobación (Admin):** Revisión de solicitudes pendientes por organizador / super-admin.
-- **Transición Atómica:** Al aprobarse, cambio de estado de orden a `refunded`, anulación de QR en `ticket_validations` y reintegración del stock de boletos.
-
-### 3. Waitlist / Lista de Espera
-- **Suscripción de Usuarios:** Formulario en página de evento cuando todas las localidades estén agotadas.
-- **Tabla `waitlist`:** Registro de interesados (`event_id`, `ticket_type_id`, `user_id`/`email`, `created_at`).
-- **Disparador Automático:** Notificación por correo/N8N en orden de registro cuando se liberen locks expirados o se procesen reembolsos.
-
-### 4. Facturación y Control de Pagos a Artistas (Payouts)
-- **Cálculo de Liquidación Neta:** Desglose automático por evento (`Total Bruto - Comisiones TicketFlow - Retenciones = Saldo a Liquidar`).
-- **Portal Financiero de Artistas:** Balance acumulado, saldo disponible y desglose por evento.
-- **Control de Dispersión (Admin):** Registro y seguimiento de transferencias con comprobante de pago o integración PayPal Payouts.
+1. **Configuración de Dominio Oficial & Servicio Transaccional de Correo (Resend API):**
+   * Contratación de dominio oficial (ej. `ticketflow.app`) en registrador DNS (Cloudflare / Namecheap / GoDaddy).
+   * Registro de dominio en **Resend.com** y configuración de registros DNS (SPF, DKIM, DMARC).
+   * Configuración de `RESEND_API_KEY` y `STORE_BASE_URL` en Supabase Edge Functions / Secrets.
+2. **Google Maps API Key para el mapa del recinto:**
+   * Obtener API Key de *Maps JavaScript API* en Google Cloud Console e ingresar en `VITE_GOOGLE_MAPS_API_KEY` (en `.env` y Vercel).
+3. **PayPal Live Credentials:**
+   * Configurar `PAYPAL_MODE=live` con `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` de producción en Supabase Edge Functions Secrets.
 
 ---
 
@@ -139,3 +132,4 @@
 | [`docs/07-MEJORAS-POST-MVP.md`](./07-MEJORAS-POST-MVP.md) | Especificación técnica detallada de mejoras |
 | [`docs/08-BACKLOG.md`](./08-BACKLOG.md) | Backlog maestro con prioridades P0–P4 y métricas |
 | [`docs/06-CHECKPOINT.md`](./06-CHECKPOINT.md) | Resumen ejecutivo del estado del proyecto y especificación de nuevos módulos |
+

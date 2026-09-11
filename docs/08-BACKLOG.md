@@ -25,6 +25,11 @@
   - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`
   - Reemplazar `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` con credenciales de producción
 
+- [ ] **Dominio Oficial & Servicio Transaccional de Correo (Resend API)**
+  - Contratación de dominio oficial (ej. `ticketflow.app`) en registrador DNS (Cloudflare / Namecheap / GoDaddy)
+  - Registro de dominio en Resend.com y configuración de registros DNS (SPF, DKIM, DMARC)
+  - Configuración de `RESEND_API_KEY` y `STORE_BASE_URL` en Supabase Edge Functions Secrets
+
 ---
 
 ## 🟠 P1 — Alta Prioridad (Experiencia de usuario directa)
