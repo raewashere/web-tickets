@@ -9,7 +9,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 lg:px-8 bg-white border-b border-dark/10 shadow-xs">
+    <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 lg:px-8 bg-white dark:bg-slate-900 border-b border-dark/10 dark:border-slate-800 shadow-xs text-dark dark:text-slate-100">
       <div class="flex items-center gap-3">
         <!-- Hamburger button (mobile) -->
         <button

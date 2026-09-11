@@ -3,3 +3,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html.dark body {
+    background-color: #090d16 !important;
+    color: #f1f5f9 !important;
+  }
+}
+
+/* Global Dark Mode Rules for Store */
+html.dark .bg-surface,
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #0b1120 !important;
+}
+
+html.dark .bg-white {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark .bg-slate-200 {
+  background-color: #1e293b !important;
+}
+
+html.dark .text-dark,
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-dark\/70,
+html.dark .text-dark\/60,
+html.dark .text-dark\/50,
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .border-dark\/10,
+html.dark .border-slate-200,
+html.dark .border-slate-300,
+html.dark .border-slate-100 {
+  border-color: #1e293b !important;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}

@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, inject } from '@angular/core';
+import { Injectable, signal, computed, inject, effect } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -18,6 +18,11 @@ export class ThemeService {
 
   constructor() {
     this.initTheme();
+
+    // Automatically apply theme changes using Angular reactive effect
+    effect(() => {
+      this.applyTheme();
+    });
   }
 
   private initTheme(): void {
@@ -26,9 +31,8 @@ export class ThemeService {
     if (saved && ['light', 'dark', 'system'].includes(saved)) {
       this.themeMode.set(saved);
     }
-    this.applyTheme();
 
-    // Listen to OS theme changes if on system
+    // Listen to OS theme changes if mode is 'system'
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
       if (this.themeMode() === 'system') {
         this.applyTheme();
@@ -41,7 +45,6 @@ export class ThemeService {
     if (typeof window !== 'undefined') {
       localStorage.setItem('tf_theme', mode);
     }
-    this.applyTheme();
   }
 
   toggleTheme(): void {
@@ -52,10 +55,17 @@ export class ThemeService {
   private applyTheme(): void {
     if (typeof window === 'undefined') return;
     const root = this.document.documentElement;
-    if (this.isDark()) {
+    const body = this.document.body;
+    const dark = this.isDark();
+
+    if (dark) {
       root.classList.add('dark');
+      body?.classList.add('dark');
+      root.style.colorScheme = 'dark';
     } else {
       root.classList.remove('dark');
+      body?.classList.remove('dark');
+      root.style.colorScheme = 'light';
     }
   }
 }

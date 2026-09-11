@@ -10,7 +10,7 @@ import { ToastContainerComponent } from '@ticketflow/shared-ui';
   standalone: true,
   imports: [CommonModule, RouterModule, SidebarComponent, TopbarComponent, ToastContainerComponent],
   template: `
-    <div class="min-h-screen bg-[#f8f9fa] text-dark flex">
+    <div class="min-h-screen bg-[#f8f9fa] dark:bg-[#090d16] text-dark dark:text-slate-100 flex">
       <tf-toast-container></tf-toast-container>
       <!-- Sidebar -->
       <app-sidebar
