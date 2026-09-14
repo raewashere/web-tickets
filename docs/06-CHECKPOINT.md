@@ -1,7 +1,7 @@
 # 📋 Checkpoint — Estado del Proyecto TicketFlow
 
-> **Fecha:** 11 de septiembre de 2026  
-> **Sesión:** Guest Checkout (Fases 1-4 Completadas ✅) + Integración N8N + Fix Modo Oscuro Reactivo + Correcciones de Despliegue en Vercel y Postgres
+> **Fecha:** 14 de septiembre de 2026  
+> **Sesión:** Checkpoint General + Auditoría de Mailer (Edge Functions Deno `send-ticket-email` + Resend API & N8N) + Estrategia de Dominio y Pruebas en Sandbox
 
 ---
 
@@ -114,10 +114,10 @@
 
 ## 🏗️ Pendientes de Infraestructura & Dominio
 
-1. **Configuración de Dominio Oficial & Servicio Transaccional de Correo (Resend API):**
-   * Contratación de dominio oficial (ej. `ticketflow.app`) en registrador DNS (Cloudflare / Namecheap / GoDaddy).
-   * Registro de dominio en **Resend.com** y configuración de registros DNS (SPF, DKIM, DMARC).
-   * Configuración de `RESEND_API_KEY` y `STORE_BASE_URL` en Supabase Edge Functions / Secrets.
+1. **Servicio Transaccional de Correo (Resend API) & Dominio Oficial:**
+   * **Pruebas Inmediatas:** Configurar `RESEND_API_KEY` en Supabase Edge Functions Secrets para probar envíos reales usando el remitente de pruebas `onboarding@resend.dev` hacia el correo registrado en Resend.
+   * **Dominio Oficial:** Comprar dominio oficial (ej. `ticketflow.app` en Vercel o registrador DNS) y registrar los 3 registros DNS (SPF, DKIM, DMARC) en Resend para producción.
+   * **Secrets de Supabase:** Setear `RESEND_API_KEY`, `EMAIL_FROM` y `STORE_BASE_URL` en Supabase Edge Functions Secrets.
 2. **Google Maps API Key para el mapa del recinto:**
    * Obtener API Key de *Maps JavaScript API* en Google Cloud Console e ingresar en `VITE_GOOGLE_MAPS_API_KEY` (en `.env` y Vercel).
 3. **PayPal Live Credentials:**
