@@ -16,11 +16,11 @@ Todos los colores están definidos como variables CSS en `:root` dentro de `styl
 
 | Token | Hex | RGB Variable | Uso principal |
 |-------|-----|--------------|---------------|
-| `primary` | `#CE4760` | `206 71 96` | Color de marca — Rosa frambuesa, botones principales, enlaces activos |
-| `accent` | `#F6D0B1` | `246 208 177` | Melocotón / Arena suave — precios, badges destacados, llamadas a la acción |
-| `surface` | `#f2eee8` | `242 238 232` | Blanco cálido — color de letras sobre oscuro, fondos de tarjeta y superficie |
-| `dark` | `#11270B` | `17 39 11` | Verde bosque profundo — Navbar, Footer, Hero, Sidebar |
-| `contrast` | `#90E39A` | `144 227 154` | Menta brillante — acciones positivas, badges de éxito y seguridad |
+| `primary` | `#750D37` | `117 13 55` | Color de marca — Burdeos intenso, botones principales, enlaces activos |
+| `accent` | `#B3DEC1` | `179 222 193` | Menta suave / Celadón — precios, badges destacados, llamadas a la acción |
+| `surface` | `#F7F9F7` | `247 249 247` | Blanco nieve / Perla claro — color de letras sobre oscuro, fondos de tarjeta y superficie |
+| `dark` | `#210124` | `33 1 36` | Berenjena noche profundo — Navbar, Footer, Hero, Sidebar |
+| `contrast` | `#FFD400` | `255 212 0` | Oro vibrante — acciones positivas, badges de éxito y seguridad |
 | `danger` | `#c0392b` | `192 57 43` | Rojo carmesí — acciones destructivas, errores y cancelaciones |
 
 ### Configuración en `tailwind.config.js`
