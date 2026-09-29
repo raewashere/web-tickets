@@ -33,12 +33,12 @@ import {
   template: `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       <!-- Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-dark/10">
         <div>
-          <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          <h1 class="text-2xl sm:text-4xl font-bold text-dark tracking-tight">
             Mis Boletos & Reservas
           </h1>
-          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          <p class="text-xs sm:text-sm text-dark/50 mt-1">
             Consulta tus entradas compradas, solicitudes de reembolso y registros en listas de espera.
           </p>
         </div>
@@ -46,7 +46,7 @@ import {
         <a routerLink="/search">
           <button
             type="button"
-            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-md shadow-cyan-500/20"
+            class="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20"
           >
             + Explorar Más Shows
           </button>
@@ -54,18 +54,18 @@ import {
       </div>
 
       <!-- Tab Switcher -->
-      <div class="flex items-center gap-3 border-b border-slate-200 pb-1">
+      <div class="flex items-center gap-3 border-b border-dark/10 pb-1">
         <button
           type="button"
           (click)="activeTab.set('tickets')"
-          [class.text-slate-950]="activeTab() === 'tickets'"
-          [class.border-cyan-500]="activeTab() === 'tickets'"
-          [class.text-slate-500]="activeTab() !== 'tickets'"
+          [class.text-dark]="activeTab() === 'tickets'"
+          [class.border-primary]="activeTab() === 'tickets'"
+          [class.text-dark\/50]="activeTab() !== 'tickets'"
           [class.border-transparent]="activeTab() !== 'tickets'"
-          class="pb-3 px-3 text-sm font-black border-b-2 transition-all flex items-center gap-2"
+          class="pb-3 px-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2"
         >
           <span class="flex items-center gap-1.5"><i class="fa-solid fa-ticket"></i> Boletos Comprados</span>
-          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface text-dark/70">
             {{ orders().length }}
           </span>
         </button>
@@ -73,14 +73,14 @@ import {
         <button
           type="button"
           (click)="activeTab.set('waitlist')"
-          [class.text-slate-950]="activeTab() === 'waitlist'"
-          [class.border-cyan-500]="activeTab() === 'waitlist'"
-          [class.text-slate-500]="activeTab() !== 'waitlist'"
+          [class.text-dark]="activeTab() === 'waitlist'"
+          [class.border-primary]="activeTab() === 'waitlist'"
+          [class.text-dark\/50]="activeTab() !== 'waitlist'"
           [class.border-transparent]="activeTab() !== 'waitlist'"
-          class="pb-3 px-3 text-sm font-black border-b-2 transition-all flex items-center gap-2"
+          class="pb-3 px-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2"
         >
           <span class="flex items-center gap-1.5"><i class="fa-solid fa-bell"></i> Listas de Espera</span>
-          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-accent/15 text-primary">
             {{ waitlistEntries().length }}
           </span>
         </button>
@@ -90,10 +90,10 @@ import {
       <div
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl flex items-center justify-between transition-all"
-        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 border border-contrast/20 text-contrast' : 'bg-danger/5 border border-danger/20 text-danger'"
       >
         <div class="flex items-center gap-3 text-sm font-semibold">
-          <i class="fa-solid" [ngClass]="feedbackType() === 'success' ? 'fa-circle-check text-emerald-600' : 'fa-triangle-exclamation text-rose-600'"></i>
+          <i class="fa-solid" [ngClass]="feedbackType() === 'success' ? 'fa-circle-check text-contrast' : 'fa-triangle-exclamation text-danger'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -108,7 +108,7 @@ import {
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg" color="primary"></tf-spinner>
-        <p class="text-sm text-slate-500 font-medium">Cargando tus entradas...</p>
+        <p class="text-sm text-dark/50 font-medium">Cargando tus entradas...</p>
       </div>
 
       <!-- Orders List (Tickets Tab) -->
@@ -127,31 +127,31 @@ import {
           <div
             *ngFor="let order of orders()"
             class="p-6 sm:p-8 rounded-3xl border bg-white shadow-sm hover:shadow-md transition-all space-y-6"
-            [ngClass]="order.status === 'refunded' ? 'border-rose-200 bg-rose-50/20' : 'border-slate-200'"
+            [ngClass]="order.status === 'refunded' ? 'border-danger/20 bg-danger/5' : 'border-dark/10'"
           >
             <!-- Order Top Header: Date & Status -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-dark/5">
               <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                <span class="font-mono font-bold text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-800">
+                <span class="font-mono font-bold text-xs bg-surface px-2.5 py-1 rounded-lg text-dark/80">
                   Orden #{{ order.id.substring(0, 8).toUpperCase() }}
                 </span>
 
                 <!-- Status Badge -->
                 <span
                   *ngIf="order.status === 'refunded'"
-                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-danger/10 text-danger border border-danger/20"
                 >
                   <i class="fa-solid fa-money-bill-transfer mr-1"></i> Reembolsado
                 </span>
                 <span
                   *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'pending'"
-                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-accent/15 text-primary border border-accent/30"
                 >
                   <i class="fa-solid fa-clock mr-1"></i> Reembolso en Revisión
                 </span>
                 <span
                   *ngIf="order.status === 'confirmed' && getRefund(order)?.status === 'rejected'"
-                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200"
+                  class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-surface text-dark/60 border border-dark/10"
                 >
                   <i class="fa-solid fa-circle-xmark mr-1"></i> Solicitud Rechazada
                 </span>
@@ -160,8 +160,8 @@ import {
                 </tf-badge>
               </div>
 
-              <div class="text-xs text-slate-500">
-                Comprado el: <strong class="text-slate-700">{{ order.created_at | date:'medium' }}</strong>
+              <div class="text-xs text-dark/50">
+                Comprado el: <strong class="text-dark/80">{{ order.created_at | date:'medium' }}</strong>
               </div>
             </div>
 
@@ -170,9 +170,9 @@ import {
               *ngIf="getRefund(order) as refund"
               class="p-4 rounded-2xl text-xs space-y-1"
               [ngClass]="{
-                'bg-amber-50 border border-amber-200 text-amber-900': refund.status === 'pending',
-                'bg-emerald-50 border border-emerald-200 text-emerald-900': refund.status === 'approved' || order.status === 'refunded',
-                'bg-rose-50 border border-rose-200 text-rose-900': refund.status === 'rejected'
+                'bg-accent/10 border border-accent/30 text-dark': refund.status === 'pending',
+                'bg-contrast/10 border border-contrast/20 text-contrast': refund.status === 'approved' || order.status === 'refunded',
+                'bg-danger/5 border border-danger/20 text-danger': refund.status === 'rejected'
               }"
             >
               <div class="flex items-center justify-between font-bold">
@@ -183,10 +183,10 @@ import {
                 </span>
                 <span class="font-mono text-[11px] opacity-80">{{ refund.created_at | date:'short' }}</span>
               </div>
-              <p class="text-slate-600">
+              <p class="text-dark/70">
                 <strong>Motivo enviado:</strong> {{ refund.reason }}
               </p>
-              <p *ngIf="refund.admin_notes" class="text-slate-700 italic">
+              <p *ngIf="refund.admin_notes" class="text-dark/80 italic">
                 <strong>Nota del organizador:</strong> "{{ refund.admin_notes }}"
               </p>
             </div>
@@ -196,30 +196,30 @@ import {
               <!-- Event Info -->
               <div class="flex items-start gap-4">
                 <!-- Flyer Thumbnail -->
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-surface overflow-hidden flex-shrink-0 border border-dark/10">
                   <img
                     *ngIf="order.events?.flyer_url"
                     [src]="order.events!.flyer_url"
                     [alt]="'Flyer del concierto ' + (order.events!.name || 'evento')"
                     class="w-full h-full object-cover"
                   />
-                  <div *ngIf="!order.events?.flyer_url" class="w-full h-full flex items-center justify-center text-2xl text-slate-400">
-                    <i class="fa-solid fa-guitar text-2xl text-slate-400"></i>
+                  <div *ngIf="!order.events?.flyer_url" class="w-full h-full flex items-center justify-center text-2xl text-dark/30">
+                    <i class="fa-solid fa-guitar text-2xl text-dark/30"></i>
                   </div>
                 </div>
 
                 <!-- Titles & Date -->
                 <div class="space-y-1">
-                  <span class="text-xs font-bold uppercase text-cyan-600">
+                  <span class="text-xs font-bold uppercase text-primary">
                     {{ order.events?.artists?.name }}
                   </span>
-                  <h3 class="text-lg font-black text-slate-900 leading-snug">
+                  <h3 class="text-lg font-bold text-dark leading-snug">
                     {{ order.events?.name }}
                   </h3>
-                  <p class="text-xs text-slate-500">
+                  <p class="text-xs text-dark/50">
                     <i class="fa-solid fa-location-dot mr-1"></i> {{ order.events?.venues?.name || 'Recinto Confirmado' }}
                   </p>
-                  <p class="text-xs font-bold text-slate-700">
+                  <p class="text-xs font-bold text-dark/70">
                     <i class="fa-regular fa-calendar mr-1"></i> {{ order.events?.event_date | date:'fullDate' }} · {{ order.events?.event_date | date:'shortTime' }} hrs
                   </p>
                 </div>
@@ -233,7 +233,7 @@ import {
                 >
                   <button
                     type="button"
-                    class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5"
+                    class="w-full px-4 py-2.5 rounded-xl bg-white border border-dark/20 hover:bg-surface text-dark font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5"
                   >
                     <i class="fa-regular fa-file-lines"></i>
                     <span>Ver Detalle</span>
@@ -244,7 +244,7 @@ import {
                 <button
                   *ngIf="order.status === 'confirmed'"
                   type="button"
-                  class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
+                  class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
                   (click)="openQrModal(order)"
                 >
                   <i class="fa-solid fa-qrcode"></i>
@@ -256,7 +256,7 @@ import {
                   *ngIf="canRequestRefund(order)"
                   type="button"
                   (click)="openRefundModal(order)"
-                  class="w-full sm:w-auto px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+                  class="w-full sm:w-auto px-3.5 py-2.5 rounded-xl bg-danger/5 hover:bg-danger/10 text-danger border border-danger/20 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
                 >
                   <i class="fa-solid fa-money-bill-transfer"></i>
                   <span>Solicitar Reembolso</span>
@@ -265,18 +265,18 @@ import {
             </div>
 
             <!-- Items Breakdown in Order -->
-            <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs">
+            <div class="pt-4 border-t border-dark/5 flex flex-wrap items-center justify-between gap-4 text-xs">
               <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                <span class="font-bold text-slate-500">Entradas:</span>
+                <span class="font-bold text-dark/50">Entradas:</span>
                 <span
                   *ngFor="let item of order.order_items"
-                  class="px-2.5 py-1 rounded-lg bg-slate-100 font-semibold text-slate-800"
+                  class="px-2.5 py-1 rounded-lg bg-surface font-semibold text-dark/80"
                 >
                   {{ item.quantity }}x {{ item.ticket_types?.name }} (\${{ item.unit_price | number:'1.2-2' }})
                 </span>
               </div>
 
-              <div class="font-bold text-slate-900 font-mono text-sm">
+              <div class="font-bold text-dark font-mono text-sm">
                 Total: \${{ order.total | number:'1.2-2' }} MXN
               </div>
             </div>
@@ -300,19 +300,19 @@ import {
         <div *ngIf="!isLoading() && waitlistEntries().length > 0" class="space-y-4">
           <div
             *ngFor="let entry of waitlistEntries()"
-            class="p-6 rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+            class="p-6 rounded-3xl border border-dark/10 bg-white shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
           >
             <!-- Event & Details -->
             <div class="flex items-start gap-4">
-              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-surface overflow-hidden flex-shrink-0 border border-dark/10">
                 <img
                   *ngIf="entry.flyer_url"
                   [src]="entry.flyer_url"
                   [alt]="'Flyer de ' + entry.event_name"
                   class="w-full h-full object-cover"
                 />
-                <div *ngIf="!entry.flyer_url" class="w-full h-full flex items-center justify-center text-xl text-slate-400">
-                  <i class="fa-solid fa-masks-theater text-xl text-slate-400"></i>
+                <div *ngIf="!entry.flyer_url" class="w-full h-full flex items-center justify-center text-xl text-dark/30">
+                  <i class="fa-solid fa-masks-theater text-xl text-dark/30"></i>
                 </div>
               </div>
 
@@ -320,27 +320,27 @@ import {
                 <div class="flex items-center gap-2">
                   <span
                     *ngIf="entry.status === 'pending'"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200"
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accent/15 text-primary border border-accent/30"
                   >
                     <i class="fa-solid fa-clock mr-1"></i> En Lista de Espera
                   </span>
                   <span
                     *ngIf="entry.status === 'notified'"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200"
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-contrast/15 text-contrast border border-contrast/30"
                   >
                     <i class="fa-solid fa-bell mr-1"></i> ¡Boletos Liberados!
                   </span>
-                  <span class="text-xs text-slate-400">· Registrado {{ entry.created_at | date:'mediumDate' }}</span>
+                  <span class="text-xs text-dark/40">· Registrado {{ entry.created_at | date:'mediumDate' }}</span>
                 </div>
 
-                <h3 class="text-base font-black text-slate-900 leading-snug">
+                <h3 class="text-base font-bold text-dark leading-snug">
                   {{ entry.event_name }}
                 </h3>
-                <p class="text-xs text-slate-500">
+                <p class="text-xs text-dark/50">
                   <i class="fa-solid fa-location-dot mr-1"></i> {{ entry.venue_name || 'Recinto' }} · <i class="fa-regular fa-calendar mr-1"></i> {{ entry.event_date | date:'mediumDate' }}
                 </p>
-                <p class="text-xs font-semibold text-slate-700 pt-0.5">
-                  Localidad solicitada: <span class="font-bold text-cyan-600">{{ entry.ticket_type_name }}</span>
+                <p class="text-xs font-semibold text-dark/70 pt-0.5">
+                  Localidad solicitada: <span class="font-bold text-primary">{{ entry.ticket_type_name }}</span>
                 </p>
               </div>
             </div>
@@ -350,7 +350,7 @@ import {
               <a [routerLink]="['/events', entry.event_id]" class="w-full md:w-auto">
                 <button
                   type="button"
-                  class="w-full md:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
+                  class="w-full md:w-auto px-5 py-2.5 rounded-xl bg-dark hover:bg-dark/90 text-surface font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
                 >
                   <i class="fa-solid fa-ticket"></i>
                   <span>Ver Evento & Boletos</span>
@@ -364,33 +364,33 @@ import {
       <!-- QR Digital Pass Modal -->
       <div
         *ngIf="selectedOrderForQr()"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/80 backdrop-blur-sm animate-fade-in"
       >
-        <div class="relative w-full max-w-sm bg-white rounded-3xl p-6 sm:p-8 text-center space-y-6 shadow-2xl border border-slate-200">
+        <div class="relative w-full max-w-sm bg-white rounded-3xl p-6 sm:p-8 text-center space-y-6 shadow-2xl border border-dark/10">
           <!-- Close Button -->
           <button
             type="button"
             (click)="closeQrModal()"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 font-bold flex items-center justify-center transition-colors"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface text-dark/50 font-bold flex items-center justify-center transition-colors"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Pass Header -->
           <div class="space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-cyan-600 block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-primary block">
               Pase de Acceso Oficial
             </span>
-            <h3 class="font-black text-lg text-slate-900 leading-tight">
+            <h3 class="font-bold text-lg text-dark leading-tight">
               {{ selectedOrderForQr()!.events?.name }}
             </h3>
-            <p class="text-xs text-slate-500">
+            <p class="text-xs text-dark/50">
               {{ selectedOrderForQr()!.events?.venues?.name }}
             </p>
           </div>
 
           <!-- QR Code — generado localmente sin dependencia externa -->
-          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-inner flex flex-col items-center justify-center space-y-2">
+          <div class="p-4 bg-surface rounded-2xl border border-dark/10 shadow-inner flex flex-col items-center justify-center space-y-2">
             <img
               *ngIf="qrDataUrl()"
               [src]="qrDataUrl()"
@@ -400,24 +400,24 @@ import {
             <div *ngIf="!qrDataUrl()" class="w-56 h-56 flex items-center justify-center">
               <tf-spinner size="md" color="primary"></tf-spinner>
             </div>
-            <span class="font-mono text-[10px] text-slate-400 tracking-widest font-bold">
+            <span class="font-mono text-[10px] text-dark/40 tracking-widest font-bold">
               AUTH: {{ selectedOrderForQr()!.id.substring(0, 16).toUpperCase() }}
             </span>
           </div>
 
           <!-- Ticket Details in Pass -->
-          <div class="p-3.5 rounded-2xl bg-slate-100 text-xs text-slate-700 space-y-1">
-            <p class="font-bold text-slate-900">
+          <div class="p-3.5 rounded-2xl bg-surface text-xs text-dark/80 space-y-1">
+            <p class="font-bold text-dark">
               Titular: {{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email }}
             </p>
-            <div class="text-[11px] text-slate-500 flex items-center justify-center gap-2">
+            <div class="text-[11px] text-dark/50 flex items-center justify-center gap-2">
               <span><i class="fa-regular fa-calendar mr-1"></i> {{ selectedOrderForQr()!.events?.event_date | date:'mediumDate' }}</span>
               <span>·</span>
               <span><i class="fa-regular fa-clock mr-1"></i> {{ selectedOrderForQr()!.events?.event_date | date:'shortTime' }} hrs</span>
             </div>
           </div>
 
-          <p class="text-[10px] text-slate-400 leading-tight">
+          <p class="text-[10px] text-dark/40 leading-tight">
             Presenta este código QR en la entrada del recinto desde tu celular o impreso para validar tu acceso.
           </p>
         </div>
@@ -426,37 +426,37 @@ import {
       <!-- Refund Request Modal -->
       <div
         *ngIf="selectedOrderForRefund()"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/80 backdrop-blur-sm animate-fade-in"
       >
-        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-200">
+        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-dark/10">
           <!-- Close Button -->
           <button
             type="button"
             (click)="closeRefundModal()"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 font-bold flex items-center justify-center transition-colors"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface text-dark/50 font-bold flex items-center justify-center transition-colors"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
           <div class="space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-rose-600 block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-danger block">
               Garantía y Devolución
             </span>
-            <h3 class="text-xl font-black text-slate-900">
+            <h3 class="text-xl font-bold text-dark">
               Solicitar Reembolso
             </h3>
-            <p class="text-xs text-slate-500">
-              Orden #{{ selectedOrderForRefund()!.id.substring(0, 8).toUpperCase() }} · Total: <strong class="text-slate-800">\${{ selectedOrderForRefund()!.total | number:'1.2-2' }} MXN</strong>
+            <p class="text-xs text-dark/50">
+              Orden #{{ selectedOrderForRefund()!.id.substring(0, 8).toUpperCase() }} · Total: <strong class="text-dark">\${{ selectedOrderForRefund()!.total | number:'1.2-2' }} MXN</strong>
             </p>
           </div>
 
           <!-- Notice Alert -->
-          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
-            <p class="font-bold flex items-center gap-1.5">
-              <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Políticas de Devolución:
+          <div class="p-3.5 rounded-2xl bg-accent/10 border border-accent/30 text-xs text-dark space-y-1">
+            <p class="font-bold flex items-center gap-1.5 text-primary">
+              <i class="fa-solid fa-triangle-exclamation text-primary"></i> Políticas de Devolución:
             </p>
-            <p class="text-[11px] leading-relaxed">
+            <p class="text-[11px] text-dark/70 leading-relaxed">
               Tu solicitud será evaluada por el organizador del evento. Una vez aprobado, el importe se reintegrará y los boletos quedarán inválidos de forma permanente.
             </p>
           </div>
@@ -464,10 +464,10 @@ import {
           <!-- Form -->
           <div class="space-y-4 text-xs">
             <div class="space-y-1.5">
-              <label class="font-bold text-slate-700">Categoría del Motivo:</label>
+              <label class="font-bold text-dark/80">Categoría del Motivo:</label>
               <select
                 [(ngModel)]="refundCategory"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 bg-white text-dark font-medium focus:ring-2 focus:ring-primary focus:outline-none"
               >
                 <option value="Cancelación de planes personales">Cancelación de planes personales</option>
                 <option value="Error en la compra o cantidad de boletos">Error en la compra o duplicidad</option>
@@ -478,28 +478,28 @@ import {
             </div>
 
             <div class="space-y-1.5">
-              <label class="font-bold text-slate-700">Explica brevemente tu caso (mínimo 5 caracteres):</label>
+              <label class="font-bold text-dark/80">Explica brevemente tu caso (mínimo 5 caracteres):</label>
               <textarea
                 [(ngModel)]="refundDetails"
                 rows="3"
                 placeholder="Por favor describe detalladamente la razón de tu solicitud de reembolso..."
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none resize-none"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 bg-white text-dark font-medium focus:ring-2 focus:ring-primary focus:outline-none resize-none"
               ></textarea>
             </div>
 
             <!-- Error in modal -->
-            <p *ngIf="refundError()" class="text-rose-600 font-bold text-xs">
+            <p *ngIf="refundError()" class="text-danger font-bold text-xs">
               {{ refundError() }}
             </p>
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-dark/10">
             <button
               type="button"
               (click)="closeRefundModal()"
               [disabled]="isSubmittingRefund()"
-              class="px-4 py-2.5 rounded-xl text-slate-600 font-bold text-xs hover:bg-slate-100 transition-colors"
+              class="px-4 py-2.5 rounded-xl text-dark/60 font-bold text-xs hover:bg-surface transition-colors"
             >
               Cancelar
             </button>
@@ -507,7 +507,7 @@ import {
               type="button"
               (click)="submitRefundRequest()"
               [disabled]="isSubmittingRefund()"
-              class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
+              class="px-5 py-2.5 rounded-xl bg-danger hover:bg-danger/90 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
             >
               <tf-spinner *ngIf="isSubmittingRefund()" size="sm" color="white"></tf-spinner>
               <span>{{ isSubmittingRefund() ? 'Enviando...' : 'Confirmar Solicitud' }}</span>

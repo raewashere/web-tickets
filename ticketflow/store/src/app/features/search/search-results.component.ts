@@ -29,12 +29,12 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       <!-- Search Header & Search Input -->
       <div class="space-y-4">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-dark/10">
           <div>
-            <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h1 class="text-2xl sm:text-4xl font-bold text-dark tracking-tight">
               Explorar Cartelera
             </h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            <p class="text-xs sm:text-sm text-dark/50 mt-1">
               Encuentra los mejores conciertos, festivales y shows en vivo.
             </p>
           </div>
@@ -46,15 +46,15 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
               [(ngModel)]="searchQuery"
               (keyup.enter)="onSearchSubmit()"
               placeholder="Buscar por artista, evento o recinto..."
-              class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent shadow-sm transition-all"
+              class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-dark/20 bg-white text-dark placeholder-dark/30 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent shadow-sm transition-all"
             />
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 text-sm">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-dark/30 text-sm">
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
             <button
               type="button"
               (click)="onSearchSubmit()"
-              class="absolute right-1.5 top-1.5 bottom-1.5 px-3.5 rounded-lg bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-bold text-xs transition-colors shadow-sm"
+              class="absolute right-1.5 top-1.5 bottom-1.5 px-3.5 rounded-lg bg-primary hover:bg-primary/90 text-surface font-bold text-xs transition-colors shadow-sm"
             >
               Buscar
             </button>
@@ -63,15 +63,15 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Mobile Filter Trigger Button -->
-      <div class="lg:hidden flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div class="lg:hidden flex items-center justify-between p-3 rounded-2xl bg-white border border-dark/10 shadow-sm">
         <button
           type="button"
           (click)="isMobileFilterOpen.set(true)"
-          class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs shadow-md"
+          class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-dark text-surface font-bold text-xs shadow-md"
         >
-          <i class="fa-solid fa-sliders text-cyan-400"></i>
+          <i class="fa-solid fa-sliders text-accent"></i>
           <span>Filtros y Ordenación</span>
-          <span *ngIf="currentParams.eventTypeId || currentParams.dateFrom" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <span *ngIf="currentParams.eventTypeId || currentParams.dateFrom" class="w-2 h-2 rounded-full bg-accent"></span>
         </button>
       </div>
 
@@ -89,12 +89,12 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
         <!-- Results Column -->
         <div class="lg:col-span-3 space-y-6">
           <!-- Results Counter Bar -->
-          <div class="flex items-center justify-between text-xs text-slate-500 pb-3 border-b border-slate-200">
+          <div class="flex items-center justify-between text-xs text-dark/40 pb-3 border-b border-dark/10">
             <span>
-              Mostrando <strong class="text-slate-800">{{ results()?.events?.length || 0 }}</strong> de <strong class="text-slate-800">{{ results()?.total || 0 }}</strong> espectáculos
+              Mostrando <strong class="text-dark/70">{{ results()?.events?.length || 0 }}</strong> de <strong class="text-dark/70">{{ results()?.total || 0 }}</strong> espectáculos
             </span>
 
-            <span *ngIf="currentParams.query" class="font-bold text-cyan-600">
+            <span *ngIf="currentParams.query" class="font-bold text-primary">
               Resultados para: "{{ currentParams.query }}"
             </span>
           </div>
@@ -112,7 +112,7 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
           <!-- Error Alert -->
           <div
             *ngIf="errorMessage()"
-            class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs"
+            class="p-4 rounded-2xl bg-danger/5 border border-danger/20 text-danger text-xs"
           >
             {{ errorMessage() }}
           </div>
@@ -142,24 +142,24 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
           <!-- Pagination -->
           <div
             *ngIf="!isLoading() && results() && results()!.totalPages > 1"
-            class="pt-6 border-t border-slate-200 flex items-center justify-between"
+            class="pt-6 border-t border-dark/10 flex items-center justify-between"
           >
             <button
               type="button"
-              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1.5"
+              class="px-4 py-2 rounded-xl bg-white border border-dark/20 hover:bg-surface text-dark font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1.5"
               [disabled]="results()!.page <= 1"
               (click)="changePage(results()!.page - 1)"
             >
               <i class="fa-solid fa-arrow-left"></i> Anterior
             </button>
 
-            <span class="text-xs font-bold text-slate-700">
+            <span class="text-xs font-bold text-dark/60">
               Página {{ results()!.page }} de {{ results()!.totalPages }}
             </span>
 
             <button
               type="button"
-              class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1.5"
+              class="px-4 py-2 rounded-xl bg-white border border-dark/20 hover:bg-surface text-dark font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1.5"
               [disabled]="results()!.page >= results()!.totalPages"
               (click)="changePage(results()!.page + 1)"
             >
@@ -172,7 +172,7 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
       <!-- Artist Profile Modal -->
       <div
         *ngIf="selectedArtist()"
-        class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+        class="fixed inset-0 z-50 bg-dark/70 backdrop-blur-sm flex items-center justify-center p-4"
         (click)="closeArtistModal()"
       >
         <div
@@ -182,50 +182,50 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="closeArtistModal()"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm font-bold transition"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface hover:bg-dark/10 text-dark flex items-center justify-center text-sm font-bold transition"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
           <div class="flex items-center gap-4">
-            <div class="w-20 h-20 rounded-2xl bg-slate-900 border-2 border-slate-100 shadow overflow-hidden shrink-0">
+            <div class="w-20 h-20 rounded-2xl bg-dark border-2 border-dark/10 shadow overflow-hidden shrink-0">
               <img
                 *ngIf="selectedArtist()?.photo_url"
                 [src]="selectedArtist()!.photo_url"
                 [alt]="'Fotografía de perfil del artista ' + selectedArtist()?.name"
                 class="w-full h-full object-cover"
               />
-              <div *ngIf="!selectedArtist()?.photo_url" class="w-full h-full flex items-center justify-center text-cyan-400 font-black text-3xl">
+              <div *ngIf="!selectedArtist()?.photo_url" class="w-full h-full flex items-center justify-center text-accent font-bold text-3xl">
                 {{ (selectedArtist()?.name || 'A').charAt(0) }}
               </div>
             </div>
 
             <div>
-              <span class="text-[10px] font-bold text-cyan-600 uppercase tracking-wider block">Perfil del Artista</span>
-              <h2 class="text-2xl font-black text-slate-900">
+              <span class="text-[10px] font-bold text-primary uppercase tracking-wider block">Perfil del Artista</span>
+              <h2 class="text-2xl font-bold text-dark">
                 {{ selectedArtist()?.name }}
               </h2>
             </div>
           </div>
 
           <!-- Bio -->
-          <div class="space-y-2 border-t border-slate-100 pt-4">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biografía / Trayectoria</h3>
-            <p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed">
+          <div class="space-y-2 border-t border-dark/10 pt-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dark/40">Biografía / Trayectoria</h3>
+            <p class="text-sm text-dark/70 whitespace-pre-line leading-relaxed">
               {{ selectedArtist()?.description || 'No hay descripción disponible para este artista.' }}
             </p>
           </div>
 
           <!-- Gallery Photos -->
-          <div *ngIf="selectedArtist()?.gallery_urls && selectedArtist()!.gallery_urls!.length > 0" class="space-y-3 border-t border-slate-100 pt-4">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-              <i class="fa-solid fa-camera text-slate-500"></i> Galería de Fotos
+          <div *ngIf="selectedArtist()?.gallery_urls && selectedArtist()!.gallery_urls!.length > 0" class="space-y-3 border-t border-dark/10 pt-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dark/40 flex items-center gap-1.5">
+              <i class="fa-solid fa-camera text-dark/30"></i> Galería de Fotos
             </h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div
                 *ngFor="let photo of selectedArtist()!.gallery_urls; let idx = index"
-                class="relative rounded-2xl overflow-hidden aspect-square border border-slate-200 bg-slate-100 group cursor-pointer hover:shadow-md transition"
+                class="relative rounded-2xl overflow-hidden aspect-square border border-dark/10 bg-surface group cursor-pointer hover:shadow-md transition"
                 (click)="selectedGalleryPhoto.set(photo)"
               >
                 <img
@@ -264,18 +264,18 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
       <!-- Mobile Filter Drawer Backdrop & Modal -->
       <div
         *ngIf="isMobileFilterOpen()"
-        class="fixed inset-0 z-[9999] bg-slate-950/70 backdrop-blur-sm lg:hidden flex justify-end transition-opacity"
+        class="fixed inset-0 z-[9999] bg-dark/70 backdrop-blur-sm lg:hidden flex justify-end transition-opacity"
       >
         <div class="w-full max-w-xs sm:max-w-sm bg-white h-full overflow-y-auto p-6 space-y-6 shadow-2xl flex flex-col justify-between">
           <div class="space-y-6">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-200">
-              <h3 class="font-extrabold text-lg text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-sliders text-cyan-600"></i> Filtros
+            <div class="flex items-center justify-between pb-4 border-b border-dark/10">
+              <h3 class="font-bold text-lg text-dark flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-primary"></i> Filtros
               </h3>
               <button
                 type="button"
                 (click)="isMobileFilterOpen.set(false)"
-                class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-sm"
+                class="w-8 h-8 rounded-full bg-surface text-dark/60 flex items-center justify-center text-sm"
               >
                 <i class="fa-solid fa-xmark"></i>
               </button>
@@ -288,11 +288,11 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
             ></store-filter-panel>
           </div>
 
-          <div class="pt-4 border-t border-slate-200">
+          <div class="pt-4 border-t border-dark/10">
             <button
               type="button"
               (click)="isMobileFilterOpen.set(false)"
-              class="w-full py-3.5 rounded-2xl bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-cyan-400/20"
+              class="w-full py-3.5 rounded-2xl bg-accent text-dark font-bold text-xs uppercase tracking-wider shadow-lg shadow-accent/20"
             >
               Ver Espectáculos
             </button>

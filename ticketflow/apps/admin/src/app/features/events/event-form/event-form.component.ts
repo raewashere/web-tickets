@@ -62,7 +62,7 @@ import {
 
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+            <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
               {{ isEditMode() ? 'Editar Evento' : 'Crear Nuevo Evento' }}
             </h1>
             <p class="text-sm text-dark/60 mt-1">
@@ -106,7 +106,7 @@ import {
       <!-- Error alert -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
         <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -132,7 +132,7 @@ import {
               />
               <p
                 *ngIf="eventForm.get('name')?.touched && eventForm.get('name')?.invalid"
-                class="text-xs text-contrast mt-1"
+                class="text-xs text-danger mt-1"
               >
                 El nombre del evento es obligatorio (máximo 200 caracteres).
               </p>
@@ -154,7 +154,7 @@ import {
               </select>
               <p
                 *ngIf="eventForm.get('event_type_id')?.touched && eventForm.get('event_type_id')?.invalid"
-                class="text-xs text-contrast mt-1"
+                class="text-xs text-danger mt-1"
               >
                 Selecciona una categoría para el evento.
               </p>
@@ -190,7 +190,7 @@ import {
               />
               <p
                 *ngIf="eventForm.get('event_date')?.touched && eventForm.get('event_date')?.invalid"
-                class="text-xs text-contrast mt-1"
+                class="text-xs text-danger mt-1"
               >
                 La fecha y hora del show son obligatorias.
               </p>
@@ -231,7 +231,7 @@ import {
                   *ngFor="let mins of durationPresets"
                   (click)="eventForm.patchValue({ duration_minutes: mins })"
                   [class.bg-primary]="eventForm.get('duration_minutes')?.value === mins"
-                  [class.text-dark]="eventForm.get('duration_minutes')?.value === mins"
+                  [class.text-surface]="eventForm.get('duration_minutes')?.value === mins"
                   [class.bg-dark/5]="eventForm.get('duration_minutes')?.value !== mins"
                   [class.text-dark/70]="eventForm.get('duration_minutes')?.value !== mins"
                   class="px-2 py-0.5 rounded-md text-[10px] font-bold transition hover:bg-primary/50"
@@ -258,7 +258,7 @@ import {
 
           <p
             *ngIf="(eventForm.get('venue_id')?.touched || eventForm.get('venue_configuration_id')?.touched) && (eventForm.get('venue_id')?.invalid || eventForm.get('venue_configuration_id')?.invalid)"
-            class="text-xs text-contrast mt-2"
+            class="text-xs text-danger mt-2"
           >
             Debes seleccionar una sede y una configuración de aforo para continuar.
           </p>
@@ -281,7 +281,7 @@ import {
               <button
                 type="button"
                 (click)="removeFlyer()"
-                class="text-contrast hover:underline font-semibold"
+                class="text-danger hover:underline font-semibold"
               >
                 Eliminar afiche
               </button>

@@ -63,7 +63,7 @@ export interface PublicOrderData {
       <div class="flex items-center justify-between print:hidden">
         <a
           routerLink="/"
-          class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-cyan-600 transition-colors"
+          class="inline-flex items-center gap-2 text-xs font-bold text-dark/60 hover:text-primary transition-colors"
         >
           <i class="fa-solid fa-house"></i> Inicio TicketFlow
         </a>
@@ -72,7 +72,7 @@ export interface PublicOrderData {
           *ngIf="order()?.status === 'confirmed'"
           type="button"
           (click)="printPass()"
-          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition-colors"
+          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface hover:bg-dark/10 text-dark text-xs font-bold transition-colors border border-dark/10"
         >
           <i class="fa-solid fa-print"></i>
           <span>Imprimir / Descargar PDF</span>
@@ -82,19 +82,19 @@ export interface PublicOrderData {
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3 print:hidden">
         <tf-spinner size="lg" color="primary"></tf-spinner>
-        <p class="text-sm text-slate-500">Cargando pase de acceso y código QR...</p>
+        <p class="text-sm text-dark/60">Cargando pase de acceso y código QR...</p>
       </div>
 
       <!-- Error / Invalid Token State -->
       <div
         *ngIf="!isLoading() && errorMessage()"
-        class="py-16 text-center space-y-4 rounded-3xl border border-dashed border-slate-300 p-8 bg-white shadow-sm print:hidden"
+        class="py-16 text-center space-y-4 rounded-3xl border border-dashed border-danger/20 p-8 bg-white shadow-sm print:hidden"
       >
-        <div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-2xl">
+        <div class="w-16 h-16 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto text-2xl">
           <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
-        <h2 class="text-xl font-bold text-slate-900">Acceso no válido o boleto expirado</h2>
-        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
+        <h2 class="text-xl font-bold text-dark">Acceso no válido o boleto expirado</h2>
+        <p class="text-xs sm:text-sm text-dark/60 max-w-md mx-auto">
           {{ errorMessage() }}
         </p>
         <a routerLink="/search">
@@ -107,16 +107,16 @@ export interface PublicOrderData {
         <!-- Event Header -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-400 font-mono">
+            <p class="text-xs text-dark/40 font-mono">
               Pase Digital · Orden #{{ order()!.id.substring(0, 8).toUpperCase() }}
             </p>
-            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+            <h1 class="text-2xl sm:text-3xl font-bold text-dark leading-tight">
               {{ order()!.event?.name || order()!.event?.title || 'Espectáculo en Vivo' }}
             </h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">
-              <i class="fa-solid fa-location-dot text-cyan-600 mr-1"></i> {{ order()!.event?.venue?.name || 'Recinto Confirmado' }}
+            <p class="text-xs sm:text-sm text-dark/60 mt-1">
+              <i class="fa-solid fa-location-dot text-primary mr-1"></i> {{ order()!.event?.venue?.name || 'Recinto Confirmado' }}
               &nbsp;·&nbsp;
-              <i class="fa-regular fa-calendar text-cyan-600 mr-1"></i> {{ order()!.event?.event_date | date:'mediumDate' }}
+              <i class="fa-regular fa-calendar text-primary mr-1"></i> {{ order()!.event?.event_date | date:'mediumDate' }}
             </p>
           </div>
 
@@ -126,7 +126,7 @@ export interface PublicOrderData {
             </tf-badge>
             <span
               *ngIf="order()!.status === 'refunded'"
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-danger/10 text-danger border border-danger/20"
             >
               Cancelado / Reembolsado
             </span>
@@ -136,22 +136,22 @@ export interface PublicOrderData {
         <!-- Boarding Pass QR Card -->
         <div
           class="rounded-3xl border bg-white shadow-xl overflow-hidden print:shadow-none print:border-2"
-          [ngClass]="order()!.status === 'refunded' ? 'border-rose-300' : 'border-slate-200 print:border-black'"
+          [ngClass]="order()!.status === 'refunded' ? 'border-danger/30' : 'border-dark/10 print:border-black'"
         >
           <!-- Header Banner -->
           <div
-            class="px-6 py-4 flex items-center justify-between text-white"
-            [ngClass]="order()!.status === 'refunded' ? 'bg-rose-950' : 'bg-slate-900 print:bg-black'"
+            class="px-6 py-4 flex items-center justify-between text-surface"
+            [ngClass]="order()!.status === 'refunded' ? 'bg-danger/90' : 'bg-dark print:bg-black'"
           >
             <div>
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-cyan-400 block">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-accent block">
                 {{ order()!.status === 'refunded' ? 'Boleto Invalidadas' : 'Pase Oficial de Entrada' }}
               </span>
-              <span class="text-white font-black text-base leading-tight">
+              <span class="text-surface font-bold text-base leading-tight">
                 {{ order()!.event?.name || order()!.event?.title }}
               </span>
             </div>
-            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban text-rose-400' : 'fa-ticket text-cyan-400'"></i></span>
+            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban text-danger/80' : 'fa-ticket text-accent'"></i></span>
           </div>
 
           <!-- QR & Access Details -->
@@ -159,18 +159,18 @@ export interface PublicOrderData {
             <!-- Refunded Warning Banner -->
             <div
               *ngIf="order()!.status === 'refunded'"
-              class="w-full p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-center space-y-1"
+              class="w-full p-4 rounded-2xl bg-danger/5 border border-danger/20 text-danger text-center space-y-1"
             >
-              <p class="font-black text-sm uppercase tracking-wider flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-ban text-rose-600"></i> Pase Cancelado
+              <p class="font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-ban text-danger"></i> Pase Cancelado
               </p>
-              <p class="text-[11px] text-rose-600">Esta orden fue reembolsada y el código QR se encuentra inhabilitado.</p>
+              <p class="text-[11px] text-danger/80">Esta orden fue reembolsada y el código QR se encuentra inhabilitado.</p>
             </div>
 
             <!-- QR Code -->
             <div
               *ngIf="order()!.status === 'confirmed'"
-              class="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-inner print:border-black"
+              class="p-4 bg-white rounded-2xl border-2 border-dark/10 shadow-inner print:border-black"
             >
               <img
                 *ngIf="qrDataUrl()"
@@ -185,22 +185,22 @@ export interface PublicOrderData {
 
             <!-- Auth String -->
             <div class="text-center space-y-1">
-              <p class="font-mono text-xs text-slate-400 tracking-widest font-bold">
+              <p class="font-mono text-xs text-dark/40 tracking-widest font-bold">
                 AUTH: {{ order()!.id.substring(0, 16).toUpperCase() }}
               </p>
-              <p *ngIf="order()!.status === 'confirmed'" class="text-[10px] text-slate-500 print:text-black">
+              <p *ngIf="order()!.status === 'confirmed'" class="text-[10px] text-dark/50 print:text-black">
                 Muestra este código QR desde tu pantalla o impreso en el control de acceso del recinto.
               </p>
             </div>
 
             <!-- Items Breakdown -->
-            <div class="w-full divide-y divide-slate-100 border-t border-slate-100 pt-4 text-xs">
+            <div class="w-full divide-y divide-dark/5 border-t border-dark/5 pt-4 text-xs">
               <div
                 *ngFor="let item of order()!.items"
-                class="py-2.5 flex items-center justify-between text-slate-800"
+                class="py-2.5 flex items-center justify-between text-dark/80"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-cyan-100 text-cyan-800 font-black text-xs flex items-center justify-center print:bg-slate-200 print:text-black">
+                  <span class="w-6 h-6 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center print:bg-slate-200 print:text-black">
                     {{ item.quantity }}
                   </span>
                   <span class="font-semibold">{{ item.ticket_type?.name || 'Localidad' }}</span>
@@ -210,51 +210,51 @@ export interface PublicOrderData {
             </div>
 
             <!-- Financial Summary -->
-            <div class="w-full space-y-1 border-t border-slate-100 pt-3 text-xs">
-              <div class="flex justify-between text-slate-500">
+            <div class="w-full space-y-1 border-t border-dark/5 pt-3 text-xs">
+              <div class="flex justify-between text-dark/50">
                 <span>Subtotal</span>
                 <span class="font-mono">\${{ order()!.subtotal | number:'1.2-2' }}</span>
               </div>
-              <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-amber-600 font-bold">
+              <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-contrast font-bold">
                 <span>Descuento</span>
                 <span class="font-mono">-\${{ order()!.discount_amount | number:'1.2-2' }}</span>
               </div>
-              <div class="flex justify-between font-black text-slate-900 text-sm pt-1 border-t border-slate-100">
+              <div class="flex justify-between font-bold text-dark text-sm pt-1 border-t border-dark/5">
                 <span>Total Pagado</span>
-                <span class="font-mono text-cyan-600 print:text-black">\${{ order()!.total | number:'1.2-2' }} MXN</span>
+                <span class="font-mono text-primary print:text-black">\${{ order()!.total | number:'1.2-2' }} MXN</span>
               </div>
             </div>
           </div>
 
           <!-- Holder Footer Strip -->
-          <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 print:bg-slate-100">
+          <div class="px-6 py-4 bg-surface border-t border-dark/10 flex items-center justify-between text-xs text-dark/70 print:bg-slate-100">
             <div>
-              <span class="font-bold text-slate-900 block">Titular / Comprador</span>
+              <span class="font-bold text-dark block">Titular / Comprador</span>
               <span>{{ order()!.guest_name || order()!.guest_email || 'Invitado' }}</span>
             </div>
             <div class="text-right">
-              <span class="font-bold text-slate-900 block">Fecha de Compra</span>
+              <span class="font-bold text-dark block">Fecha de Compra</span>
               <span>{{ order()!.created_at | date:'short' }}</span>
             </div>
           </div>
         </div>
 
         <!-- Account Conversion Banner for Guest -->
-        <div *ngIf="!auth.user()" class="p-6 rounded-3xl bg-gradient-to-r from-cyan-500 to-sky-600 text-white shadow-lg space-y-3 print:hidden">
+        <div *ngIf="!auth.user()" class="p-6 rounded-3xl bg-gradient-to-r from-primary via-primary to-accent text-surface shadow-lg space-y-3 print:hidden">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl shrink-0">
-              <i class="fa-solid fa-user-plus"></i>
+              <i class="fa-solid fa-user-plus text-surface"></i>
             </div>
             <div>
-              <h3 class="font-extrabold text-sm text-white">¿Quieres guardar todos tus boletos en un solo lugar?</h3>
-              <p class="text-xs text-white/90">Crea tu cuenta en TicketFlow para acceder a tus compras cuando quieras.</p>
+              <h3 class="font-bold text-sm text-surface">¿Quieres guardar todos tus boletos en un solo lugar?</h3>
+              <p class="text-xs text-surface/80">Crea tu cuenta en TicketFlow para acceder a tus compras cuando quieras.</p>
             </div>
           </div>
           <div class="pt-1 flex justify-end">
             <a routerLink="/register">
               <button
                 type="button"
-                class="px-4 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-colors"
+                class="px-4 py-2 rounded-xl bg-dark hover:bg-black text-surface font-bold text-xs shadow-md transition-colors"
               >
                 Crear Cuenta Gratis <i class="fa-solid fa-arrow-right ml-1"></i>
               </button>
@@ -268,7 +268,7 @@ export interface PublicOrderData {
             *ngIf="order()!.status === 'confirmed'"
             type="button"
             (click)="printPass()"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-xs transition-all shadow-md"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-dark text-surface hover:bg-dark/90 font-bold text-xs transition-all shadow-md"
           >
             <i class="fa-solid fa-print"></i>
             <span>Imprimir / Descargar en PDF</span>

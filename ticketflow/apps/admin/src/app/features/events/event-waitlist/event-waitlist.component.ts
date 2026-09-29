@@ -53,7 +53,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <div
         *ngIf="feedbackMessage()"
         class="p-3 rounded-xl flex items-center justify-between text-xs font-semibold"
-        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 text-contrast border border-contrast/30' : 'bg-danger/10 text-danger border border-danger/30'"
       >
         <span>{{ feedbackMessage() }}</span>
         <button type="button" (click)="feedbackMessage.set(null)" class="text-xs px-1 hover:opacity-75">
@@ -92,7 +92,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             </thead>
             <tbody class="divide-y divide-dark/5 text-dark">
               <tr *ngFor="let entry of entries(); let i = index" class="hover:bg-dark/5 transition">
-                <td class="p-2.5 pl-3 text-center font-black text-dark/40">#{{ i + 1 }}</td>
+                <td class="p-2.5 pl-3 text-center font-bold text-dark/40">#{{ i + 1 }}</td>
                 <td class="p-2.5">
                   <p class="font-bold">{{ entry.user_display_name || 'Usuario' }}</p>
                   <p class="text-[11px] text-dark/50">{{ entry.email }}</p>
@@ -117,7 +117,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   </span>
                   <span
                     *ngIf="entry.status === 'notified'"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-contrast/10 text-contrast"
                     [title]="'Notificado: ' + (entry.notified_at | date:'medium')"
                   >
                     <i class="fa-solid fa-bell text-[9px]"></i> Notificado
@@ -145,10 +145,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
           <!-- Header -->
           <div class="space-y-1">
-            <span class="text-[10px] font-black uppercase tracking-widest text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full inline-block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full inline-block">
               Liberación de Lugares
             </span>
-            <h3 class="text-xl font-black text-dark">
+            <h3 class="text-xl font-bold text-dark">
               Notificar Lista de Espera
             </h3>
             <p class="text-xs text-dark/60">

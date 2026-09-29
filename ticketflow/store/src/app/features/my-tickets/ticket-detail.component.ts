@@ -34,7 +34,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           *ngIf="order()?.status === 'confirmed'"
           type="button"
           (click)="printPass()"
-          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark/10 hover:bg-dark/20 text-dark text-xs font-bold transition-colors"
+          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface hover:bg-dark/10 text-dark text-xs font-bold transition-colors border border-dark/10"
         >
           <i class="fa-solid fa-print"></i>
           <span>Imprimir / Guardar PDF</span>
@@ -45,10 +45,10 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
       <div
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl flex items-center justify-between transition-all print:hidden"
-        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 border border-contrast/20 text-contrast' : 'bg-danger/5 border border-danger/20 text-danger'"
       >
         <div class="flex items-center gap-3 text-sm font-semibold">
-          <i class="fa-solid" [ngClass]="feedbackType() === 'success' ? 'fa-circle-check text-emerald-600' : 'fa-triangle-exclamation text-rose-600'"></i>
+          <i class="fa-solid" [ngClass]="feedbackType() === 'success' ? 'fa-circle-check text-contrast' : 'fa-triangle-exclamation text-danger'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -68,7 +68,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
 
       <!-- Not found -->
       <div *ngIf="!isLoading() && !order()" class="py-16 text-center space-y-3 print:hidden">
-        <i class="fa-solid fa-ticket text-4xl text-slate-300 block mb-2"></i>
+        <i class="fa-solid fa-ticket text-4xl text-dark/20 block mb-2"></i>
         <p class="text-dark/60 text-sm">No se encontró la orden solicitada.</p>
         <a routerLink="/my-tickets">
           <tf-button variant="primary" size="sm">Ver Mis Boletos</tf-button>
@@ -84,7 +84,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             <p class="text-xs text-dark/50 font-mono">
               Orden #{{ order()!.id.substring(0, 8).toUpperCase() }}
             </p>
-            <h1 class="text-2xl font-black text-dark">{{ order()!.events?.name }}</h1>
+            <h1 class="text-2xl font-bold text-dark">{{ order()!.events?.name }}</h1>
             <p class="text-sm text-dark/60 mt-0.5">
               <i class="fa-solid fa-location-dot mr-1"></i> {{ order()!.events?.venues?.name }}
               &nbsp;·&nbsp;
@@ -96,19 +96,19 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           <div>
             <span
               *ngIf="order()!.status === 'refunded'"
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200"
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-danger/10 text-danger border border-danger/20"
             >
               <i class="fa-solid fa-money-bill-transfer mr-1"></i> Reembolsado
             </span>
             <span
               *ngIf="order()!.status === 'confirmed' && currentRefund?.status === 'pending'"
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200"
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-accent/15 text-primary border border-accent/30"
             >
               <i class="fa-solid fa-clock mr-1"></i> En Revisión de Reembolso
             </span>
             <span
               *ngIf="order()!.status === 'confirmed' && currentRefund?.status === 'rejected'"
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200"
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-surface text-dark/60 border border-dark/10"
             >
               <i class="fa-solid fa-circle-xmark mr-1"></i> Reembolso Rechazado
             </span>
@@ -123,9 +123,9 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           *ngIf="currentRefund"
           class="p-4 rounded-3xl text-xs space-y-1.5 print:hidden"
           [ngClass]="{
-            'bg-amber-50 border border-amber-200 text-amber-900': currentRefund.status === 'pending',
-            'bg-emerald-50 border border-emerald-200 text-emerald-900': currentRefund.status === 'approved' || order()!.status === 'refunded',
-            'bg-rose-50 border border-rose-200 text-rose-900': currentRefund.status === 'rejected'
+            'bg-accent/10 border border-accent/30 text-dark': currentRefund.status === 'pending',
+            'bg-contrast/10 border border-contrast/20 text-contrast': currentRefund.status === 'approved' || order()!.status === 'refunded',
+            'bg-danger/5 border border-danger/20 text-danger': currentRefund.status === 'rejected'
           }"
         >
           <div class="flex items-center justify-between font-bold">
@@ -136,29 +136,29 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             </span>
             <span class="font-mono text-[11px] opacity-75">{{ currentRefund.created_at | date:'medium' }}</span>
           </div>
-          <p class="text-slate-700">
+          <p class="text-dark/70">
             <strong>Motivo registrado:</strong> {{ currentRefund.reason }}
           </p>
-          <p *ngIf="currentRefund.admin_notes" class="text-slate-800 italic">
+          <p *ngIf="currentRefund.admin_notes" class="text-dark/80 italic">
             <strong>Respuesta del organizador:</strong> "{{ currentRefund.admin_notes }}"
           </p>
         </div>
 
         <!-- QR Pass Card (Boarding Pass Layout) -->
         <div
-          class="rounded-3xl border bg-surface shadow-lg overflow-hidden print:shadow-none print:border-2"
-          [ngClass]="order()!.status === 'refunded' ? 'border-rose-300 opacity-90' : 'border-dark/10 print:border-black'"
+          class="rounded-3xl border bg-white shadow-lg overflow-hidden print:shadow-none print:border-2"
+          [ngClass]="order()!.status === 'refunded' ? 'border-danger/30 opacity-90' : 'border-dark/10 print:border-black'"
         >
           <!-- Dark header strip -->
           <div
             class="px-6 py-4 flex items-center justify-between text-surface"
-            [ngClass]="order()!.status === 'refunded' ? 'bg-rose-950' : 'bg-dark print:bg-black'"
+            [ngClass]="order()!.status === 'refunded' ? 'bg-danger/90' : 'bg-dark print:bg-black'"
           >
             <div>
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-primary block">
-                {{ order()!.status === 'refunded' ? 'Boleto Invalido / Cancelado' : 'Pase de Acceso Oficial' }}
+              <span class="text-[10px] font-bold uppercase tracking-widest text-accent block">
+                {{ order()!.status === 'refunded' ? 'Boleto Inválido / Cancelado' : 'Pase de Acceso Oficial' }}
               </span>
-              <span class="text-surface font-black text-base leading-tight">
+              <span class="text-surface font-bold text-base leading-tight">
                 {{ order()!.events?.name }}
               </span>
             </div>
@@ -170,10 +170,10 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             <!-- If Refunded Banner Overlay -->
             <div
               *ngIf="order()!.status === 'refunded'"
-              class="w-full p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-center space-y-1"
+              class="w-full p-4 rounded-2xl bg-danger/5 border border-danger/20 text-danger text-center space-y-1"
             >
-              <p class="font-black text-sm uppercase tracking-wider flex items-center justify-center gap-1.5"><i class="fa-solid fa-ban text-rose-600"></i> Este pase ha sido reembolsado y cancelado</p>
-              <p class="text-[11px] text-rose-600">No es válido para el acceso al recinto.</p>
+              <p class="font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-1.5"><i class="fa-solid fa-ban text-danger"></i> Este pase ha sido reembolsado y cancelado</p>
+              <p class="text-[11px] text-danger/80">No es válido para el acceso al recinto.</p>
             </div>
 
             <!-- QR canvas image -->
@@ -208,7 +208,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
                 class="py-2.5 flex items-center justify-between text-dark/80"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-primary/20 text-primary font-black text-xs flex items-center justify-center print:bg-gray-200 print:text-black">
+                  <span class="w-6 h-6 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center print:bg-gray-200 print:text-black">
                     {{ item.quantity }}
                   </span>
                   <span class="font-semibold">{{ item.ticket_types?.name }}</span>
@@ -224,11 +224,11 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
                 <span>Subtotal</span>
                 <span class="font-mono">\${{ order()!.subtotal | number:'1.2-2' }}</span>
               </div>
-              <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-accent font-bold">
+              <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-contrast font-bold">
                 <span>Descuento</span>
                 <span class="font-mono">-\${{ order()!.discount_amount | number:'1.2-2' }}</span>
               </div>
-              <div class="flex justify-between font-black text-dark text-sm pt-1 border-t border-dark/10">
+              <div class="flex justify-between font-bold text-dark text-sm pt-1 border-t border-dark/10">
                 <span>Total {{ order()!.status === 'refunded' ? 'reembolsado' : 'pagado' }}</span>
                 <span class="font-mono text-primary print:text-black">\${{ order()!.total | number:'1.2-2' }} MXN</span>
               </div>
@@ -236,7 +236,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           </div>
 
           <!-- Holder strip -->
-          <div class="px-6 py-4 bg-dark/5 border-t border-dark/10 flex items-center justify-between text-xs text-dark/70 print:bg-gray-100">
+          <div class="px-6 py-4 bg-surface border-t border-dark/10 flex items-center justify-between text-xs text-dark/70 print:bg-gray-100">
             <div>
               <span class="font-bold text-dark block">Titular del boleto</span>
               <span>{{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email }}</span>
@@ -254,7 +254,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             *ngIf="order()!.status === 'confirmed'"
             type="button"
             (click)="printPass()"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-dark text-surface hover:bg-black font-bold text-xs transition-all shadow-md"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-dark text-surface hover:bg-dark/90 font-bold text-xs transition-all shadow-md"
           >
             <i class="fa-solid fa-print"></i>
             <span>Imprimir / Descargar en PDF</span>
@@ -264,7 +264,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             *ngIf="canRequestRefund()"
             type="button"
             (click)="showRefundModal.set(true)"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-all shadow-sm"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-danger/5 hover:bg-danger/10 text-danger border border-danger/20 font-bold text-xs transition-all shadow-sm"
           >
             <i class="fa-solid fa-money-bill-transfer"></i>
             <span>Solicitar Reembolso</span>
@@ -272,44 +272,44 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
         </div>
 
         <p *ngIf="order()!.status === 'confirmed'" class="text-center text-xs text-dark/40 print:hidden">
-          <i class="fa-regular fa-lightbulb text-amber-500 mr-1"></i> Puedes imprimir esta página o tomar captura de pantalla para acceder sin internet.
+          <i class="fa-regular fa-lightbulb text-accent mr-1"></i> Puedes imprimir esta página o tomar captura de pantalla para acceder sin internet.
         </p>
       </div>
 
       <!-- Refund Request Modal -->
       <div
         *ngIf="showRefundModal()"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in print:hidden"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/80 backdrop-blur-sm animate-fade-in print:hidden"
       >
-        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-200">
+        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-dark/10">
           <!-- Close Button -->
           <button
             type="button"
             (click)="closeRefundModal()"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 font-bold flex items-center justify-center transition-colors"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface text-dark/50 font-bold flex items-center justify-center transition-colors"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
 
           <!-- Header -->
           <div class="space-y-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest text-rose-600 block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-danger block">
               Garantía y Devolución
             </span>
-            <h3 class="text-xl font-black text-slate-900">
+            <h3 class="text-xl font-bold text-dark">
               Solicitar Reembolso
             </h3>
-            <p class="text-xs text-slate-500">
-              Orden #{{ order()!.id.substring(0, 8).toUpperCase() }} · Total: <strong class="text-slate-800">\${{ order()!.total | number:'1.2-2' }} MXN</strong>
+            <p class="text-xs text-dark/50">
+              Orden #{{ order()!.id.substring(0, 8).toUpperCase() }} · Total: <strong class="text-dark">\${{ order()!.total | number:'1.2-2' }} MXN</strong>
             </p>
           </div>
 
           <!-- Notice Alert -->
-          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
-            <p class="font-bold flex items-center gap-1.5">
-              <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Políticas de Devolución:
+          <div class="p-3.5 rounded-2xl bg-accent/10 border border-accent/30 text-xs text-dark space-y-1">
+            <p class="font-bold flex items-center gap-1.5 text-primary">
+              <i class="fa-solid fa-triangle-exclamation text-primary"></i> Políticas de Devolución:
             </p>
-            <p class="text-[11px] leading-relaxed">
+            <p class="text-[11px] text-dark/70 leading-relaxed">
               Tu solicitud será evaluada por el organizador del evento. Una vez aprobado, el importe se reintegrará y los boletos quedarán inválidos de forma permanente.
             </p>
           </div>
@@ -317,10 +317,10 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
           <!-- Form -->
           <div class="space-y-4 text-xs">
             <div class="space-y-1.5">
-              <label class="font-bold text-slate-700">Categoría del Motivo:</label>
+              <label class="font-bold text-dark/80">Categoría del Motivo:</label>
               <select
                 [(ngModel)]="refundCategory"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 bg-white text-dark font-medium focus:ring-2 focus:ring-primary focus:outline-none"
               >
                 <option value="Cancelación de planes personales">Cancelación de planes personales</option>
                 <option value="Error en la compra o cantidad de boletos">Error en la compra o duplicidad</option>
@@ -331,28 +331,28 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
             </div>
 
             <div class="space-y-1.5">
-              <label class="font-bold text-slate-700">Explica brevemente tu caso (mínimo 5 caracteres):</label>
+              <label class="font-bold text-dark/80">Explica brevemente tu caso (mínimo 5 caracteres):</label>
               <textarea
                 [(ngModel)]="refundDetails"
                 rows="3"
                 placeholder="Por favor describe detalladamente la razón de tu solicitud de reembolso..."
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none resize-none"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 bg-white text-dark font-medium focus:ring-2 focus:ring-primary focus:outline-none resize-none"
               ></textarea>
             </div>
 
             <!-- Error in modal -->
-            <p *ngIf="refundError()" class="text-rose-600 font-bold text-xs">
+            <p *ngIf="refundError()" class="text-danger font-bold text-xs">
               {{ refundError() }}
             </p>
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-dark/10">
             <button
               type="button"
               (click)="closeRefundModal()"
               [disabled]="isSubmittingRefund()"
-              class="px-4 py-2.5 rounded-xl text-slate-600 font-bold text-xs hover:bg-slate-100 transition-colors"
+              class="px-4 py-2.5 rounded-xl text-dark/60 font-bold text-xs hover:bg-surface transition-colors"
             >
               Cancelar
             </button>
@@ -360,7 +360,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
               type="button"
               (click)="submitRefundRequest()"
               [disabled]="isSubmittingRefund()"
-              class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
+              class="px-5 py-2.5 rounded-xl bg-danger hover:bg-danger/90 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
             >
               <tf-spinner *ngIf="isSubmittingRefund()" size="sm" color="white"></tf-spinner>
               <span>{{ isSubmittingRefund() ? 'Enviando...' : 'Confirmar Solicitud' }}</span>

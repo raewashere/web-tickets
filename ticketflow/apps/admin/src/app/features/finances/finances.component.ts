@@ -17,10 +17,10 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full inline-block mb-2">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full inline-block mb-2">
             Módulo Financiero
           </span>
-          <h1 class="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Finanzas & Control de Liquidaciones
           </h1>
           <p class="text-xs sm:text-sm text-dark/60 mt-1">
@@ -42,10 +42,10 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
       <div
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl flex items-center justify-between transition-all text-xs sm:text-sm font-semibold"
-        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 border border-contrast/30 text-contrast' : 'bg-danger/10 border border-danger/30 text-danger'"
       >
         <div class="flex items-center gap-2">
-          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-emerald-600' : 'fa-solid fa-triangle-exclamation text-rose-600'"></i>
+          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-contrast' : 'fa-solid fa-triangle-exclamation text-danger'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -68,21 +68,21 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
         <!-- KPI Metric Cards Grid -->
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
           <!-- Saldo Disponible por Cobrar -->
-          <div class="col-span-2 sm:col-span-1 p-5 rounded-3xl bg-gradient-to-br from-emerald-500/15 via-emerald-50/60 to-white border-2 border-emerald-500/30 shadow-sm space-y-1">
+          <div class="col-span-2 sm:col-span-1 p-5 rounded-3xl bg-gradient-to-br from-contrast/20 via-contrast/5 to-surface border-2 border-contrast/40 shadow-sm space-y-1">
             <div class="flex items-center justify-between">
-              <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800">Saldo Disponible</span>
-              <i class="fa-solid fa-money-bill-wave text-emerald-600 text-sm"></i>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-contrast">Saldo Disponible</span>
+              <i class="fa-solid fa-money-bill-wave text-contrast text-sm"></i>
             </div>
-            <p class="text-2xl sm:text-3xl font-black text-emerald-700 font-mono">
+            <p class="text-2xl sm:text-3xl font-bold text-contrast font-mono">
               \${{ summary()!.balance_due | number:'1.2-2' }}
             </p>
-            <span class="text-[10px] text-emerald-800/70 font-semibold block">Pendiente por liquidar</span>
+            <span class="text-[10px] text-contrast/80 font-semibold block">Pendiente por liquidar</span>
           </div>
 
           <!-- Total Neto Acumulado -->
           <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Neto Ganado</span>
-            <p class="text-xl sm:text-2xl font-black text-dark font-mono">
+            <p class="text-xl sm:text-2xl font-bold text-dark font-mono">
               \${{ summary()!.net_earnings | number:'1.2-2' }}
             </p>
             <span class="text-[10px] text-dark/40 font-medium">Tras comisiones</span>
@@ -91,7 +91,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           <!-- Total Liquidado / Pagado -->
           <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Total Pagado</span>
-            <p class="text-xl sm:text-2xl font-black text-primary font-mono">
+            <p class="text-xl sm:text-2xl font-bold text-primary font-mono">
               \${{ summary()!.total_paid | number:'1.2-2' }}
             </p>
             <span class="text-[10px] text-dark/40 font-medium">Dispersado por SPEI</span>
@@ -100,7 +100,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           <!-- Ventas Brutas Totales -->
           <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Venta Bruta</span>
-            <p class="text-xl sm:text-2xl font-black text-dark/80 font-mono">
+            <p class="text-xl sm:text-2xl font-bold text-dark/80 font-mono">
               \${{ summary()!.total_gross | number:'1.2-2' }}
             </p>
             <span class="text-[10px] text-dark/40 font-medium">Boletos confirmados</span>
@@ -109,7 +109,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           <!-- Comisiones Plataforma -->
           <div class="col-span-2 lg:col-span-1 p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Comisión TicketFlow</span>
-            <p class="text-xl sm:text-2xl font-black text-slate-500 font-mono">
+            <p class="text-xl sm:text-2xl font-bold text-dark/60 font-mono">
               \${{ summary()!.total_commission | number:'1.2-2' }}
             </p>
             <span class="text-[10px] text-dark/40 font-medium">Servicio retenido</span>
@@ -161,7 +161,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           >
             <i class="fa-solid fa-building-columns"></i>
             <span>Datos Bancarios y Fiscales</span>
-            <span *ngIf="summary()!.settings?.bank_account_number" class="text-emerald-500 text-xs">●</span>
+            <span *ngIf="summary()!.settings?.bank_account_number" class="text-contrast text-xs">●</span>
           </button>
         </div>
 
@@ -206,7 +206,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
                     <td class="p-3.5 font-mono text-slate-500">
                       \${{ ev.commission | number:'1.2-2' }}
                     </td>
-                    <td class="p-3.5 font-mono font-bold text-emerald-700">
+                    <td class="p-3.5 font-mono font-bold text-contrast">
                       \${{ ev.net | number:'1.2-2' }}
                     </td>
                     <td class="p-3.5 pr-5 text-right">
@@ -260,11 +260,11 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
                     <td class="p-3.5 font-mono text-dark/80 font-bold">
                       {{ p.reference_code || '—' }}
                     </td>
-                    <td class="p-3.5 font-mono font-black text-sm text-emerald-700">
+                    <td class="p-3.5 font-mono font-bold text-sm text-contrast">
                       \${{ p.amount | number:'1.2-2' }} {{ p.currency }}
                     </td>
                     <td class="p-3.5">
-                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-contrast/10 text-contrast border border-contrast/30">
                         <i class="fa-solid fa-check text-[9px]"></i> Completado
                       </span>
                     </td>
@@ -291,7 +291,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
         <!-- Tab 3: Datos Bancarios y Fiscales -->
         <div *ngIf="activeTab() === 'settings'" class="max-w-2xl bg-white rounded-3xl p-6 sm:p-8 border border-dark/10 shadow-sm space-y-6">
           <div class="space-y-1">
-            <h3 class="text-lg font-black text-dark">
+            <h3 class="text-lg font-bold text-dark">
               Configuración de Cuenta para Pagos
             </h3>
             <p class="text-xs text-dark/60">
@@ -299,8 +299,8 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
             </p>
           </div>
 
-          <div class="p-4 rounded-2xl bg-cyan-50/50 border border-cyan-200 text-xs text-cyan-950 flex items-start gap-3">
-            <i class="fa-solid fa-shield-halved text-cyan-700 text-base shrink-0 mt-0.5"></i>
+          <div class="p-4 rounded-2xl bg-contrast/5 border border-contrast/20 text-xs text-dark flex items-start gap-3">
+            <i class="fa-solid fa-shield-halved text-contrast text-base shrink-0 mt-0.5"></i>
             <p class="leading-relaxed">
               Tus datos bancarios se almacenan de forma segura bajo cifrado y solo son accesibles por el equipo de finanzas de TicketFlow para realizar dispersiones oficiales.
             </p>
@@ -392,9 +392,9 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
               <button
                 type="submit"
                 [disabled]="isSavingSettings()"
-                class="px-6 py-2.5 rounded-xl bg-dark hover:bg-black text-white font-bold text-xs shadow-md transition flex items-center gap-2"
+                class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs shadow-md transition flex items-center gap-2"
               >
-                <tf-spinner *ngIf="isSavingSettings()" size="sm" color="white"></tf-spinner>
+                <tf-spinner *ngIf="isSavingSettings()" size="sm" color="surface"></tf-spinner>
                 <span>{{ isSavingSettings() ? 'Guardando...' : 'Guardar Información Bancaria' }}</span>
               </button>
             </div>

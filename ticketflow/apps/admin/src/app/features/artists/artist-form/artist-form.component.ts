@@ -45,7 +45,7 @@ import { Router, RouterModule } from '@angular/router';
       <!-- Error notification -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
         <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -82,7 +82,7 @@ import { Router, RouterModule } from '@angular/router';
               <div>
                 <label class="block text-sm font-medium text-dark mb-1">
                   Tipo / Género de Artista
-                  <span class="text-contrast ml-0.5">*</span>
+                  <span class="text-danger ml-0.5">*</span>
                 </label>
                 <select
                   formControlName="artist_type_id"
@@ -93,7 +93,7 @@ import { Router, RouterModule } from '@angular/router';
                     {{ type.name }}
                   </option>
                 </select>
-                <p *ngIf="getArtistTypeError()" class="text-xs text-contrast mt-1">
+                <p *ngIf="getArtistTypeError()" class="text-xs text-danger mt-1">
                   {{ getArtistTypeError() }}
                 </p>
               </div>
@@ -148,7 +148,7 @@ import { Router, RouterModule } from '@angular/router';
                 <button
                   type="button"
                   (click)="removeExistingGalleryPhoto(i)"
-                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-xs shadow hover:bg-red-700 transition"
+                  class="absolute top-2 right-2 w-7 h-7 bg-danger text-white rounded-full flex items-center justify-center text-xs shadow hover:opacity-90 transition"
                   title="Eliminar foto"
                 >
                   <i class="fa-solid fa-xmark"></i>
@@ -158,13 +158,13 @@ import { Router, RouterModule } from '@angular/router';
               <!-- Pending upload preview photos -->
               <div *ngFor="let preview of pendingPreviews(); let i = index" class="relative group rounded-xl overflow-hidden aspect-square border-2 border-primary/40 shadow-sm bg-primary/5">
                 <img [src]="preview" alt="Nueva foto" class="w-full h-full object-cover" />
-                <div class="absolute bottom-1 left-1 bg-primary text-dark text-[10px] font-bold px-1.5 py-0.5 rounded">
+                <div class="absolute bottom-1 left-1 bg-primary text-surface text-[10px] font-bold px-1.5 py-0.5 rounded">
                   Nueva
                 </div>
                 <button
                   type="button"
                   (click)="removePendingGalleryFile(i)"
-                  class="absolute top-2 right-2 w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center text-xs shadow hover:bg-red-700 transition"
+                  class="absolute top-2 right-2 w-7 h-7 bg-danger text-white rounded-full flex items-center justify-center text-xs shadow hover:opacity-90 transition"
                   title="Quitar"
                 >
                   <i class="fa-solid fa-xmark"></i>

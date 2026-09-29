@@ -13,14 +13,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary:  '#06b6d4',   // Electric Cyan — links, badges, active brand
-        surface:  '#f8fafc',   // Clean slate-50 light background
-        accent:   '#f59e0b',   // Warm Amber/Gold highlight — stats, badges
-        dark:     '#0f172a',   // Deep Obsidian / Slate-900 — text, dark cards & headers
-        contrast: '#f43f5e',   // Rose / Coral — CTAs, urgency, highlights
+        primary:  '#4e0a0b',   // Guinda profundo — links, estados activos, brand
+        surface:  '#f2eee8',   // Marfil cálido — texto e iconos sobre fondos oscuros
+        accent:   '#e38792',   // Rosa suave — precios, badges, highlights, CTA
+        dark:     '#14281d',   // Verde forestal oscuro — fondo hero, sidebar, texto
+        contrast: '#355834',   // Verde acento — acciones positivas, seguridad
+        danger:   '#c0392b',   // Rojo — eliminar, cancelar, alertas destructivas
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Quicksand', 'sans-serif'],
       },
     },
   },

@@ -45,7 +45,7 @@ import {
           </nav>
 
           <div class="flex items-center gap-3">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+            <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
               {{ venue()?.name }}
             </h1>
             <tf-badge *ngIf="venue()?.verified" variant="primary">
@@ -76,9 +76,9 @@ import {
       <!-- Error State -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
-        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
+        <i class="fa-solid fa-circle-exclamation text-danger text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -187,7 +187,7 @@ import {
                   <!-- Capacity Counter -->
                   <div class="text-right">
                     <span class="text-[10px] uppercase font-bold text-dark/50 block">Capacidad</span>
-                    <span class="font-mono font-extrabold text-sm text-dark">
+                    <span class="font-mono font-bold text-sm text-dark">
                       {{ (cfg.capacity || 0) | number }} personas
                     </span>
                   </div>
@@ -206,7 +206,7 @@ import {
                       type="button"
                       (click)="deleteConfig(cfg)"
                       title="Eliminar configuración"
-                      class="p-2 rounded-lg text-contrast/60 hover:text-contrast hover:bg-contrast/10 transition-colors text-xs"
+                      class="p-2 rounded-lg text-danger/60 hover:text-danger hover:bg-danger/10 transition-colors text-xs"
                     >
                       <i class="fa-solid fa-trash-can"></i>
                     </button>

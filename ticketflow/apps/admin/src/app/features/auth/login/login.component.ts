@@ -30,10 +30,10 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
       <div class="w-full max-w-md relative z-10">
         <!-- Logo & Header -->
         <div class="text-center mb-8">
-          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/20 text-primary border border-primary/30 font-black text-2xl mb-4 shadow-lg shadow-primary/10">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/20 text-primary border border-primary/30 font-bold text-2xl mb-4 shadow-lg shadow-primary/10">
             TF
           </div>
-          <h1 class="text-3xl font-extrabold text-white tracking-tight">TicketFlow</h1>
+          <h1 class="text-3xl font-bold text-white tracking-tight">TicketFlow</h1>
           <p class="text-surface/60 text-sm mt-1">Portal de Artistas y Organizadores</p>
         </div>
 
@@ -47,7 +47,7 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
           <!-- Error Alert -->
           <div
             *ngIf="errorMessage"
-            class="mb-4 p-3 rounded-lg bg-contrast/10 border border-contrast/30 text-contrast text-xs flex items-center gap-2"
+            class="mb-4 p-3 rounded-lg bg-danger/10 border border-danger/30 text-danger text-xs flex items-center gap-2"
           >
             <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />

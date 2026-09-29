@@ -57,7 +57,7 @@ declare global {
             <span>/</span>
             <span class="text-dark font-semibold">Control de Acceso</span>
           </nav>
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight flex items-center gap-2">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight flex items-center gap-2">
             <i class="fa-solid fa-shield-halved text-primary"></i>
             <span>Control de Acceso & Validador QR</span>
           </h1>
@@ -87,8 +87,8 @@ declare global {
         <div *ngIf="isDoormanMode()" class="w-full sm:w-auto flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-primary/15 border border-primary/30 text-dark">
           <i class="fa-solid fa-bullseye text-primary text-lg"></i>
           <div>
-            <span class="text-[10px] uppercase tracking-wider font-extrabold text-primary block">Evento Asignado</span>
-            <span class="text-xs font-black">{{ events()[0]?.name || 'Cargando espectáculo...' }}</span>
+            <span class="text-[10px] uppercase tracking-wider font-bold text-primary block">Evento Asignado</span>
+            <span class="text-xs font-bold">{{ events()[0]?.name || 'Cargando espectáculo...' }}</span>
           </div>
         </div>
       </div>
@@ -109,24 +109,24 @@ declare global {
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div class="p-4 rounded-2xl bg-surface border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] uppercase font-bold tracking-wider text-dark/50 block">Boletos Vendidos</span>
-            <span class="text-2xl font-black text-dark font-mono">{{ stats().totalSoldTickets }}</span>
+            <span class="text-2xl font-bold text-dark font-mono">{{ stats().totalSoldTickets }}</span>
           </div>
 
           <div class="p-4 rounded-2xl bg-surface border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] uppercase font-bold tracking-wider text-dark/50 block">Ingresados en Puerta</span>
-            <span class="text-2xl font-black text-green-600 font-mono">{{ stats().totalCheckedIn }}</span>
+            <span class="text-2xl font-bold text-contrast font-mono">{{ stats().totalCheckedIn }}</span>
           </div>
 
           <div class="p-4 rounded-2xl bg-surface border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] uppercase font-bold tracking-wider text-dark/50 block">Por Ingresar</span>
-            <span class="text-2xl font-black text-primary font-mono">
+            <span class="text-2xl font-bold text-primary font-mono">
               {{ Math.max(0, stats().totalSoldTickets - stats().totalCheckedIn) }}
             </span>
           </div>
 
           <div class="p-4 rounded-2xl bg-surface border border-dark/10 shadow-sm space-y-1">
             <span class="text-[10px] uppercase font-bold tracking-wider text-dark/50 block">% Afluencia</span>
-            <span class="text-2xl font-black text-accent font-mono">{{ attendancePct() }}%</span>
+            <span class="text-2xl font-bold text-accent font-mono">{{ attendancePct() }}%</span>
           </div>
         </div>
 
@@ -189,7 +189,7 @@ declare global {
                       type="button"
                       *ngIf="!isCameraActive()"
                       (click)="startCamera()"
-                      class="px-3 py-1.5 rounded-xl bg-primary text-dark hover:bg-primary/90 text-xs font-bold transition-colors flex items-center gap-1.5"
+                      class="px-3 py-1.5 rounded-xl bg-primary text-surface hover:bg-primary/90 text-xs font-bold transition-colors flex items-center gap-1.5"
                     >
                       <i class="fa-solid fa-play text-xs"></i>
                       <span>Iniciar Cámara</span>
@@ -237,23 +237,22 @@ declare global {
               *ngIf="lastResult()"
               class="p-6 rounded-3xl border-2 transition-all duration-300 shadow-lg space-y-4"
               [ngClass]="{
-                'bg-green-50 border-green-500 text-green-950': lastResult()!.result === 'valid',
+                'bg-contrast/10 border-contrast text-contrast': lastResult()!.result === 'valid',
                 'bg-amber-50 border-amber-500 text-amber-950': lastResult()!.result === 'already_used',
-                'bg-blue-50 border-blue-500 text-blue-950': lastResult()!.result === 'doors_not_open',
-                'bg-purple-50 border-purple-500 text-purple-950': lastResult()!.result === 'event_ended',
-                'bg-red-50 border-red-500 text-red-950': !['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)
+                'bg-dark/5 border-dark/30 text-dark': ['doors_not_open', 'event_ended'].includes(lastResult()!.result),
+                'bg-danger/10 border-danger text-danger': !['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)
               }"
             >
               <div class="flex items-center gap-3">
                 <span class="text-3xl">
-                  <i *ngIf="lastResult()!.result === 'valid'" class="fa-solid fa-circle-check text-green-600"></i>
+                  <i *ngIf="lastResult()!.result === 'valid'" class="fa-solid fa-circle-check text-contrast"></i>
                   <i *ngIf="lastResult()!.result === 'already_used'" class="fa-solid fa-triangle-exclamation text-amber-600"></i>
-                  <i *ngIf="lastResult()!.result === 'doors_not_open'" class="fa-solid fa-clock text-blue-600"></i>
-                  <i *ngIf="lastResult()!.result === 'event_ended'" class="fa-solid fa-hourglass-end text-purple-600"></i>
-                  <i *ngIf="!['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)" class="fa-solid fa-circle-xmark text-red-600"></i>
+                  <i *ngIf="lastResult()!.result === 'doors_not_open'" class="fa-solid fa-clock text-dark"></i>
+                  <i *ngIf="lastResult()!.result === 'event_ended'" class="fa-solid fa-hourglass-end text-dark"></i>
+                  <i *ngIf="!['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)" class="fa-solid fa-circle-xmark text-danger"></i>
                 </span>
                 <div>
-                  <h3 class="font-black text-lg leading-tight">
+                  <h3 class="font-bold text-lg leading-tight">
                     {{
                       lastResult()!.result === 'valid'
                         ? '¡ACCESO AUTORIZADO!'
@@ -297,10 +296,10 @@ declare global {
                 <div *ngFor="let log of recentLogs()" class="p-3 flex items-center justify-between hover:bg-dark/5 transition-colors">
                   <div class="flex items-center gap-2.5">
                     <span>
-                      <i *ngIf="log.result === 'valid'" class="fa-solid fa-circle text-green-500 text-xs"></i>
+                      <i *ngIf="log.result === 'valid'" class="fa-solid fa-circle text-contrast text-xs"></i>
                       <i *ngIf="log.result === 'already_used'" class="fa-solid fa-circle text-amber-500 text-xs"></i>
-                      <i *ngIf="log.result === 'event_ended'" class="fa-solid fa-hourglass-end text-purple-500 text-xs"></i>
-                      <i *ngIf="!['valid', 'already_used', 'event_ended'].includes(log.result)" class="fa-solid fa-circle text-red-500 text-xs"></i>
+                      <i *ngIf="log.result === 'event_ended'" class="fa-solid fa-hourglass-end text-dark/60 text-xs"></i>
+                      <i *ngIf="!['valid', 'already_used', 'event_ended'].includes(log.result)" class="fa-solid fa-circle text-danger text-xs"></i>
                     </span>
                     <div>
                       <p class="font-bold text-dark leading-tight">{{ log.message }}</p>

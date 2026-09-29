@@ -1,6 +1,6 @@
 # Design System — TicketFlow
 
-> **Versión:** 1.0  
+> **Versión:** 2.0  
 > **Fecha:** Septiembre 2026  
 > **Stack:** Angular 22 + TailwindCSS + Custom Tokens
 
@@ -16,11 +16,11 @@ Todos los colores están definidos como tokens de diseño en `tailwind.config.js
 
 | Token | Hex | Clase Tailwind | Uso principal |
 |-------|-----|----------------|---------------|
-| `primary` | `#0bdef5` | `bg-primary`, `text-primary` | Color de marca — links, estados activos, indicadores, highlights |
-| `surface` | `#fff3f0` | `bg-surface`, `text-surface` | Texto e iconos sobre fondos **oscuros** |
-| `accent` | `#f7e733` | `bg-accent`, `text-accent` | Resaltados lúdicos — precios, estadísticas, badges destacados |
-| `dark` | `#150811` | `bg-dark`, `text-dark` | Texto sobre fondos claros / fondo de sidebar y hero |
-| `contrast` | `#e11392` | `bg-contrast`, `text-contrast` | CTAs principales, urgencia, acciones peligrosas |
+| `primary` | `#4e0a0b` | `bg-primary`, `text-primary` | Color de marca — links, estados activos, indicadores, highlights, botón de búsqueda |
+| `surface` | `#f2eee8` | `bg-surface`, `text-surface` | Texto e iconos sobre fondos **oscuros**, fondo de cuerpo |
+| `accent` | `#e38792` | `bg-accent`, `text-accent` | Rosa suave — precios, badges destacados, botones CTA secundarios |
+| `dark` | `#14281d` | `bg-dark`, `text-dark` | Verde forestal oscuro — fondo hero, sidebar, navbar, texto principal |
+| `contrast` | `#355834` | `bg-contrast`, `text-contrast` | Verde acento — acciones positivas, iconos de seguridad |
 
 ### Configuración en `tailwind.config.js`
 
@@ -28,11 +28,14 @@ Todos los colores están definidos como tokens de diseño en `tailwind.config.js
 theme: {
   extend: {
     colors: {
-      primary:  '#0bdef5',   // Cian principal
-      surface:  '#fff3f0',   // Crema/texto claro
-      accent:   '#f7e733',   // Amarillo
-      dark:     '#150811',   // Morado oscuro casi negro
-      contrast: '#e11392',   // Magenta
+      primary:  '#4e0a0b',   // Guinda profundo — links, estados activos, brand
+      surface:  '#f2eee8',   // Marfil cálido — texto e iconos sobre fondos oscuros
+      accent:   '#e38792',   // Rosa suave — precios, badges, highlights
+      dark:     '#14281d',   // Verde forestal oscuro — fondo hero, sidebar, texto
+      contrast: '#355834',   // Verde acento — CTA secundario, acciones positivas
+    },
+    fontFamily: {
+      sans: ['Quicksand', 'sans-serif'],
     },
   },
 },
@@ -42,20 +45,21 @@ theme: {
 
 | Contexto | Fondo | Texto | Acento |
 |----------|-------|-------|--------|
-| Sidebar / Hero oscuro | `dark` (`#150811`) | `surface` (`#fff3f0`) | `primary` (`#0bdef5`) |
-| Tarjetas / contenido claro | `white` / `gray-50` | `dark` (`#150811`) | `accent` (`#f7e733`) |
-| Botón principal de acción | `primary` (`#0bdef5`) | `dark` (`#150811`) | — |
-| Botón CTA / urgencia | `contrast` (`#e11392`) | `white` | — |
-| Precios y cifras clave | — | `accent` (`#f7e733`) | — |
-| Alertas de peligro / eliminar | — | `contrast` (`#e11392`) | — |
+| Sidebar / Hero oscuro | `dark` (`#14281d`) | `surface` (`#f2eee8`) | `accent` (`#e38792`) |
+| Tarjetas / contenido claro | `white` / `surface` | `dark` (`#14281d`) | `primary` (`#4e0a0b`) |
+| Botón de búsqueda / acción principal | `primary` (`#4e0a0b`) | `surface` (`#f2eee8`) | — |
+| Botón CTA / destacado | `accent` (`#e38792`) | `dark` (`#14281d`) | — |
+| Precios y cifras clave | — | `primary` (`#4e0a0b`) | — |
+| Icono de categoría / artista | — | `accent` (`#e38792`) | — |
+| Acciones de seguridad / éxito | — | `contrast` (`#355834`) | — |
 
 ### Reglas de Diseño
 
-1. **Los números clave siempre en `accent` (`#f7e733`)** — precios, métricas del dashboard, totales de orden.
-2. **Botones de compra y acción principal** usan `contrast` (`#e11392`) para generar urgencia visual.
-3. **Links y estados activos** usan `primary` (`#0bdef5`).
-4. **Acciones destructivas** (eliminar, cancelar, rechazar) siempre en `contrast`.
-5. **Fondos oscuros** (sidebar, hero, modales) usan `dark` con texto `surface`.
+1. **Los precios y métricas clave** usan `font-mono` + color `primary` para lectura rápida.
+2. **Botones de compra (Comprar Boletos)** usan `primary` (`#4e0a0b`) sobre texto `surface`.
+3. **Links y estados activos** usan `primary` (`#4e0a0b`).
+4. **CTAs secundarios** (Crear Cuenta, Comenzar a Vender) usan `accent` (`#e38792`) sobre `dark`.
+5. **Fondos oscuros** (navbar, hero, sidebar) usan `dark` con texto `surface`.
 
 ---
 
@@ -65,14 +69,14 @@ theme: {
 
 | Propiedad | Valor |
 |-----------|-------|
-| **Familia** | `Inter` |
+| **Familia** | `Quicksand` |
 | **Fallback** | `sans-serif` |
 | **Fuente** | Google Fonts |
-| **Clase Tailwind** | `font-sans` (configurado como Inter) |
+| **Clase Tailwind** | `font-sans` (configurado como Quicksand) |
 
 ```css
 /* En styles.css o index.html */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 ```
 
 ### Escala Tipográfica

@@ -19,33 +19,33 @@ import { ToastService } from '@ticketflow/shared-ui';
   template: `
     <div
       class="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl text-xs font-mono font-bold transition-all duration-300 border shadow-sm"
-      [class.bg-contrast\/15]="isUrgent()"
-      [class.text-contrast]="isUrgent()"
-      [class.border-contrast\/60]="isUrgent()"
-      [class.shadow-\[0_0_15px_rgba\(244\,63\,94\,0\.35\)\]]="isUrgent()"
+      [class.bg-danger\/10]="isUrgent()"
+      [class.text-danger]="isUrgent()"
+      [class.border-danger\/30]="isUrgent()"
+      [class.shadow-\[0_0_15px_rgba\(192\,57\,43\,0\.25\)\]]="isUrgent()"
       [class.animate-pulse]="isUrgent()"
-      [class.bg-cyan-500\/10]="!isUrgent()"
-      [class.text-slate-900]="!isUrgent()"
-      [class.border-cyan-500\/40]="!isUrgent()"
-      [class.shadow-\[0_0_10px_rgba\(6\,182\,212\,0\.2\)\]]="!isUrgent()"
+      [class.bg-primary\/5]="!isUrgent()"
+      [class.text-dark]="!isUrgent()"
+      [class.border-primary\/20]="!isUrgent()"
+      [class.shadow-\[0_0_10px_rgba\(78\,10\,11\,0\.1\)\]]="!isUrgent()"
     >
       <span class="relative flex h-2.5 w-2.5">
         <span
           class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-          [class.bg-contrast]="isUrgent()"
-          [class.bg-cyan-400]="!isUrgent()"
+          [class.bg-danger]="isUrgent()"
+          [class.bg-accent]="!isUrgent()"
         ></span>
         <span
           class="relative inline-flex rounded-full h-2.5 w-2.5"
-          [class.bg-contrast]="isUrgent()"
-          [class.bg-cyan-500]="!isUrgent()"
+          [class.bg-danger]="isUrgent()"
+          [class.bg-primary]="!isUrgent()"
         ></span>
       </span>
       <span class="font-sans font-semibold">Tus boletos están reservados por:</span>
       <span
-        class="font-black text-sm tracking-tight"
-        [class.text-contrast]="isUrgent()"
-        [class.text-cyan-700]="!isUrgent()"
+        class="font-bold text-sm tracking-tight"
+        [class.text-danger]="isUrgent()"
+        [class.text-primary]="!isUrgent()"
       >
         {{ formattedTime() }}
       </span>

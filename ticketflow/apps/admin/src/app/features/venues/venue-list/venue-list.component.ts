@@ -36,7 +36,7 @@ import {
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Sedes & Lugares
           </h1>
           <p class="text-sm text-dark/60 mt-1">
@@ -99,9 +99,9 @@ import {
       <!-- Error State -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
-        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
+        <i class="fa-solid fa-circle-exclamation text-danger text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -140,7 +140,7 @@ import {
             <!-- Content -->
             <div class="p-5 space-y-3">
               <div>
-                <h3 class="font-extrabold text-base text-dark hover:text-primary transition-colors line-clamp-1">
+                <h3 class="font-bold text-base text-dark hover:text-primary transition-colors line-clamp-1">
                   <a [routerLink]="['/venues', venue.id]">{{ venue.name }}</a>
                 </h3>
 
@@ -168,7 +168,7 @@ import {
 
               <div *ngIf="getMaxCapacity(venue) > 0" class="flex items-center justify-between text-xs text-dark/60">
                 <span>Capacidad máxima:</span>
-                <span class="font-extrabold text-dark font-mono">
+                <span class="font-bold text-dark font-mono">
                   {{ getMaxCapacity(venue) | number }} personas
                 </span>
               </div>

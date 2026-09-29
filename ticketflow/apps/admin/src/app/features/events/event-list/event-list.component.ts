@@ -40,7 +40,7 @@ import {
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Mis Eventos & Conciertos
           </h1>
           <p class="text-sm text-dark/60 mt-1">
@@ -121,7 +121,7 @@ import {
       <!-- Error State -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm"
       >
         {{ errorMessage() }}
       </div>
@@ -167,7 +167,7 @@ import {
             <!-- Event Information -->
             <div class="p-5 space-y-3">
               <div>
-                <h3 class="font-extrabold text-base text-dark hover:text-primary transition-colors line-clamp-1">
+                <h3 class="font-bold text-base text-dark hover:text-primary transition-colors line-clamp-1">
                   <a [routerLink]="['/events', ev.id]">{{ ev.name }}</a>
                 </h3>
 

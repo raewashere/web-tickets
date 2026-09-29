@@ -34,11 +34,11 @@ import {
       <div *ngIf="!isLoading() && order()" class="space-y-8 animate-fade-in">
         <!-- Success Hero Header -->
         <div class="text-center space-y-4">
-          <div class="inline-flex w-20 h-20 rounded-full bg-primary/20 text-primary items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
+          <div class="inline-flex w-20 h-20 rounded-full bg-contrast/15 text-contrast items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
             <i class="fa-solid fa-check"></i>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl font-black text-dark tracking-tight">
+          <h1 class="text-3xl sm:text-4xl font-bold text-dark tracking-tight">
             ¡Compra Confirmada con Éxito!
           </h1>
 
@@ -47,17 +47,17 @@ import {
           </p>
 
           <!-- Order ID Pill -->
-          <div class="inline-block px-4 py-1.5 rounded-full bg-dark/5 border border-dark/10 font-mono text-xs font-bold text-dark">
-            Orden: <span class="text-primary font-black">#{{ order()!.id.substring(0, 8).toUpperCase() }}</span>
+          <div class="inline-block px-4 py-1.5 rounded-full bg-surface border border-dark/10 font-mono text-xs font-bold text-dark">
+            Orden: <span class="text-primary font-bold">#{{ order()!.id.substring(0, 8).toUpperCase() }}</span>
           </div>
         </div>
 
         <!-- Order Details Card -->
-        <div class="p-6 sm:p-8 rounded-3xl border border-dark/10 bg-surface shadow-sm space-y-6">
+        <div class="p-6 sm:p-8 rounded-3xl border border-dark/10 bg-white shadow-sm space-y-6">
           <!-- Event Info -->
           <div class="space-y-1 pb-4 border-b border-dark/10">
             <span class="text-[10px] font-bold uppercase tracking-wider text-primary block">Detalles del Espectáculo</span>
-            <h2 class="text-xl font-extrabold text-dark">{{ order()!.events?.name }}</h2>
+            <h2 class="text-xl font-bold text-dark">{{ order()!.events?.name }}</h2>
             <p class="text-xs text-dark/60">
               <i class="fa-regular fa-calendar mr-1"></i> {{ order()!.events?.event_date | date:'fullDate' }} · {{ order()!.events?.event_date | date:'shortTime' }} hrs
             </p>
@@ -67,7 +67,7 @@ import {
           <div class="space-y-3">
             <h3 class="text-xs font-bold uppercase tracking-wider text-dark/60">Boletos Emitidos</h3>
 
-            <div class="divide-y divide-dark/10">
+            <div class="divide-y divide-dark/5">
               <div
                 *ngFor="let item of order()!.order_items"
                 class="py-3 flex items-center justify-between gap-4 text-xs"
@@ -97,8 +97,8 @@ import {
             </div>
 
             <div class="pt-2 border-t border-dark/10 flex items-center justify-between text-sm">
-              <span class="font-black text-dark">Total Pagado:</span>
-              <span class="font-black text-primary text-xl font-mono">
+              <span class="font-bold text-dark">Total Pagado:</span>
+              <span class="font-bold text-primary text-xl font-mono">
                 \${{ order()!.total | number:'1.2-2' }} MXN
               </span>
             </div>
@@ -112,9 +112,13 @@ import {
             [routerLink]="['/my-tickets', order()!.id]"
             class="w-full sm:w-auto"
           >
-            <tf-button variant="primary" size="lg" class="w-full sm:w-auto">
-              <i class="fa-solid fa-qrcode mr-1.5"></i> Ver Pase Digital (QR & PDF)
-            </tf-button>
+            <button
+              type="button"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-qrcode"></i>
+              <span>Ver Pase Digital (QR & PDF)</span>
+            </button>
           </a>
 
           <a
@@ -123,21 +127,32 @@ import {
             [queryParams]="{ token: order()!.access_token }"
             class="w-full sm:w-auto"
           >
-            <tf-button variant="primary" size="lg" class="w-full sm:w-auto">
-              <i class="fa-solid fa-qrcode mr-1.5"></i> Ver Pase Digital de Invitado
-            </tf-button>
+            <button
+              type="button"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-qrcode"></i>
+              <span>Ver Pase Digital de Invitado</span>
+            </button>
           </a>
 
           <a *ngIf="auth.user()" routerLink="/my-tickets" class="w-full sm:w-auto">
-            <tf-button variant="secondary" size="lg" class="w-full sm:w-auto">
-              <i class="fa-solid fa-ticket mr-1.5"></i> Todos Mis Boletos
-            </tf-button>
+            <button
+              type="button"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white border border-dark/20 hover:bg-surface text-dark font-bold text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-ticket"></i>
+              <span>Todos Mis Boletos</span>
+            </button>
           </a>
 
           <a routerLink="/search" class="w-full sm:w-auto">
-            <tf-button variant="ghost" size="lg" class="w-full sm:w-auto">
+            <button
+              type="button"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl text-dark/70 hover:text-dark font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2"
+            >
               Explorar Más Shows
-            </tf-button>
+            </button>
           </a>
         </div>
       </div>

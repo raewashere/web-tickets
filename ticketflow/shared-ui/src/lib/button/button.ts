@@ -39,12 +39,12 @@ export class ButtonComponent {
     };
 
     const variants: Record<ButtonVariant, string> = {
-      primary: 'bg-primary text-dark hover:bg-primary/90 focus:ring-primary',
+      primary: 'bg-primary text-surface hover:bg-primary/90 focus:ring-primary shadow-sm',
       secondary:
-        'bg-dark text-surface hover:bg-dark/90 focus:ring-dark border border-surface/20',
-      danger: 'bg-contrast text-white hover:bg-contrast/90 focus:ring-contrast',
+        'bg-surface text-dark hover:bg-dark/10 focus:ring-dark border border-dark/20',
+      danger: 'bg-danger text-white hover:bg-danger/90 focus:ring-danger shadow-sm',
       ghost: 'bg-transparent text-dark hover:bg-dark/10 focus:ring-dark',
-      accent: 'bg-accent text-dark hover:bg-accent/90 focus:ring-accent',
+      accent: 'bg-accent text-dark hover:bg-accent/90 focus:ring-accent shadow-sm',
       outline: 'bg-transparent text-dark border border-dark/20 hover:bg-dark/5 focus:ring-primary',
     };
 

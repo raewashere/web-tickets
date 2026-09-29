@@ -27,11 +27,11 @@ export class BadgeComponent {
       'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide';
     const variants: Record<BadgeVariant, string> = {
       default: 'bg-dark/10 text-dark',
-      primary: 'bg-primary/20 text-primary',
-      accent: 'bg-accent text-dark',
-      danger: 'bg-contrast/20 text-contrast',
-      success: 'bg-green-100 text-green-800',
-      warning: 'bg-yellow-100 text-yellow-800',
+      primary: 'bg-primary/10 text-primary',
+      accent: 'bg-accent/20 text-primary',
+      danger: 'bg-danger/10 text-danger',
+      success: 'bg-contrast/15 text-contrast',
+      warning: 'bg-amber-100 text-amber-800',
     };
     return `${base} ${variants[this.variant]}`;
   }

@@ -39,7 +39,7 @@ export interface ChartPoint {
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Hola, {{ artist()?.name || auth.user()?.user_metadata?.['full_name'] || 'Artista' }}
           </h1>
           <p class="text-sm text-dark/60 mt-1">
@@ -68,7 +68,7 @@ export interface ChartPoint {
       >
         <div class="space-y-1 text-center md:text-left">
           <h3 class="text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles text-primary"></i> Completa tu Perfil de Artista
+            <i class="fa-solid fa-wand-magic-sparkles text-accent"></i> Completa tu Perfil de Artista
           </h3>
           <p class="text-surface/70 text-sm">
             Para poder publicar eventos y recibir pagos necesitas registrar tu información artística y fiscal.
@@ -140,25 +140,25 @@ export interface ChartPoint {
                   <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
                     <i class="fa-solid fa-chart-column"></i>
                   </div>
-                  <h3 class="text-lg font-black text-dark tracking-tight">Rendimiento y Ventas</h3>
+                  <h3 class="text-lg font-bold text-dark tracking-tight">Rendimiento y Ventas</h3>
                 </div>
                 <p class="text-xs text-dark/60 mt-1">Comportamiento de ventas y recaudación de la última semana</p>
               </div>
 
               <div class="flex flex-wrap items-center gap-3">
                 <!-- Trend indicator badge -->
-                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-400 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800 shadow-xs">
-                  <i class="fa-solid fa-arrow-trend-up text-emerald-500"></i> +24% esta semana
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-contrast bg-contrast/10 px-3 py-1.5 rounded-xl border border-contrast/20 shadow-xs">
+                  <i class="fa-solid fa-arrow-trend-up text-contrast"></i> +24% esta semana
                 </span>
 
                 <!-- View Mode Toggle Buttons -->
-                <div class="flex bg-dark/5 dark:bg-slate-800 p-1 rounded-xl border border-dark/10">
+                <div class="flex bg-dark/5 p-1 rounded-xl border border-dark/10">
                   <button
                     type="button"
                     (click)="chartView.set('revenue')"
                     [class]="chartView() === 'revenue' 
-                      ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-white dark:bg-slate-900 text-primary shadow-xs transition-all' 
-                      : 'px-3 py-1.5 text-xs font-semibold text-dark/70 dark:text-slate-400 hover:text-dark transition-all'"
+                      ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-surface text-primary shadow-xs transition-all' 
+                      : 'px-3 py-1.5 text-xs font-semibold text-dark/70 hover:text-dark transition-all'"
                   >
                     <i class="fa-solid fa-dollar-sign mr-1"></i> Ingresos Totales ($ MXN)
                   </button>
@@ -166,8 +166,8 @@ export interface ChartPoint {
                     type="button"
                     (click)="chartView.set('tickets')"
                     [class]="chartView() === 'tickets' 
-                      ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-white dark:bg-slate-900 text-primary shadow-xs transition-all' 
-                      : 'px-3 py-1.5 text-xs font-semibold text-dark/70 dark:text-slate-400 hover:text-dark transition-all'"
+                      ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-surface text-primary shadow-xs transition-all' 
+                      : 'px-3 py-1.5 text-xs font-semibold text-dark/70 hover:text-dark transition-all'"
                   >
                     <i class="fa-solid fa-ticket mr-1"></i> Boletos Vendidos (Unidades)
                   </button>
@@ -176,16 +176,16 @@ export interface ChartPoint {
             </div>
 
             <!-- Active Hover Detail Summary -->
-            <div class="flex items-center justify-between bg-dark/5 dark:bg-slate-800/50 p-4 rounded-2xl border border-dark/5">
+            <div class="flex items-center justify-between bg-dark/5 p-4 rounded-2xl border border-dark/5">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-lg font-bold">
                   <i class="fa-solid" [ngClass]="chartView() === 'revenue' ? 'fa-sack-dollar' : 'fa-ticket'"></i>
                 </div>
                 <div>
-                  <span class="text-xs text-dark/60 dark:text-slate-400 block font-medium">
+                  <span class="text-xs text-dark/60 block font-medium">
                     {{ activePoint() ? activePoint()!.fullDate : 'Total Acumulado (7 días)' }}
                   </span>
-                  <span class="text-xl font-black text-dark dark:text-white font-mono">
+                  <span class="text-xl font-bold text-dark font-mono">
                     {{ activePoint() 
                         ? (chartView() === 'revenue' ? formatCurrency(activePoint()!.revenue) : (activePoint()!.tickets + ' boletos')) 
                         : (chartView() === 'revenue' ? formatCurrency(totalChartRevenue()) : (totalChartTickets() + ' boletos'))
@@ -195,8 +195,8 @@ export interface ChartPoint {
               </div>
 
               <div class="text-right text-xs">
-                <span class="text-dark/50 dark:text-slate-400 block">Promedio diario</span>
-                <span class="font-bold text-dark dark:text-slate-200 font-mono">
+                <span class="text-dark/50 block">Promedio diario</span>
+                <span class="font-bold text-dark font-mono">
                   {{ chartView() === 'revenue' ? formatCurrency(avgChartRevenue()) : (avgChartTickets() + ' boletos/día') }}
                 </span>
               </div>
@@ -210,17 +210,17 @@ export interface ChartPoint {
               >
                 <defs>
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#06b6d4" stop-opacity="1" />
-                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.6" />
+                    <stop offset="0%" stop-color="#4e0a0b" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#e38792" stop-opacity="0.85" />
                   </linearGradient>
                   <linearGradient id="barHoverGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="1" />
-                    <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.9" />
+                    <stop offset="0%" stop-color="#e38792" stop-opacity="1" />
+                    <stop offset="100%" stop-color="#4e0a0b" stop-opacity="0.95" />
                   </linearGradient>
                 </defs>
 
                 <!-- Y-Axis Grid Lines -->
-                <g stroke="currentColor" stroke-dasharray="4 4" class="text-slate-200 dark:text-slate-700/50">
+                <g stroke="currentColor" stroke-dasharray="4 4" class="text-dark/10">
                   <line x1="50" y1="30" x2="680" y2="30" stroke-width="1" />
                   <line x1="50" y1="80" x2="680" y2="80" stroke-width="1" />
                   <line x1="50" y1="130" x2="680" y2="130" stroke-width="1" />
@@ -228,7 +228,7 @@ export interface ChartPoint {
                 </g>
 
                 <!-- Y-Axis Text Ticks -->
-                <g class="text-[10px] font-mono fill-slate-500">
+                <g class="text-[10px] font-mono fill-dark/50">
                   <text x="42" y="34" text-anchor="end">{{ chartView() === 'revenue' ? formatShortCurrency(maxChartVal()) : maxChartVal() }}</text>
                   <text x="42" y="84" text-anchor="end">{{ chartView() === 'revenue' ? formatShortCurrency(maxChartVal() * 0.66) : Math.round(maxChartVal() * 0.66) }}</text>
                   <text x="42" y="134" text-anchor="end">{{ chartView() === 'revenue' ? formatShortCurrency(maxChartVal() * 0.33) : Math.round(maxChartVal() * 0.33) }}</text>
@@ -245,7 +245,7 @@ export interface ChartPoint {
                     height="160"
                     rx="8"
                     class="transition-colors cursor-pointer"
-                    [attr.fill]="hoveredIndex() === i ? 'rgba(6, 182, 212, 0.08)' : 'transparent'"
+                    [attr.fill]="hoveredIndex() === i ? 'rgba(78, 10, 11, 0.08)' : 'transparent'"
                     (mouseenter)="hoveredIndex.set(i)"
                     (mouseleave)="hoveredIndex.set(null)"
                   />
@@ -271,13 +271,13 @@ export interface ChartPoint {
                       width="80"
                       height="20"
                       rx="6"
-                      class="fill-slate-900 shadow-lg"
+                      class="fill-dark shadow-lg"
                     />
                     <text
                       [attr.x]="93 + i * 86"
                       [attr.y]="getBarY(pt) - 12"
                       text-anchor="middle"
-                      class="fill-cyan-300 text-[10px] font-bold font-mono"
+                      class="fill-accent text-[10px] font-bold font-mono"
                     >
                       {{ chartView() === 'revenue' ? formatCurrency(pt.revenue) : (pt.tickets + ' tix') }}
                     </text>
@@ -288,7 +288,7 @@ export interface ChartPoint {
                     [attr.x]="93 + i * 86"
                     y="205"
                     text-anchor="middle"
-                    class="text-[11px] font-bold fill-dark/70 dark:fill-slate-300"
+                    class="text-[11px] font-bold fill-dark/70"
                   >
                     {{ pt.dayLabel }}
                   </text>
@@ -296,14 +296,14 @@ export interface ChartPoint {
                     [attr.x]="93 + i * 86"
                     y="219"
                     text-anchor="middle"
-                    class="text-[9px] fill-dark/40 dark:fill-slate-500 font-mono"
+                    class="text-[9px] fill-dark/40 font-mono"
                   >
                     {{ pt.fullDate }}
                   </text>
                 </g>
 
                 <!-- X-Axis Baseline -->
-                <line x1="50" y1="185" x2="680" y2="185" stroke="currentColor" stroke-width="1.5" class="text-slate-300 dark:text-slate-700" />
+                <line x1="50" y1="185" x2="680" y2="185" stroke="currentColor" stroke-width="1.5" class="text-dark/20" />
               </svg>
             </div>
 
@@ -312,15 +312,15 @@ export interface ChartPoint {
               <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
                   <span class="w-3 h-3 rounded-full bg-primary inline-block shadow-xs"></span>
-                  <span class="text-dark/70 dark:text-slate-300 font-medium">Ventas Confirmadas</span>
+                  <span class="text-dark/70 font-medium">Ventas Confirmadas</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-700 inline-block"></span>
-                  <span class="text-dark/50 dark:text-slate-400">Proyección</span>
+                  <span class="w-3 h-3 rounded-full bg-accent/40 inline-block"></span>
+                  <span class="text-dark/50">Proyección</span>
                 </div>
               </div>
 
-              <div class="text-dark/60 dark:text-slate-400 flex items-center gap-1.5">
+              <div class="text-dark/60 flex items-center gap-1.5">
                 <i class="fa-solid fa-clock-rotate-left text-primary"></i>
                 <span>Actualizado en tiempo real</span>
               </div>

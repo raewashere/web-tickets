@@ -48,7 +48,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
           </nav>
 
           <div class="flex flex-wrap items-center gap-3">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+            <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
               {{ event()?.name }}
             </h1>
 
@@ -122,7 +122,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
       <!-- Error State -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
         <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -157,7 +157,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="p-4 rounded-2xl bg-dark/5 border border-dark/10">
                   <span class="text-xs text-dark/50 font-bold uppercase tracking-wider block">Fecha del Evento</span>
-                  <span class="text-base sm:text-lg font-extrabold text-dark mt-0.5 block">
+                  <span class="text-base sm:text-lg font-bold text-dark mt-0.5 block">
                     {{ event()!.event_date | date:'fullDate' }}
                   </span>
                   <span class="text-xs text-dark/70 font-semibold">
@@ -168,7 +168,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
 
                 <div class="p-4 rounded-2xl bg-dark/5 border border-dark/10">
                   <span class="text-xs text-dark/50 font-bold uppercase tracking-wider block">Apertura de Puertas</span>
-                  <span class="text-base sm:text-lg font-extrabold text-dark mt-0.5 block">
+                  <span class="text-base sm:text-lg font-bold text-dark mt-0.5 block">
                     {{ event()!.doors_open ? (event()!.doors_open | date:'shortTime') + ' hrs' : 'Por confirmar' }}
                   </span>
                   <span class="text-xs text-dark/70">
@@ -182,7 +182,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                 <div class="space-y-0.5">
                   <span class="text-xs text-primary font-bold uppercase tracking-wider">Recinto & Aforo</span>
                   <div class="flex items-center gap-2">
-                    <span class="font-extrabold text-dark text-base">{{ event()!.venues?.name || 'Recinto no asignado' }}</span>
+                    <span class="font-bold text-dark text-base">{{ event()!.venues?.name || 'Recinto no asignado' }}</span>
                     <tf-badge *ngIf="event()!.venues?.verified" variant="primary">
                       <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
                     </tf-badge>
@@ -254,7 +254,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                     Stock: {{ t.stock }} · Vendidos: {{ t.sold }}
                   </span>
                 </div>
-                <div class="text-right font-mono font-extrabold text-dark text-base">
+                <div class="text-right font-mono font-bold text-dark text-base">
                   \${{ t.price | number:'1.2-2' }}
                 </div>
               </div>

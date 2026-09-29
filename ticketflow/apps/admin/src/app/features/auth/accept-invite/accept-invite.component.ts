@@ -26,7 +26,7 @@ import {
     <div class="min-h-screen bg-surface flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-2">
         <i class="fa-solid fa-ticket text-4xl text-primary block mb-2"></i>
-        <h1 class="text-2xl font-black text-dark tracking-tight">TicketFlow</h1>
+        <h1 class="text-2xl font-bold text-dark tracking-tight">TicketFlow</h1>
         <p class="text-xs text-dark/60 font-medium">Invitación al Control de Admisión</p>
       </div>
 
@@ -39,7 +39,7 @@ import {
 
         <!-- Error State -->
         <tf-card *ngIf="!isLoading() && errorMessage()" class="space-y-4 text-center">
-          <i class="fa-solid fa-triangle-exclamation text-4xl text-rose-500 block mb-2"></i>
+          <i class="fa-solid fa-triangle-exclamation text-4xl text-danger block mb-2"></i>
           <h3 class="text-base font-bold text-dark">{{ errorMessage() }}</h3>
           <p class="text-xs text-dark/60">
             Comunícate con el organizador del evento para solicitar una nueva invitación.
@@ -54,7 +54,7 @@ import {
           <!-- Event Header Strip -->
           <div class="space-y-2 text-center pb-4 border-b border-dark/10">
             <tf-badge variant="primary">Invitación de Personal</tf-badge>
-            <h2 class="text-xl font-black text-dark leading-tight">
+            <h2 class="text-xl font-bold text-dark leading-tight">
               {{ invitation()!.events?.name || 'Evento Oficial' }}
             </h2>
             <p class="text-xs text-dark/60" *ngIf="invitation()!.events?.event_date">
@@ -71,12 +71,12 @@ import {
           </div>
 
           <!-- Logged in as -->
-          <div *ngIf="auth.isAuthenticated()" class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center justify-between">
+          <div *ngIf="auth.isAuthenticated()" class="p-3 bg-contrast/10 border border-contrast/30 rounded-xl text-xs text-contrast flex items-center justify-between">
             <div>
               <span class="font-bold block">Sesión Activa</span>
               <span>{{ auth.user()?.email }}</span>
             </div>
-            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+            <i class="fa-solid fa-circle-check text-contrast text-lg"></i>
           </div>
 
           <!-- Action Button -->

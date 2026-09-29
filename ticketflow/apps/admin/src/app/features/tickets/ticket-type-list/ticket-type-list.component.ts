@@ -56,7 +56,7 @@ import {
             <span class="text-dark font-semibold">Boletos</span>
           </nav>
 
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Tipos de Boletos
           </h1>
           <p class="text-sm text-dark/60 mt-1">
@@ -114,9 +114,9 @@ import {
       <!-- Error alert -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
-        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
+        <i class="fa-solid fa-circle-exclamation text-danger text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -129,7 +129,7 @@ import {
           <!-- Left: Info -->
           <div class="space-y-1.5 flex-1">
             <div class="flex items-center gap-2.5">
-              <h3 class="font-extrabold text-base text-dark">{{ t.name }}</h3>
+              <h3 class="font-bold text-base text-dark">{{ t.name }}</h3>
               <span class="font-mono text-xs px-2 py-0.5 rounded bg-dark/10 text-dark font-bold">
                 {{ t.sku }}
               </span>
@@ -146,15 +146,15 @@ import {
           <div class="grid grid-cols-3 gap-3 p-3 rounded-xl bg-dark/5 text-center min-w-[240px]">
             <div>
               <span class="text-[10px] uppercase font-bold text-dark/50 block">Stock</span>
-              <span class="font-mono font-extrabold text-sm text-dark">{{ t.stock }}</span>
+              <span class="font-mono font-bold text-sm text-dark">{{ t.stock }}</span>
             </div>
             <div>
               <span class="text-[10px] uppercase font-bold text-dark/50 block">Vendidos</span>
-              <span class="font-mono font-extrabold text-sm text-primary">{{ t.sold }}</span>
+              <span class="font-mono font-bold text-sm text-primary">{{ t.sold }}</span>
             </div>
             <div>
               <span class="text-[10px] uppercase font-bold text-dark/50 block">Disponibles</span>
-              <span class="font-mono font-extrabold text-sm text-dark">{{ t.available }}</span>
+              <span class="font-mono font-bold text-sm text-dark">{{ t.available }}</span>
             </div>
           </div>
 
@@ -162,7 +162,7 @@ import {
           <div class="flex items-center justify-between md:justify-end gap-5">
             <div class="text-right">
               <span class="text-xs text-dark/50 block">Precio / Neto:</span>
-              <span class="font-mono font-extrabold text-lg text-dark block">
+              <span class="font-mono font-bold text-lg text-dark block">
                 \${{ t.price | number:'1.2-2' }}
               </span>
               <span class="text-[10px] font-mono text-dark/60 block">
@@ -183,7 +183,7 @@ import {
               <button
                 type="button"
                 (click)="deleteTicket(t)"
-                class="p-2 rounded-xl text-contrast/70 hover:text-contrast hover:bg-contrast/10 transition-colors text-xs"
+                class="p-2 rounded-xl text-danger/70 hover:text-danger hover:bg-danger/10 transition-colors text-xs"
                 title="Eliminar Boleto"
               >
                 <i class="fa-solid fa-trash-can"></i>

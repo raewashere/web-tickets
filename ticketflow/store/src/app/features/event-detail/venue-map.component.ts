@@ -37,8 +37,8 @@ declare global { interface Window { L?: LeafletStatic; } }
   template: `
     <div class="space-y-3">
       <div class="flex items-center justify-between">
-        <h3 class="text-sm font-extrabold text-dark flex items-center gap-2">
-          <i class="fa-solid fa-map-location-dot text-cyan-600"></i> Ubicación del Recinto
+        <h3 class="text-sm font-bold text-dark flex items-center gap-2">
+          <i class="fa-solid fa-map-location-dot text-primary"></i> Ubicación del Recinto
         </h3>
         <a
           *ngIf="lat && lng"
@@ -54,12 +54,12 @@ declare global { interface Window { L?: LeafletStatic; } }
       <!-- Map -->
       <div
         #mapEl
-        class="w-full h-56 rounded-2xl overflow-hidden border border-dark/10 shadow-sm bg-dark/5"
+        class="w-full h-56 rounded-2xl overflow-hidden border border-dark/10 shadow-sm bg-surface"
       ></div>
 
       <!-- Venue name -->
       <p *ngIf="venueName" class="text-xs text-dark/60 flex items-center gap-1.5">
-        <i class="fa-solid fa-location-dot text-slate-400"></i>
+        <i class="fa-solid fa-location-dot text-accent"></i>
         <span>{{ venueName }}</span>
       </p>
     </div>

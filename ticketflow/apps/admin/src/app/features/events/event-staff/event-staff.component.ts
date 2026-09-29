@@ -44,7 +44,7 @@ import {
         <button
           type="button"
           (click)="showInviteForm.set(!showInviteForm())"
-          class="px-3.5 py-2 rounded-xl bg-primary text-dark font-bold text-xs hover:bg-primary/90 transition-all flex items-center gap-1.5 shadow-xs"
+          class="px-3.5 py-2 rounded-xl bg-primary text-surface font-bold text-xs hover:bg-primary/90 transition-all flex items-center gap-1.5 shadow-xs"
         >
           <i [class]="showInviteForm() ? 'fa-solid fa-xmark' : 'fa-solid fa-user-plus'"></i>
           <span>{{ showInviteForm() ? 'Cancelar' : 'Invitar Validador' }}</span>
@@ -77,12 +77,12 @@ import {
                 [disabled]="inviteForm.invalid || isInviting()"
               >
                 <span *ngIf="!isInviting()"><i class="fa-solid fa-paper-plane mr-1.5"></i> Enviar Invitación</span>
-                <tf-spinner *ngIf="isInviting()" size="sm" color="dark"></tf-spinner>
+                <tf-spinner *ngIf="isInviting()" size="sm" color="surface"></tf-spinner>
               </tf-button>
             </div>
             <p
               *ngIf="inviteForm.get('email')?.touched && inviteForm.get('email')?.invalid"
-              class="text-xs text-contrast mt-1"
+              class="text-xs text-danger mt-1"
             >
               Ingresa un correo electrónico válido.
             </p>
@@ -100,8 +100,8 @@ import {
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl text-xs font-semibold flex items-center justify-between"
         [ngClass]="{
-          'bg-emerald-50 text-emerald-900 border border-emerald-200': feedbackType() === 'success',
-          'bg-rose-50 text-rose-900 border border-rose-200': feedbackType() === 'error'
+          'bg-contrast/10 text-contrast border border-contrast/30': feedbackType() === 'success',
+          'bg-danger/10 text-danger border border-danger/30': feedbackType() === 'error'
         }"
       >
         <span>{{ feedbackMessage() }}</span>
@@ -124,7 +124,7 @@ import {
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="text-sm font-bold text-dark">Validadores Activos</span>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
+                <span class="text-xs px-2 py-0.5 rounded-full bg-contrast/10 text-contrast font-bold">
                   {{ staffList().length }}
                 </span>
               </div>
@@ -149,7 +149,7 @@ import {
                 <button
                   type="button"
                   (click)="onRevokeStaff(member.id)"
-                  class="px-3 py-1 rounded-lg hover:bg-rose-50 text-contrast font-bold text-xs transition-colors"
+                  class="px-3 py-1 rounded-lg hover:bg-danger/10 text-danger font-bold text-xs transition-colors"
                 >
                   Remover
                 </button>
@@ -193,7 +193,7 @@ import {
                   <button
                     type="button"
                     (click)="onRevokeInvite(inv.id)"
-                    class="px-2.5 py-1 rounded-lg hover:bg-rose-50 text-contrast font-bold text-[11px] transition-colors"
+                    class="px-2.5 py-1 rounded-lg hover:bg-danger/10 text-danger font-bold text-[11px] transition-colors"
                   >
                     Cancelar
                   </button>

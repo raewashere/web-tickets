@@ -12,18 +12,18 @@ export type EmptyStateIllustration = 'search' | 'tickets' | 'events' | 'wallet' 
     <div class="py-16 sm:py-20 px-4 text-center space-y-6 max-w-md mx-auto">
       <!-- Vector / Illustration Backdrop -->
       <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
-        <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-cyan-500/10 via-sky-500/10 to-indigo-500/10 dark:from-cyan-400/20 dark:to-indigo-400/20 blur-xl transform rotate-6"></div>
-        <div class="relative w-full h-full rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/90 backdrop-blur-md shadow-lg flex items-center justify-center text-4xl text-slate-400 dark:text-slate-500">
+        <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-primary/10 via-accent/10 to-contrast/10 blur-xl transform rotate-6"></div>
+        <div class="relative w-full h-full rounded-3xl border border-dark/10 bg-white/80 backdrop-blur-md shadow-lg flex items-center justify-center text-4xl text-dark/30">
           <i [class]="iconClass"></i>
         </div>
       </div>
 
       <!-- Content -->
       <div class="space-y-2">
-        <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <h3 class="text-lg sm:text-xl font-bold text-dark tracking-tight">
           {{ title }}
         </h3>
-        <p *ngIf="description" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
+        <p *ngIf="description" class="text-xs sm:text-sm text-dark/60 leading-relaxed max-w-sm mx-auto">
           {{ description }}
         </p>
       </div>
@@ -34,7 +34,7 @@ export type EmptyStateIllustration = 'search' | 'tickets' | 'events' | 'wallet' 
           <a [routerLink]="actionRoute">
             <button
               type="button"
-              class="px-5 py-2.5 rounded-2xl bg-slate-900 dark:bg-cyan-400 dark:text-slate-950 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all transform hover:-translate-y-0.5"
+              class="px-5 py-2.5 rounded-2xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm shadow-md transition-all transform hover:-translate-y-0.5"
             >
               {{ actionLabel }}
             </button>
@@ -45,7 +45,7 @@ export type EmptyStateIllustration = 'search' | 'tickets' | 'events' | 'wallet' 
           <button
             type="button"
             (click)="actionClicked.emit()"
-            class="px-5 py-2.5 rounded-2xl bg-slate-900 dark:bg-cyan-400 dark:text-slate-950 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all transform hover:-translate-y-0.5"
+            class="px-5 py-2.5 rounded-2xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm shadow-md transition-all transform hover:-translate-y-0.5"
           >
             {{ actionLabel }}
           </button>
@@ -65,10 +65,10 @@ export class EmptyStateComponent {
   @Output() actionClicked = new EventEmitter<void>();
 
   get iconClass(): string {
-    if (this.illustration === 'search') return 'fa-solid fa-magnifying-glass-chart text-cyan-500';
-    if (this.illustration === 'tickets') return 'fa-solid fa-ticket-simple text-indigo-500';
-    if (this.illustration === 'events') return 'fa-solid fa-calendar-xmark text-rose-500';
-    if (this.illustration === 'wallet') return 'fa-solid fa-wallet text-amber-500';
+    if (this.illustration === 'search') return 'fa-solid fa-magnifying-glass-chart text-primary';
+    if (this.illustration === 'tickets') return 'fa-solid fa-ticket-simple text-primary';
+    if (this.illustration === 'events') return 'fa-solid fa-calendar-xmark text-accent';
+    if (this.illustration === 'wallet') return 'fa-solid fa-wallet text-contrast';
     return this.icon;
   }
 }

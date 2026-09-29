@@ -16,10 +16,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full inline-block mb-2">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full inline-block mb-2">
             Gestión de Post-Venta
           </span>
-          <h1 class="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Solicitudes de Reembolso
           </h1>
           <p class="text-xs sm:text-sm text-dark/60 mt-1">
@@ -41,10 +41,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
       <div
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl flex items-center justify-between transition-all"
-        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-rose-50 border border-rose-200 text-rose-800'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 border border-contrast/30 text-contrast' : 'bg-danger/10 border border-danger/30 text-danger'"
       >
         <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold">
-          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-emerald-600' : 'fa-solid fa-triangle-exclamation text-rose-600'"></i>
+          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-contrast' : 'fa-solid fa-triangle-exclamation text-danger'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -61,7 +61,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
         <!-- Total -->
         <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
           <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Total Solicitudes</span>
-          <p class="text-xl sm:text-2xl font-black text-dark">{{ requests().length }}</p>
+          <p class="text-xl sm:text-2xl font-bold text-dark">{{ requests().length }}</p>
           <span class="text-[10px] text-dark/40 font-medium">Histórico recibido</span>
         </div>
 
@@ -71,34 +71,34 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             <span>Pendientes</span>
             <i class="fa-regular fa-clock text-xs"></i>
           </span>
-          <p class="text-xl sm:text-2xl font-black text-amber-700">{{ countPending() }}</p>
+          <p class="text-xl sm:text-2xl font-bold text-amber-700">{{ countPending() }}</p>
           <span class="text-[10px] text-amber-600/70 font-medium">Requieren resolución</span>
         </div>
 
         <!-- Approved -->
-        <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/70 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-contrast/10 border border-contrast/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-contrast flex items-center justify-between">
             <span>Aprobadas</span>
             <i class="fa-solid fa-circle-check text-xs"></i>
           </span>
-          <p class="text-xl sm:text-2xl font-black text-emerald-700">{{ countApproved() }}</p>
-          <span class="text-[10px] text-emerald-600/70 font-medium">Stock restablecido</span>
+          <p class="text-xl sm:text-2xl font-bold text-contrast">{{ countApproved() }}</p>
+          <span class="text-[10px] text-contrast/70 font-medium">Stock restablecido</span>
         </div>
 
         <!-- Rejected -->
-        <div class="p-4 rounded-2xl bg-rose-50/50 border border-rose-200/70 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-danger/10 border border-danger/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-danger flex items-center justify-between">
             <span>Rechazadas</span>
             <i class="fa-solid fa-circle-xmark text-xs"></i>
           </span>
-          <p class="text-xl sm:text-2xl font-black text-rose-700">{{ countRejected() }}</p>
-          <span class="text-[10px] text-rose-600/70 font-medium">Boletos vigentes</span>
+          <p class="text-xl sm:text-2xl font-bold text-danger">{{ countRejected() }}</p>
+          <span class="text-[10px] text-danger/70 font-medium">Boletos vigentes</span>
         </div>
 
         <!-- Total Refunded Amount -->
         <div class="col-span-2 lg:col-span-1 p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
           <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Monto Reembolsado</span>
-          <p class="text-xl sm:text-2xl font-black text-primary">\${{ totalRefundedAmount() | number:'1.2-2' }}</p>
+          <p class="text-xl sm:text-2xl font-bold text-primary">\${{ totalRefundedAmount() | number:'1.2-2' }}</p>
           <span class="text-[10px] text-dark/40 font-medium">MXN devueltos</span>
         </div>
       </div>
@@ -250,13 +250,13 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                   </span>
                   <span
                     *ngIf="req.status === 'approved'"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-contrast/10 text-contrast border border-contrast/30"
                   >
                     <i class="fa-solid fa-check text-[9px]"></i> Aprobada
                   </span>
                   <span
                     *ngIf="req.status === 'rejected'"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-danger/10 text-danger border border-danger/30"
                   >
                     <i class="fa-solid fa-xmark text-[9px]"></i> Rechazada
                   </span>
@@ -273,7 +273,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                     <button
                       type="button"
                       (click)="openProcessModal(req, true)"
-                      class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow-sm transition"
+                      class="px-2.5 py-1 rounded-lg bg-contrast hover:opacity-90 text-surface font-bold text-[11px] shadow-sm transition"
                       title="Aprobar Reembolso"
                     >
                       Aprobar
@@ -281,7 +281,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                     <button
                       type="button"
                       (click)="openProcessModal(req, false)"
-                      class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition"
+                      class="px-2.5 py-1 rounded-lg bg-danger/10 hover:bg-danger/20 text-danger border border-danger/30 font-bold text-[11px] transition"
                       title="Rechazar Reembolso"
                     >
                       Rechazar
@@ -320,12 +320,12 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <!-- Modal Title -->
           <div class="space-y-1">
             <span
-              class="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block"
-              [ngClass]="modalIsApproval() ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'"
+              class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block"
+              [ngClass]="modalIsApproval() ? 'bg-contrast/10 text-contrast border border-contrast/30' : 'bg-danger/10 text-danger border border-danger/30'"
             >
               {{ modalIsApproval() ? 'Aprobación de Reembolso' : 'Rechazo de Reembolso' }}
             </span>
-            <h3 class="text-xl font-black text-dark">
+            <h3 class="text-xl font-bold text-dark">
               {{ modalIsApproval() ? '¿Confirmar Aprobación?' : '¿Confirmar Rechazo?' }}
             </h3>
             <p class="text-xs text-dark/60">
@@ -336,10 +336,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <!-- Alert summary -->
           <div
             class="p-3.5 rounded-2xl text-xs space-y-1"
-            [ngClass]="modalIsApproval() ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-rose-50 border border-rose-200 text-rose-900'"
+            [ngClass]="modalIsApproval() ? 'bg-contrast/10 border border-contrast/30 text-contrast' : 'bg-danger/10 border border-danger/30 text-danger'"
           >
             <p class="font-bold flex items-center gap-1.5">
-              <i [class]="modalIsApproval() ? 'fa-solid fa-bolt text-emerald-600' : 'fa-solid fa-triangle-exclamation text-rose-600'"></i>
+              <i [class]="modalIsApproval() ? 'fa-solid fa-bolt text-contrast' : 'fa-solid fa-triangle-exclamation text-danger'"></i>
               <span>{{ modalIsApproval() ? 'Al aprobar esta solicitud:' : 'Al rechazar esta solicitud:' }}</span>
             </p>
             <ul class="list-disc list-inside space-y-0.5 text-[11px]">
@@ -371,7 +371,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           </div>
 
           <!-- Error Feedback -->
-          <p *ngIf="modalError()" class="text-rose-600 font-bold text-xs">
+          <p *ngIf="modalError()" class="text-danger font-bold text-xs">
             {{ modalError() }}
           </p>
 
@@ -389,10 +389,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
               type="button"
               (click)="confirmProcessRefund()"
               [disabled]="isProcessing()"
-              class="px-5 py-2 rounded-xl text-white font-bold text-xs shadow-md transition flex items-center gap-2"
-              [ngClass]="modalIsApproval() ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-rose-600 hover:bg-rose-500'"
+              class="px-5 py-2 rounded-xl text-surface font-bold text-xs shadow-md transition flex items-center gap-2"
+              [ngClass]="modalIsApproval() ? 'bg-contrast hover:opacity-90' : 'bg-danger hover:opacity-90'"
             >
-              <tf-spinner *ngIf="isProcessing()" size="sm" color="white"></tf-spinner>
+              <tf-spinner *ngIf="isProcessing()" size="sm" color="surface"></tf-spinner>
               <span>{{ isProcessing() ? 'Procesando...' : (modalIsApproval() ? 'Aprobar y Devolver' : 'Rechazar Solicitud') }}</span>
             </button>
           </div>
@@ -415,10 +415,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
           <!-- Header -->
           <div class="space-y-1">
-            <span class="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-0.5 rounded-full inline-block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-0.5 rounded-full inline-block">
               Detalle de Solicitud
             </span>
-            <h3 class="text-xl font-black text-dark">
+            <h3 class="text-xl font-bold text-dark">
               Orden #{{ detailModalRequest()!.order_id.substring(0, 8).toUpperCase() }}
             </h3>
             <p class="text-xs text-dark/60">
@@ -446,7 +446,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
               <span class="text-dark/50 text-[10px] uppercase font-bold block">Estado Actual</span>
               <span
                 class="inline-flex items-center gap-1 font-bold text-[11px]"
-                [ngClass]="detailModalRequest()!.status === 'approved' ? 'text-emerald-700' : 'text-rose-700'"
+                [ngClass]="detailModalRequest()!.status === 'approved' ? 'text-contrast' : 'text-danger'"
               >
                 <i [class]="detailModalRequest()!.status === 'approved' ? 'fa-solid fa-check text-[10px]' : 'fa-solid fa-xmark text-[10px]'"></i>
                 <span>{{ detailModalRequest()!.status === 'approved' ? 'Aprobada' : 'Rechazada' }}</span>

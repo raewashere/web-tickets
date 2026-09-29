@@ -56,7 +56,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             />
             <div
               *ngIf="!auth.avatarUrl()"
-              class="w-7 h-7 rounded-full bg-primary text-dark font-bold text-xs flex items-center justify-center"
+              class="w-7 h-7 rounded-full bg-primary text-surface font-bold text-xs flex items-center justify-center"
             >
               {{ userInitial }}
             </div>

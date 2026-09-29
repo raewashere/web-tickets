@@ -55,7 +55,7 @@ import {
             <span class="text-dark font-semibold">Cupones</span>
           </nav>
 
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Cupones & Cortesías
           </h1>
           <p class="text-sm text-dark/60 mt-1">
@@ -108,9 +108,9 @@ import {
       <!-- Error alert -->
       <div
         *ngIf="errorMessage()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center gap-3"
+        class="p-4 rounded-xl bg-danger/10 border border-danger/30 text-danger text-sm flex items-center gap-3"
       >
-        <i class="fa-solid fa-circle-exclamation text-contrast text-base shrink-0"></i>
+        <i class="fa-solid fa-circle-exclamation text-danger text-base shrink-0"></i>
         <span>{{ errorMessage() }}</span>
       </div>
 
@@ -123,7 +123,7 @@ import {
           <!-- Left: Code & Type -->
           <div class="space-y-1.5 flex-1">
             <div class="flex items-center gap-2.5">
-              <span class="font-mono font-extrabold text-base text-dark uppercase px-2.5 py-1 rounded-lg bg-accent/20 border border-accent/40">
+              <span class="font-mono font-bold text-base text-dark uppercase px-2.5 py-1 rounded-lg bg-accent/20 border border-accent/40">
                 {{ c.code }}
               </span>
 
@@ -137,7 +137,7 @@ import {
 
               <span
                 *ngIf="c.ticket_sku"
-                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-primary/20 text-dark border border-primary/30 flex items-center gap-1"
+                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"
               >
                 <i class="fa-solid fa-ticket text-[10px]"></i> SKU: {{ c.ticket_sku }}
               </span>
@@ -160,7 +160,7 @@ import {
           <div class="flex items-center gap-6">
             <div class="text-center">
               <span class="text-[10px] uppercase font-bold text-dark/50 block">Descuento</span>
-              <span class="font-mono font-extrabold text-base text-contrast">
+              <span class="font-mono font-bold text-base text-contrast">
                 {{ c.value ? (c.type === 'percentage' ? c.value + '%' : '$' + c.value + ' MXN') : '100% Cortesía' }}
               </span>
             </div>
@@ -194,7 +194,7 @@ import {
             <button
               type="button"
               (click)="deleteCoupon(c)"
-              class="p-2 rounded-xl text-contrast/70 hover:text-contrast hover:bg-contrast/10 transition-colors text-xs"
+              class="p-2 rounded-xl text-danger/70 hover:text-danger hover:bg-danger/10 transition-colors text-xs"
               title="Eliminar Cupón"
             >
               <i class="fa-solid fa-trash-can"></i>

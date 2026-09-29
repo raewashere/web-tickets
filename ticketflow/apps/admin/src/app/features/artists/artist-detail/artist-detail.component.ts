@@ -29,7 +29,7 @@ import {
       <!-- Top header bar -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
             Perfil del Artista
           </h1>
           <p class="text-sm text-dark/60 mt-1">
@@ -48,16 +48,16 @@ import {
       <!-- Success Notification -->
       <div
         *ngIf="notification()"
-        class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between"
+        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center justify-between"
       >
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+          <i class="fa-solid fa-circle-check text-contrast text-base"></i>
           <span>{{ notification() }}</span>
         </div>
         <button
           type="button"
           (click)="notification.set(null)"
-          class="text-emerald-700 hover:text-emerald-900"
+          class="text-contrast hover:opacity-80"
         >
           <i class="fa-solid fa-xmark"></i>
         </button>
@@ -108,7 +108,7 @@ import {
                 />
                 <div
                   *ngIf="!artist()?.photo_url"
-                  class="w-full h-full bg-dark text-primary font-black text-3xl sm:text-4xl flex items-center justify-center"
+                  class="w-full h-full bg-dark text-primary font-bold text-3xl sm:text-4xl flex items-center justify-center"
                 >
                   {{ getInitial() }}
                 </div>
@@ -117,7 +117,7 @@ import {
               <!-- Name and tags -->
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-3">
-                  <h2 class="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+                  <h2 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
                     {{ artist()?.name }}
                   </h2>
                   <tf-badge variant="primary" *ngIf="artist()?.artist_types?.name">

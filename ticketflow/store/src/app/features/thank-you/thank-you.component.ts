@@ -17,41 +17,41 @@ import { ToastService } from '@ticketflow/shared-ui';
       ></canvas>
 
       <!-- Success Header Card -->
-      <div class="rounded-3xl border border-slate-200 bg-white p-8 sm:p-12 shadow-xl text-center space-y-6 relative overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-r from-cyan-400 via-sky-500 to-emerald-400 animate-pulse"></div>
+      <div class="rounded-3xl border border-dark/10 bg-white p-8 sm:p-12 shadow-xl text-center space-y-6 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-r from-primary via-accent to-contrast animate-pulse"></div>
 
         <!-- Animated Check Badge with Glow -->
         <div class="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto flex items-center justify-center">
-          <div class="absolute inset-0 rounded-full bg-emerald-400/30 animate-ping"></div>
-          <div class="relative w-full h-full rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 text-white flex items-center justify-center text-5xl sm:text-6xl shadow-lg shadow-emerald-500/30 transform hover:scale-105 transition-transform duration-300">
+          <div class="absolute inset-0 rounded-full bg-contrast/20 animate-ping"></div>
+          <div class="relative w-full h-full rounded-3xl bg-contrast text-surface flex items-center justify-center text-5xl sm:text-6xl shadow-lg shadow-contrast/30 transform hover:scale-105 transition-transform duration-300">
             <i class="fa-solid fa-circle-check"></i>
           </div>
         </div>
 
         <div class="space-y-3">
-          <span class="text-xs font-black uppercase tracking-widest text-emerald-700 bg-emerald-100/90 px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-sm">
+          <span class="text-xs font-bold uppercase tracking-widest text-contrast bg-contrast/15 px-4 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-sparkles"></i>
             ¡Compra Confirmada Exitosamente!
           </span>
-          <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+          <h1 class="text-3xl sm:text-5xl font-bold text-dark tracking-tight">
             ¡Gracias por tu compra!
           </h1>
-          <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
+          <p class="text-sm sm:text-base text-dark/70 max-w-xl mx-auto leading-relaxed">
             Tus entradas oficiales han sido emitidas con código QR antifraude y asignadas directamente a tu cuenta.
           </p>
         </div>
 
         <!-- Order Summary Box -->
-        <div *ngIf="orderTotal > 0" class="max-w-md mx-auto p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-left">
+        <div *ngIf="orderTotal > 0" class="max-w-md mx-auto p-4 rounded-2xl bg-surface border border-dark/10 flex items-center justify-between text-left">
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Monto Total Pagado</span>
-            <div class="text-xl font-black text-slate-900">\${{ orderTotal.toFixed(2) }} {{ orderCurrency }}</div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-dark/40">Monto Total Pagado</span>
+            <div class="text-xl font-bold text-dark">\${{ orderTotal.toFixed(2) }} {{ orderCurrency }}</div>
           </div>
           <div class="text-right">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 flex items-center justify-end gap-1">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-contrast flex items-center justify-end gap-1">
               <i class="fa-solid fa-shield-check"></i> Pago Verificado
             </span>
-            <div class="text-xs text-slate-500 font-medium">PayPal Instantaneous</div>
+            <div class="text-xs text-dark/50 font-medium">PayPal Instantaneous</div>
           </div>
         </div>
 
@@ -60,9 +60,9 @@ import { ToastService } from '@ticketflow/shared-ui';
           <a routerLink="/my-tickets" class="w-full sm:w-auto">
             <button
               type="button"
-              class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm shadow-xl shadow-slate-950/10 hover:shadow-2xl transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-0.5"
+              class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-primary hover:bg-primary/90 text-surface font-bold text-sm shadow-xl shadow-primary/20 hover:shadow-2xl transition-all flex items-center justify-center gap-2.5 transform hover:-translate-y-0.5"
             >
-              <i class="fa-solid fa-qrcode text-cyan-400 text-lg"></i>
+              <i class="fa-solid fa-qrcode text-accent text-lg"></i>
               <span>Ver Mis Boletos y Código QR</span>
             </button>
           </a>
@@ -70,9 +70,9 @@ import { ToastService } from '@ticketflow/shared-ui';
           <a routerLink="/search" class="w-full sm:w-auto">
             <button
               type="button"
-              class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-slate-950 font-extrabold text-sm shadow-lg shadow-cyan-500/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
+              class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-surface hover:bg-dark/10 text-dark border border-dark/20 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
             >
-              <i class="fa-solid fa-compass"></i>
+              <i class="fa-solid fa-compass text-primary"></i>
               <span>Explorar Más Conciertos</span>
             </button>
           </a>
@@ -81,32 +81,32 @@ import { ToastService } from '@ticketflow/shared-ui';
 
       <!-- Features Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-6 rounded-3xl border border-slate-200 bg-white space-y-3 shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl shadow-inner">
+        <div class="p-6 rounded-3xl border border-dark/10 bg-white space-y-3 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-xl shadow-inner">
             <i class="fa-solid fa-mobile-screen-button"></i>
           </div>
-          <h3 class="font-extrabold text-base text-slate-900">Acceso 100% Digital</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="font-bold text-base text-dark">Acceso 100% Digital</h3>
+          <p class="text-xs text-dark/70 leading-relaxed">
             Muestra el código QR desde la app en la entrada del evento. No requiere impresión en papel.
           </p>
         </div>
 
-        <div class="p-6 rounded-3xl border border-slate-200 bg-white space-y-3 shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl shadow-inner">
+        <div class="p-6 rounded-3xl border border-dark/10 bg-white space-y-3 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-accent/15 text-primary flex items-center justify-center text-xl shadow-inner">
             <i class="fa-solid fa-envelope-circle-check"></i>
           </div>
-          <h3 class="font-extrabold text-base text-slate-900">Respaldo por Correo</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="font-bold text-base text-dark">Respaldo por Correo</h3>
+          <p class="text-xs text-dark/70 leading-relaxed">
             Hemos enviado un desglose completo de tu pedido a tu dirección de correo electrónico registrada.
           </p>
         </div>
 
-        <div class="p-6 rounded-3xl border border-slate-200 bg-white space-y-3 shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-inner">
+        <div class="p-6 rounded-3xl border border-dark/10 bg-white space-y-3 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-contrast/15 text-contrast flex items-center justify-center text-xl shadow-inner">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
-          <h3 class="font-extrabold text-base text-slate-900">Protección Garantizada</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="font-bold text-base text-dark">Protección Garantizada</h3>
+          <p class="text-xs text-dark/70 leading-relaxed">
             Garantía antifraude con firma criptográfica de acceso y derecho a reembolso en caso de cancelación.
           </p>
         </div>
@@ -158,7 +158,7 @@ export class ThankYouComponent implements OnInit, OnDestroy {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const colors = ['#0bdef5', '#f7e733', '#e11392', '#10b981', '#3b82f6'];
+    const colors = ['#4e0a0b', '#e38792', '#14281d', '#355834', '#f2eee8'];
     const particles: Array<{
       x: number;
       y: number;
