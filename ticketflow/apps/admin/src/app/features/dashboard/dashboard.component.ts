@@ -210,12 +210,12 @@ export interface ChartPoint {
               >
                 <defs>
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#4e0a0b" stop-opacity="1" />
-                    <stop offset="100%" stop-color="#e38792" stop-opacity="0.85" />
+                    <stop offset="0%" class="text-primary" stop-color="currentColor" stop-opacity="1" />
+                    <stop offset="100%" class="text-accent" stop-color="currentColor" stop-opacity="0.85" />
                   </linearGradient>
                   <linearGradient id="barHoverGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#e38792" stop-opacity="1" />
-                    <stop offset="100%" stop-color="#4e0a0b" stop-opacity="0.95" />
+                    <stop offset="0%" class="text-accent" stop-color="currentColor" stop-opacity="1" />
+                    <stop offset="100%" class="text-primary" stop-color="currentColor" stop-opacity="0.95" />
                   </linearGradient>
                 </defs>
 
@@ -245,7 +245,7 @@ export interface ChartPoint {
                     height="160"
                     rx="8"
                     class="transition-colors cursor-pointer"
-                    [attr.fill]="hoveredIndex() === i ? 'rgba(78, 10, 11, 0.08)' : 'transparent'"
+                    [attr.fill]="hoveredIndex() === i ? 'rgb(var(--color-primary) / 0.08)' : 'transparent'"
                     (mouseenter)="hoveredIndex.set(i)"
                     (mouseleave)="hoveredIndex.set(null)"
                   />

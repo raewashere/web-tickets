@@ -105,7 +105,20 @@ serve(async (req: Request) => {
       `)
       .join('');
 
-    // 4. Build Responsive HTML Email Template
+    // 4. Email Theme Configuration & Responsive HTML Email Template
+    const EMAIL_THEME = {
+      primary: '#5c0029',
+      accent: '#ee4266',
+      surface: '#eaf0ce',
+      dark: '#041b15',
+      cardBg: '#0a251e',
+      headerBg: '#02100c',
+      contrast: '#55917f',
+      border: 'rgba(234, 240, 206, 0.1)',
+      borderAccent: 'rgba(238, 66, 102, 0.3)',
+      primaryAlertBg: 'rgba(92, 0, 41, 0.4)',
+    };
+
     const htmlEmail = `
       <!DOCTYPE html>
       <html lang="es">
@@ -116,44 +129,44 @@ serve(async (req: Request) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
       </head>
-      <body style="margin: 0; padding: 0; background-color: #14281d; font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f2eee8;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #14281d; padding: 40px 15px;">
+      <body style="margin: 0; padding: 0; background-color: ${EMAIL_THEME.dark}; font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: ${EMAIL_THEME.surface};">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: ${EMAIL_THEME.dark}; padding: 40px 15px;">
           <tr>
             <td align="center">
-              <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #1a3527; border-radius: 24px; overflow: hidden; border: 1px solid rgba(242, 238, 232, 0.1); box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.6);">
+              <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: ${EMAIL_THEME.cardBg}; border-radius: 24px; overflow: hidden; border: 1px solid ${EMAIL_THEME.border}; box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.6);">
                 <!-- Header -->
                 <tr>
-                  <td style="background-color: #0e1d15; padding: 32px 30px; text-align: center; border-bottom: 1px solid rgba(242, 238, 232, 0.1);">
-                    <span style="display: inline-block; background-color: #4e0a0b; color: #f2eee8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 6px 14px; border-radius: 999px; margin-bottom: 12px; border: 1px solid #e38792;">
+                  <td style="background-color: ${EMAIL_THEME.headerBg}; padding: 32px 30px; text-align: center; border-bottom: 1px solid ${EMAIL_THEME.border};">
+                    <span style="display: inline-block; background-color: ${EMAIL_THEME.primary}; color: ${EMAIL_THEME.surface}; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 6px 14px; border-radius: 999px; margin-bottom: 12px; border: 1px solid ${EMAIL_THEME.accent};">
                       TicketFlow Pass
                     </span>
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #f2eee8;">¡Tus Boletos Están Listos!</h1>
-                    <p style="margin: 6px 0 0 0; font-size: 13px; color: #e38792; font-family: monospace; font-weight: 700;">Orden #${order.id.substring(0, 8).toUpperCase()}</p>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: ${EMAIL_THEME.surface};">¡Tus Boletos Están Listos!</h1>
+                    <p style="margin: 6px 0 0 0; font-size: 13px; color: ${EMAIL_THEME.accent}; font-family: monospace; font-weight: 700;">Orden #${order.id.substring(0, 8).toUpperCase()}</p>
                   </td>
                 </tr>
 
                 <!-- Body -->
                 <tr>
                   <td style="padding: 30px;">
-                    <p style="font-size: 15px; line-height: 1.5; color: #f2eee8; margin-top: 0;">
+                    <p style="font-size: 15px; line-height: 1.5; color: ${EMAIL_THEME.surface}; margin-top: 0;">
                       Hola <strong>${customerName}</strong>, tu compra ha sido confirmada con éxito. A continuación encontrarás el resumen oficial de tu acceso.
                     </p>
 
                     <!-- Event Card -->
-                    <div style="background-color: #14281d; border-radius: 16px; padding: 20px; border: 1px solid rgba(242, 238, 232, 0.15); margin: 24px 0;">
-                      <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700; color: #f2eee8;">${eventName}</h2>
-                      <p style="margin: 4px 0; font-size: 13px; color: rgba(242, 238, 232, 0.8);">📍 <strong>Lugar:</strong> ${venueName}</p>
-                      <p style="margin: 4px 0; font-size: 13px; color: rgba(242, 238, 232, 0.8);">📅 <strong>Fecha:</strong> ${eventDate}</p>
+                    <div style="background-color: ${EMAIL_THEME.dark}; border-radius: 16px; padding: 20px; border: 1px solid ${EMAIL_THEME.border}; margin: 24px 0;">
+                      <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700; color: ${EMAIL_THEME.surface};">${eventName}</h2>
+                      <p style="margin: 4px 0; font-size: 13px; color: ${EMAIL_THEME.surface}; opacity: 0.8;">📍 <strong>Lugar:</strong> ${venueName}</p>
+                      <p style="margin: 4px 0; font-size: 13px; color: ${EMAIL_THEME.surface}; opacity: 0.8;">📅 <strong>Fecha:</strong> ${eventDate}</p>
                     </div>
 
                     <!-- Items Table -->
-                    <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #e38792; margin: 24px 0 10px 0;">Detalle de Boletos</h3>
+                    <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: ${EMAIL_THEME.accent}; margin: 24px 0 10px 0;">Detalle de Boletos</h3>
                     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
                       <thead>
                         <tr>
-                          <th align="left" style="padding-bottom: 8px; font-size: 11px; text-transform: uppercase; color: rgba(242, 238, 232, 0.6); border-bottom: 1px solid rgba(242, 238, 232, 0.1);">Tipo</th>
-                          <th align="center" style="padding-bottom: 8px; font-size: 11px; text-transform: uppercase; color: rgba(242, 238, 232, 0.6); border-bottom: 1px solid rgba(242, 238, 232, 0.1);">Cant.</th>
-                          <th align="right" style="padding-bottom: 8px; font-size: 11px; text-transform: uppercase; color: rgba(242, 238, 232, 0.6); border-bottom: 1px solid rgba(242, 238, 232, 0.1);">Precio</th>
+                          <th align="left" style="padding-bottom: 8px; font-size: 11px; text-transform: uppercase; color: ${EMAIL_THEME.surface}; opacity: 0.6; border-bottom: 1px solid ${EMAIL_THEME.border};">Tipo</th>
+                          <th align="center" style="padding-bottom: 8px; font-size: 11px; text-transform: uppercase; color: ${EMAIL_THEME.surface}; opacity: 0.6; border-bottom: 1px solid ${EMAIL_THEME.border};">Cant.</th>
+                          <th align="right" style="padding-bottom: 8px; font-size: 11px; text-transform: uppercase; color: ${EMAIL_THEME.surface}; opacity: 0.6; border-bottom: 1px solid ${EMAIL_THEME.border};">Precio</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -162,25 +175,25 @@ serve(async (req: Request) => {
                     </table>
 
                     <!-- Totals -->
-                    <table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid rgba(242, 238, 232, 0.15); padding-top: 14px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid ${EMAIL_THEME.border}; padding-top: 14px;">
                       <tr>
-                        <td style="font-size: 13px; color: rgba(242, 238, 232, 0.7); padding: 4px 0;">Subtotal:</td>
-                        <td align="right" style="font-size: 13px; color: #f2eee8; font-family: monospace; font-weight: 700;">$${Number(order.subtotal).toFixed(2)} MXN</td>
+                        <td style="font-size: 13px; color: ${EMAIL_THEME.surface}; opacity: 0.7; padding: 4px 0;">Subtotal:</td>
+                        <td align="right" style="font-size: 13px; color: ${EMAIL_THEME.surface}; font-family: monospace; font-weight: 700;">$${Number(order.subtotal).toFixed(2)} MXN</td>
                       </tr>
                       ${order.discount_amount > 0 ? `
                       <tr>
-                        <td style="font-size: 13px; color: #e38792; padding: 4px 0; font-weight: 700;">Descuento:</td>
-                        <td align="right" style="font-size: 13px; color: #e38792; font-family: monospace; font-weight: 700;">-$${Number(order.discount_amount).toFixed(2)} MXN</td>
+                        <td style="font-size: 13px; color: ${EMAIL_THEME.accent}; padding: 4px 0; font-weight: 700;">Descuento:</td>
+                        <td align="right" style="font-size: 13px; color: ${EMAIL_THEME.accent}; font-family: monospace; font-weight: 700;">-$${Number(order.discount_amount).toFixed(2)} MXN</td>
                       </tr>` : ''}
                       <tr>
-                        <td style="font-size: 16px; font-weight: 700; color: #f2eee8; padding: 10px 0 0 0; border-top: 1px solid rgba(242, 238, 232, 0.15);">Total Pagado:</td>
-                        <td align="right" style="font-size: 18px; font-weight: 700; color: #e38792; font-family: monospace; padding: 10px 0 0 0; border-top: 1px solid rgba(242, 238, 232, 0.15);">$${Number(order.total).toFixed(2)} MXN</td>
+                        <td style="font-size: 16px; font-weight: 700; color: ${EMAIL_THEME.surface}; padding: 10px 0 0 0; border-top: 1px solid ${EMAIL_THEME.border};">Total Pagado:</td>
+                        <td align="right" style="font-size: 18px; font-weight: 700; color: ${EMAIL_THEME.accent}; font-family: monospace; padding: 10px 0 0 0; border-top: 1px solid ${EMAIL_THEME.border};">$${Number(order.total).toFixed(2)} MXN</td>
                       </tr>
                     </table>
 
                     <!-- Instructions / CTA -->
-                    <div style="background-color: rgba(78, 10, 11, 0.4); border-radius: 16px; padding: 18px; margin: 24px 0; border: 1px solid rgba(227, 135, 146, 0.3);">
-                      <p style="margin: 0; font-size: 13px; color: #f2eee8; line-height: 1.5;">
+                    <div style="background-color: ${EMAIL_THEME.primaryAlertBg}; border-radius: 16px; padding: 18px; margin: 24px 0; border: 1px solid ${EMAIL_THEME.borderAccent};">
+                      <p style="margin: 0; font-size: 13px; color: ${EMAIL_THEME.surface}; line-height: 1.5;">
                         📲 <strong>Instrucciones de Acceso:</strong> Puedes presentar tu código QR digital oficial directamente desde tu celular o imprimir tu comprobante entrando a la sección <strong>Mis Boletos</strong> en TicketFlow.
                       </p>
                     </div>
@@ -189,8 +202,8 @@ serve(async (req: Request) => {
 
                 <!-- Footer -->
                 <tr>
-                  <td style="background-color: #0e1d15; padding: 20px 30px; text-align: center; border-top: 1px solid rgba(242, 238, 232, 0.1);">
-                    <p style="margin: 0; font-size: 11px; color: rgba(242, 238, 232, 0.6); line-height: 1.5;">
+                  <td style="background-color: ${EMAIL_THEME.headerBg}; padding: 20px 30px; text-align: center; border-top: 1px solid ${EMAIL_THEME.border};">
+                    <p style="margin: 0; font-size: 11px; color: ${EMAIL_THEME.surface}; opacity: 0.6; line-height: 1.5;">
                       © 2026 TicketFlow Technologies Inc. Todos los derechos reservados.<br>
                       Este es un correo automático de confirmación de compra y emisión de entradas.
                     </p>

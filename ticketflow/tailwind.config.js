@@ -13,12 +13,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary:  '#4e0a0b',   // Guinda profundo — links, estados activos, brand
-        surface:  '#f2eee8',   // Marfil cálido — texto e iconos sobre fondos oscuros
-        accent:   '#e38792',   // Rosa suave — precios, badges, highlights, CTA
-        dark:     '#14281d',   // Verde forestal oscuro — fondo hero, sidebar, texto
-        contrast: '#355834',   // Verde acento — acciones positivas, seguridad
-        danger:   '#c0392b',   // Rojo — eliminar, cancelar, alertas destructivas
+        primary:  'rgb(var(--color-primary) / <alpha-value>)',
+        surface:  'rgb(var(--color-surface) / <alpha-value>)',
+        accent:   'rgb(var(--color-accent) / <alpha-value>)',
+        dark:     'rgb(var(--color-dark) / <alpha-value>)',
+        contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
+        danger:   'rgb(var(--color-danger) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Quicksand', 'sans-serif'],

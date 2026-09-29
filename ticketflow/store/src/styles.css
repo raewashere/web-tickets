@@ -5,37 +5,50 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* ==========================================================================
+       DESIGN SYSTEM TOKENS (RGB format for Tailwind alpha modifier support)
+       To update or swap the color palette, simply modify these 6 tokens:
+       ========================================================================== */
+    --color-primary: 92 0 41;      /* #5c0029 — Borgoña principal */
+    --color-accent: 238 66 102;    /* #ee4266 — Rosa coral de realce */
+    --color-surface: 234 240 206;  /* #eaf0ce — Letras y superficies claras */
+    --color-dark: 4 27 21;         /* #041b15 — Verde noche secundario */
+    --color-contrast: 85 145 127;  /* #55917f — Acento secundario y éxito */
+    --color-danger: 192 57 43;     /* #c0392b — Peligro semántico */
+  }
+
   html.dark {
     color-scheme: dark;
   }
 
   html.dark body {
-    background-color: #0c1a10 !important;
-    color: #f2eee8 !important;
+    background-color: rgb(var(--color-dark)) !important;
+    color: rgb(var(--color-surface)) !important;
   }
 }
 
-/* Global Dark Mode Rules for Store */
+/* Global Dynamic Dark Mode Rules for Store */
 html.dark .bg-surface,
 html.dark .bg-slate-50,
 html.dark .bg-slate-100 {
-  background-color: #0f2015 !important;
+  background-color: rgb(var(--color-dark) / 0.95) !important;
 }
 
 html.dark .bg-white {
-  background-color: #14281d !important;
-  color: #f2eee8 !important;
+  background-color: rgb(var(--color-dark)) !important;
+  color: rgb(var(--color-surface)) !important;
 }
 
 html.dark .bg-slate-200 {
-  background-color: #1e3828 !important;
+  background-color: rgb(var(--color-dark) / 0.8) !important;
 }
 
 html.dark .text-dark,
 html.dark .text-slate-900,
 html.dark .text-slate-800,
 html.dark .text-slate-700 {
-  color: #f2eee8 !important;
+  color: rgb(var(--color-surface)) !important;
 }
 
 html.dark .text-dark\/70,
@@ -43,20 +56,20 @@ html.dark .text-dark\/60,
 html.dark .text-dark\/50,
 html.dark .text-slate-600,
 html.dark .text-slate-500 {
-  color: #a5b8a8 !important;
+  color: rgb(var(--color-surface) / 0.7) !important;
 }
 
 html.dark .border-dark\/10,
 html.dark .border-slate-200,
 html.dark .border-slate-300,
 html.dark .border-slate-100 {
-  border-color: #1e3828 !important;
+  border-color: rgb(var(--color-surface) / 0.15) !important;
 }
 
 html.dark input:not([type="checkbox"]):not([type="radio"]),
 html.dark select,
 html.dark textarea {
-  background-color: #1e3828 !important;
-  color: #f2eee8 !important;
-  border-color: #2d4f38 !important;
+  background-color: rgb(var(--color-dark) / 0.85) !important;
+  color: rgb(var(--color-surface)) !important;
+  border-color: rgb(var(--color-surface) / 0.25) !important;
 }
