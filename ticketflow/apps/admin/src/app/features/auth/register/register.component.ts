@@ -43,9 +43,9 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
         <!-- Logo & Header -->
         <div class="text-center mb-8">
           <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/20 text-primary border border-primary/30 font-bold text-2xl mb-4 shadow-lg shadow-primary/10">
-            TF
+            BC
           </div>
-          <h1 class="text-3xl font-bold text-white tracking-tight">TicketFlow</h1>
+          <h1 class="text-3xl font-bold text-white tracking-tight">BoletoCoqueto</h1>
           <p class="text-surface/60 text-sm mt-1">Crea tu cuenta de Artista / Organizador</p>
         </div>
 

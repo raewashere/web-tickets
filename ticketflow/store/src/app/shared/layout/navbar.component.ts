@@ -17,8 +17,8 @@ import { ThemeService } from '@ticketflow/shared-ui';
           <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary via-primary to-accent flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
             <i class="fa-solid fa-ticket text-surface text-lg"></i>
           </div>
-          <span class="text-xl sm:text-2xl font-black tracking-tight text-surface flex items-center select-none">
-            Ticket<span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/70 ml-0.5">Flow</span>
+          <span class="text-xl sm:text-2xl font-bold tracking-tight text-surface flex items-center select-none">
+            Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/70 ml-0.5">Coqueto</span>
           </span>
         </a>
 

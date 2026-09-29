@@ -1,26 +1,27 @@
-# Design System — TicketFlow
+# Design System — BoletoCoqueto
 
-> **Versión:** 2.0  
+> **Versión:** 3.0  
 > **Fecha:** Septiembre 2026  
-> **Stack:** Angular 22 + TailwindCSS + Custom Tokens
+> **Stack:** Angular 22 + TailwindCSS + CSS Custom Properties
 
-Este documento define el sistema de diseño visual de TicketFlow. Es la fuente de verdad para colores, tipografía, iconografía y componentes reutilizables usados en la **Admin App** y la **Store App**.
+Este documento define el sistema de diseño visual de **BoletoCoqueto**. Es la fuente de verdad para colores, tipografía, iconografía y componentes reutilizables usados en la **Admin App** y la **Store App**.
 
 ---
 
-## 1. Paleta de Colores
+## 1. Paleta de Colores (Tokens Dinámicos en `:root`)
 
-Todos los colores están definidos como tokens de diseño en `tailwind.config.js` y son usados como clases de utilidad en toda la aplicación.
+Todos los colores están definidos como variables CSS en `:root` dentro de `styles.css` y consumidos por TailwindCSS como `rgb(var(--color-*) / <alpha-value>)` para soportar modificadores de opacidad en tiempo real.
 
-### Tokens Primarios
+### Tokens Primarios Activos
 
-| Token | Hex | Clase Tailwind | Uso principal |
-|-------|-----|----------------|---------------|
-| `primary` | `#4e0a0b` | `bg-primary`, `text-primary` | Color de marca — links, estados activos, indicadores, highlights, botón de búsqueda |
-| `surface` | `#f2eee8` | `bg-surface`, `text-surface` | Texto e iconos sobre fondos **oscuros**, fondo de cuerpo |
-| `accent` | `#e38792` | `bg-accent`, `text-accent` | Rosa suave — precios, badges destacados, botones CTA secundarios |
-| `dark` | `#14281d` | `bg-dark`, `text-dark` | Verde forestal oscuro — fondo hero, sidebar, navbar, texto principal |
-| `contrast` | `#355834` | `bg-contrast`, `text-contrast` | Verde acento — acciones positivas, iconos de seguridad |
+| Token | Hex | RGB Variable | Uso principal |
+|-------|-----|--------------|---------------|
+| `primary` | `#CE4760` | `206 71 96` | Color de marca — Rosa frambuesa, botones principales, enlaces activos |
+| `accent` | `#F6D0B1` | `246 208 177` | Melocotón / Arena suave — precios, badges destacados, llamadas a la acción |
+| `surface` | `#f2eee8` | `242 238 232` | Blanco cálido — color de letras sobre oscuro, fondos de tarjeta y superficie |
+| `dark` | `#11270B` | `17 39 11` | Verde bosque profundo — Navbar, Footer, Hero, Sidebar |
+| `contrast` | `#90E39A` | `144 227 154` | Menta brillante — acciones positivas, badges de éxito y seguridad |
+| `danger` | `#c0392b` | `192 57 43` | Rojo carmesí — acciones destructivas, errores y cancelaciones |
 
 ### Configuración en `tailwind.config.js`
 
@@ -28,11 +29,12 @@ Todos los colores están definidos como tokens de diseño en `tailwind.config.js
 theme: {
   extend: {
     colors: {
-      primary:  '#4e0a0b',   // Guinda profundo — links, estados activos, brand
-      surface:  '#f2eee8',   // Marfil cálido — texto e iconos sobre fondos oscuros
-      accent:   '#e38792',   // Rosa suave — precios, badges, highlights
-      dark:     '#14281d',   // Verde forestal oscuro — fondo hero, sidebar, texto
-      contrast: '#355834',   // Verde acento — CTA secundario, acciones positivas
+      primary:  'rgb(var(--color-primary) / <alpha-value>)',
+      surface:  'rgb(var(--color-surface) / <alpha-value>)',
+      accent:   'rgb(var(--color-accent) / <alpha-value>)',
+      dark:     'rgb(var(--color-dark) / <alpha-value>)',
+      contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
+      danger:   'rgb(var(--color-danger) / <alpha-value>)',
     },
     fontFamily: {
       sans: ['Quicksand', 'sans-serif'],

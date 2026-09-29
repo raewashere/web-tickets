@@ -7,7 +7,7 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     data: {
       title: 'Boletos para Conciertos y Festivales en Vivo',
-      description: 'Descubre los mejores conciertos, festivales y espectáculos. Compra tus entradas oficiales con código QR 100% garantizado en TicketFlow.',
+      description: 'Descubre los mejores conciertos, festivales y espectáculos. Compra tus entradas oficiales con código QR 100% garantizado en BoletoCoqueto.',
     },
     loadComponent: () =>
       import('./features/home/home.component').then(
@@ -18,7 +18,7 @@ export const appRoutes: Route[] = [
     path: 'login',
     data: {
       title: 'Iniciar Sesión',
-      description: 'Accede a tu cuenta de TicketFlow para consultar tus boletos adquiridos y gestionar tus compras.',
+      description: 'Accede a tu cuenta de BoletoCoqueto para consultar tus boletos adquiridos y gestionar tus compras.',
     },
     loadComponent: () =>
       import('./features/auth/login/login.component').then(
@@ -29,7 +29,7 @@ export const appRoutes: Route[] = [
     path: 'register',
     data: {
       title: 'Crear Cuenta',
-      description: 'Únete a TicketFlow y compra boletos para tus conciertos favoritos en segundos.',
+      description: 'Únete a BoletoCoqueto y compra boletos para tus conciertos favoritos en segundos.',
     },
     loadComponent: () =>
       import('./features/auth/register/register.component').then(
@@ -51,7 +51,7 @@ export const appRoutes: Route[] = [
     path: 'events/:id',
     data: {
       title: 'Detalles del Evento y Boletos',
-      description: 'Conoce fecha, recinto, artistas y compra tus boletos oficiales para este concierto en TicketFlow.',
+      description: 'Conoce fecha, recinto, artistas y compra tus boletos oficiales para este concierto en BoletoCoqueto.',
     },
     loadComponent: () =>
       import('./features/event-detail/event-detail.component').then(
@@ -156,7 +156,7 @@ export const appRoutes: Route[] = [
     path: 'privacy',
     data: {
       title: 'Política de Privacidad',
-      description: 'Conoce cómo protegemos tus datos personales y garantizamos la seguridad de tus transacciones en TicketFlow.',
+      description: 'Conoce cómo protegemos tus datos personales y garantizamos la seguridad de tus transacciones en BoletoCoqueto.',
     },
     loadComponent: () =>
       import('./features/privacy-policy/privacy-policy.component').then(

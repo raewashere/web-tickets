@@ -17,9 +17,9 @@ export class SeoService {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 
-  private readonly defaultTitle = 'TicketFlow — Tu Entrada a los Mejores Conciertos y Festivales';
+  private readonly defaultTitle = 'BoletoCoqueto — Tu Entrada a los Mejores Conciertos y Festivales';
   private readonly defaultDescription =
-    'Compra boletos para tus conciertos, festivales y eventos favoritos de forma rápida, segura y directa con TicketFlow. Entradas 100% garantizadas.';
+    'Compra boletos para tus conciertos, festivales y eventos favoritos de forma rápida, segura y directa con BoletoCoqueto. Entradas 100% garantizadas.';
 
   /** Initialize automatic SEO tracking based on Angular Router route data */
   initAutoTracking(): void {
@@ -42,7 +42,7 @@ export class SeoService {
   /** Explicitly update SEO metadata for a specific page */
   updateTags(config: SeoConfig): void {
     const fullTitle = config.title
-      ? `${config.title} | TicketFlow`
+      ? `${config.title} | BoletoCoqueto`
       : this.defaultTitle;
     const desc = config.description || this.defaultDescription;
 

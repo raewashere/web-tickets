@@ -29,7 +29,7 @@ import { RouterModule } from '@angular/router';
             <i class="fa-solid fa-building text-primary"></i> 1. Responsable del Tratamiento de Datos
           </h2>
           <p>
-            <strong>TicketFlow Technologies Inc.</strong> (en adelante "TicketFlow", "nosotros" o "la plataforma"), con domicilio de operaciones digitales y portal web accesible en nuestra plataforma, es responsable del uso y protección de sus datos personales, en estricto apego a las normativas aplicables de protección de datos.
+            <strong>BoletoCoqueto Technologies Inc.</strong> (en adelante "BoletoCoqueto", "nosotros" o "la plataforma"), con domicilio de operaciones digitales y portal web accesible en nuestra plataforma, es responsable del uso y protección de sus datos personales, en estricto apego a las normativas aplicables de protección de datos.
           </p>
         </section>
 
@@ -45,7 +45,7 @@ import { RouterModule } from '@angular/router';
             <li><strong>Datos técnicos y de seguridad:</strong> Dirección IP, registros de validación en puertas de acceso y códigos QR antifraude generados.</li>
           </ul>
           <p class="text-xs text-dark/60 bg-surface p-3.5 rounded-2xl border border-dark/10">
-            <i class="fa-solid fa-lock text-primary mr-1"></i> <em>Nota sobre pagos:</em> TicketFlow no almacena ni procesa números de tarjetas de crédito o débito en sus propios servidores. Todas las transacciones son gestionadas de forma cifrada a través de pasarelas de pago certificadas internacionalmente como <strong>PayPal</strong>.
+            <i class="fa-solid fa-lock text-primary mr-1"></i> <em>Nota sobre pagos:</em> BoletoCoqueto no almacena ni procesa números de tarjetas de crédito o débito en sus propios servidores. Todas las transacciones son gestionadas de forma cifrada a través de pasarelas de pago certificadas internacionalmente como <strong>PayPal</strong>.
           </p>
         </section>
 
@@ -83,7 +83,7 @@ import { RouterModule } from '@angular/router';
           </p>
           <p class="text-sm">
             Para ejercer cualquiera de sus derechos ARCO, puede ponerse en contacto con nuestro equipo a través del correo:
-            <a href="mailto:privacidad@ticketflow.app" class="font-bold text-primary hover:underline">privacidad&#64;ticketflow.app</a>.
+            <a href="mailto:privacidad@boletocoqueto.app" class="font-bold text-primary hover:underline">privacidad&#64;boletocoqueto.app</a>.
           </p>
         </section>
 
@@ -103,7 +103,7 @@ import { RouterModule } from '@angular/router';
             <i class="fa-solid fa-file-pen text-primary"></i> 7. Modificaciones al Aviso de Privacidad
           </h2>
           <p>
-            TicketFlow se reserva el derecho de actualizar o modificar el presente aviso de privacidad en cualquier momento para reflejar cambios legales o mejoras en nuestros servicios. Cualquier actualización estará disponible públicamente en este mismo apartado.
+            BoletoCoqueto se reserva el derecho de actualizar o modificar el presente aviso de privacidad en cualquier momento para reflejar cambios legales o mejoras en nuestros servicios. Cualquier actualización estará disponible públicamente en este mismo apartado.
           </p>
         </section>
       </div>

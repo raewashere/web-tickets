@@ -65,7 +65,7 @@ export interface PublicOrderData {
           routerLink="/"
           class="inline-flex items-center gap-2 text-xs font-bold text-dark/60 hover:text-primary transition-colors"
         >
-          <i class="fa-solid fa-house"></i> Inicio TicketFlow
+          <i class="fa-solid fa-house"></i> Inicio BoletoCoqueto
         </a>
 
         <button
@@ -175,7 +175,7 @@ export interface PublicOrderData {
               <img
                 *ngIf="qrDataUrl()"
                 [src]="qrDataUrl()"
-                [alt]="'Código QR de acceso oficial TicketFlow orden ' + order()!.id.substring(0, 8)"
+                [alt]="'Código QR de acceso oficial BoletoCoqueto orden ' + order()!.id.substring(0, 8)"
                 class="w-56 h-56 sm:w-64 sm:h-64 rounded-lg object-contain"
               />
               <div *ngIf="!qrDataUrl()" class="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center">

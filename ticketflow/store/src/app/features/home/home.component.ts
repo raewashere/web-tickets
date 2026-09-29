@@ -150,7 +150,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
         <div class="rounded-3xl bg-dark text-surface p-8 sm:p-14 border border-surface/10 shadow-xl">
           <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-surface">
-              ¿Por qué elegir TicketFlow?
+              ¿Por qué elegir BoletoCoqueto?
             </h2>
             <p class="text-xs sm:text-sm text-surface/60">
               Diseñado para fanáticos de la música y creadores de espectáculos.

@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
                 <i class="fa-solid fa-ticket text-surface text-sm"></i>
               </div>
               <span class="text-xl sm:text-2xl font-bold tracking-tight text-surface flex items-center">
-                Ticket<span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/70 ml-0.5">Flow</span>
+                Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/70 ml-0.5">Coqueto</span>
               </span>
             </div>
             <p class="text-xs sm:text-sm text-surface/50 max-w-sm leading-relaxed">
@@ -47,14 +47,14 @@ import { RouterModule } from '@angular/router';
             <ul class="space-y-2 text-xs sm:text-sm text-surface/50">
               <li><a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-surface transition-colors">Portal de Artistas</a></li>
               <li><a routerLink="/my-tickets" class="hover:text-surface transition-colors">Consultar Mis Boletos</a></li>
-              <li><span class="text-surface/30">soporte&#64;ticketflow.app</span></li>
+              <li><span class="text-surface/30">soporte&#64;boletocoqueto.app</span></li>
             </ul>
           </div>
         </div>
 
         <!-- Bottom Copyright -->
         <div class="pt-8 border-t border-surface/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-surface/30">
-          <p>© 2026 TicketFlow Technologies Inc. Todos los derechos reservados.</p>
+          <p>© 2026 BoletoCoqueto Technologies Inc. Todos los derechos reservados.</p>
           <div class="flex items-center gap-4">
             <a routerLink="/privacy" class="hover:text-surface/60 transition-colors">Política de Privacidad</a>
             <a routerLink="/thank-you" class="hover:text-surface/60 transition-colors">Garantía del Comprador</a>

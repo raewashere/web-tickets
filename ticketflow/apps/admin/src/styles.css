@@ -10,11 +10,11 @@
        DESIGN SYSTEM TOKENS (RGB format for Tailwind alpha modifier support)
        To update or swap the color palette, simply modify these 6 tokens:
        ========================================================================== */
-    --color-primary: 92 0 41;      /* #5c0029 — Borgoña principal */
-    --color-accent: 238 66 102;    /* #ee4266 — Rosa coral de realce */
-    --color-surface: 234 240 206;  /* #eaf0ce — Letras y superficies claras */
-    --color-dark: 4 27 21;         /* #041b15 — Verde noche secundario */
-    --color-contrast: 85 145 127;  /* #55917f — Acento secundario y éxito */
+    --color-primary: 206 71 96;    /* #CE4760 — Rosa frambuesa principal */
+    --color-accent: 246 208 177;   /* #F6D0B1 — Melocotón / Arena suave */
+    --color-surface: 242 238 232;  /* #f2eee8 — Blanco cálido / Letras */
+    --color-dark: 17 39 11;        /* #11270B — Verde bosque profundo secundario */
+    --color-contrast: 144 227 154; /* #90E39A — Menta brillante acento secundario */
     --color-danger: 192 57 43;     /* #c0392b — Peligro semántico */
   }
 

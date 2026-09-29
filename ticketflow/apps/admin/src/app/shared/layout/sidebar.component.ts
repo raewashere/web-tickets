@@ -32,10 +32,10 @@ interface NavItem {
       <div class="flex items-center justify-between h-16 px-6 border-b border-white/10">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-black text-xl shadow-sm border border-primary/30">
-            TF
+            BC
           </div>
           <div>
-            <h1 class="font-bold text-lg tracking-tight text-white leading-none">TicketFlow</h1>
+            <h1 class="font-bold text-lg tracking-tight text-white leading-none">BoletoCoqueto</h1>
             <span class="text-[10px] uppercase font-bold tracking-widest text-primary">Artist Portal</span>
           </div>
         </div>

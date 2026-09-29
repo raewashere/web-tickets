@@ -107,16 +107,16 @@ serve(async (req: Request) => {
 
     // 4. Email Theme Configuration & Responsive HTML Email Template
     const EMAIL_THEME = {
-      primary: '#5c0029',
-      accent: '#ee4266',
-      surface: '#eaf0ce',
-      dark: '#041b15',
-      cardBg: '#0a251e',
-      headerBg: '#02100c',
-      contrast: '#55917f',
-      border: 'rgba(234, 240, 206, 0.1)',
-      borderAccent: 'rgba(238, 66, 102, 0.3)',
-      primaryAlertBg: 'rgba(92, 0, 41, 0.4)',
+      primary: '#CE4760',
+      accent: '#F6D0B1',
+      surface: '#f2eee8',
+      dark: '#11270B',
+      cardBg: '#1b3a12',
+      headerBg: '#0b1c06',
+      contrast: '#90E39A',
+      border: 'rgba(242, 238, 232, 0.1)',
+      borderAccent: 'rgba(246, 208, 177, 0.3)',
+      primaryAlertBg: 'rgba(206, 71, 96, 0.35)',
     };
 
     const htmlEmail = `
@@ -124,7 +124,7 @@ serve(async (req: Request) => {
       <html lang="es">
       <head>
         <meta charset="UTF-8">
-        <title>Confirmación de Compra — TicketFlow</title>
+        <title>Confirmación de Compra — BoletoCoqueto</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
@@ -138,7 +138,7 @@ serve(async (req: Request) => {
                 <tr>
                   <td style="background-color: ${EMAIL_THEME.headerBg}; padding: 32px 30px; text-align: center; border-bottom: 1px solid ${EMAIL_THEME.border};">
                     <span style="display: inline-block; background-color: ${EMAIL_THEME.primary}; color: ${EMAIL_THEME.surface}; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 6px 14px; border-radius: 999px; margin-bottom: 12px; border: 1px solid ${EMAIL_THEME.accent};">
-                      TicketFlow Pass
+                      BoletoCoqueto Pass
                     </span>
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: ${EMAIL_THEME.surface};">¡Tus Boletos Están Listos!</h1>
                     <p style="margin: 6px 0 0 0; font-size: 13px; color: ${EMAIL_THEME.accent}; font-family: monospace; font-weight: 700;">Orden #${order.id.substring(0, 8).toUpperCase()}</p>
@@ -194,7 +194,7 @@ serve(async (req: Request) => {
                     <!-- Instructions / CTA -->
                     <div style="background-color: ${EMAIL_THEME.primaryAlertBg}; border-radius: 16px; padding: 18px; margin: 24px 0; border: 1px solid ${EMAIL_THEME.borderAccent};">
                       <p style="margin: 0; font-size: 13px; color: ${EMAIL_THEME.surface}; line-height: 1.5;">
-                        📲 <strong>Instrucciones de Acceso:</strong> Puedes presentar tu código QR digital oficial directamente desde tu celular o imprimir tu comprobante entrando a la sección <strong>Mis Boletos</strong> en TicketFlow.
+                        📲 <strong>Instrucciones de Acceso:</strong> Puedes presentar tu código QR digital oficial directamente desde tu celular o imprimir tu comprobante entrando a la sección <strong>Mis Boletos</strong> en BoletoCoqueto.
                       </p>
                     </div>
                   </td>
@@ -204,7 +204,7 @@ serve(async (req: Request) => {
                 <tr>
                   <td style="background-color: ${EMAIL_THEME.headerBg}; padding: 20px 30px; text-align: center; border-top: 1px solid ${EMAIL_THEME.border};">
                     <p style="margin: 0; font-size: 11px; color: ${EMAIL_THEME.surface}; opacity: 0.6; line-height: 1.5;">
-                      © 2026 TicketFlow Technologies Inc. Todos los derechos reservados.<br>
+                      © 2026 BoletoCoqueto Technologies Inc. Todos los derechos reservados.<br>
                       Este es un correo automático de confirmación de compra y emisión de entradas.
                     </p>
                   </td>
@@ -229,7 +229,7 @@ serve(async (req: Request) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: Deno.env.get('EMAIL_FROM') || 'TicketFlow <onboarding@resend.dev>',
+          from: Deno.env.get('EMAIL_FROM') || 'BoletoCoqueto <onboarding@resend.dev>',
           to: [targetEmail],
           subject: `🎟️ Tus Boletos para ${eventName} — Orden #${order.id.substring(0, 8).toUpperCase()}`,
           html: htmlEmail,
