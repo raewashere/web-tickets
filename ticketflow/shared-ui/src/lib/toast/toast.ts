@@ -81,14 +81,14 @@ export class ToastService {
         <!-- Content -->
         <div class="flex-1 min-w-0 space-y-0.5">
           <h4 class="text-sm font-extrabold leading-snug">{{ t.title }}</h4>
-          <p *ngIf="t.message" class="text-xs text-slate-300 leading-relaxed">{{ t.message }}</p>
+          <p *ngIf="t.message" class="text-xs opacity-90 leading-relaxed">{{ t.message }}</p>
         </div>
 
         <!-- Close button -->
         <button
           type="button"
           (click)="toastService.remove(t.id)"
-          class="text-slate-400 hover:text-white p-1 transition-colors"
+          class="opacity-60 hover:opacity-100 p-1 transition-opacity"
         >
           <i class="fa-solid fa-xmark text-xs"></i>
         </button>

@@ -52,8 +52,8 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
 
           <!-- Central Search Bar -->
           <form (ngSubmit)="onSearchSubmit()" class="max-w-2xl mx-auto relative group pt-2">
-            <div class="flex items-center bg-surface rounded-2xl shadow-2xl p-2 sm:p-2.5 border-2 border-surface/50 focus-within:border-tertiary focus-within:ring-4 focus-within:ring-tertiary/20 transition-all">
-              <span class="pl-3 pr-2 text-on-surface/40 text-sm">
+            <div class="flex items-center bg-surface rounded-2xl shadow-2xl p-2 sm:p-2.5 border-2 border-surface/50 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20 transition-all">
+              <span class="pl-3 pr-2 text-primary text-sm">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </span>
               <input
@@ -63,10 +63,9 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
                 placeholder="Busca por artista, concierto, ciudad o recinto..."
                 class="w-full bg-transparent text-on-surface placeholder-on-surface/40 text-xs sm:text-sm font-medium focus:outline-none px-2"
               />
-              <!-- Botón en tertiary para máximo contraste dentro del buscador -->
               <button
                 type="submit"
-                class="flex-shrink-0 px-5 py-2.5 rounded-xl bg-tertiary hover:bg-tertiary/90 text-on-tertiary font-bold text-xs sm:text-sm transition-all shadow-md shadow-tertiary/20"
+                class="flex-shrink-0 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/25"
               >
                 Buscar
               </button>
@@ -79,7 +78,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
               routerLink="/search"
               class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-inverse-on-surface/10 hover:bg-inverse-on-surface/20 text-inverse-on-surface hover:text-inverse-on-surface border border-outline-variant/20 transition-colors shadow-sm flex items-center gap-1.5"
             >
-              <i class="fa-solid fa-fire text-tertiary"></i> Todos los Shows
+              <i class="fa-solid fa-fire text-secondary"></i> Todos los Shows
             </a>
             <a
               *ngFor="let cat of eventTypes()"

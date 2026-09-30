@@ -33,14 +33,14 @@ import { ThemeService } from '@ticketflow/shared-ui';
               [(ngModel)]="searchQuery"
               name="searchQuery"
               placeholder="Buscar conciertos, artistas o recintos..."
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-inverse-surface/80 border border-outline-variant/20 text-inverse-on-surface placeholder-inverse-on-surface/40 focus:outline-none focus:ring-2 focus:ring-tertiary/50 focus:border-transparent text-xs sm:text-sm transition-all shadow-inner"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-inverse-surface/80 border border-outline-variant/20 text-inverse-on-surface placeholder-inverse-on-surface/40 focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary/50 text-xs sm:text-sm transition-all shadow-inner"
             />
           </form>
         </div>
 
         <!-- Right Actions / User Navigation -->
         <div class="hidden sm:flex items-center gap-4">
-          <a routerLink="/search" class="text-xs sm:text-sm font-semibold text-inverse-on-surface/80 hover:text-tertiary transition-colors">
+          <a routerLink="/search" class="text-xs sm:text-sm font-semibold text-inverse-on-surface/80 hover:text-secondary transition-colors">
             Explorar Eventos
           </a>
 
@@ -63,7 +63,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
                 type="button"
                 class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-inverse-surface/60 hover:bg-inverse-surface/80 text-inverse-on-surface/90 text-xs sm:text-sm font-bold border border-outline-variant/20 transition-colors shadow-sm"
               >
-                <i class="fa-solid fa-ticket text-tertiary"></i> Mis Boletos
+                <i class="fa-solid fa-ticket text-secondary"></i> Mis Boletos
               </button>
             </a>
 
@@ -169,7 +169,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             [(ngModel)]="searchQuery"
             name="mobileSearch"
             placeholder="Buscar conciertos, artistas..."
-            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-inverse-surface/60 border border-outline-variant/20 text-inverse-on-surface placeholder-inverse-on-surface/40 text-xs"
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-inverse-surface/60 border border-outline-variant/20 text-inverse-on-surface placeholder-inverse-on-surface/40 focus:outline-none focus:ring-2 focus:ring-primary/60 text-xs"
           />
           <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-inverse-on-surface/40 text-xs">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -180,7 +180,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
           <a
             routerLink="/search"
             (click)="mobileMenuOpen.set(false)"
-            class="block px-3 py-2 rounded-xl text-sm font-semibold text-inverse-on-surface/80 hover:bg-inverse-on-surface/10"
+            class="block px-3 py-2 rounded-xl text-sm font-semibold text-inverse-on-surface/80 hover:bg-inverse-on-surface/10 hover:text-secondary"
           >
             Explorar Todos los Eventos
           </a>
@@ -189,9 +189,9 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <a
               routerLink="/my-tickets"
               (click)="mobileMenuOpen.set(false)"
-              class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-tertiary hover:bg-inverse-on-surface/10"
+              class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-secondary hover:bg-inverse-on-surface/10"
             >
-              <i class="fa-solid fa-ticket"></i>
+              <i class="fa-solid fa-ticket text-secondary"></i>
               <span>Mis Boletos</span>
             </a>
             <button

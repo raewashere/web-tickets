@@ -9,12 +9,12 @@ import { ThemeService } from '@ticketflow/shared-ui';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 lg:px-8 bg-white dark:bg-slate-900 border-b border-dark/10 dark:border-slate-800 shadow-xs text-dark dark:text-slate-100">
+    <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 lg:px-8 bg-surface border-b border-outline-variant/30 shadow-xs text-on-surface">
       <div class="flex items-center gap-3">
         <!-- Hamburger button (mobile) -->
         <button
           type="button"
-          class="p-2 -ml-2 rounded-lg text-dark/70 hover:text-dark hover:bg-dark/5 lg:hidden"
+          class="p-2 -ml-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/40 lg:hidden"
           (click)="toggleSidebar.emit()"
           aria-label="Abrir menú"
         >
@@ -26,7 +26,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
         <div>
           <div class="flex items-center gap-2">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <h2 class="text-base font-semibold text-dark tracking-tight">Portal de Artista</h2>
+            <h2 class="text-base font-semibold text-on-surface tracking-tight">Portal de Artista</h2>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
         <button
           type="button"
           (click)="themeService.toggleTheme()"
-          class="p-2 rounded-lg text-dark/70 hover:text-dark hover:bg-dark/5 transition-colors border border-dark/10 flex items-center justify-center"
+          class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/40 transition-colors border border-outline-variant/30 flex items-center justify-center"
           [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
           [attr.aria-label]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
         >
@@ -45,7 +45,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
 
         <a
           routerLink="/artist/profile"
-          class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-dark/5 transition-colors border border-dark/10"
+          class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-surface-variant/40 transition-colors border border-outline-variant/30 text-on-surface"
         >
           <div class="relative w-7 h-7 flex-shrink-0">
             <img
@@ -56,12 +56,12 @@ import { ThemeService } from '@ticketflow/shared-ui';
             />
             <div
               *ngIf="!auth.avatarUrl()"
-              class="w-7 h-7 rounded-full bg-primary text-surface font-bold text-xs flex items-center justify-center"
+              class="w-7 h-7 rounded-full bg-primary text-on-primary font-bold text-xs flex items-center justify-center"
             >
               {{ userInitial }}
             </div>
           </div>
-          <span class="text-xs font-medium text-dark hidden sm:inline truncate max-w-[140px]">
+          <span class="text-xs font-medium text-on-surface hidden sm:inline truncate max-w-[140px]">
             {{ auth.user()?.user_metadata?.['full_name'] || auth.user()?.email || 'Mi Perfil' }}
           </span>
         </a>

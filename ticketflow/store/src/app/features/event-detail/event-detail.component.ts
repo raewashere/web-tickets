@@ -28,7 +28,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       <!-- Breadcrumbs -->
-      <nav class="flex items-center gap-2 text-xs text-dark/60">
+      <nav class="flex items-center gap-2 text-xs text-on-surface-variant">
         <a routerLink="/" class="hover:text-primary transition-colors flex items-center gap-1 font-medium">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -38,26 +38,26 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
         <span>/</span>
         <a routerLink="/search" class="hover:text-primary transition-colors font-medium">Cartelera</a>
         <span>/</span>
-        <span class="text-dark font-bold truncate max-w-xs">{{ event()?.name || 'Cargando...' }}</span>
+        <span class="text-on-surface font-bold truncate max-w-xs">{{ event()?.name || 'Cargando...' }}</span>
       </nav>
 
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg" color="primary"></tf-spinner>
-        <p class="text-sm text-dark/60 font-medium">Cargando información del concierto...</p>
+        <p class="text-sm text-on-surface-variant font-medium">Cargando información del concierto...</p>
       </div>
 
       <!-- Error State -->
       <div
         *ngIf="errorMessage()"
-        class="p-8 rounded-3xl bg-danger/5 border border-danger/20 text-danger text-center space-y-4 max-w-md mx-auto"
+        class="p-8 rounded-3xl bg-error-container border border-error/20 text-on-error-container text-center space-y-4 max-w-md mx-auto"
       >
-        <i class="fa-solid fa-triangle-exclamation text-4xl text-danger block mb-2"></i>
+        <i class="fa-solid fa-triangle-exclamation text-4xl text-error block mb-2"></i>
         <h3 class="text-lg font-bold">{{ errorMessage() }}</h3>
         <a routerLink="/search">
           <button
             type="button"
-            class="px-4 py-2 rounded-xl bg-dark text-surface font-bold text-xs hover:bg-dark/90 transition-colors shadow-sm"
+            class="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary/90 transition-colors shadow-sm"
           >
             Ver Otros Conciertos
           </button>
@@ -69,21 +69,21 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
         <!-- Left 2 Columns: Event Info & Media -->
         <div class="lg:col-span-2 space-y-8">
           <!-- Flyer & Title Hero Banner -->
-          <div class="rounded-3xl border border-dark/10 bg-white overflow-hidden shadow-sm">
-            <div class="aspect-[16/9] sm:aspect-[21/9] bg-surface relative overflow-hidden">
+          <div class="rounded-3xl border border-outline-variant/30 bg-surface overflow-hidden shadow-sm">
+            <div class="aspect-[16/9] sm:aspect-[21/9] bg-surface-container relative overflow-hidden">
               <img
                 *ngIf="event()!.flyer_url"
                 [src]="event()!.flyer_url"
                 [alt]="'Flyer oficial del concierto ' + event()!.name"
                 class="w-full h-full object-cover object-center"
               />
-              <div *ngIf="!event()!.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-dark/30">
-                <i class="fa-solid fa-guitar text-6xl text-dark/20"></i>
-                <span class="text-sm font-bold mt-2 text-dark/40">TicketFlow Live Session</span>
+              <div *ngIf="!event()!.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-on-surface-variant/40">
+                <i class="fa-solid fa-guitar text-6xl text-on-surface-variant/30"></i>
+                <span class="text-sm font-bold mt-2 text-on-surface-variant/60">BoletoCoqueto Live Session</span>
               </div>
 
               <div *ngIf="event()!.event_types" class="absolute top-4 right-4">
-                <span class="px-3 py-1.5 rounded-xl bg-dark/80 backdrop-blur-md text-surface text-xs font-bold uppercase tracking-wider shadow-lg">
+                <span class="px-3 py-1.5 rounded-xl bg-inverse-surface/85 backdrop-blur-md text-inverse-on-surface text-xs font-bold uppercase tracking-wider shadow-lg">
                   {{ event()!.event_types!.name }}
                 </span>
               </div>
@@ -93,12 +93,12 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
               <!-- Artist and Show Name -->
               <div class="space-y-2">
                 <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
-                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-microphone text-accent"></i> Artista Principal</span>
-                  <span class="text-dark/30">·</span>
-                  <span class="text-dark/80">{{ event()!.artists?.name }}</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-microphone text-secondary"></i> Artista Principal</span>
+                  <span class="text-on-surface-variant/40">·</span>
+                  <span class="text-on-surface-variant">{{ event()!.artists?.name }}</span>
                 </div>
 
-                <h1 class="text-2xl sm:text-4xl font-bold text-dark tracking-tight leading-tight">
+                <h1 class="text-2xl sm:text-4xl font-bold text-on-surface tracking-tight leading-tight">
                   {{ event()!.name }}
                 </h1>
               </div>
@@ -106,12 +106,12 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
               <!-- Date & Venue Highlights -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <!-- Date -->
-                <div class="p-4 rounded-2xl bg-surface border border-dark/10 space-y-1">
-                  <span class="text-[10px] uppercase font-bold text-dark/40 tracking-wider block">Fecha & Horario</span>
-                  <p class="font-bold text-dark text-base">
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-1">
+                  <span class="text-[10px] uppercase font-bold text-on-surface-variant/70 tracking-wider block">Fecha & Horario</span>
+                  <p class="font-bold text-on-surface text-base">
                     {{ event()!.event_date | date:'fullDate' }}
                   </p>
-                  <p class="text-xs text-dark/60">
+                  <p class="text-xs text-on-surface-variant">
                     Show: {{ event()!.event_date | date:'shortTime' }} hrs
                     <span *ngIf="event()!.doors_open"> · Puertas: {{ event()!.doors_open | date:'shortTime' }} hrs</span>
                     <span *ngIf="event()!.duration_minutes"> · Duración: {{ event()!.duration_minutes }} min</span>
@@ -119,13 +119,13 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                 </div>
 
                 <!-- Venue -->
-                <div class="p-4 rounded-2xl bg-surface border border-dark/10 space-y-1">
-                  <span class="text-[10px] uppercase font-bold text-dark/40 tracking-wider block">Recinto & Aforo</span>
-                  <p class="font-bold text-dark text-base flex items-center gap-1.5 truncate">
-                    <i class="fa-solid fa-location-dot text-accent"></i>
+                <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-1">
+                  <span class="text-[10px] uppercase font-bold text-on-surface-variant/70 tracking-wider block">Recinto & Aforo</span>
+                  <p class="font-bold text-on-surface text-base flex items-center gap-1.5 truncate">
+                    <i class="fa-solid fa-location-dot text-secondary"></i>
                     <span class="truncate">{{ event()!.venues?.name || 'Recinto por confirmar' }}</span>
                   </p>
-                  <p class="text-xs text-dark/60">
+                  <p class="text-xs text-on-surface-variant">
                     Aforo: {{ event()!.venue_configurations?.name || 'General' }}
                     <span *ngIf="event()!.venue_configurations?.capacity">
                       ({{ event()!.venue_configurations!.capacity | number }} pers.)
@@ -145,24 +145,24 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 
               <!-- Fallback: simple link if no coordinates -->
               <div *ngIf="!event()!.venues?.latitude && !event()!.venues?.longitude && event()!.venues?.name" class="pt-1">
-                <p class="text-xs text-dark/50 flex items-center gap-1">
-                  <i class="fa-solid fa-location-dot text-dark/40"></i>
+                <p class="text-xs text-on-surface-variant flex items-center gap-1">
+                  <i class="fa-solid fa-location-dot text-on-surface-variant/70"></i>
                   <span>{{ event()!.venues!.name }}</span>
                 </p>
               </div>
 
               <!-- Description -->
-              <div *ngIf="event()!.description" class="pt-4 border-t border-dark/10 space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-dark/40">Información del Evento</h3>
-                <p class="text-sm text-dark/70 whitespace-pre-line leading-relaxed">
+              <div *ngIf="event()!.description" class="pt-4 border-t border-outline-variant/30 space-y-2">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Información del Evento</h3>
+                <p class="text-sm text-on-surface-variant leading-relaxed whitespace-pre-line">
                   {{ event()!.description }}
                 </p>
               </div>
 
               <!-- Compartir este Concierto Card -->
-              <div class="pt-6 border-t border-dark/10 space-y-3">
+              <div class="pt-6 border-t border-outline-variant/30 space-y-3">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-xs font-bold uppercase tracking-wider text-dark/50 flex items-center gap-2">
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant flex items-center gap-2">
                     <i class="fa-solid fa-share-nodes text-primary"></i> Compartir evento con amigos
                   </h3>
                 </div>
@@ -170,7 +170,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="shareNative()"
-                    class="px-4 py-2 rounded-xl bg-dark hover:bg-dark/90 text-surface text-xs font-bold transition-all shadow-sm flex items-center gap-2"
+                    class="px-4 py-2 rounded-xl bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface text-xs font-bold transition-all shadow-sm flex items-center gap-2"
                   >
                     <i class="fa-solid fa-arrow-up-from-bracket"></i>
                     <span>Compartir</span>
@@ -179,7 +179,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                   <button
                     type="button"
                     (click)="copyEventLink()"
-                    class="px-4 py-2 rounded-xl bg-surface hover:bg-dark/10 text-dark text-xs font-bold transition-all flex items-center gap-2 border border-dark/10"
+                    class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold transition-all flex items-center gap-2 border border-outline-variant/30"
                     title="Copiar enlace"
                   >
                     <i class="fa-solid fa-link"></i>
@@ -200,7 +200,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                     [href]="getShareUrl('twitter')"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="w-9 h-9 rounded-xl bg-dark hover:bg-black text-surface flex items-center justify-center text-sm shadow-sm transition-all"
+                    class="w-9 h-9 rounded-xl bg-inverse-surface hover:bg-black text-inverse-on-surface flex items-center justify-center text-sm shadow-sm transition-all"
                     title="Compartir en X / Twitter"
                   >
                     <i class="fa-brands fa-x-twitter"></i>
@@ -221,11 +221,11 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
           </div>
 
           <!-- Venue Croquis/Floor Plan Card if available -->
-          <div *ngIf="event()!.venues?.map_url" class="p-6 rounded-3xl border border-dark/10 bg-white space-y-4 shadow-sm">
-            <h3 class="font-bold text-base text-dark flex items-center gap-2">
+          <div *ngIf="event()!.venues?.map_url" class="p-6 rounded-3xl border border-outline-variant/30 bg-surface space-y-4 shadow-sm">
+            <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
               <i class="fa-solid fa-map-location-dot text-primary"></i> Croquis del Recinto
             </h3>
-            <div class="rounded-2xl overflow-hidden border border-dark/10 bg-surface aspect-[16/9] relative">
+            <div class="rounded-2xl overflow-hidden border border-outline-variant/30 bg-surface-container-low aspect-[16/9] relative">
               <img
                 [src]="event()!.venues!.map_url"
                 [alt]="'Croquis y distribución de asientos de ' + event()!.venues!.name"
@@ -235,43 +235,43 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
           </div>
 
           <!-- Artist Profile & Gallery Section -->
-          <div *ngIf="event()!.artists" class="p-6 sm:p-8 rounded-3xl border border-dark/10 bg-white space-y-6 shadow-sm">
+          <div *ngIf="event()!.artists" class="p-6 sm:p-8 rounded-3xl border border-outline-variant/30 bg-surface space-y-6 shadow-sm">
             <div class="flex items-center gap-4">
               <!-- Artist avatar -->
-              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-dark border-2 border-dark/10 shadow overflow-hidden shrink-0">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-inverse-surface border-2 border-outline-variant/30 shadow overflow-hidden shrink-0">
                 <img
                   *ngIf="event()!.artists?.photo_url"
                   [src]="event()!.artists!.photo_url"
                   [alt]="'Fotografía de perfil de ' + event()!.artists?.name"
                   class="w-full h-full object-cover"
                 />
-                <div *ngIf="!event()!.artists?.photo_url" class="w-full h-full flex items-center justify-center text-accent font-bold text-2xl">
+                <div *ngIf="!event()!.artists?.photo_url" class="w-full h-full flex items-center justify-center text-secondary font-bold text-2xl">
                   {{ (event()!.artists?.name || 'A').charAt(0) }}
                 </div>
               </div>
 
               <div>
                 <span class="text-[10px] font-bold text-primary uppercase tracking-wider block">Acerca del Artista</span>
-                <h2 class="text-xl sm:text-2xl font-bold text-dark">
+                <h2 class="text-xl sm:text-2xl font-bold text-on-surface">
                   {{ event()!.artists?.name }}
                 </h2>
               </div>
             </div>
 
             <!-- Artist Biography / Description -->
-            <div *ngIf="event()!.artists?.description" class="text-sm text-dark/70 whitespace-pre-line leading-relaxed border-t border-dark/10 pt-4">
+            <div *ngIf="event()!.artists?.description" class="text-sm text-on-surface-variant whitespace-pre-line leading-relaxed border-t border-outline-variant/30 pt-4">
               {{ event()!.artists!.description }}
             </div>
 
             <!-- Artist Photo Gallery -->
-            <div *ngIf="event()!.artists?.gallery_urls && event()!.artists!.gallery_urls!.length > 0" class="space-y-3 border-t border-dark/10 pt-4">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-dark/40 flex items-center gap-1.5">
-                <i class="fa-solid fa-camera text-dark/30"></i> Galería de Fotos
+            <div *ngIf="event()!.artists?.gallery_urls && event()!.artists!.gallery_urls!.length > 0" class="space-y-3 border-t border-outline-variant/30 pt-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
+                <i class="fa-solid fa-camera text-on-surface-variant/60"></i> Galería de Fotos
               </h3>
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 <div
                   *ngFor="let photo of event()!.artists!.gallery_urls; let idx = index"
-                  class="relative rounded-2xl overflow-hidden aspect-square border border-dark/10 bg-surface group cursor-pointer hover:shadow-md transition duration-200"
+                  class="relative rounded-2xl overflow-hidden aspect-square border border-outline-variant/30 bg-surface-container-low group cursor-pointer hover:shadow-md transition duration-200"
                   (click)="selectedGalleryPhoto.set(photo)"
                 >
                   <img
@@ -291,17 +291,17 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
             <!-- Event Ended Banner -->
             <div
               *ngIf="isEventEnded()"
-              class="p-6 sm:p-7 rounded-3xl border border-accent/30 bg-accent/10 shadow-md space-y-3 text-center"
+              class="p-6 sm:p-7 rounded-3xl border border-secondary/30 bg-secondary/10 shadow-md space-y-3 text-center"
             >
-              <i class="fa-solid fa-hourglass-end text-4xl text-accent block mb-2"></i>
-              <h3 class="text-lg font-bold text-dark">Evento Finalizado</h3>
-              <p class="text-xs text-dark/70 leading-relaxed">
+              <i class="fa-solid fa-hourglass-end text-4xl text-secondary block mb-2"></i>
+              <h3 class="text-lg font-bold text-on-surface">Evento Finalizado</h3>
+              <p class="text-xs text-on-surface-variant leading-relaxed">
                 Este espectáculo concluyó o la vigencia para adquirir boletos ha expirado.
               </p>
               <a routerLink="/search" class="inline-block mt-2">
                 <button
                   type="button"
-                  class="px-4 py-2 rounded-xl bg-dark text-surface font-bold text-xs hover:bg-dark/90 transition-colors shadow-sm"
+                  class="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary/90 transition-colors shadow-sm"
                 >
                   Explorar Otros Eventos
                 </button>
@@ -309,20 +309,20 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
             </div>
 
             <!-- Ticket Selection Box (if active) -->
-            <div *ngIf="!isEventEnded()" class="p-6 sm:p-7 rounded-3xl border border-dark/10 bg-white shadow-md">
+            <div *ngIf="!isEventEnded()" class="p-6 sm:p-7 rounded-3xl border border-outline-variant/30 bg-surface shadow-md">
               <!-- Reserve error feedback -->
               <div
                 *ngIf="reserveError()"
-                class="mb-4 p-3.5 rounded-2xl bg-danger/5 border border-danger/20 text-danger text-xs flex items-start gap-2"
+                class="mb-4 p-3.5 rounded-2xl bg-error-container border border-error/20 text-on-error-container text-xs flex items-start gap-2"
               >
-                <i class="fa-solid fa-triangle-exclamation shrink-0 mt-0.5 text-danger"></i>
+                <i class="fa-solid fa-triangle-exclamation shrink-0 mt-0.5 text-error"></i>
                 <span>{{ reserveError() }}</span>
               </div>
 
               <!-- Reserving spinner -->
               <div *ngIf="isReserving()" class="flex items-center justify-center py-8 gap-3">
                 <tf-spinner size="sm" color="primary"></tf-spinner>
-                <span class="text-xs font-bold text-dark/70">Reservando boletos...</span>
+                <span class="text-xs font-bold text-on-surface-variant">Reservando boletos...</span>
               </div>
 
               <store-ticket-selector
@@ -334,10 +334,10 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
             </div>
 
             <!-- Guarantee Box -->
-            <div class="p-5 rounded-2xl bg-surface border border-dark/10 space-y-2 text-xs text-dark/70 shadow-sm">
-              <div class="font-bold text-dark flex items-center gap-1.5">
-                <i class="fa-solid fa-shield-halved text-contrast"></i>
-                <span>Garantía TicketFlow</span>
+            <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-2 text-xs text-on-surface-variant shadow-sm">
+              <div class="font-bold text-on-surface flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-tertiary"></i>
+                <span>Garantía BoletoCoqueto</span>
               </div>
               <p class="leading-relaxed">
                 Tus boletos son emitidos al instante con código QR único. Cuentas con 100% de reembolso garantizado en caso de cancelación del espectáculo.
@@ -396,7 +396,7 @@ export class EventDetailComponent implements OnInit {
     if (typeof window !== 'undefined' && navigator.share && this.event()) {
       navigator.share({
         title: this.event()!.name,
-        text: `¡Mira este concierto! ${this.event()!.name} en ${this.event()!.venues?.name || 'TicketFlow'}`,
+        text: `¡Mira este concierto! ${this.event()!.name} en ${this.event()!.venues?.name || 'BoletoCoqueto'}`,
         url: window.location.href,
       }).catch(() => {});
     } else {

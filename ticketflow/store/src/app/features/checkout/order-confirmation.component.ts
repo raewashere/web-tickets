@@ -27,57 +27,57 @@ import {
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg" color="primary"></tf-spinner>
-        <p class="text-sm text-dark/60">Cargando confirmación de tu compra...</p>
+        <p class="text-sm text-on-surface-variant">Cargando confirmación de tu compra...</p>
       </div>
 
       <!-- Main Confirmation View -->
       <div *ngIf="!isLoading() && order()" class="space-y-8 animate-fade-in">
         <!-- Success Hero Header -->
         <div class="text-center space-y-4">
-          <div class="inline-flex w-20 h-20 rounded-full bg-contrast/15 text-contrast items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
+          <div class="inline-flex w-20 h-20 rounded-full bg-tertiary-container text-on-tertiary-container items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
             <i class="fa-solid fa-check"></i>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl font-bold text-dark tracking-tight">
+          <h1 class="text-3xl sm:text-4xl font-bold text-on-surface tracking-tight">
             ¡Compra Confirmada con Éxito!
           </h1>
 
-          <p class="text-xs sm:text-sm text-dark/70 max-w-md mx-auto">
+          <p class="text-xs sm:text-sm text-on-surface-variant max-w-md mx-auto">
             Hemos emitido tus entradas oficiales. Puedes consultarlas y acceder a tus códigos QR en cualquier momento desde tu cuenta.
           </p>
 
           <!-- Order ID Pill -->
-          <div class="inline-block px-4 py-1.5 rounded-full bg-surface border border-dark/10 font-mono text-xs font-bold text-dark">
+          <div class="inline-block px-4 py-1.5 rounded-full bg-surface-container border border-outline-variant/30 font-mono text-xs font-bold text-on-surface">
             Orden: <span class="text-primary font-bold">#{{ order()!.id.substring(0, 8).toUpperCase() }}</span>
           </div>
         </div>
 
         <!-- Order Details Card -->
-        <div class="p-6 sm:p-8 rounded-3xl border border-dark/10 bg-white shadow-sm space-y-6">
+        <div class="p-6 sm:p-8 rounded-3xl border border-outline-variant/30 bg-surface shadow-sm space-y-6">
           <!-- Event Info -->
-          <div class="space-y-1 pb-4 border-b border-dark/10">
+          <div class="space-y-1 pb-4 border-b border-outline-variant/30">
             <span class="text-[10px] font-bold uppercase tracking-wider text-primary block">Detalles del Espectáculo</span>
-            <h2 class="text-xl font-bold text-dark">{{ order()!.events?.name }}</h2>
-            <p class="text-xs text-dark/60">
+            <h2 class="text-xl font-bold text-on-surface">{{ order()!.events?.name }}</h2>
+            <p class="text-xs text-on-surface-variant">
               <i class="fa-regular fa-calendar mr-1"></i> {{ order()!.events?.event_date | date:'fullDate' }} · {{ order()!.events?.event_date | date:'shortTime' }} hrs
             </p>
           </div>
 
           <!-- Items Table -->
           <div class="space-y-3">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-dark/60">Boletos Emitidos</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Boletos Emitidos</h3>
 
-            <div class="divide-y divide-dark/5">
+            <div class="divide-y divide-outline-variant/20">
               <div
                 *ngFor="let item of order()!.order_items"
                 class="py-3 flex items-center justify-between gap-4 text-xs"
               >
                 <div>
-                  <span class="font-bold text-dark">{{ item.ticket_types?.name || 'Boleto' }}</span>
-                  <span class="font-mono text-dark/50 ml-1.5">({{ item.quantity }}x)</span>
+                  <span class="font-bold text-on-surface">{{ item.ticket_types?.name || 'Boleto' }}</span>
+                  <span class="font-mono text-on-surface-variant ml-1.5">({{ item.quantity }}x)</span>
                 </div>
 
-                <div class="font-mono font-bold text-dark">
+                <div class="font-mono font-bold text-on-surface">
                   \${{ (item.total || (item.unit_price * item.quantity)) | number:'1.2-2' }} MXN
                 </div>
               </div>
@@ -85,19 +85,19 @@ import {
           </div>
 
           <!-- Financial Summary -->
-          <div class="pt-4 border-t border-dark/10 space-y-2 text-xs">
-            <div class="flex items-center justify-between text-dark/70">
+          <div class="pt-4 border-t border-outline-variant/30 space-y-2 text-xs">
+            <div class="flex items-center justify-between text-on-surface-variant">
               <span>Subtotal:</span>
               <span class="font-mono font-bold">\${{ order()!.subtotal | number:'1.2-2' }} MXN</span>
             </div>
 
-            <div *ngIf="order()!.discount_amount > 0" class="flex items-center justify-between text-contrast font-bold">
+            <div *ngIf="order()!.discount_amount > 0" class="flex items-center justify-between text-secondary font-bold">
               <span>Descuento Aplicado:</span>
               <span class="font-mono">-\${{ order()!.discount_amount | number:'1.2-2' }} MXN</span>
             </div>
 
-            <div class="pt-2 border-t border-dark/10 flex items-center justify-between text-sm">
-              <span class="font-bold text-dark">Total Pagado:</span>
+            <div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-sm">
+              <span class="font-bold text-on-surface">Total Pagado:</span>
               <span class="font-bold text-primary text-xl font-mono">
                 \${{ order()!.total | number:'1.2-2' }} MXN
               </span>
@@ -114,7 +114,7 @@ import {
           >
             <button
               type="button"
-              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2"
             >
               <i class="fa-solid fa-qrcode"></i>
               <span>Ver Pase Digital (QR & PDF)</span>
@@ -129,7 +129,7 @@ import {
           >
             <button
               type="button"
-              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2"
             >
               <i class="fa-solid fa-qrcode"></i>
               <span>Ver Pase Digital de Invitado</span>
@@ -139,7 +139,7 @@ import {
           <a *ngIf="auth.user()" routerLink="/my-tickets" class="w-full sm:w-auto">
             <button
               type="button"
-              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white border border-dark/20 hover:bg-surface text-dark font-bold text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-2"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-surface border border-outline-variant/40 hover:bg-surface-container text-on-surface font-bold text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-2"
             >
               <i class="fa-solid fa-ticket"></i>
               <span>Todos Mis Boletos</span>
@@ -149,7 +149,7 @@ import {
           <a routerLink="/search" class="w-full sm:w-auto">
             <button
               type="button"
-              class="w-full sm:w-auto px-6 py-3.5 rounded-xl text-dark/70 hover:text-dark font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl text-on-surface-variant hover:text-on-surface font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2"
             >
               Explorar Más Shows
             </button>
