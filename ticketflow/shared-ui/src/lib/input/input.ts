@@ -19,9 +19,9 @@ import { CommonModule } from '@angular/common';
   ],
   template: `
     <div class="flex flex-col gap-1">
-      <label *ngIf="label" [for]="inputId" class="text-sm font-medium text-dark">
+      <label *ngIf="label" [for]="inputId" class="text-sm font-semibold text-on-surface">
         {{ label }}
-        <span *ngIf="required" class="text-contrast ml-0.5">*</span>
+        <span *ngIf="required" class="text-error ml-0.5">*</span>
       </label>
       <input
         [id]="inputId"
@@ -33,8 +33,8 @@ import { CommonModule } from '@angular/common';
         (input)="onInput($event)"
         (blur)="onTouched()"
       />
-      <p *ngIf="hint && !error" class="text-xs text-dark/50">{{ hint }}</p>
-      <p *ngIf="error" class="text-xs text-contrast">{{ error }}</p>
+      <p *ngIf="hint && !error" class="text-xs text-on-surface-variant">{{ hint }}</p>
+      <p *ngIf="error" class="text-xs text-error font-medium">{{ error }}</p>
     </div>
   `,
 })
@@ -55,10 +55,10 @@ export class InputComponent implements ControlValueAccessor {
 
   get inputClasses(): string {
     const base =
-      'w-full rounded-lg border px-3 py-2 text-dark placeholder:text-dark/40 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed';
+      'w-full rounded-xl border px-3.5 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed bg-surface';
     return this.error
-      ? `${base} border-contrast focus:border-contrast`
-      : `${base} border-dark/20 focus:border-primary`;
+      ? `${base} border-error focus:border-error focus:ring-error/20`
+      : `${base} border-outline/50 focus:border-primary`;
   }
 
   onInput(event: Event): void {

@@ -31,12 +31,12 @@ interface NavItem {
       <!-- Brand Header -->
       <div class="flex items-center justify-between h-16 px-6 border-b border-outline-variant/20">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-black text-xl shadow-sm border border-primary/30">
+          <div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-black text-xl shadow-sm border border-primary/30">
             BC
           </div>
           <div>
             <h1 class="font-bold text-lg tracking-tight text-inverse-on-surface leading-none">BoletoCoqueto</h1>
-            <span class="text-[10px] uppercase font-bold tracking-widest text-primary">Artist Portal</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest text-secondary">Artist Portal</span>
           </div>
         </div>
 
@@ -58,7 +58,7 @@ interface NavItem {
           *ngFor="let item of visibleNavItems"
           [routerLink]="item.route"
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
-          routerLinkActive="bg-primary/15 text-primary border-r-4 border-primary font-semibold"
+          routerLinkActive="bg-primary/20 text-on-primary-container border-r-4 border-primary font-bold"
           class="flex items-center gap-3 px-4 py-3 rounded-lg text-inverse-on-surface/70 hover:text-inverse-on-surface hover:bg-inverse-on-surface/5 transition-all text-sm group"
           (click)="closeSidebar.emit()"
         >
@@ -70,7 +70,7 @@ interface NavItem {
       <!-- User footer -->
       <div class="p-4 border-t border-outline-variant/20 bg-black/20">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-9 h-9 rounded-full bg-primary/20 text-primary font-bold flex items-center justify-center border border-primary/30 text-sm overflow-hidden flex-shrink-0">
+          <div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container font-bold flex items-center justify-center border border-primary/30 text-sm overflow-hidden flex-shrink-0">
             <img
               *ngIf="auth.avatarUrl()"
               [src]="auth.avatarUrl()!"
@@ -90,12 +90,12 @@ interface NavItem {
         <button
           type="button"
           (click)="logout()"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-error/90 bg-error/10 hover:bg-error/20 rounded-lg transition-colors"
+          class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-on-error-container bg-error-container/30 hover:bg-error-container/50 border border-error/20 rounded-lg transition-colors"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Cerrar Sesión
+          <span>Cerrar Sesión</span>
         </button>
       </div>
     </aside>

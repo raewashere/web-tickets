@@ -159,7 +159,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div class="p-6 sm:p-7 rounded-2xl bg-inverse-on-surface/5 border border-outline-variant/10 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 text-primary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-ticket"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Boletos 100% Oficiales</h3>
@@ -169,7 +169,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
             </div>
 
             <div class="p-6 sm:p-7 rounded-2xl bg-inverse-on-surface/5 border border-outline-variant/10 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-tertiary/10 border border-tertiary/20 text-tertiary flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-xl bg-secondary/20 border border-secondary/30 text-secondary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-bolt"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Acceso Rápido en tu Móvil</h3>
@@ -179,7 +179,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
             </div>
 
             <div class="p-6 sm:p-7 rounded-2xl bg-inverse-on-surface/5 border border-outline-variant/10 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-tertiary-container/10 border border-tertiary-container/20 text-on-tertiary-container flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-xl bg-tertiary/20 border border-tertiary/30 text-tertiary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-shield-halved"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Pagos Seguros vía PayPal</h3>
@@ -193,9 +193,9 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
 
       <!-- 4. CTA for Artists -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-3xl bg-gradient-to-r from-inverse-surface via-inverse-surface/90 to-inverse-surface text-inverse-on-surface p-8 sm:p-12 border border-tertiary/20 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+        <div class="rounded-3xl bg-gradient-to-r from-inverse-surface via-inverse-surface/90 to-inverse-surface text-inverse-on-surface p-8 sm:p-12 border border-secondary/20 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
           <div class="space-y-2 text-center md:text-left">
-            <span class="text-xs font-bold uppercase tracking-wider text-tertiary">Para Músicos & Productores</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-secondary">Para Músicos & Productores</span>
             <h3 class="text-2xl sm:text-3xl font-bold text-inverse-on-surface tracking-tight">
               ¿Organizas conciertos o festivales?
             </h3>
@@ -207,7 +207,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
           <a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex-shrink-0">
             <button
               type="button"
-              class="px-6 py-3.5 rounded-xl bg-tertiary hover:bg-tertiary/90 text-on-tertiary font-bold text-xs sm:text-sm transition-all shadow-lg shadow-tertiary/20 flex items-center gap-2"
+              class="px-6 py-3.5 rounded-xl bg-secondary hover:bg-secondary/90 text-on-secondary font-bold text-xs sm:text-sm transition-all shadow-lg shadow-secondary/25 flex items-center gap-2"
             >
               <span>Comenzar a Vender Boletos</span>
               <i class="fa-solid fa-arrow-right"></i>

@@ -13,38 +13,38 @@ export type StoreEventItem = EventWithRelations & {
   imports: [CommonModule, RouterModule],
   template: `
     <div
-      class="group rounded-3xl border border-dark/10 bg-white hover:border-accent/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm"
+      class="group rounded-3xl border border-outline-variant/30 bg-surface hover:border-secondary/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm"
     >
       <div>
         <!-- Flyer Image Banner with Date Badge -->
-        <div class="relative aspect-[4/3] bg-surface overflow-hidden">
+        <div class="relative aspect-[4/3] bg-surface-container overflow-hidden">
           <img
             *ngIf="event.flyer_url"
             [src]="event.flyer_url"
             [alt]="event.name"
             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
-          <div *ngIf="!event.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-dark/20 bg-surface">
+          <div *ngIf="!event.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-on-surface-variant/30 bg-surface-container">
             <i class="fa-solid fa-guitar text-4xl mb-1"></i>
-            <span class="text-xs font-bold text-dark/30">TicketFlow Live</span>
+            <span class="text-xs font-bold text-on-surface-variant/50">BoletoCoqueto Live</span>
           </div>
 
           <!-- Date Overlay Box -->
           <div
             *ngIf="event.event_date"
-            class="absolute top-3 left-3 px-3 py-1.5 rounded-2xl bg-white/95 backdrop-blur-md shadow-md text-center border border-dark/10 flex flex-col items-center"
+            class="absolute top-3 left-3 px-3 py-1.5 rounded-2xl bg-surface/95 backdrop-blur-md shadow-md text-center border border-outline-variant/30 flex flex-col items-center"
           >
-            <span class="text-[10px] font-extrabold uppercase tracking-wider text-primary">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-secondary">
               {{ event.event_date | date:'MMM' }}
             </span>
-            <span class="text-base font-black text-dark leading-none">
+            <span class="text-base font-black text-on-surface leading-none">
               {{ event.event_date | date:'dd' }}
             </span>
           </div>
 
           <!-- Category Chip -->
           <div *ngIf="event.event_types" class="absolute top-3 right-3">
-            <span class="px-2.5 py-1 rounded-xl bg-dark/80 backdrop-blur-md text-surface text-[10px] font-bold uppercase tracking-wider shadow">
+            <span class="px-2.5 py-1 rounded-xl bg-inverse-surface/85 backdrop-blur-md text-inverse-on-surface text-[10px] font-bold uppercase tracking-wider shadow">
               {{ event.event_types.name }}
             </span>
           </div>
@@ -53,7 +53,7 @@ export type StoreEventItem = EventWithRelations & {
         <!-- Card Body -->
         <div class="p-5 space-y-3">
           <!-- Artist / Co-artist -->
-          <div class="flex items-center justify-between text-xs font-semibold text-dark/50">
+          <div class="flex items-center justify-between text-xs font-semibold text-on-surface-variant">
             <button
               *ngIf="event.artists"
               type="button"
@@ -61,26 +61,26 @@ export type StoreEventItem = EventWithRelations & {
               class="flex items-center gap-1.5 hover:text-primary transition-colors text-left truncate group/artist"
               title="Ver perfil del artista"
             >
-              <span class="w-2 h-2 rounded-full bg-accent inline-block shrink-0"></span>
-              <span class="truncate font-bold text-dark/70 group-hover/artist:text-primary">{{ event.artists.name }}</span>
+              <span class="w-2 h-2 rounded-full bg-secondary inline-block shrink-0"></span>
+              <span class="truncate font-bold text-on-surface/80 group-hover/artist:text-primary">{{ event.artists.name }}</span>
               <span class="text-[10px] text-primary shrink-0 font-medium opacity-80 group-hover/artist:opacity-100 flex items-center gap-0.5">· Ver perfil <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></span>
             </button>
-            <span *ngIf="!event.artists" class="text-dark/30">Artista Invitado</span>
+            <span *ngIf="!event.artists" class="text-on-surface-variant/60">Artista Invitado</span>
           </div>
 
           <!-- Event Title -->
-          <h3 class="font-extrabold text-lg text-dark group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+          <h3 class="font-extrabold text-lg text-on-surface group-hover:text-primary transition-colors line-clamp-2 leading-snug">
             <a [routerLink]="['/events', event.id]">{{ event.name }}</a>
           </h3>
 
           <!-- Venue & Time -->
-          <div class="space-y-1 text-xs text-dark/50">
+          <div class="space-y-1 text-xs text-on-surface-variant">
             <p class="flex items-center gap-1.5 truncate">
-              <i class="fa-solid fa-location-dot text-dark/30"></i>
+              <i class="fa-solid fa-location-dot text-on-surface-variant/50"></i>
               <span class="font-medium truncate">{{ event.venues?.name || 'Recinto por confirmar' }}</span>
             </p>
             <p class="flex items-center gap-1.5">
-              <i class="fa-regular fa-clock text-dark/30"></i>
+              <i class="fa-regular fa-clock text-on-surface-variant/50"></i>
               <span>{{ event.event_date | date:'shortTime' }} hrs</span>
             </p>
           </div>
@@ -88,10 +88,10 @@ export type StoreEventItem = EventWithRelations & {
       </div>
 
       <!-- Card Footer -->
-      <div class="p-5 pt-0 border-t border-dark/5 flex items-center justify-between gap-3 mt-2">
+      <div class="p-5 pt-0 border-t border-outline-variant/20 flex items-center justify-between gap-3 mt-2">
         <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-dark/30 block">Boletos desde</span>
-          <span class="font-black text-base text-dark font-mono">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/60 block">Boletos desde</span>
+          <span class="font-black text-base text-primary font-mono">
             {{ minPriceText }}
           </span>
         </div>
@@ -99,7 +99,7 @@ export type StoreEventItem = EventWithRelations & {
         <a [routerLink]="['/events', event.id]">
           <button
             type="button"
-            class="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary/90 text-surface font-bold text-xs transition-all shadow-sm shadow-primary/20"
+            class="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs transition-all shadow-sm shadow-primary/20"
           >
             Comprar Boletos
           </button>

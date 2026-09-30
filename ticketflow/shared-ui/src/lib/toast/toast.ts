@@ -59,18 +59,18 @@ export class ToastService {
         *ngFor="let t of toastService.toasts()"
         class="pointer-events-auto flex items-start gap-3 p-4 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-0"
         [ngClass]="{
-          'bg-slate-900/95 text-white border-emerald-500/50 shadow-emerald-950/20': t.type === 'success',
-          'bg-rose-950/95 text-white border-rose-500/50 shadow-rose-950/20': t.type === 'error',
-          'bg-slate-900/95 text-white border-cyan-500/50 shadow-cyan-950/20': t.type === 'info',
-          'bg-amber-950/95 text-white border-amber-500/50 shadow-amber-950/20': t.type === 'warning'
+          'bg-tertiary-container text-on-tertiary-container border-tertiary/40 shadow-tertiary/10': t.type === 'success',
+          'bg-error-container text-on-error-container border-error/40 shadow-error/10': t.type === 'error',
+          'bg-primary-container text-on-primary-container border-primary/40 shadow-primary/10': t.type === 'info',
+          'bg-secondary-container text-on-secondary-container border-secondary/40 shadow-secondary/10': t.type === 'warning'
         }"
       >
         <!-- Icon -->
         <div class="text-xl flex-shrink-0 mt-0.5" [ngClass]="{
-          'text-emerald-400': t.type === 'success',
-          'text-rose-400': t.type === 'error',
-          'text-cyan-400': t.type === 'info',
-          'text-amber-400': t.type === 'warning'
+          'text-on-tertiary-container': t.type === 'success',
+          'text-error': t.type === 'error',
+          'text-primary': t.type === 'info',
+          'text-secondary': t.type === 'warning'
         }">
           <i *ngIf="t.type === 'success'" class="fa-solid fa-circle-check"></i>
           <i *ngIf="t.type === 'error'" class="fa-solid fa-circle-exclamation"></i>

@@ -26,12 +26,12 @@ export class BadgeComponent {
     const base =
       'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide';
     const variants: Record<BadgeVariant, string> = {
-      default: 'bg-dark/10 text-dark',
-      primary: 'bg-primary/10 text-primary',
-      accent: 'bg-accent/20 text-primary',
-      danger: 'bg-danger/10 text-danger',
-      success: 'bg-contrast/15 text-contrast',
-      warning: 'bg-amber-100 text-amber-800',
+      default: 'bg-surface-variant text-on-surface-variant',
+      primary: 'bg-primary-container text-on-primary-container',
+      accent: 'bg-secondary-container text-on-secondary-container',
+      danger: 'bg-error-container text-on-error-container',
+      success: 'bg-tertiary-container text-on-tertiary-container',
+      warning: 'bg-amber-100 text-amber-900',
     };
     return `${base} ${variants[this.variant]}`;
   }

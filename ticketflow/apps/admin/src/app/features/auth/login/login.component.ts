@@ -22,34 +22,34 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
   ],
 
   template: `
-    <div class="min-h-screen bg-dark flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
+    <div class="min-h-screen bg-inverse-surface flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
       <!-- Decorative background glow -->
-      <div class="absolute -top-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-contrast/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -top-40 -left-40 w-96 h-96 bg-primary/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-secondary/20 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="w-full max-w-md relative z-10">
         <!-- Logo & Header -->
         <div class="text-center mb-8">
-          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/20 text-primary border border-primary/30 font-bold text-2xl mb-4 shadow-lg shadow-primary/10">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-container text-on-primary-container border border-primary/30 font-bold text-2xl mb-4 shadow-lg shadow-primary/20">
             BC
           </div>
-          <h1 class="text-3xl font-bold text-white tracking-tight">BoletoCoqueto</h1>
-          <p class="text-surface/60 text-sm mt-1">Portal de Artistas y Organizadores</p>
+          <h1 class="text-3xl font-bold text-inverse-on-surface tracking-tight">BoletoCoqueto</h1>
+          <p class="text-inverse-on-surface/60 text-sm mt-1">Portal de Artistas y Organizadores</p>
         </div>
 
         <!-- Login Card -->
-        <div class="bg-white rounded-2xl shadow-xl p-8 border border-white/10">
+        <div class="bg-surface rounded-2xl shadow-xl p-8 border border-outline-variant/30">
           <div class="mb-6">
-            <h2 class="text-xl font-bold text-dark">Iniciar Sesión</h2>
-            <p class="text-xs text-dark/60 mt-1">Ingresa tus credenciales para administrar tus eventos.</p>
+            <h2 class="text-xl font-bold text-on-surface">Iniciar Sesión</h2>
+            <p class="text-xs text-on-surface-variant mt-1">Ingresa tus credenciales para administrar tus eventos.</p>
           </div>
 
           <!-- Error Alert -->
           <div
             *ngIf="errorMessage"
-            class="mb-4 p-3 rounded-lg bg-danger/10 border border-danger/30 text-danger text-xs flex items-center gap-2"
+            class="mb-4 p-3 rounded-xl bg-error-container border border-error/30 text-on-error-container text-xs flex items-center gap-2"
           >
-            <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="w-4 h-4 flex-shrink-0 text-error" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
             </svg>
             <span>{{ errorMessage }}</span>
@@ -60,7 +60,7 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
             type="button"
             (click)="onGoogleSignIn()"
             [disabled]="isGoogleLoading || isLoading"
-            class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-dark/20 bg-white hover:bg-surface/50 text-dark font-bold text-sm shadow-sm hover:shadow transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-5"
+            class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-outline bg-surface hover:bg-surface-variant text-on-surface font-bold text-sm shadow-sm hover:shadow transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-5"
           >
             <span *ngIf="!isGoogleLoading" class="flex items-center gap-3">
               <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
@@ -79,9 +79,9 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
 
           <!-- Divider -->
           <div class="relative flex py-2 items-center mb-5">
-            <div class="flex-grow border-t border-dark/10"></div>
-            <span class="flex-shrink mx-3 text-dark/40 text-xs uppercase font-medium tracking-wider">o con correo</span>
-            <div class="flex-grow border-t border-dark/10"></div>
+            <div class="flex-grow border-t border-outline-variant/40"></div>
+            <span class="flex-shrink mx-3 text-on-surface-variant/60 text-xs uppercase font-medium tracking-wider">o con correo</span>
+            <div class="flex-grow border-t border-outline-variant/40"></div>
           </div>
 
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
@@ -121,9 +121,9 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
             </div>
           </form>
 
-          <div class="mt-6 pt-6 border-t border-dark/10 text-center text-xs text-dark/60">
+          <div class="mt-6 pt-6 border-t border-outline-variant/30 text-center text-xs text-on-surface-variant">
             ¿Aún no tienes una cuenta de artista?
-            <a routerLink="/register" class="font-semibold text-dark hover:text-primary transition-colors ml-1 underline">
+            <a routerLink="/register" class="font-bold text-primary hover:underline ml-1">
               Regístrate aquí
             </a>
           </div>

@@ -118,7 +118,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
                 <button
                   type="button"
                   (click)="onLogout()"
-                  class="w-full text-left px-4 py-2.5 text-xs font-semibold text-tertiary/80 hover:text-tertiary hover:bg-tertiary/10 transition-colors border-t border-outline-variant/20 flex items-center gap-2"
+                  class="w-full text-left px-4 py-2.5 text-xs font-semibold text-error/80 hover:text-error hover:bg-error/10 transition-colors border-t border-outline-variant/20 flex items-center gap-2"
                 >
                   <i class="fa-solid fa-right-from-bracket"></i>
                   <span>Cerrar Sesión</span>
@@ -140,7 +140,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <a routerLink="/register">
               <button
                 type="button"
-                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-tertiary hover:bg-tertiary/90 text-on-tertiary transition-all shadow-md shadow-tertiary/20"
+                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-secondary hover:bg-secondary/90 text-on-secondary transition-all shadow-md shadow-secondary/20"
               >
                 Crear Cuenta
               </button>
@@ -197,7 +197,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <button
               type="button"
               (click)="onLogout()"
-              class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-tertiary/80 hover:bg-tertiary/10 flex items-center gap-2"
+              class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-error/80 hover:bg-error/10 flex items-center gap-2"
             >
               <i class="fa-solid fa-right-from-bracket"></i>
               <span>Cerrar Sesión</span>
@@ -217,7 +217,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
               <a routerLink="/register" (click)="mobileMenuOpen.set(false)">
                 <button
                   type="button"
-                  class="w-full py-2.5 rounded-xl bg-tertiary text-on-tertiary text-xs font-bold hover:bg-tertiary/90"
+                  class="w-full py-2.5 rounded-xl bg-secondary text-on-secondary text-xs font-bold hover:bg-secondary/90 shadow-md shadow-secondary/20"
                 >
                   Registrarse
                 </button>

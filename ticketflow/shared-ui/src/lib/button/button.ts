@@ -39,13 +39,13 @@ export class ButtonComponent {
     };
 
     const variants: Record<ButtonVariant, string> = {
-      primary: 'bg-primary text-surface hover:bg-primary/90 focus:ring-primary shadow-sm',
+      primary: 'bg-primary text-on-primary hover:bg-primary/90 focus:ring-primary shadow-sm shadow-primary/25',
       secondary:
-        'bg-surface text-dark hover:bg-dark/10 focus:ring-dark border border-dark/20',
-      danger: 'bg-danger text-white hover:bg-danger/90 focus:ring-danger shadow-sm',
-      ghost: 'bg-transparent text-dark hover:bg-dark/10 focus:ring-dark',
-      accent: 'bg-accent text-dark hover:bg-accent/90 focus:ring-accent shadow-sm',
-      outline: 'bg-transparent text-dark border border-dark/20 hover:bg-dark/5 focus:ring-primary',
+        'bg-secondary text-on-secondary hover:bg-secondary/90 focus:ring-secondary shadow-sm shadow-secondary/20',
+      danger: 'bg-error text-on-error hover:bg-error/90 focus:ring-error shadow-sm',
+      ghost: 'bg-transparent text-on-surface hover:bg-on-surface/10 focus:ring-primary',
+      accent: 'bg-tertiary text-on-tertiary hover:bg-tertiary/90 focus:ring-tertiary shadow-sm shadow-tertiary/20',
+      outline: 'bg-transparent text-on-surface border border-outline hover:bg-on-surface/5 focus:ring-primary',
     };
 
     return `${base} ${sizes[this.size]} ${variants[this.variant]}`;
