@@ -14,13 +14,13 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-rose-700 bg-rose-100 border border-rose-300 px-3 py-1 rounded-full inline-block mb-2">
+          <span class="text-[10px] font-black uppercase tracking-widest text-on-secondary-container bg-secondary-container border border-secondary/20 px-3 py-1 rounded-full inline-block mb-2">
             Gestión Post-Venta Central
           </span>
-          <h1 class="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-black text-on-surface tracking-tight">
             Solicitudes de Reembolso Globales
           </h1>
-          <p class="text-xs sm:text-sm text-dark/60 mt-1">
+          <p class="text-xs sm:text-sm text-on-surface/60 mt-1">
             Revisa y procesa las solicitudes de cancelación enviadas por los compradores de cualquier evento.
           </p>
         </div>
@@ -28,7 +28,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <button
           type="button"
           (click)="loadRefunds()"
-          class="px-4 py-2.5 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
+          class="px-4 py-2.5 rounded-xl bg-surface border border-outline-variant/30 hover:bg-surface-variant/40 text-on-surface font-bold text-xs shadow-xs transition flex items-center gap-2 self-start sm:self-auto"
         >
           <i class="fa-solid fa-arrows-rotate"></i>
           <span>Actualizar Lista</span>
@@ -36,25 +36,25 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Filters & Search -->
-      <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="p-4 rounded-2xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="w-full md:max-w-md relative">
           <input
             type="text"
             [(ngModel)]="searchQuery"
             placeholder="Buscar por orden, cliente, evento o motivo..."
-            class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
+            class="w-full pl-10 pr-4 py-2 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-dark/40 text-xs"></i>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-on-surface/40 text-xs"></i>
         </div>
 
         <div class="flex items-center gap-2 w-full md:w-auto">
           <button
             type="button"
             (click)="selectedFilter.set('all')"
-            [class.bg-dark]="selectedFilter() === 'all'"
-            [class.text-white]="selectedFilter() === 'all'"
-            [class.bg-dark/5]="selectedFilter() !== 'all'"
-            [class.text-dark]="selectedFilter() !== 'all'"
+            [class.bg-primary]="selectedFilter() === 'all'"
+            [class.text-on-primary]="selectedFilter() === 'all'"
+            [class.bg-surface-variant/50]="selectedFilter() !== 'all'"
+            [class.text-on-surface/80]="selectedFilter() !== 'all'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Todas ({{ refunds().length }})
@@ -64,7 +64,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="selectedFilter.set('pending')"
             [class.bg-amber-500]="selectedFilter() === 'pending'"
             [class.text-white]="selectedFilter() === 'pending'"
-            [class.bg-amber-50]="selectedFilter() !== 'pending'"
+            [class.bg-amber-500/10]="selectedFilter() !== 'pending'"
             [class.text-amber-800]="selectedFilter() !== 'pending'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
@@ -75,8 +75,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="selectedFilter.set('approved')"
             [class.bg-emerald-600]="selectedFilter() === 'approved'"
             [class.text-white]="selectedFilter() === 'approved'"
-            [class.bg-emerald-50]="selectedFilter() !== 'approved'"
-            [class.text-emerald-800]="selectedFilter() !== 'approved'"
+            [class.bg-emerald-500/10]="selectedFilter() !== 'approved'"
+            [class.text-emerald-700]="selectedFilter() !== 'approved'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Aprobadas
@@ -87,19 +87,19 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg"></tf-spinner>
-        <p class="text-xs text-dark/50">Cargando solicitudes de reembolso...</p>
+        <p class="text-xs text-on-surface/50">Cargando solicitudes de reembolso...</p>
       </div>
 
       <!-- Error State -->
-      <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">
+      <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-error-container text-on-error-container border border-error/20 text-xs font-bold">
         {{ errorMessage() }}
       </div>
 
       <!-- Refunds Table -->
-      <div *ngIf="!isLoading() && filteredRefunds().length > 0" class="bg-white rounded-2xl border border-dark/10 shadow-sm overflow-hidden">
+      <div *ngIf="!isLoading() && filteredRefunds().length > 0" class="bg-surface rounded-2xl border border-outline-variant/30 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-dark/5 border-b border-dark/10 text-dark/60 font-bold uppercase text-[10px] tracking-wider">
+            <thead class="bg-surface-variant/40 border-b border-outline-variant/20 text-on-surface/70 font-bold uppercase text-[10px] tracking-wider">
               <tr>
                 <th class="py-3.5 px-4 sm:px-6">Orden / Cliente</th>
                 <th class="py-3.5 px-4">Evento</th>
@@ -109,47 +109,47 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <th class="py-3.5 px-4 sm:px-6 text-right">Acciones</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-dark/10">
-              <tr *ngFor="let ref of filteredRefunds()" class="hover:bg-dark/[0.02] transition">
+            <tbody class="divide-y divide-outline-variant/20">
+              <tr *ngFor="let ref of filteredRefunds()" class="hover:bg-primary/[0.03] transition">
                 <td class="py-4 px-4 sm:px-6">
                   <div class="space-y-0.5">
-                    <span class="font-extrabold text-dark block">Orden #{{ ref.order_id.substring(0, 8) }}</span>
-                    <span class="text-xs text-dark/60">{{ ref.customer_name || ref.customer_email || 'Cliente' }}</span>
+                    <span class="font-extrabold text-on-surface block">Orden #{{ ref.order_id.substring(0, 8) }}</span>
+                    <span class="text-xs text-on-surface/60">{{ ref.customer_name || ref.customer_email || 'Cliente' }}</span>
                   </div>
                 </td>
-                <td class="py-4 px-4 font-semibold text-dark/80">
-                  <i class="fa-solid fa-calendar-days text-dark/40 mr-1.5"></i>
+                <td class="py-4 px-4 font-semibold text-on-surface/80">
+                  <i class="fa-solid fa-calendar-days text-on-surface/40 mr-1.5"></i>
                   <span>{{ ref.event_name || 'Evento' }}</span>
                 </td>
-                <td class="py-4 px-4 text-right font-black font-mono text-dark">
+                <td class="py-4 px-4 text-right font-black font-mono text-primary">
                   \${{ (ref.order_total || ref.amount) | number:'1.2-2' }} MXN
                 </td>
                 <td class="py-4 px-4 max-w-xs">
-                  <p class="text-xs text-dark/80 italic">"{{ ref.reason }}"</p>
-                  <span class="text-[10px] text-dark/40 font-mono block mt-0.5">
+                  <p class="text-xs text-on-surface/80 italic">"{{ ref.reason }}"</p>
+                  <span class="text-[10px] text-on-surface/40 font-mono block mt-0.5">
                     {{ ref.created_at | date:'dd/MM/yyyy HH:mm' }}
                   </span>
                 </td>
                 <td class="py-4 px-4 text-center">
                   <span
                     *ngIf="ref.status === 'pending'"
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-bold text-[11px]"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-bold text-[11px]"
                   >
                     <i class="fa-solid fa-clock text-amber-500"></i>
                     <span>Pendiente</span>
                   </span>
                   <span
                     *ngIf="ref.status === 'approved'"
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[11px]"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold text-[11px]"
                   >
                     <i class="fa-solid fa-circle-check text-emerald-500"></i>
                     <span>Aprobado</span>
                   </span>
                   <span
                     *ngIf="ref.status === 'rejected'"
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 font-bold text-[11px]"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container border border-error/20 font-bold text-[11px]"
                   >
-                    <i class="fa-solid fa-circle-xmark text-rose-500"></i>
+                    <i class="fa-solid fa-circle-xmark text-error"></i>
                     <span>Rechazado</span>
                   </span>
                 </td>
@@ -159,7 +159,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                       type="button"
                       (click)="processRefund(ref, 'approved')"
                       [disabled]="processingId() === ref.id"
-                      class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition disabled:opacity-50"
+                      class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition disabled:opacity-50"
                     >
                       Aprobar
                     </button>
@@ -167,12 +167,12 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                       type="button"
                       (click)="processRefund(ref, 'rejected')"
                       [disabled]="processingId() === ref.id"
-                      class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition disabled:opacity-50"
+                      class="px-3 py-1.5 rounded-lg bg-error hover:bg-error/90 text-on-error font-bold text-xs shadow-xs transition disabled:opacity-50"
                     >
                       Rechazar
                     </button>
                   </div>
-                  <span *ngIf="ref.status !== 'pending'" class="text-xs text-dark/40 italic">
+                  <span *ngIf="ref.status !== 'pending'" class="text-xs text-on-surface/40 italic">
                     Procesado
                   </span>
                 </td>
@@ -183,12 +183,12 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="!isLoading() && filteredRefunds().length === 0" class="p-12 text-center bg-white rounded-2xl border border-dashed border-dark/20 space-y-2">
-        <span class="text-3xl block text-dark/30">
+      <div *ngIf="!isLoading() && filteredRefunds().length === 0" class="p-12 text-center bg-surface rounded-2xl border border-dashed border-outline-variant/40 space-y-2">
+        <span class="text-3xl block text-on-surface/30">
           <i class="fa-solid fa-rotate-left"></i>
         </span>
-        <h3 class="font-bold text-dark text-base">No hay solicitudes de reembolso</h3>
-        <p class="text-xs text-dark/50">No hay reembolsos coincidentes con tus criterios.</p>
+        <h3 class="font-bold text-on-surface text-base">No hay solicitudes de reembolso</h3>
+        <p class="text-xs text-on-surface/50">No hay reembolsos coincidentes con tus criterios.</p>
       </div>
     </div>
   `,

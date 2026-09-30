@@ -8,12 +8,12 @@ import { AuthService } from '@ticketflow/data-access';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 lg:px-8 bg-dark text-white border-b border-white/10 shadow-md">
+    <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 lg:px-8 bg-inverse-surface text-inverse-on-surface border-b border-outline-variant/20 shadow-md">
       <div class="flex items-center gap-3">
         <!-- Hamburger button (mobile) -->
         <button
           type="button"
-          class="p-2 -ml-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 lg:hidden"
+          class="p-2 -ml-2 rounded-lg text-inverse-on-surface/70 hover:text-inverse-on-surface hover:bg-inverse-on-surface/10 lg:hidden"
           (click)="toggleSidebar.emit()"
           aria-label="Abrir menú"
         >
@@ -23,8 +23,8 @@ import { AuthService } from '@ticketflow/data-access';
         </button>
 
         <div class="flex items-center gap-2">
-          <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent animate-pulse"></span>
-          <h2 class="text-sm sm:text-base font-black tracking-tight text-white uppercase">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+          <h2 class="text-sm sm:text-base font-black tracking-tight text-inverse-on-surface uppercase">
             Plataforma Global Backoffice
           </h2>
         </div>
@@ -32,8 +32,8 @@ import { AuthService } from '@ticketflow/data-access';
 
       <!-- Right controls -->
       <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-          <div class="w-7 h-7 rounded-full bg-accent/20 text-accent font-bold text-xs flex items-center justify-center border border-accent/30 overflow-hidden">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-inverse-on-surface/5 border border-outline-variant/20">
+          <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container font-bold text-xs flex items-center justify-center border border-primary/30 overflow-hidden">
             <img
               *ngIf="auth.avatarUrl()"
               [src]="auth.avatarUrl()!"
@@ -42,7 +42,7 @@ import { AuthService } from '@ticketflow/data-access';
             />
             <span *ngIf="!auth.avatarUrl()">{{ userInitial }}</span>
           </div>
-          <span class="text-xs font-semibold text-white hidden sm:inline truncate max-w-[160px]">
+          <span class="text-xs font-semibold text-inverse-on-surface hidden sm:inline truncate max-w-[160px]">
             {{ auth.user()?.email }}
           </span>
         </div>

@@ -1,5 +1,159 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* ======================================================================
+       BOLETOCOQUETO — Material Design 3 Light Scheme (Global Backoffice)
+       Palette:
+         Primary   #540D6E  — Violeta profundo
+         Secondary #EE4266  — Rosa coral vibrante
+         Tertiary  #FFD23F  — Amarillo dorado vibrante
+       ====================================================================== */
+
+    /* Primary family — deep violet */
+    --md-primary:              84 13 110;      /* #540D6E */
+    --md-on-primary:           255 255 255;    /* #FFFFFF */
+    --md-primary-container:    240 210 255;    /* #F0D2FF */
+    --md-on-primary-container: 45 0 65;        /* #2D0041 */
+
+    /* Secondary family — rose/coral */
+    --md-secondary:            238 66 102;     /* #EE4266 */
+    --md-on-secondary:         255 255 255;    /* #FFFFFF */
+    --md-secondary-container:  255 220 228;    /* #FFDCE4 */
+    --md-on-secondary-container: 74 0 25;      /* #4A0019 */
+
+    /* Tertiary family — golden yellow */
+    --md-tertiary:             255 210 63;     /* #FFD23F */
+    --md-on-tertiary:          33 0 52;        /* #210034 (alto contraste sobre amarillo) */
+    --md-tertiary-container:   255 238 179;    /* #FFEEB3 */
+    --md-on-tertiary-container: 56 42 0;       /* #382A00 */
+
+    /* Surface family — with subtle violet tint */
+    --md-surface:              254 250 255;    /* #FEFAFF */
+    --md-on-surface:           31 22 36;       /* #1F1624 */
+    --md-surface-variant:      238 228 244;    /* #EEE4F4 */
+    --md-on-surface-variant:   77 65 84;       /* #4D4154 */
+    --md-surface-container:    245 237 250;    /* #F5EDFA */
+    --md-surface-container-high: 239 230 245; /* #EFE6F5 */
+    --md-surface-container-low: 250 244 253;  /* #FAF4FD */
+    --md-inverse-surface:      33 1 36;        /* #210124 (Berenjena noche profundo) */
+    --md-inverse-on-surface:   254 250 255;    /* #FEFAFF */
+
+    /* Error */
+    --md-error:                179 38 30;      /* #B3261E */
+    --md-on-error:             255 255 255;    /* #FFFFFF */
+    --md-error-container:      249 222 220;    /* #F9DEDC */
+    --md-on-error-container:   65 14 11;       /* #410E0B */
+
+    /* Outline */
+    --md-outline:              126 113 133;    /* #7E7185 */
+    --md-outline-variant:      209 198 217;    /* #D1C6D9 */
+  }
+
+  html.dark {
+    color-scheme: dark;
+
+    /* Primary family — dark scheme */
+    --md-primary:              215 168 255;    /* #D7A8FF */
+    --md-on-primary:           60 0 85;        /* #3C0055 */
+    --md-primary-container:    84 13 110;      /* #540D6E */
+    --md-on-primary-container: 240 210 255;    /* #F0D2FF */
+
+    /* Secondary family — dark scheme */
+    --md-secondary:            255 178 194;    /* #FFB2C2 */
+    --md-on-secondary:         92 0 31;        /* #5C001F */
+    --md-secondary-container:  168 18 63;      /* #A8123F */
+    --md-on-secondary-container: 255 216 224;  /* #FFD8E0 */
+
+    /* Tertiary family — dark scheme */
+    --md-tertiary:             255 210 63;     /* #FFD23F */
+    --md-on-tertiary:          46 34 0;        /* #2E2200 */
+    --md-tertiary-container:   92 70 0;        /* #5C4600 */
+    --md-on-tertiary-container: 255 238 179;   /* #FFEEB3 */
+
+    /* Surface family — dark scheme */
+    --md-surface:              22 14 26;       /* #160E1A */
+    --md-on-surface:           238 228 244;    /* #EEE4F4 */
+    --md-surface-variant:      66 54 73;       /* #423649 */
+    --md-on-surface-variant:   209 198 217;    /* #D1C6D9 */
+    --md-surface-container:    33 22 38;       /* #211626 */
+    --md-surface-container-high: 44 31 50;    /* #2C1F32 */
+    --md-surface-container-low: 27 18 32;     /* #1B1220 */
+    --md-inverse-surface:      238 228 244;    /* #EEE4F4 */
+    --md-inverse-on-surface:   33 1 36;        /* #210124 */
+
+    /* Error — dark scheme */
+    --md-error:                242 184 181;    /* #F2B8B5 */
+    --md-on-error:             96 20 16;       /* #601410 */
+    --md-error-container:      140 29 24;      /* #8C1D18 */
+    --md-on-error-container:   249 222 220;    /* #F9DEDC */
+
+    /* Outline — dark scheme */
+    --md-outline:              147 134 154;    /* #93869A */
+    --md-outline-variant:      66 54 73;       /* #423649 */
+  }
+
+  html.dark body {
+    background-color: rgb(var(--md-surface));
+    color: rgb(var(--md-on-surface));
+  }
+}
+
+/* Global Dynamic Dark Mode Rules for Backoffice */
+html.dark .bg-surface,
+html.dark .bg-\[\#f4f6f8\],
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: rgb(var(--md-surface-container)) !important;
+}
+
+html.dark .bg-white {
+  background-color: rgb(var(--md-surface-container)) !important;
+  color: rgb(var(--md-on-surface)) !important;
+}
+
+html.dark .bg-slate-200 {
+  background-color: rgb(var(--md-surface-container-high)) !important;
+}
+
+html.dark .text-dark,
+html.dark .text-on-surface,
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: rgb(var(--md-on-surface)) !important;
+}
+
+html.dark .text-dark\/70,
+html.dark .text-dark\/60,
+html.dark .text-dark\/50,
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: rgb(var(--md-on-surface) / 0.7) !important;
+}
+
+html.dark .border-dark\/10,
+html.dark .border-outline-variant,
+html.dark .border-slate-200,
+html.dark .border-slate-300,
+html.dark .border-slate-100 {
+  border-color: rgb(var(--md-outline-variant) / 0.4) !important;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: rgb(var(--md-surface-container-high)) !important;
+  color: rgb(var(--md-on-surface)) !important;
+  border-color: rgb(var(--md-outline-variant)) !important;
+}
+
+html.dark header,
+html.dark nav {
+  background-color: rgb(var(--md-inverse-surface)) !important;
+  border-color: rgb(var(--md-outline-variant) / 0.2) !important;
+}

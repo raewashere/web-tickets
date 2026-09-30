@@ -24,25 +24,25 @@ interface NavItem {
 
     <!-- Sidebar Container -->
     <aside
-      class="fixed top-0 bottom-0 left-0 z-50 flex flex-col w-64 bg-[#0d1117] text-surface transition-transform duration-300 ease-in-out lg:translate-x-0 border-r border-white/10"
+      class="fixed top-0 bottom-0 left-0 z-50 flex flex-col w-64 bg-inverse-surface text-inverse-on-surface transition-transform duration-300 ease-in-out lg:translate-x-0 border-r border-outline-variant/20"
       [class.translate-x-0]="isOpen"
       [class.-translate-x-full]="!isOpen"
     >
       <!-- Brand Header -->
-      <div class="flex items-center justify-between h-16 px-6 border-b border-white/10 bg-black/40">
+      <div class="flex items-center justify-between h-16 px-6 border-b border-outline-variant/20 bg-black/20">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-accent text-dark font-black text-base flex items-center justify-center shadow-md">
+          <div class="w-9 h-9 rounded-xl bg-primary-container text-on-primary-container font-black text-base flex items-center justify-center shadow-md border border-primary/30">
             <i class="fa-solid fa-bolt"></i>
           </div>
           <div>
-            <h1 class="font-black text-lg tracking-tight text-white leading-none">TicketFlow</h1>
-            <span class="text-[10px] uppercase font-black tracking-widest text-accent">GLOBAL BACKOFFICE</span>
+            <h1 class="font-black text-lg tracking-tight text-inverse-on-surface leading-none">BoletoCoqueto</h1>
+            <span class="text-[10px] uppercase font-black tracking-widest text-secondary">GLOBAL BACKOFFICE</span>
           </div>
         </div>
 
         <button
           type="button"
-          class="p-1.5 rounded-lg text-surface/60 hover:text-white hover:bg-white/10 lg:hidden"
+          class="p-1.5 rounded-lg text-inverse-on-surface/60 hover:text-inverse-on-surface hover:bg-inverse-on-surface/10 lg:hidden"
           (click)="closeSidebar.emit()"
           aria-label="Cerrar menú"
         >
@@ -58,8 +58,8 @@ interface NavItem {
           *ngFor="let item of navItems"
           [routerLink]="item.route"
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
-          routerLinkActive="bg-accent/20 text-accent border-r-4 border-accent font-bold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-surface/70 hover:text-white hover:bg-white/5 transition-all text-sm group"
+          routerLinkActive="bg-primary/20 text-on-primary-container border-r-4 border-primary font-bold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-inverse-on-surface/70 hover:text-inverse-on-surface hover:bg-inverse-on-surface/5 transition-all text-sm group"
           (click)="closeSidebar.emit()"
         >
           <i [class]="item.icon + ' text-base group-hover:scale-110 transition-transform w-5 text-center'"></i>
@@ -68,9 +68,9 @@ interface NavItem {
       </nav>
 
       <!-- User Footer -->
-      <div class="p-4 border-t border-white/10 bg-black/40">
+      <div class="p-4 border-t border-outline-variant/20 bg-black/20">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-9 h-9 rounded-full bg-accent/20 text-accent font-bold flex items-center justify-center border border-accent/30 text-sm overflow-hidden flex-shrink-0">
+          <div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container font-bold flex items-center justify-center border border-primary/30 text-sm overflow-hidden flex-shrink-0">
             <img
               *ngIf="auth.avatarUrl()"
               [src]="auth.avatarUrl()!"
@@ -80,20 +80,20 @@ interface NavItem {
             <span *ngIf="!auth.avatarUrl()">{{ userInitial }}</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs font-bold text-white truncate">Super Admin</p>
-            <p class="text-[11px] text-surface/50 truncate">{{ auth.user()?.email }}</p>
+            <p class="text-xs font-bold text-inverse-on-surface truncate">Super Admin</p>
+            <p class="text-[11px] text-inverse-on-surface/50 truncate">{{ auth.user()?.email }}</p>
           </div>
         </div>
 
         <button
           type="button"
           (click)="logout()"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 rounded-xl transition-colors border border-rose-500/20"
+          class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-on-error-container bg-error-container/30 hover:bg-error-container/50 border border-error/20 rounded-xl transition-colors"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Cerrar Sesión Backoffice
+          <span>Cerrar Sesión Backoffice</span>
         </button>
       </div>
     </aside>

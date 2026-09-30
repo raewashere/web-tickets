@@ -9,19 +9,19 @@ import { SupabaseService, AuthService } from '@ticketflow/data-access';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="min-h-screen bg-[#0d1117] flex items-center justify-center p-4">
-      <div class="w-full max-w-md bg-[#161b22] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+    <div class="min-h-screen bg-inverse-surface flex items-center justify-center p-4">
+      <div class="w-full max-w-md bg-surface border border-outline-variant/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-on-surface">
         <!-- Logo and Header -->
         <div class="text-center space-y-2">
-          <div class="w-14 h-14 rounded-2xl bg-accent text-dark font-black text-2xl flex items-center justify-center mx-auto shadow-lg">
+          <div class="w-14 h-14 rounded-2xl bg-primary-container text-on-primary-container font-black text-2xl flex items-center justify-center mx-auto shadow-lg border border-primary/30">
             <i class="fa-solid fa-bolt"></i>
           </div>
-          <h1 class="text-2xl font-black text-white tracking-tight">TicketFlow Backoffice</h1>
-          <p class="text-xs text-white/60">Acceso exclusivo para Super Administradores</p>
+          <h1 class="text-2xl font-black text-on-surface tracking-tight">BoletoCoqueto Backoffice</h1>
+          <p class="text-xs text-on-surface-variant">Acceso exclusivo para Super Administradores</p>
         </div>
 
         <!-- Error message -->
-        <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium">
+        <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-error-container border border-error/20 text-on-error-container text-xs font-medium">
           {{ errorMessage() }}
         </div>
 
@@ -30,7 +30,7 @@ import { SupabaseService, AuthService } from '@ticketflow/data-access';
           type="button"
           (click)="loginWithGoogle()"
           [disabled]="isLoading()"
-          class="w-full py-3 px-4 rounded-xl bg-white hover:bg-gray-100 text-dark font-bold text-sm shadow-md transition flex items-center justify-center gap-3 disabled:opacity-50"
+          class="w-full py-3 px-4 rounded-xl bg-surface hover:bg-surface-container text-on-surface border border-outline-variant/40 font-bold text-sm shadow-sm transition flex items-center justify-center gap-3 disabled:opacity-50"
         >
           <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -42,40 +42,40 @@ import { SupabaseService, AuthService } from '@ticketflow/data-access';
         </button>
 
         <div class="relative flex items-center justify-center my-4">
-          <div class="border-t border-white/10 w-full"></div>
-          <span class="bg-[#161b22] px-3 text-[10px] uppercase font-bold text-white/40 absolute">O con credenciales</span>
+          <div class="border-t border-outline-variant/30 w-full"></div>
+          <span class="bg-surface px-3 text-[10px] uppercase font-bold text-on-surface-variant/70 absolute">O con credenciales</span>
         </div>
 
         <!-- Form Email/Password -->
         <form (ngSubmit)="loginWithEmail()" class="space-y-4">
           <div>
-            <label class="block text-xs font-bold text-white/70 mb-1.5">Correo Electrónico</label>
+            <label class="block text-xs font-bold text-on-surface mb-1.5">Correo Electrónico</label>
             <input
               type="email"
               [(ngModel)]="email"
               name="email"
               required
-              placeholder="admin@ticketflow.com"
-              class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+              placeholder="admin@boletocoqueto.com"
+              class="w-full px-4 py-2.5 rounded-xl bg-surface border border-outline/40 text-on-surface placeholder-on-surface-variant/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
             />
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-white/70 mb-1.5">Contraseña</label>
+            <label class="block text-xs font-bold text-on-surface mb-1.5">Contraseña</label>
             <input
               type="password"
               [(ngModel)]="password"
               name="password"
               required
               placeholder="••••••••"
-              class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+              class="w-full px-4 py-2.5 rounded-xl bg-surface border border-outline/40 text-on-surface placeholder-on-surface-variant/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
             />
           </div>
 
           <button
             type="submit"
             [disabled]="isLoading() || !email || !password"
-            class="w-full py-3 rounded-xl bg-accent hover:bg-accent/90 text-dark font-black text-sm shadow-md transition disabled:opacity-50 mt-2"
+            class="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-black text-sm shadow-md shadow-primary/20 transition disabled:opacity-50 mt-2"
           >
             <span *ngIf="isLoading()">Verificando permisos...</span>
             <span *ngIf="!isLoading()">Entrar al Backoffice →</span>

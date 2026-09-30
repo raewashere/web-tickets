@@ -13,21 +13,21 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-accent bg-accent/10 px-3 py-1 rounded-full inline-block mb-2 border border-accent/20">
+          <span class="text-[10px] font-black uppercase tracking-widest text-on-primary-container bg-primary-container px-3 py-1 rounded-full inline-block mb-2 border border-primary/20">
             Control de Catálogo Global
           </span>
-          <h1 class="text-2xl sm:text-3xl font-black text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-black text-on-surface tracking-tight">
             Eventos Globales de la Plataforma
           </h1>
-          <p class="text-xs sm:text-sm text-dark/60 mt-1">
-            Supervisa todos los shows creados por cualquier artista o recinto en TicketFlow.
+          <p class="text-xs sm:text-sm text-on-surface/60 mt-1">
+            Supervisa todos los shows creados por cualquier artista o recinto en BoletoCoqueto.
           </p>
         </div>
 
         <button
           type="button"
           (click)="loadEvents()"
-          class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
+          class="px-4 py-2 rounded-xl bg-surface border border-outline-variant/30 hover:bg-surface-variant/40 text-on-surface font-bold text-xs shadow-xs transition flex items-center gap-2 self-start sm:self-auto"
         >
           <i class="fa-solid fa-arrows-rotate"></i>
           <span>Actualizar Lista</span>
@@ -35,25 +35,25 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Search & Filters -->
-      <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="p-4 rounded-2xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="w-full md:max-w-md relative">
           <input
             type="text"
             [(ngModel)]="searchQuery"
             placeholder="Buscar evento, artista o recinto..."
-            class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
+            class="w-full pl-10 pr-4 py-2 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-dark/40 text-xs"></i>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-on-surface/40 text-xs"></i>
         </div>
 
         <div class="flex items-center gap-2 w-full md:w-auto">
           <button
             type="button"
             (click)="statusFilter.set('all')"
-            [class.bg-dark]="statusFilter() === 'all'"
-            [class.text-white]="statusFilter() === 'all'"
-            [class.bg-dark/5]="statusFilter() !== 'all'"
-            [class.text-dark]="statusFilter() !== 'all'"
+            [class.bg-primary]="statusFilter() === 'all'"
+            [class.text-on-primary]="statusFilter() === 'all'"
+            [class.bg-surface-variant/50]="statusFilter() !== 'all'"
+            [class.text-on-surface/80]="statusFilter() !== 'all'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Todos ({{ events().length }})
@@ -63,8 +63,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="statusFilter.set('published')"
             [class.bg-emerald-600]="statusFilter() === 'published'"
             [class.text-white]="statusFilter() === 'published'"
-            [class.bg-emerald-50]="statusFilter() !== 'published'"
-            [class.text-emerald-800]="statusFilter() !== 'published'"
+            [class.bg-emerald-500/10]="statusFilter() !== 'published'"
+            [class.text-emerald-700]="statusFilter() !== 'published'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Publicados
@@ -74,7 +74,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="statusFilter.set('draft')"
             [class.bg-amber-500]="statusFilter() === 'draft'"
             [class.text-white]="statusFilter() === 'draft'"
-            [class.bg-amber-50]="statusFilter() !== 'draft'"
+            [class.bg-amber-500/10]="statusFilter() !== 'draft'"
             [class.text-amber-800]="statusFilter() !== 'draft'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
@@ -86,19 +86,19 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg"></tf-spinner>
-        <p class="text-xs text-dark/50">Cargando eventos globales...</p>
+        <p class="text-xs text-on-surface/50">Cargando eventos globales...</p>
       </div>
 
       <!-- Error State -->
-      <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">
+      <div *ngIf="errorMessage()" class="p-4 rounded-2xl bg-error-container text-on-error-container border border-error/20 text-xs font-bold">
         {{ errorMessage() }}
       </div>
 
       <!-- Events Table -->
-      <div *ngIf="!isLoading() && filteredEvents().length > 0" class="bg-white rounded-2xl border border-dark/10 shadow-sm overflow-hidden">
+      <div *ngIf="!isLoading() && filteredEvents().length > 0" class="bg-surface rounded-2xl border border-outline-variant/30 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-dark/5 border-b border-dark/10 text-dark/60 font-bold uppercase text-[10px] tracking-wider">
+            <thead class="bg-surface-variant/40 border-b border-outline-variant/20 text-on-surface/70 font-bold uppercase text-[10px] tracking-wider">
               <tr>
                 <th class="py-3.5 px-4 sm:px-6">Evento</th>
                 <th class="py-3.5 px-4">Artista</th>
@@ -109,52 +109,52 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                 <th class="py-3.5 px-4 text-center">Estado</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-dark/10">
-              <tr *ngFor="let ev of filteredEvents()" class="hover:bg-dark/[0.02] transition">
-                <td class="py-4 px-4 sm:px-6 font-bold text-dark flex items-center gap-3">
+            <tbody class="divide-y divide-outline-variant/20">
+              <tr *ngFor="let ev of filteredEvents()" class="hover:bg-primary/[0.03] transition">
+                <td class="py-4 px-4 sm:px-6 font-bold text-on-surface flex items-center gap-3">
                   <img
                     *ngIf="ev.flyer_url"
                     [src]="ev.flyer_url"
                     [alt]="ev.name"
-                    class="w-10 h-10 rounded-xl object-cover border border-dark/10 shadow-xs flex-shrink-0"
+                    class="w-10 h-10 rounded-xl object-cover border border-outline-variant/30 shadow-xs flex-shrink-0"
                   />
-                  <div *ngIf="!ev.flyer_url" class="w-10 h-10 rounded-xl bg-dark/10 text-dark font-bold flex items-center justify-center text-xs flex-shrink-0">
+                  <div *ngIf="!ev.flyer_url" class="w-10 h-10 rounded-xl bg-primary-container text-on-primary-container font-bold flex items-center justify-center text-xs flex-shrink-0">
                     <i class="fa-solid fa-calendar-days"></i>
                   </div>
                   <div>
-                    <span class="block font-extrabold text-dark">{{ ev.name }}</span>
-                    <span class="text-[10px] text-dark/40 font-mono">ID: {{ ev.id.substring(0,8) }}</span>
+                    <span class="block font-extrabold text-on-surface">{{ ev.name }}</span>
+                    <span class="text-[10px] text-on-surface/40 font-mono">ID: {{ ev.id.substring(0,8) }}</span>
                   </div>
                 </td>
-                <td class="py-4 px-4 font-semibold text-dark/80">
-                  <i class="fa-solid fa-microphone-lines text-dark/40 mr-1.5"></i>
+                <td class="py-4 px-4 font-semibold text-on-surface/80">
+                  <i class="fa-solid fa-microphone-lines text-on-surface/40 mr-1.5"></i>
                   <span>{{ ev.artist_name }}</span>
                 </td>
-                <td class="py-4 px-4 text-dark/70 font-medium">
-                  <i class="fa-solid fa-location-dot text-dark/40 mr-1.5"></i>
+                <td class="py-4 px-4 text-on-surface/70 font-medium">
+                  <i class="fa-solid fa-location-dot text-on-surface/40 mr-1.5"></i>
                   <span>{{ ev.venue_name }}</span>
                 </td>
-                <td class="py-4 px-4 text-dark/70 font-mono text-xs">
+                <td class="py-4 px-4 text-on-surface/70 font-mono text-xs">
                   {{ ev.event_date | date:'dd/MM/yyyy HH:mm' }}
                 </td>
                 <td class="py-4 px-4 text-center font-bold font-mono">
-                  <span class="px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200">
+                  <span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container border border-secondary/20">
                     {{ ev.tickets_sold | number }}
                   </span>
                 </td>
-                <td class="py-4 px-4 text-right font-black font-mono text-emerald-700">
+                <td class="py-4 px-4 text-right font-black font-mono text-primary">
                   \${{ ev.total_gross | number:'1.2-2' }} MXN
                 </td>
                 <td class="py-4 px-4 text-center">
                   <span
                     *ngIf="ev.status === 'published'"
-                    class="inline-block px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-extrabold text-[11px] border border-emerald-200"
+                    class="inline-block px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-extrabold text-[11px] border border-emerald-200 dark:border-emerald-800"
                   >
                     Publicado
                   </span>
                   <span
                     *ngIf="ev.status !== 'published'"
-                    class="inline-block px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-bold text-[11px] border border-amber-200"
+                    class="inline-block px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300 font-bold text-[11px] border border-amber-200 dark:border-amber-800"
                   >
                     Borrador / {{ ev.status }}
                   </span>
@@ -166,12 +166,12 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="!isLoading() && filteredEvents().length === 0" class="p-12 text-center bg-white rounded-2xl border border-dashed border-dark/20 space-y-2">
-        <span class="text-3xl block text-dark/30">
+      <div *ngIf="!isLoading() && filteredEvents().length === 0" class="p-12 text-center bg-surface rounded-2xl border border-dashed border-outline-variant/40 space-y-2">
+        <span class="text-3xl block text-on-surface/30">
           <i class="fa-solid fa-calendar-days"></i>
         </span>
-        <h3 class="font-bold text-dark text-base">No se encontraron eventos</h3>
-        <p class="text-xs text-dark/50">Intenta con otros filtros de búsqueda.</p>
+        <h3 class="font-bold text-on-surface text-base">No se encontraron eventos</h3>
+        <p class="text-xs text-on-surface/50">Intenta con otros filtros de búsqueda.</p>
       </div>
     </div>
   `,

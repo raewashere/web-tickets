@@ -14,7 +14,7 @@ import { BackofficeTopbarComponent } from './backoffice-topbar.component';
     BackofficeTopbarComponent,
   ],
   template: `
-    <div class="min-h-screen bg-[#f4f6f8] text-dark flex">
+    <div class="min-h-screen bg-surface text-on-surface flex">
       <!-- Sidebar -->
       <app-backoffice-sidebar
         [isOpen]="isSidebarOpen"
