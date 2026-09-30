@@ -39,11 +39,11 @@ export interface ChartPoint {
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
             Hola, {{ artist()?.name || auth.user()?.user_metadata?.['full_name'] || 'Artista' }}
           </h1>
-          <p class="text-sm text-dark/60 mt-1">
-            Resumen de actividad y rendimiento de tus eventos en TicketFlow.
+          <p class="text-sm text-on-surface/60 mt-1">
+            Resumen de actividad y rendimiento de tus eventos en BoletoCoqueto.
           </p>
         </div>
 
@@ -64,13 +64,13 @@ export interface ChartPoint {
       <!-- If no artist profile configured yet -->
       <div
         *ngIf="!isLoading() && !artist()"
-        class="p-6 rounded-2xl bg-gradient-to-r from-dark to-dark/90 text-surface border border-primary/30 flex flex-col md:flex-row items-center justify-between gap-6"
+        class="p-6 rounded-2xl bg-gradient-to-r from-inverse-surface to-inverse-surface/90 text-inverse-on-surface border border-primary/30 flex flex-col md:flex-row items-center justify-between gap-6"
       >
         <div class="space-y-1 text-center md:text-left">
-          <h3 class="text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles text-accent"></i> Completa tu Perfil de Artista
+          <h3 class="text-lg font-bold text-inverse-on-surface flex items-center justify-center md:justify-start gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-tertiary"></i> Completa tu Perfil de Artista
           </h3>
-          <p class="text-surface/70 text-sm">
+          <p class="text-inverse-on-surface/70 text-sm">
             Para poder publicar eventos y recibir pagos necesitas registrar tu información artística y fiscal.
           </p>
         </div>
@@ -127,38 +127,38 @@ export interface ChartPoint {
             [value]="formatCurrency(stats()?.netRevenue ?? 0)"
             description="Monto neto generado"
             icon="fa-solid fa-dollar-sign"
-          ></tf-stat-card>
+          </tf-stat-card>
         </div>
 
         <!-- Sales & Performance Interactive SVG Chart Card (UX-9) -->
         <tf-card>
           <div class="space-y-6">
             <!-- Header with Title, Controls, and Trend Badge -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-dark/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-on-surface/10">
               <div>
                 <div class="flex items-center gap-2">
                   <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
                     <i class="fa-solid fa-chart-column"></i>
                   </div>
-                  <h3 class="text-lg font-bold text-dark tracking-tight">Rendimiento y Ventas</h3>
+                  <h3 class="text-lg font-bold text-on-surface tracking-tight">Rendimiento y Ventas</h3>
                 </div>
-                <p class="text-xs text-dark/60 mt-1">Comportamiento de ventas y recaudación de la última semana</p>
+                <p class="text-xs text-on-surface/60 mt-1">Comportamiento de ventas y recaudación de la última semana</p>
               </div>
 
               <div class="flex flex-wrap items-center gap-3">
                 <!-- Trend indicator badge -->
-                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-contrast bg-contrast/10 px-3 py-1.5 rounded-xl border border-contrast/20 shadow-xs">
-                  <i class="fa-solid fa-arrow-trend-up text-contrast"></i> +24% esta semana
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-on-tertiary-container bg-tertiary-container/20 px-3 py-1.5 rounded-xl border border-tertiary-container/30 shadow-xs">
+                  <i class="fa-solid fa-arrow-trend-up text-on-tertiary-container"></i> +24% esta semana
                 </span>
 
                 <!-- View Mode Toggle Buttons -->
-                <div class="flex bg-dark/5 p-1 rounded-xl border border-dark/10">
+                <div class="flex bg-on-surface/5 p-1 rounded-xl border border-on-surface/10">
                   <button
                     type="button"
                     (click)="chartView.set('revenue')"
                     [class]="chartView() === 'revenue' 
                       ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-surface text-primary shadow-xs transition-all' 
-                      : 'px-3 py-1.5 text-xs font-semibold text-dark/70 hover:text-dark transition-all'"
+                      : 'px-3 py-1.5 text-xs font-semibold text-on-surface/70 hover:text-on-surface transition-all'"
                   >
                     <i class="fa-solid fa-dollar-sign mr-1"></i> Ingresos Totales ($ MXN)
                   </button>
@@ -167,7 +167,7 @@ export interface ChartPoint {
                     (click)="chartView.set('tickets')"
                     [class]="chartView() === 'tickets' 
                       ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-surface text-primary shadow-xs transition-all' 
-                      : 'px-3 py-1.5 text-xs font-semibold text-dark/70 hover:text-dark transition-all'"
+                      : 'px-3 py-1.5 text-xs font-semibold text-on-surface/70 hover:text-on-surface transition-all'"
                   >
                     <i class="fa-solid fa-ticket mr-1"></i> Boletos Vendidos (Unidades)
                   </button>
@@ -176,16 +176,16 @@ export interface ChartPoint {
             </div>
 
             <!-- Active Hover Detail Summary -->
-            <div class="flex items-center justify-between bg-dark/5 p-4 rounded-2xl border border-dark/5">
+            <div class="flex items-center justify-between bg-on-surface/5 p-4 rounded-2xl border border-on-surface/5">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-lg font-bold">
                   <i class="fa-solid" [ngClass]="chartView() === 'revenue' ? 'fa-sack-dollar' : 'fa-ticket'"></i>
                 </div>
                 <div>
-                  <span class="text-xs text-dark/60 block font-medium">
+                  <span class="text-xs text-on-surface/60 block font-medium">
                     {{ activePoint() ? activePoint()!.fullDate : 'Total Acumulado (7 días)' }}
                   </span>
-                  <span class="text-xl font-bold text-dark font-mono">
+                  <span class="text-xl font-bold text-on-surface font-mono">
                     {{ activePoint() 
                         ? (chartView() === 'revenue' ? formatCurrency(activePoint()!.revenue) : (activePoint()!.tickets + ' boletos')) 
                         : (chartView() === 'revenue' ? formatCurrency(totalChartRevenue()) : (totalChartTickets() + ' boletos'))
@@ -195,8 +195,8 @@ export interface ChartPoint {
               </div>
 
               <div class="text-right text-xs">
-                <span class="text-dark/50 block">Promedio diario</span>
-                <span class="font-bold text-dark font-mono">
+                <span class="text-on-surface/50 block">Promedio diario</span>
+                <span class="font-bold text-on-surface font-mono">
                   {{ chartView() === 'revenue' ? formatCurrency(avgChartRevenue()) : (avgChartTickets() + ' boletos/día') }}
                 </span>
               </div>
@@ -211,16 +211,16 @@ export interface ChartPoint {
                 <defs>
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" class="text-primary" stop-color="currentColor" stop-opacity="1" />
-                    <stop offset="100%" class="text-accent" stop-color="currentColor" stop-opacity="0.85" />
+                    <stop offset="100%" class="text-tertiary" stop-color="currentColor" stop-opacity="0.85" />
                   </linearGradient>
                   <linearGradient id="barHoverGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" class="text-accent" stop-color="currentColor" stop-opacity="1" />
+                    <stop offset="0%" class="text-tertiary" stop-color="currentColor" stop-opacity="1" />
                     <stop offset="100%" class="text-primary" stop-color="currentColor" stop-opacity="0.95" />
                   </linearGradient>
                 </defs>
 
                 <!-- Y-Axis Grid Lines -->
-                <g stroke="currentColor" stroke-dasharray="4 4" class="text-dark/10">
+                <g stroke="currentColor" stroke-dasharray="4 4" class="text-on-surface/10">
                   <line x1="50" y1="30" x2="680" y2="30" stroke-width="1" />
                   <line x1="50" y1="80" x2="680" y2="80" stroke-width="1" />
                   <line x1="50" y1="130" x2="680" y2="130" stroke-width="1" />
@@ -228,7 +228,7 @@ export interface ChartPoint {
                 </g>
 
                 <!-- Y-Axis Text Ticks -->
-                <g class="text-[10px] font-mono fill-dark/50">
+                <g class="text-[10px] font-mono fill-on-surface/50">
                   <text x="42" y="34" text-anchor="end">{{ chartView() === 'revenue' ? formatShortCurrency(maxChartVal()) : maxChartVal() }}</text>
                   <text x="42" y="84" text-anchor="end">{{ chartView() === 'revenue' ? formatShortCurrency(maxChartVal() * 0.66) : Math.round(maxChartVal() * 0.66) }}</text>
                   <text x="42" y="134" text-anchor="end">{{ chartView() === 'revenue' ? formatShortCurrency(maxChartVal() * 0.33) : Math.round(maxChartVal() * 0.33) }}</text>
@@ -245,7 +245,7 @@ export interface ChartPoint {
                     height="160"
                     rx="8"
                     class="transition-colors cursor-pointer"
-                    [attr.fill]="hoveredIndex() === i ? 'rgb(var(--color-primary) / 0.08)' : 'transparent'"
+                    [attr.fill]="hoveredIndex() === i ? 'rgb(var(--md-primary) / 0.08)' : 'transparent'"
                     (mouseenter)="hoveredIndex.set(i)"
                     (mouseleave)="hoveredIndex.set(null)"
                   />
@@ -271,13 +271,13 @@ export interface ChartPoint {
                       width="80"
                       height="20"
                       rx="6"
-                      class="fill-dark shadow-lg"
+                      class="fill-on-surface shadow-lg"
                     />
                     <text
                       [attr.x]="93 + i * 86"
                       [attr.y]="getBarY(pt) - 12"
                       text-anchor="middle"
-                      class="fill-accent text-[10px] font-bold font-mono"
+                      class="fill-surface text-[10px] font-bold font-mono"
                     >
                       {{ chartView() === 'revenue' ? formatCurrency(pt.revenue) : (pt.tickets + ' tix') }}
                     </text>
@@ -288,7 +288,7 @@ export interface ChartPoint {
                     [attr.x]="93 + i * 86"
                     y="205"
                     text-anchor="middle"
-                    class="text-[11px] font-bold fill-dark/70"
+                    class="text-[11px] font-bold fill-on-surface/70"
                   >
                     {{ pt.dayLabel }}
                   </text>
@@ -296,31 +296,31 @@ export interface ChartPoint {
                     [attr.x]="93 + i * 86"
                     y="219"
                     text-anchor="middle"
-                    class="text-[9px] fill-dark/40 font-mono"
+                    class="text-[9px] fill-on-surface/40 font-mono"
                   >
                     {{ pt.fullDate }}
                   </text>
                 </g>
 
                 <!-- X-Axis Baseline -->
-                <line x1="50" y1="185" x2="680" y2="185" stroke="currentColor" stroke-width="1.5" class="text-dark/20" />
+                <line x1="50" y1="185" x2="680" y2="185" stroke="currentColor" stroke-width="1.5" class="text-on-surface/20" />
               </svg>
             </div>
 
             <!-- Chart Legend & Footer -->
-            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-dark/10 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-on-surface/10 text-xs">
               <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
                   <span class="w-3 h-3 rounded-full bg-primary inline-block shadow-xs"></span>
-                  <span class="text-dark/70 font-medium">Ventas Confirmadas</span>
+                  <span class="text-on-surface/70 font-medium">Ventas Confirmadas</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-accent/40 inline-block"></span>
-                  <span class="text-dark/50">Proyección</span>
+                  <span class="w-3 h-3 rounded-full bg-tertiary/40 inline-block"></span>
+                  <span class="text-on-surface/50">Proyección</span>
                 </div>
               </div>
 
-              <div class="text-dark/60 flex items-center gap-1.5">
+              <div class="text-on-surface/60 flex items-center gap-1.5">
                 <i class="fa-solid fa-clock-rotate-left text-primary"></i>
                 <span>Actualizado en tiempo real</span>
               </div>
@@ -333,11 +333,11 @@ export interface ChartPoint {
           <!-- Upcoming Events Column (2 cols) -->
           <div class="lg:col-span-2 space-y-4">
             <tf-card title="Próximos Eventos Publicados" subtitle="Eventos en curso con venta de boletos activa">
-              <div *ngIf="upcomingEvents().length === 0" class="py-12 text-center text-dark/50">
-                <div class="text-4xl mb-2 text-dark/30">
+              <div *ngIf="upcomingEvents().length === 0" class="py-12 text-center text-on-surface/50">
+                <div class="text-4xl mb-2 text-on-surface/30">
                   <i class="fa-solid fa-masks-theater"></i>
                 </div>
-                <p class="font-medium text-dark/70">No tienes eventos próximos publicados</p>
+                <p class="font-medium text-on-surface/70">No tienes eventos próximos publicados</p>
                 <p class="text-xs mt-1">Crea tu primer evento para comenzar a vender entradas.</p>
                 <div class="mt-4">
                   <a routerLink="/events">
@@ -348,13 +348,13 @@ export interface ChartPoint {
                 </div>
               </div>
 
-              <div *ngIf="upcomingEvents().length > 0" class="divide-y divide-dark/10">
+              <div *ngIf="upcomingEvents().length > 0" class="divide-y divide-on-surface/10">
                 <div
                   *ngFor="let event of upcomingEvents()"
-                  class="py-4 flex items-center justify-between gap-4 hover:bg-dark/5 px-2 rounded-lg transition-colors"
+                  class="py-4 flex items-center justify-between gap-4 hover:bg-on-surface/5 px-2 rounded-lg transition-colors"
                 >
                   <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-12 h-12 rounded-lg bg-dark/10 flex-shrink-0 overflow-hidden">
+                    <div class="w-12 h-12 rounded-lg bg-on-surface/10 flex-shrink-0 overflow-hidden">
                       <img
                         *ngIf="event.flyer_url"
                         [src]="event.flyer_url"
@@ -363,15 +363,15 @@ export interface ChartPoint {
                       />
                       <div
                         *ngIf="!event.flyer_url"
-                        class="w-full h-full flex items-center justify-center text-dark/40"
+                        class="w-full h-full flex items-center justify-center text-on-surface/40"
                       >
                         <i class="fa-solid fa-music"></i>
                       </div>
                     </div>
 
                     <div class="min-w-0">
-                      <h4 class="font-bold text-dark text-sm truncate">{{ event.name }}</h4>
-                      <p class="text-xs text-dark/60 mt-0.5">
+                      <h4 class="font-bold text-on-surface text-sm truncate">{{ event.name }}</h4>
+                      <p class="text-xs text-on-surface/60 mt-0.5">
                         <i class="fa-regular fa-calendar mr-1"></i> {{ formatDate(event.event_date) }}
                       </p>
                     </div>
@@ -394,50 +394,50 @@ export interface ChartPoint {
               <div class="space-y-3">
                 <a
                   routerLink="/artist/profile"
-                  class="flex items-center justify-between p-3 rounded-xl border border-dark/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm group"
+                  class="flex items-center justify-between p-3 rounded-xl border border-on-surface/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm group"
                 >
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center">
                       <i class="fa-solid fa-microphone"></i>
                     </div>
                     <div>
-                      <p class="font-bold text-dark group-hover:text-primary transition-colors">Perfil de Artista</p>
-                      <p class="text-xs text-dark/50">Foto, biografía y datos de facturación</p>
+                      <p class="font-bold text-on-surface group-hover:text-primary transition-colors">Perfil de Artista</p>
+                      <p class="text-xs text-on-surface/50">Foto, biografía y datos de facturación</p>
                     </div>
                   </div>
-                  <i class="fa-solid fa-chevron-right text-dark/40 text-xs group-hover:translate-x-1 transition-transform"></i>
+                  <i class="fa-solid fa-chevron-right text-on-surface/40 text-xs group-hover:translate-x-1 transition-transform"></i>
                 </a>
 
                 <a
                   routerLink="/events"
-                  class="flex items-center justify-between p-3 rounded-xl border border-dark/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm group"
+                  class="flex items-center justify-between p-3 rounded-xl border border-on-surface/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm group"
                 >
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                       <i class="fa-solid fa-calendar-check"></i>
                     </div>
                     <div>
-                      <p class="font-bold text-dark group-hover:text-primary transition-colors">Gestión de Eventos</p>
-                      <p class="text-xs text-dark/50">Boletos, cortesías y sedes</p>
+                      <p class="font-bold text-on-surface group-hover:text-primary transition-colors">Gestión de Eventos</p>
+                      <p class="text-xs text-on-surface/50">Boletos, cortesías y sedes</p>
                     </div>
                   </div>
-                  <i class="fa-solid fa-chevron-right text-dark/40 text-xs group-hover:translate-x-1 transition-transform"></i>
+                  <i class="fa-solid fa-chevron-right text-on-surface/40 text-xs group-hover:translate-x-1 transition-transform"></i>
                 </a>
 
                 <a
                   routerLink="/venues"
-                  class="flex items-center justify-between p-3 rounded-xl border border-dark/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm group"
+                  class="flex items-center justify-between p-3 rounded-xl border border-on-surface/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm group"
                 >
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-contrast/10 text-contrast flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg bg-tertiary-container/20 text-on-tertiary-container flex items-center justify-center">
                       <i class="fa-solid fa-location-dot"></i>
                     </div>
                     <div>
-                      <p class="font-bold text-dark group-hover:text-primary transition-colors">Catálogo de Sedes</p>
-                      <p class="text-xs text-dark/50">Ubicaciones y configuraciones de capacidad</p>
+                      <p class="font-bold text-on-surface group-hover:text-primary transition-colors">Catálogo de Sedes</p>
+                      <p class="text-xs text-on-surface/50">Ubicaciones y configuraciones de capacidad</p>
                     </div>
                   </div>
-                  <i class="fa-solid fa-chevron-right text-dark/40 text-xs group-hover:translate-x-1 transition-transform"></i>
+                  <i class="fa-solid fa-chevron-right text-on-surface/40 text-xs group-hover:translate-x-1 transition-transform"></i>
                 </a>
               </div>
             </tf-card>

@@ -6,49 +6,126 @@
 
 @layer base {
   :root {
-    /* ==========================================================================
-       DESIGN SYSTEM TOKENS (RGB format for Tailwind alpha modifier support)
-       To update or swap the color palette, simply modify these 6 tokens:
-       ========================================================================== */
-    --color-primary: 117 13 55;    /* #750D37 — Burdeos intenso principal */
-    --color-accent: 179 222 193;   /* #B3DEC1 — Menta suave / Celadón */
-    --color-surface: 247 249 247;  /* #F7F9F7 — Blanco nieve / Letras */
-    --color-dark: 33 1 36;         /* #210124 — Berenjena noche secundario */
-    --color-contrast: 255 212 0;   /* #FFD400 — Oro vibrante acento secundario */
-    --color-danger: 192 57 43;     /* #c0392b — Peligro semántico */
+    /* ======================================================================
+       BOLETOCOQUETO — Material Design 3 Light Scheme
+       Seed palette:
+         Primary   #4e0a0b  — Burgundy
+         Secondary #14281d  — Dark forest
+         Tertiary  #355834  — Forest green
+       ====================================================================== */
+
+    /* Primary family — burgundy/crimson */
+    --md-primary:              78 10 11;       /* #4e0a0b  tone-40 */
+    --md-on-primary:           242 238 232;    /* #f2eee8  tone-99 */
+    --md-primary-container:    255 218 212;    /* #ffdad4  tone-90 */
+    --md-on-primary-container: 65 0 5;         /* #410005  tone-10 */
+
+    /* Secondary family — forest green */
+    --md-secondary:            20 40 29;       /* #14281d  tone-30 */
+    --md-on-secondary:         242 238 232;    /* #f2eee8  tone-99 */
+    --md-secondary-container:  168 218 189;    /* #a8dabd  tone-85 */
+    --md-on-secondary-container: 0 31 15;      /* #001f0f  tone-10 */
+
+    /* Tertiary family — warm green accent */
+    --md-tertiary:             53 88 52;       /* #355834  tone-35 */
+    --md-on-tertiary:          242 238 232;    /* #f2eee8  tone-99 */
+    --md-tertiary-container:   188 242 184;    /* #bcf2b8  tone-88 */
+    --md-on-tertiary-container: 0 34 4;        /* #002204  tone-10 */
+
+    /* Surface family — warm cream */
+    --md-surface:              242 238 232;    /* #f2eee8  tone-99 */
+    --md-on-surface:           32 18 18;       /* #201212  tone-12 */
+    --md-surface-variant:      245 221 216;    /* #f5ddd8  tone-92 */
+    --md-on-surface-variant:   83 67 66;       /* #534342  tone-32 */
+    --md-surface-container:    237 225 220;    /* #ede1dc  tone-94 */
+    --md-surface-container-high: 228 215 210; /* #e4d7d2  tone-90 */
+    --md-surface-container-low: 248 242 237;  /* #f8f2ed  tone-96 */
+    --md-inverse-surface:      54 47 46;       /* #362f2e  tone-20 */
+    --md-inverse-on-surface:   242 238 232;    /* #f2eee8  tone-99 */
+
+    /* Error */
+    --md-error:                179 38 30;      /* #b3261e  M3 standard */
+    --md-on-error:             255 255 255;    /* #ffffff */
+    --md-error-container:      249 222 220;    /* #f9dedc */
+    --md-on-error-container:   65 14 11;       /* #410e0b */
+
+    /* Outline */
+    --md-outline:              133 115 114;    /* #857372  tone-50 */
+    --md-outline-variant:      216 194 192;    /* #d8c2c0  tone-80 */
   }
 
   html.dark {
     color-scheme: dark;
+
+    /* Primary family — dark scheme */
+    --md-primary:              255 180 171;    /* #ffb4ab  tone-80 */
+    --md-on-primary:           105 0 9;        /* #690009  tone-20 */
+    --md-primary-container:    147 0 19;       /* #930013  tone-30 */
+    --md-on-primary-container: 255 218 212;    /* #ffdad4  tone-90 */
+
+    /* Secondary family — dark scheme */
+    --md-secondary:            147 209 171;    /* #93d1ab  tone-80 */
+    --md-on-secondary:         0 55 26;        /* #00371a  tone-15 */
+    --md-secondary-container:  0 80 40;        /* #005028  tone-25 */
+    --md-on-secondary-container: 168 218 189;  /* #a8dabd  tone-85 */
+
+    /* Tertiary family — dark scheme */
+    --md-tertiary:             158 210 153;    /* #9ed299  tone-80 */
+    --md-on-tertiary:          10 57 9;        /* #0a3909  tone-20 */
+    --md-tertiary-container:   34 82 32;       /* #225220  tone-30 */
+    --md-on-tertiary-container: 188 242 184;   /* #bcf2b8  tone-88 */
+
+    /* Surface family — dark scheme */
+    --md-surface:              26 18 18;       /* #1a1212  tone-6 */
+    --md-on-surface:           235 225 222;    /* #ebe1de  tone-91 */
+    --md-surface-variant:      83 67 66;       /* #534342  tone-32 */
+    --md-on-surface-variant:   216 194 192;    /* #d8c2c0  tone-80 */
+    --md-surface-container:    38 28 28;       /* #261c1c  tone-12 */
+    --md-surface-container-high: 49 37 37;    /* #312525  tone-17 */
+    --md-surface-container-low: 32 22 22;     /* #201616  tone-10 */
+    --md-inverse-surface:      235 225 222;    /* #ebe1de  tone-91 */
+    --md-inverse-on-surface:   54 47 46;       /* #362f2e  tone-20 */
+
+    /* Error — dark scheme */
+    --md-error:                242 184 181;    /* #f2b8b5  tone-80 */
+    --md-on-error:             96 20 16;       /* #601410  tone-20 */
+    --md-error-container:      140 29 24;      /* #8c1d18  tone-30 */
+    --md-on-error-container:   249 222 220;    /* #f9dedc  tone-90 */
+
+    /* Outline — dark scheme */
+    --md-outline:              160 140 138;    /* #a08c8a  tone-60 */
+    --md-outline-variant:      83 67 66;       /* #534342  tone-32 */
   }
 
   html.dark body {
-    background-color: rgb(var(--color-dark)) !important;
-    color: rgb(var(--color-surface)) !important;
+    background-color: rgb(var(--md-surface));
+    color: rgb(var(--md-on-surface));
   }
 }
+
 
 /* Global Dynamic Dark Mode Rules for Store */
 html.dark .bg-surface,
 html.dark .bg-slate-50,
 html.dark .bg-slate-100 {
-  background-color: rgb(var(--color-dark) / 0.95) !important;
+  background-color: rgb(var(--md-surface-container)) !important;
 }
 
 html.dark .bg-white {
-  background-color: rgb(var(--color-dark)) !important;
-  color: rgb(var(--color-surface)) !important;
+  background-color: rgb(var(--md-surface-container)) !important;
+  color: rgb(var(--md-on-surface)) !important;
 }
 
 html.dark .bg-slate-200 {
-  background-color: rgb(var(--color-dark) / 0.8) !important;
+  background-color: rgb(var(--md-surface-container-high)) !important;
 }
 
 html.dark .text-dark,
+html.dark .text-on-surface,
 html.dark .text-slate-900,
 html.dark .text-slate-800,
 html.dark .text-slate-700 {
-  color: rgb(var(--color-surface)) !important;
+  color: rgb(var(--md-on-surface)) !important;
 }
 
 html.dark .text-dark\/70,
@@ -56,20 +133,21 @@ html.dark .text-dark\/60,
 html.dark .text-dark\/50,
 html.dark .text-slate-600,
 html.dark .text-slate-500 {
-  color: rgb(var(--color-surface) / 0.7) !important;
+  color: rgb(var(--md-on-surface) / 0.7) !important;
 }
 
 html.dark .border-dark\/10,
+html.dark .border-outline-variant,
 html.dark .border-slate-200,
 html.dark .border-slate-300,
 html.dark .border-slate-100 {
-  border-color: rgb(var(--color-surface) / 0.15) !important;
+  border-color: rgb(var(--md-outline-variant) / 0.4) !important;
 }
 
 html.dark input:not([type="checkbox"]):not([type="radio"]),
 html.dark select,
 html.dark textarea {
-  background-color: rgb(var(--color-dark) / 0.85) !important;
-  color: rgb(var(--color-surface)) !important;
-  border-color: rgb(var(--color-surface) / 0.25) !important;
+  background-color: rgb(var(--md-surface-container-high)) !important;
+  color: rgb(var(--md-on-surface)) !important;
+  border-color: rgb(var(--md-outline-variant)) !important;
 }

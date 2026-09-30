@@ -10,22 +10,22 @@ import { ThemeService } from '@ticketflow/shared-ui';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <header class="sticky top-0 z-50 bg-dark/95 backdrop-blur-md border-b border-dark/80 text-surface shadow-md">
+    <header class="sticky top-0 z-50 bg-inverse-surface/95 backdrop-blur-md border-b border-outline-variant/20 text-inverse-on-surface shadow-md">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
         <!-- Brand Logo -->
         <a routerLink="/" class="flex items-center gap-3 group flex-shrink-0">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary via-primary to-accent flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
-            <i class="fa-solid fa-ticket text-surface text-lg"></i>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary via-primary to-tertiary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-ticket text-on-primary text-lg"></i>
           </div>
-          <span class="text-xl sm:text-2xl font-bold tracking-tight text-surface flex items-center select-none">
-            Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/70 ml-0.5">Coqueto</span>
+          <span class="text-xl sm:text-2xl font-bold tracking-tight text-inverse-on-surface flex items-center select-none">
+            Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-tertiary to-tertiary/70 ml-0.5">Coqueto</span>
           </span>
         </a>
 
         <!-- Desktop Search Bar -->
         <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
           <form (ngSubmit)="onSearchSubmit()" class="w-full relative">
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-surface/50 text-sm">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-inverse-on-surface/50 text-sm">
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
             <input
@@ -33,14 +33,14 @@ import { ThemeService } from '@ticketflow/shared-ui';
               [(ngModel)]="searchQuery"
               name="searchQuery"
               placeholder="Buscar conciertos, artistas o recintos..."
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark/80 border border-surface/20 text-surface placeholder-surface/40 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent text-xs sm:text-sm transition-all shadow-inner"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-inverse-surface/80 border border-outline-variant/20 text-inverse-on-surface placeholder-inverse-on-surface/40 focus:outline-none focus:ring-2 focus:ring-tertiary/50 focus:border-transparent text-xs sm:text-sm transition-all shadow-inner"
             />
           </form>
         </div>
 
         <!-- Right Actions / User Navigation -->
         <div class="hidden sm:flex items-center gap-4">
-          <a routerLink="/search" class="text-xs sm:text-sm font-semibold text-surface/80 hover:text-accent transition-colors">
+          <a routerLink="/search" class="text-xs sm:text-sm font-semibold text-inverse-on-surface/80 hover:text-tertiary transition-colors">
             Explorar Eventos
           </a>
 
@@ -48,11 +48,11 @@ import { ThemeService } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="themeService.toggleTheme()"
-            class="p-2 rounded-xl bg-dark/60 hover:bg-dark/80 text-surface/80 border border-surface/20 transition-colors shadow-sm flex items-center justify-center"
+            class="p-2 rounded-xl bg-inverse-surface/60 hover:bg-inverse-surface/80 text-inverse-on-surface/80 border border-outline-variant/20 transition-colors shadow-sm flex items-center justify-center"
             [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
             [attr.aria-label]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
           >
-            <i class="fa-solid text-sm" [ngClass]="themeService.isDark() ? 'fa-sun text-accent' : 'fa-moon text-surface/70'"></i>
+            <i class="fa-solid text-sm" [ngClass]="themeService.isDark() ? 'fa-sun text-tertiary' : 'fa-moon text-inverse-on-surface/70'"></i>
           </button>
 
 
@@ -61,9 +61,9 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <a routerLink="/my-tickets">
               <button
                 type="button"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-dark/60 hover:bg-dark/80 text-surface/90 text-xs sm:text-sm font-bold border border-surface/20 transition-colors shadow-sm"
+                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-inverse-surface/60 hover:bg-inverse-surface/80 text-inverse-on-surface/90 text-xs sm:text-sm font-bold border border-outline-variant/20 transition-colors shadow-sm"
               >
-                <i class="fa-solid fa-ticket text-accent"></i> Mis Boletos
+                <i class="fa-solid fa-ticket text-tertiary"></i> Mis Boletos
               </button>
             </a>
 
@@ -72,53 +72,53 @@ import { ThemeService } from '@ticketflow/shared-ui';
               <button
                 type="button"
                 (click)="toggleUserMenu()"
-                class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-dark/60 hover:bg-dark/80 border border-surface/20 transition-colors text-xs font-bold text-surface shadow-sm"
+                class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-inverse-surface/60 hover:bg-inverse-surface/80 border border-outline-variant/20 transition-colors text-xs font-bold text-inverse-on-surface shadow-sm"
               >
                 <div class="relative w-6 h-6 flex-shrink-0">
                   <img
                     *ngIf="auth.avatarUrl()"
                     [src]="auth.avatarUrl()!"
                     [alt]="'Foto de perfil de ' + userName"
-                    class="w-6 h-6 rounded-full object-cover ring-1 ring-accent/50"
+                    class="w-6 h-6 rounded-full object-cover ring-1 ring-tertiary/50"
                   />
                   <div
                     *ngIf="!auth.avatarUrl()"
-                    class="w-6 h-6 rounded-full bg-accent text-dark font-black flex items-center justify-center text-xs"
+                    class="w-6 h-6 rounded-full bg-tertiary text-on-tertiary font-black flex items-center justify-center text-xs"
                   >
                     {{ userInitial }}
                   </div>
                 </div>
-                <span class="max-w-[110px] truncate text-surface/90">
+                <span class="max-w-[110px] truncate text-inverse-on-surface/90">
                   {{ userName }}
                 </span>
-                <i class="fa-solid fa-chevron-down text-surface/50 text-[10px]"></i>
+                <i class="fa-solid fa-chevron-down text-inverse-on-surface/50 text-[10px]"></i>
               </button>
 
               <!-- Dropdown -->
               <div
                 *ngIf="showMenu()"
-                class="absolute right-0 mt-2 w-52 rounded-2xl bg-dark text-surface shadow-2xl border border-surface/10 py-2 z-50 animate-fade-in"
+                class="absolute right-0 mt-2 w-52 rounded-2xl bg-inverse-surface text-inverse-on-surface shadow-2xl border border-outline-variant/20 py-2 z-50 animate-fade-in"
               >
-                <div class="px-4 py-2.5 border-b border-surface/10">
-                  <p class="text-xs font-bold text-surface truncate">
+                <div class="px-4 py-2.5 border-b border-outline-variant/20">
+                  <p class="text-xs font-bold text-inverse-on-surface truncate">
                     {{ userName }}
                   </p>
-                  <p class="text-[11px] text-surface/50 truncate mt-0.5">{{ auth.user()?.email }}</p>
+                  <p class="text-[11px] text-inverse-on-surface/50 truncate mt-0.5">{{ auth.user()?.email }}</p>
                 </div>
 
                 <a
                   routerLink="/my-tickets"
                   (click)="showMenu.set(false)"
-                  class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-surface/80 hover:text-surface hover:bg-surface/5 transition-colors"
+                  class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-inverse-on-surface/80 hover:text-inverse-on-surface hover:bg-inverse-on-surface/5 transition-colors"
                 >
-                  <i class="fa-solid fa-ticket text-accent"></i>
+                  <i class="fa-solid fa-ticket text-tertiary"></i>
                   <span>Mis Boletos Comprados</span>
                 </a>
 
                 <button
                   type="button"
                   (click)="onLogout()"
-                  class="w-full text-left px-4 py-2.5 text-xs font-semibold text-accent/80 hover:text-accent hover:bg-accent/10 transition-colors border-t border-surface/10 flex items-center gap-2"
+                  class="w-full text-left px-4 py-2.5 text-xs font-semibold text-tertiary/80 hover:text-tertiary hover:bg-tertiary/10 transition-colors border-t border-outline-variant/20 flex items-center gap-2"
                 >
                   <i class="fa-solid fa-right-from-bracket"></i>
                   <span>Cerrar Sesión</span>
@@ -132,7 +132,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <a routerLink="/login">
               <button
                 type="button"
-                class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-surface/70 hover:text-surface hover:bg-surface/10 transition-colors"
+                class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-inverse-on-surface/70 hover:text-inverse-on-surface hover:bg-inverse-on-surface/10 transition-colors"
               >
                 Iniciar Sesión
               </button>
@@ -140,7 +140,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <a routerLink="/register">
               <button
                 type="button"
-                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-accent hover:bg-accent/90 text-dark transition-all shadow-md shadow-accent/20"
+                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-tertiary hover:bg-tertiary/90 text-on-tertiary transition-all shadow-md shadow-tertiary/20"
               >
                 Crear Cuenta
               </button>
@@ -152,7 +152,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
         <button
           type="button"
           (click)="toggleMobileMenu()"
-          class="sm:hidden p-2 rounded-xl bg-dark/60 text-surface/70 hover:text-surface hover:bg-dark/80 transition-colors border border-surface/20"
+          class="sm:hidden p-2 rounded-xl bg-inverse-surface/60 text-inverse-on-surface/70 hover:text-inverse-on-surface hover:bg-inverse-surface/80 transition-colors border border-outline-variant/20"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path *ngIf="!mobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -162,25 +162,25 @@ import { ThemeService } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Mobile Dropdown -->
-      <div *ngIf="mobileMenuOpen()" class="sm:hidden bg-dark border-t border-surface/10 px-4 py-5 space-y-4">
+      <div *ngIf="mobileMenuOpen()" class="sm:hidden bg-inverse-surface border-t border-outline-variant/20 px-4 py-5 space-y-4">
         <form (ngSubmit)="onSearchSubmit()" class="relative">
           <input
             type="text"
             [(ngModel)]="searchQuery"
             name="mobileSearch"
             placeholder="Buscar conciertos, artistas..."
-            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark/60 border border-surface/20 text-surface placeholder-surface/40 text-xs"
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-inverse-surface/60 border border-outline-variant/20 text-inverse-on-surface placeholder-inverse-on-surface/40 text-xs"
           />
-          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-surface/40 text-xs">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-inverse-on-surface/40 text-xs">
             <i class="fa-solid fa-magnifying-glass"></i>
           </span>
         </form>
 
-        <div class="space-y-2 pt-2 border-t border-surface/10">
+        <div class="space-y-2 pt-2 border-t border-outline-variant/20">
           <a
             routerLink="/search"
             (click)="mobileMenuOpen.set(false)"
-            class="block px-3 py-2 rounded-xl text-sm font-semibold text-surface/80 hover:bg-surface/10"
+            class="block px-3 py-2 rounded-xl text-sm font-semibold text-inverse-on-surface/80 hover:bg-inverse-on-surface/10"
           >
             Explorar Todos los Eventos
           </a>
@@ -189,7 +189,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <a
               routerLink="/my-tickets"
               (click)="mobileMenuOpen.set(false)"
-              class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-accent hover:bg-surface/10"
+              class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-tertiary hover:bg-inverse-on-surface/10"
             >
               <i class="fa-solid fa-ticket"></i>
               <span>Mis Boletos</span>
@@ -197,7 +197,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
             <button
               type="button"
               (click)="onLogout()"
-              class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-accent/80 hover:bg-accent/10 flex items-center gap-2"
+              class="w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-tertiary/80 hover:bg-tertiary/10 flex items-center gap-2"
             >
               <i class="fa-solid fa-right-from-bracket"></i>
               <span>Cerrar Sesión</span>
@@ -209,7 +209,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
               <a routerLink="/login" (click)="mobileMenuOpen.set(false)">
                 <button
                   type="button"
-                  class="w-full py-2.5 rounded-xl bg-dark/60 text-surface/80 text-xs font-bold border border-surface/20 hover:bg-dark/80"
+                  class="w-full py-2.5 rounded-xl bg-inverse-surface/60 text-inverse-on-surface/80 text-xs font-bold border border-outline-variant/20 hover:bg-inverse-surface/80"
                 >
                   Iniciar Sesión
                 </button>
@@ -217,7 +217,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
               <a routerLink="/register" (click)="mobileMenuOpen.set(false)">
                 <button
                   type="button"
-                  class="w-full py-2.5 rounded-xl bg-accent text-dark text-xs font-bold hover:bg-accent/90"
+                  class="w-full py-2.5 rounded-xl bg-tertiary text-on-tertiary text-xs font-bold hover:bg-tertiary/90"
                 >
                   Registrarse
                 </button>
