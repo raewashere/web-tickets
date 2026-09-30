@@ -211,10 +211,10 @@ export interface ChartPoint {
                 <defs>
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" class="text-primary" stop-color="currentColor" stop-opacity="1" />
-                    <stop offset="100%" class="text-tertiary" stop-color="currentColor" stop-opacity="0.85" />
+                    <stop offset="100%" class="text-secondary" stop-color="currentColor" stop-opacity="0.85" />
                   </linearGradient>
                   <linearGradient id="barHoverGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" class="text-tertiary" stop-color="currentColor" stop-opacity="1" />
+                    <stop offset="0%" class="text-secondary" stop-color="currentColor" stop-opacity="1" />
                     <stop offset="100%" class="text-primary" stop-color="currentColor" stop-opacity="0.95" />
                   </linearGradient>
                 </defs>
@@ -315,7 +315,7 @@ export interface ChartPoint {
                   <span class="text-on-surface/70 font-medium">Ventas Confirmadas</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-tertiary/40 inline-block"></span>
+                  <span class="w-3 h-3 rounded-full bg-secondary/40 inline-block"></span>
                   <span class="text-on-surface/50">Proyección</span>
                 </div>
               </div>

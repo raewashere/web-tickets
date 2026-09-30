@@ -8,93 +8,93 @@
   :root {
     /* ======================================================================
        BOLETOCOQUETO — Material Design 3 Light Scheme
-       Seed palette:
-         Primary   #4e0a0b  — Burgundy
-         Secondary #14281d  — Dark forest
-         Tertiary  #355834  — Forest green
+       Palette:
+         Primary   #540D6E  — Violeta profundo
+         Secondary #EE4266  — Rosa coral vibrante
+         Tertiary  #FFD23F  — Amarillo dorado vibrante
        ====================================================================== */
 
-    /* Primary family — burgundy/crimson */
-    --md-primary:              78 10 11;       /* #4e0a0b  tone-40 */
-    --md-on-primary:           242 238 232;    /* #f2eee8  tone-99 */
-    --md-primary-container:    255 218 212;    /* #ffdad4  tone-90 */
-    --md-on-primary-container: 65 0 5;         /* #410005  tone-10 */
+    /* Primary family — deep violet */
+    --md-primary:              84 13 110;      /* #540D6E */
+    --md-on-primary:           255 255 255;    /* #FFFFFF */
+    --md-primary-container:    240 210 255;    /* #F0D2FF */
+    --md-on-primary-container: 45 0 65;        /* #2D0041 */
 
-    /* Secondary family — forest green */
-    --md-secondary:            20 40 29;       /* #14281d  tone-30 */
-    --md-on-secondary:         242 238 232;    /* #f2eee8  tone-99 */
-    --md-secondary-container:  168 218 189;    /* #a8dabd  tone-85 */
-    --md-on-secondary-container: 0 31 15;      /* #001f0f  tone-10 */
+    /* Secondary family — rose/coral */
+    --md-secondary:            238 66 102;     /* #EE4266 */
+    --md-on-secondary:         255 255 255;    /* #FFFFFF */
+    --md-secondary-container:  255 220 228;    /* #FFDCE4 */
+    --md-on-secondary-container: 74 0 25;      /* #4A0019 */
 
-    /* Tertiary family — warm green accent */
-    --md-tertiary:             53 88 52;       /* #355834  tone-35 */
-    --md-on-tertiary:          242 238 232;    /* #f2eee8  tone-99 */
-    --md-tertiary-container:   188 242 184;    /* #bcf2b8  tone-88 */
-    --md-on-tertiary-container: 0 34 4;        /* #002204  tone-10 */
+    /* Tertiary family — golden yellow */
+    --md-tertiary:             255 210 63;     /* #FFD23F */
+    --md-on-tertiary:          33 0 52;        /* #210034 (alto contraste sobre amarillo) */
+    --md-tertiary-container:   255 238 179;    /* #FFEEB3 */
+    --md-on-tertiary-container: 56 42 0;       /* #382A00 */
 
-    /* Surface family — warm cream */
-    --md-surface:              242 238 232;    /* #f2eee8  tone-99 */
-    --md-on-surface:           32 18 18;       /* #201212  tone-12 */
-    --md-surface-variant:      245 221 216;    /* #f5ddd8  tone-92 */
-    --md-on-surface-variant:   83 67 66;       /* #534342  tone-32 */
-    --md-surface-container:    237 225 220;    /* #ede1dc  tone-94 */
-    --md-surface-container-high: 228 215 210; /* #e4d7d2  tone-90 */
-    --md-surface-container-low: 248 242 237;  /* #f8f2ed  tone-96 */
-    --md-inverse-surface:      54 47 46;       /* #362f2e  tone-20 */
-    --md-inverse-on-surface:   242 238 232;    /* #f2eee8  tone-99 */
+    /* Surface family — with subtle violet tint */
+    --md-surface:              254 250 255;    /* #FEFAFF */
+    --md-on-surface:           31 22 36;       /* #1F1624 */
+    --md-surface-variant:      238 228 244;    /* #EEE4F4 */
+    --md-on-surface-variant:   77 65 84;       /* #4D4154 */
+    --md-surface-container:    245 237 250;    /* #F5EDFA */
+    --md-surface-container-high: 239 230 245; /* #EFE6F5 */
+    --md-surface-container-low: 250 244 253;  /* #FAF4FD */
+    --md-inverse-surface:      33 1 36;        /* #210124 (Berenjena noche profundo) */
+    --md-inverse-on-surface:   254 250 255;    /* #FEFAFF */
 
     /* Error */
-    --md-error:                179 38 30;      /* #b3261e  M3 standard */
-    --md-on-error:             255 255 255;    /* #ffffff */
-    --md-error-container:      249 222 220;    /* #f9dedc */
-    --md-on-error-container:   65 14 11;       /* #410e0b */
+    --md-error:                179 38 30;      /* #B3261E */
+    --md-on-error:             255 255 255;    /* #FFFFFF */
+    --md-error-container:      249 222 220;    /* #F9DEDC */
+    --md-on-error-container:   65 14 11;       /* #410E0B */
 
     /* Outline */
-    --md-outline:              133 115 114;    /* #857372  tone-50 */
-    --md-outline-variant:      216 194 192;    /* #d8c2c0  tone-80 */
+    --md-outline:              126 113 133;    /* #7E7185 */
+    --md-outline-variant:      209 198 217;    /* #D1C6D9 */
   }
 
   html.dark {
     color-scheme: dark;
 
     /* Primary family — dark scheme */
-    --md-primary:              255 180 171;    /* #ffb4ab  tone-80 */
-    --md-on-primary:           105 0 9;        /* #690009  tone-20 */
-    --md-primary-container:    147 0 19;       /* #930013  tone-30 */
-    --md-on-primary-container: 255 218 212;    /* #ffdad4  tone-90 */
+    --md-primary:              215 168 255;    /* #D7A8FF */
+    --md-on-primary:           60 0 85;        /* #3C0055 */
+    --md-primary-container:    84 13 110;      /* #540D6E */
+    --md-on-primary-container: 240 210 255;    /* #F0D2FF */
 
     /* Secondary family — dark scheme */
-    --md-secondary:            147 209 171;    /* #93d1ab  tone-80 */
-    --md-on-secondary:         0 55 26;        /* #00371a  tone-15 */
-    --md-secondary-container:  0 80 40;        /* #005028  tone-25 */
-    --md-on-secondary-container: 168 218 189;  /* #a8dabd  tone-85 */
+    --md-secondary:            255 178 194;    /* #FFB2C2 */
+    --md-on-secondary:         92 0 31;        /* #5C001F */
+    --md-secondary-container:  168 18 63;      /* #A8123F */
+    --md-on-secondary-container: 255 216 224;  /* #FFD8E0 */
 
     /* Tertiary family — dark scheme */
-    --md-tertiary:             158 210 153;    /* #9ed299  tone-80 */
-    --md-on-tertiary:          10 57 9;        /* #0a3909  tone-20 */
-    --md-tertiary-container:   34 82 32;       /* #225220  tone-30 */
-    --md-on-tertiary-container: 188 242 184;   /* #bcf2b8  tone-88 */
+    --md-tertiary:             255 210 63;     /* #FFD23F */
+    --md-on-tertiary:          46 34 0;        /* #2E2200 */
+    --md-tertiary-container:   92 70 0;        /* #5C4600 */
+    --md-on-tertiary-container: 255 238 179;   /* #FFEEB3 */
 
     /* Surface family — dark scheme */
-    --md-surface:              26 18 18;       /* #1a1212  tone-6 */
-    --md-on-surface:           235 225 222;    /* #ebe1de  tone-91 */
-    --md-surface-variant:      83 67 66;       /* #534342  tone-32 */
-    --md-on-surface-variant:   216 194 192;    /* #d8c2c0  tone-80 */
-    --md-surface-container:    38 28 28;       /* #261c1c  tone-12 */
-    --md-surface-container-high: 49 37 37;    /* #312525  tone-17 */
-    --md-surface-container-low: 32 22 22;     /* #201616  tone-10 */
-    --md-inverse-surface:      235 225 222;    /* #ebe1de  tone-91 */
-    --md-inverse-on-surface:   54 47 46;       /* #362f2e  tone-20 */
+    --md-surface:              22 14 26;       /* #160E1A */
+    --md-on-surface:           238 228 244;    /* #EEE4F4 */
+    --md-surface-variant:      66 54 73;       /* #423649 */
+    --md-on-surface-variant:   209 198 217;    /* #D1C6D9 */
+    --md-surface-container:    33 22 38;       /* #211626 */
+    --md-surface-container-high: 44 31 50;    /* #2C1F32 */
+    --md-surface-container-low: 27 18 32;     /* #1B1220 */
+    --md-inverse-surface:      238 228 244;    /* #EEE4F4 */
+    --md-inverse-on-surface:   33 1 36;        /* #210124 */
 
     /* Error — dark scheme */
-    --md-error:                242 184 181;    /* #f2b8b5  tone-80 */
-    --md-on-error:             96 20 16;       /* #601410  tone-20 */
-    --md-error-container:      140 29 24;      /* #8c1d18  tone-30 */
-    --md-on-error-container:   249 222 220;    /* #f9dedc  tone-90 */
+    --md-error:                242 184 181;    /* #F2B8B5 */
+    --md-on-error:             96 20 16;       /* #601410 */
+    --md-error-container:      140 29 24;      /* #8C1D18 */
+    --md-on-error-container:   249 222 220;    /* #F9DEDC */
 
     /* Outline — dark scheme */
-    --md-outline:              160 140 138;    /* #a08c8a  tone-60 */
-    --md-outline-variant:      83 67 66;       /* #534342  tone-32 */
+    --md-outline:              147 134 154;    /* #93869A */
+    --md-outline-variant:      66 54 73;       /* #423649 */
   }
 
   html.dark body {
@@ -102,6 +102,7 @@
     color: rgb(var(--md-on-surface));
   }
 }
+
 
 
 /* Global Dynamic Dark Mode Rules for Store */

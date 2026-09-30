@@ -51,9 +51,9 @@ module.exports = {
         'outline-variant':'rgb(var(--md-outline-variant) / <alpha-value>)',
 
         /* ── Legacy aliases (keep backward-compat for any remaining refs) ─ */
-        accent:   'rgb(var(--md-tertiary) / <alpha-value>)',
+        accent:   'rgb(var(--md-secondary) / <alpha-value>)',
         dark:     'rgb(var(--md-inverse-surface) / <alpha-value>)',
-        contrast: 'rgb(var(--md-tertiary-container) / <alpha-value>)',
+        contrast: 'rgb(var(--md-tertiary) / <alpha-value>)',
         danger:   'rgb(var(--md-error) / <alpha-value>)',
       },
       fontFamily: {

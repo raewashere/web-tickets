@@ -40,7 +40,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
           <!-- Hero Headline -->
           <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-inverse-on-surface leading-[1.15]">
             Tus conciertos favoritos,
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-tertiary via-tertiary/80 to-inverse-on-surface/60 block sm:inline mt-1 sm:mt-0">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-secondary to-tertiary block sm:inline mt-1 sm:mt-0">
               sin intermediarios
             </span>
           </h1>

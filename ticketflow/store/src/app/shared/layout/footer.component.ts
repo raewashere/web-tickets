@@ -13,11 +13,11 @@ import { RouterModule } from '@angular/router';
           <!-- Col 1: Brand -->
           <div class="space-y-4 md:col-span-2">
             <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary via-primary to-tertiary flex items-center justify-center shadow-md shadow-primary/30">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary via-secondary to-tertiary flex items-center justify-center shadow-md shadow-primary/30">
                 <i class="fa-solid fa-ticket text-on-primary text-sm"></i>
               </div>
               <span class="text-xl sm:text-2xl font-bold tracking-tight text-inverse-on-surface flex items-center">
-                Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-tertiary to-tertiary/70 ml-0.5">Coqueto</span>
+                Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-tertiary ml-0.5">Coqueto</span>
               </span>
             </div>
             <p class="text-xs sm:text-sm text-inverse-on-surface/50 max-w-sm leading-relaxed">

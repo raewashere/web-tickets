@@ -14,11 +14,11 @@ import { ThemeService } from '@ticketflow/shared-ui';
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
         <!-- Brand Logo -->
         <a routerLink="/" class="flex items-center gap-3 group flex-shrink-0">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary via-primary to-tertiary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary via-secondary to-tertiary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
             <i class="fa-solid fa-ticket text-on-primary text-lg"></i>
           </div>
           <span class="text-xl sm:text-2xl font-bold tracking-tight text-inverse-on-surface flex items-center select-none">
-            Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-tertiary to-tertiary/70 ml-0.5">Coqueto</span>
+            Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-tertiary ml-0.5">Coqueto</span>
           </span>
         </a>
 

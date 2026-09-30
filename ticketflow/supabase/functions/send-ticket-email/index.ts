@@ -107,16 +107,16 @@ serve(async (req: Request) => {
 
     // 4. Email Theme Configuration & Responsive HTML Email Template
     const EMAIL_THEME = {
-      primary: '#4e0a0b',           /* MD3 primary — burgundy */
-      accent: '#355834',            /* MD3 tertiary — forest green */
-      surface: '#f2eee8',           /* MD3 surface — warm cream */
-      dark: '#362f2e',              /* MD3 inverse-surface — warm dark */
-      cardBg: '#5c1011',            /* primary tone-30 */
-      headerBg: '#2d0507',          /* primary tone-10 */
-      contrast: '#bcf2b8',          /* MD3 tertiary-container */
-      border: 'rgba(242, 238, 232, 0.1)',
-      borderAccent: 'rgba(53, 88, 52, 0.3)',
-      primaryAlertBg: 'rgba(78, 10, 11, 0.35)',
+      primary: '#540D6E',           /* MD3 primary — deep violet */
+      accent: '#EE4266',            /* MD3 secondary — rose coral */
+      surface: '#FEFAFF',           /* MD3 surface — light violet tint */
+      dark: '#210124',              /* MD3 inverse-surface — deep eggplant night */
+      cardBg: '#3B094E',            /* primary tone-25 */
+      headerBg: '#1B0325',          /* primary tone-10 */
+      contrast: '#FFD23F',          /* MD3 tertiary — golden yellow */
+      border: 'rgba(254, 250, 255, 0.1)',
+      borderAccent: 'rgba(238, 66, 102, 0.3)',
+      primaryAlertBg: 'rgba(84, 13, 110, 0.35)',
     };
 
     const htmlEmail = `
