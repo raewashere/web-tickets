@@ -127,7 +127,7 @@ export interface ChartPoint {
             [value]="formatCurrency(stats()?.netRevenue ?? 0)"
             description="Monto neto generado"
             icon="fa-solid fa-dollar-sign"
-          </tf-stat-card>
+          ></tf-stat-card>
         </div>
 
         <!-- Sales & Performance Interactive SVG Chart Card (UX-9) -->

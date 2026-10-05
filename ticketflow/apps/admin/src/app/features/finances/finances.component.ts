@@ -161,7 +161,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
           >
             <i class="fa-solid fa-building-columns"></i>
             <span>Datos Bancarios y Fiscales</span>
-            <span *ngIf="summary()!.settings?.bank_account_number" class="text-contrast text-xs">●</span>
+            <span *ngIf="summary()!.settings.bank_account_number" class="text-contrast text-xs">●</span>
           </button>
         </div>
 

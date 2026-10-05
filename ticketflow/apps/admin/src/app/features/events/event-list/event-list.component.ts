@@ -14,7 +14,6 @@ import { AuthService } from '@ticketflow/data-access';
 import type { EventWithRelations, EventStatus } from '@ticketflow/models';
 import {
   ButtonComponent,
-  CardComponent,
   BadgeComponent,
   StatCardComponent,
   SpinnerComponent,
@@ -29,7 +28,6 @@ import {
     RouterModule,
     FormsModule,
     ButtonComponent,
-    CardComponent,
     BadgeComponent,
     StatCardComponent,
     SpinnerComponent,
