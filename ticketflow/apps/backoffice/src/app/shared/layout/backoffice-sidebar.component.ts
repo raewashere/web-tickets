@@ -58,7 +58,7 @@ interface NavItem {
           *ngFor="let item of navItems"
           [routerLink]="item.route"
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
-          routerLinkActive="bg-primary/20 text-on-primary-container border-r-4 border-primary font-bold"
+          routerLinkActive="!bg-tertiary/15 !text-tertiary border-r-4 border-tertiary font-bold"
           class="flex items-center gap-3 px-4 py-3 rounded-xl text-inverse-on-surface/70 hover:text-inverse-on-surface hover:bg-inverse-on-surface/5 transition-all text-sm group"
           (click)="closeSidebar.emit()"
         >
