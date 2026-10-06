@@ -88,9 +88,9 @@ interface NavItem {
         <button
           type="button"
           (click)="logout()"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-on-error-container bg-error-container/30 hover:bg-error-container/50 border border-error/20 rounded-xl transition-colors"
+          class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold text-secondary bg-secondary/10 hover:bg-secondary hover:text-on-secondary border border-secondary/30 rounded-xl transition-all duration-200 group shadow-xs"
         >
-          <svg class="w-4 h-4 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-secondary group-hover:text-on-secondary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
           <span>Cerrar Sesión Backoffice</span>

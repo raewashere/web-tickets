@@ -83,8 +83,8 @@
     --md-surface-container:    33 22 38;       /* #211626 */
     --md-surface-container-high: 44 31 50;    /* #2C1F32 */
     --md-surface-container-low: 27 18 32;     /* #1B1220 */
-    --md-inverse-surface:      238 228 244;    /* #EEE4F4 */
-    --md-inverse-on-surface:   33 1 36;        /* #210124 */
+    --md-inverse-surface:      18 10 22;       /* #120A16 (Deep dark surface for sidebar and stat cards in dark mode) */
+    --md-inverse-on-surface:   254 250 255;    /* #FEFAFF (High contrast text on dark surface) */
 
     /* Error — dark scheme */
     --md-error:                242 184 181;    /* #F2B8B5 */
@@ -136,6 +136,23 @@ html.dark .text-slate-500 {
   color: rgb(var(--md-on-surface) / 0.7) !important;
 }
 
+html.dark .bg-dark {
+  background-color: rgb(var(--md-primary-container)) !important;
+  color: rgb(var(--md-on-primary-container)) !important;
+}
+
+html.dark .bg-dark\/5 {
+  background-color: rgb(var(--md-surface-variant) / 0.3) !important;
+}
+
+html.dark .bg-dark\/10 {
+  background-color: rgb(var(--md-surface-variant) / 0.5) !important;
+}
+
+html.dark .bg-dark\/20 {
+  background-color: rgb(var(--md-surface-variant) / 0.7) !important;
+}
+
 html.dark .border-dark\/10,
 html.dark .border-outline-variant,
 html.dark .border-slate-200,
@@ -152,8 +169,7 @@ html.dark textarea {
   border-color: rgb(var(--md-outline-variant)) !important;
 }
 
-html.dark header,
-html.dark nav {
-  background-color: rgb(var(--md-inverse-surface)) !important;
+html.dark header {
+  background-color: rgb(var(--md-surface)) !important;
   border-color: rgb(var(--md-outline-variant) / 0.2) !important;
 }

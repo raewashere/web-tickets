@@ -42,10 +42,10 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
       <div
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl flex items-center justify-between transition-all text-xs sm:text-sm font-semibold"
-        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 border border-contrast/30 text-contrast' : 'bg-danger/10 border border-danger/30 text-danger'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300' : 'bg-error-container/30 border border-error/30 text-on-error-container'"
       >
         <div class="flex items-center gap-2">
-          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-contrast' : 'fa-solid fa-triangle-exclamation text-danger'"></i>
+          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400' : 'fa-solid fa-triangle-exclamation text-error'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -68,15 +68,15 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
         <!-- KPI Metric Cards Grid -->
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
           <!-- Saldo Disponible por Cobrar -->
-          <div class="col-span-2 sm:col-span-1 p-5 rounded-3xl bg-gradient-to-br from-contrast/20 via-contrast/5 to-surface border-2 border-contrast/40 shadow-sm space-y-1">
+          <div class="col-span-2 sm:col-span-1 p-5 rounded-3xl bg-gradient-to-br from-tertiary-container/40 via-tertiary-container/10 to-surface border-2 border-tertiary/40 shadow-sm space-y-1">
             <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-contrast">Saldo Disponible</span>
-              <i class="fa-solid fa-money-bill-wave text-contrast text-sm"></i>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-on-tertiary-container dark:text-tertiary">Saldo Disponible</span>
+              <i class="fa-solid fa-money-bill-wave text-on-tertiary-container dark:text-tertiary text-sm"></i>
             </div>
-            <p class="text-2xl sm:text-3xl font-bold text-contrast font-mono">
-              \${{ summary()!.balance_due | number:'1.2-2' }}
+            <p class="text-2xl sm:text-3xl font-bold text-on-tertiary-container dark:text-tertiary font-mono">
+              ${{ summary()!.balance_due | number:'1.2-2' }}
             </p>
-            <span class="text-[10px] text-contrast/80 font-semibold block">Pendiente por liquidar</span>
+            <span class="text-[10px] text-on-tertiary-container/80 dark:text-tertiary/80 font-semibold block">Pendiente por liquidar</span>
           </div>
 
           <!-- Total Neto Acumulado -->

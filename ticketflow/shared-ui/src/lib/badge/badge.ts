@@ -31,7 +31,7 @@ export class BadgeComponent {
       accent: 'bg-secondary-container text-on-secondary-container',
       danger: 'bg-error-container text-on-error-container',
       success: 'bg-tertiary-container text-on-tertiary-container',
-      warning: 'bg-amber-100 text-amber-900',
+      warning: 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200',
     };
     return `${base} ${variants[this.variant]}`;
   }

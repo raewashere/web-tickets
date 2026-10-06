@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DashboardService } from './dashboard.service';
+import { DashboardService, DailySalesRecord, WeeklyTrend } from './dashboard.service';
 import { AuthService } from '@ticketflow/data-access';
 import { ArtistsService } from '../artists/artists.service';
 import type { DashboardStats, Event, ArtistWithType } from '@ticketflow/models';
@@ -148,7 +148,7 @@ export interface ChartPoint {
               <div class="flex flex-wrap items-center gap-3">
                 <!-- Trend indicator badge -->
                 <span class="inline-flex items-center gap-1.5 text-xs font-bold text-on-tertiary-container bg-tertiary-container/20 px-3 py-1.5 rounded-xl border border-tertiary-container/30 shadow-xs">
-                  <i class="fa-solid fa-arrow-trend-up text-on-tertiary-container"></i> +24% esta semana
+                  <i [class]="weeklyTrend().isPositive ? 'fa-solid fa-arrow-trend-up text-on-tertiary-container' : 'fa-solid fa-arrow-trend-down text-error'"></i> {{ weeklyTrend().label }}
                 </span>
 
                 <!-- View Mode Toggle Buttons -->
@@ -309,15 +309,14 @@ export interface ChartPoint {
 
             <!-- Chart Legend & Footer -->
             <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-on-surface/10 text-xs">
-              <div class="flex items-center gap-4">
+              <div class="flex flex-wrap items-center gap-4">
                 <div class="flex items-center gap-2">
                   <span class="w-3 h-3 rounded-full bg-primary inline-block shadow-xs"></span>
                   <span class="text-on-surface/70 font-medium">Ventas Confirmadas</span>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-secondary/40 inline-block"></span>
-                  <span class="text-on-surface/50">Proyección</span>
-                </div>
+                <span *ngIf="totalChartRevenue() === 0 && (stats()?.ticketsSold ?? 0) > 0" class="text-on-surface/50 italic text-[11px]">
+                  (Sin ventas en los últimos 7 días; las ventas anteriores se reflejan en los totales)
+                </span>
               </div>
 
               <div class="text-on-surface/60 flex items-center gap-1.5">
@@ -461,6 +460,7 @@ export class DashboardComponent implements OnInit {
   readonly chartView = signal<'revenue' | 'tickets'>('revenue');
   readonly hoveredIndex = signal<number | null>(null);
   readonly chartPoints = signal<ChartPoint[]>([]);
+  readonly weeklyTrend = signal<WeeklyTrend>({ percentage: 0, isPositive: true, label: '0% esta semana' });
 
   readonly Math = Math;
 
@@ -480,7 +480,8 @@ export class DashboardComponent implements OnInit {
           const res = await this.dashboardService.getStats(artistProfile.id);
           this.stats.set(res.stats);
           this.upcomingEvents.set(res.upcomingEvents);
-          this.generateChartPoints(res.stats);
+          this.weeklyTrend.set(res.weeklyTrend);
+          this.generateChartPoints(res.dailySales);
         } else {
           const emptyStats: DashboardStats = {
             totalEvents: 0,
@@ -491,7 +492,8 @@ export class DashboardComponent implements OnInit {
             netRevenue: 0,
           };
           this.stats.set(emptyStats);
-          this.generateChartPoints(emptyStats);
+          this.weeklyTrend.set({ percentage: 0, isPositive: true, label: 'Sin ventas esta semana' });
+          this.generateChartPoints([]);
         }
       }
     } catch (err) {
@@ -501,29 +503,36 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  generateChartPoints(stats: DashboardStats): void {
+  generateChartPoints(dailySales: DailySalesRecord[]): void {
     const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
     const points: ChartPoint[] = [];
 
-    const totalRev = stats.netRevenue || 0;
-    const totalTix = stats.ticketsSold || 0;
+    const salesMap = new Map<string, { revenue: number; tickets: number }>();
+    (dailySales || []).forEach((d) => {
+      salesMap.set(d.date, { revenue: d.revenue, tickets: d.tickets });
+    });
 
-    // Distribute weights across last 7 days
-    const weights = [0.08, 0.12, 0.15, 0.10, 0.22, 0.20, 0.13];
-
+    const now = new Date();
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
-      d.setDate(d.getDate() - i);
+      d.setDate(now.getDate() - i);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const dateKey = `${year}-${month}-${day}`;
+
       const dayLabel = daysOfWeek[d.getDay()];
       const fullDate = `${d.getDate()} ${months[d.getMonth()]}`;
-      const weightIndex = 6 - i;
-      const weight = weights[weightIndex];
 
-      const revenue = Math.round(totalRev * weight);
-      const tickets = Math.round(totalTix * weight);
+      const dayData = salesMap.get(dateKey) || { revenue: 0, tickets: 0 };
 
-      points.push({ dayLabel, fullDate, revenue, tickets });
+      points.push({
+        dayLabel,
+        fullDate,
+        revenue: Math.round(dayData.revenue),
+        tickets: dayData.tickets,
+      });
     }
 
     this.chartPoints.set(points);

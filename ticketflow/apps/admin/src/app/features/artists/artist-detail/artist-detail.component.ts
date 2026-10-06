@@ -48,16 +48,16 @@ import {
       <!-- Success Notification -->
       <div
         *ngIf="notification()"
-        class="p-4 rounded-xl bg-contrast/10 border border-contrast/30 text-contrast text-sm flex items-center justify-between"
+        class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-sm flex items-center justify-between"
       >
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-circle-check text-contrast text-base"></i>
+          <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 text-base"></i>
           <span>{{ notification() }}</span>
         </div>
         <button
           type="button"
           (click)="notification.set(null)"
-          class="text-contrast hover:opacity-80"
+          class="text-emerald-700 dark:text-emerald-400 hover:opacity-80"
         >
           <i class="fa-solid fa-xmark"></i>
         </button>

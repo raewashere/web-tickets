@@ -237,16 +237,16 @@ declare global {
               *ngIf="lastResult()"
               class="p-6 rounded-3xl border-2 transition-all duration-300 shadow-lg space-y-4"
               [ngClass]="{
-                'bg-contrast/10 border-contrast text-contrast': lastResult()!.result === 'valid',
-                'bg-amber-50 border-amber-500 text-amber-950': lastResult()!.result === 'already_used',
+                'bg-emerald-500/10 border-emerald-500 text-emerald-800 dark:text-emerald-300': lastResult()!.result === 'valid',
+                'bg-amber-500/10 border-amber-500 text-amber-800 dark:text-amber-300': lastResult()!.result === 'already_used',
                 'bg-dark/5 border-dark/30 text-dark': ['doors_not_open', 'event_ended'].includes(lastResult()!.result),
                 'bg-danger/10 border-danger text-danger': !['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)
               }"
             >
               <div class="flex items-center gap-3">
                 <span class="text-3xl">
-                  <i *ngIf="lastResult()!.result === 'valid'" class="fa-solid fa-circle-check text-contrast"></i>
-                  <i *ngIf="lastResult()!.result === 'already_used'" class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                  <i *ngIf="lastResult()!.result === 'valid'" class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400"></i>
+                  <i *ngIf="lastResult()!.result === 'already_used'" class="fa-solid fa-triangle-exclamation text-amber-600 dark:text-amber-400"></i>
                   <i *ngIf="lastResult()!.result === 'doors_not_open'" class="fa-solid fa-clock text-dark"></i>
                   <i *ngIf="lastResult()!.result === 'event_ended'" class="fa-solid fa-hourglass-end text-dark"></i>
                   <i *ngIf="!['valid', 'already_used', 'doors_not_open', 'event_ended'].includes(lastResult()!.result)" class="fa-solid fa-circle-xmark text-danger"></i>
@@ -272,7 +272,7 @@ declare global {
               </div>
 
               <!-- Ticket info if valid or already used -->
-              <div *ngIf="lastResult()!.customer_name" class="p-3.5 rounded-2xl bg-white/70 border border-black/5 text-xs space-y-1.5">
+              <div *ngIf="lastResult()!.customer_name" class="p-3.5 rounded-2xl bg-surface/90 border border-outline-variant/30 text-xs space-y-1.5">
                 <p class="font-bold">
                   Titular: <span class="font-normal">{{ lastResult()!.customer_name }}</span>
                 </p>
@@ -296,7 +296,7 @@ declare global {
                 <div *ngFor="let log of recentLogs()" class="p-3 flex items-center justify-between hover:bg-dark/5 transition-colors">
                   <div class="flex items-center gap-2.5">
                     <span>
-                      <i *ngIf="log.result === 'valid'" class="fa-solid fa-circle text-contrast text-xs"></i>
+                      <i *ngIf="log.result === 'valid'" class="fa-solid fa-circle text-emerald-500 text-xs"></i>
                       <i *ngIf="log.result === 'already_used'" class="fa-solid fa-circle text-amber-500 text-xs"></i>
                       <i *ngIf="log.result === 'event_ended'" class="fa-solid fa-hourglass-end text-dark/60 text-xs"></i>
                       <i *ngIf="!['valid', 'already_used', 'event_ended'].includes(log.result)" class="fa-solid fa-circle text-danger text-xs"></i>
