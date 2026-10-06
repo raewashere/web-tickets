@@ -74,7 +74,7 @@ type FinanceTab = 'events' | 'payouts' | 'settings';
               <i class="fa-solid fa-money-bill-wave text-on-tertiary-container dark:text-tertiary text-sm"></i>
             </div>
             <p class="text-2xl sm:text-3xl font-bold text-on-tertiary-container dark:text-tertiary font-mono">
-              ${{ summary()!.balance_due | number:'1.2-2' }}
+              \${{ summary()!.balance_due | number:'1.2-2' }}
             </p>
             <span class="text-[10px] text-on-tertiary-container/80 dark:text-tertiary/80 font-semibold block">Pendiente por liquidar</span>
           </div>

@@ -10,7 +10,6 @@ import {
   ButtonComponent,
   CardComponent,
   BadgeComponent,
-  SpinnerComponent,
   SkeletonComponent,
 } from '@ticketflow/shared-ui';
 
@@ -31,7 +30,6 @@ export interface ChartPoint {
     ButtonComponent,
     CardComponent,
     BadgeComponent,
-    SpinnerComponent,
     SkeletonComponent,
   ],
   template: `
