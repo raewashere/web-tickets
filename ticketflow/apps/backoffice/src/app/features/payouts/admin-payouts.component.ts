@@ -51,7 +51,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <!-- Platform Liability KPI Banner -->
         <div class="p-6 sm:p-8 rounded-3xl bg-inverse-surface text-inverse-on-surface border border-outline-variant/20 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
           <div class="space-y-2 relative z-10">
-            <span class="text-[10px] font-black uppercase tracking-widest text-on-tertiary-container bg-tertiary-container px-3 py-1 rounded-full inline-block border border-tertiary/20">
+            <span class="text-[10px] font-black uppercase tracking-widest text-on-secondary-container bg-secondary-container px-3 py-1 rounded-full inline-block border border-secondary/20">
               Pasivo Financiero Total
             </span>
             <p class="text-xs text-inverse-on-surface/70">Suma de saldos netos pendientes de dispersar a todos los artistas:</p>
@@ -63,7 +63,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="flex items-center gap-4 relative z-10">
             <div class="p-4 rounded-2xl bg-white/10 border border-white/10 text-right backdrop-blur-xs">
               <span class="text-[10px] font-bold uppercase text-inverse-on-surface/60 block">Artistas con saldo</span>
-              <span class="text-2xl font-black text-tertiary font-mono">{{ artistsWithBalanceCount() }}</span>
+              <span class="text-2xl font-black text-secondary font-mono">{{ artistsWithBalanceCount() }}</span>
             </div>
           </div>
         </div>

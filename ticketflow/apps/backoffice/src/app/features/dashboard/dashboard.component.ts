@@ -54,7 +54,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-5 sm:p-6 rounded-3xl bg-surface border border-outline-variant/30 shadow-sm flex flex-col justify-between gap-3">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Volumen Total (GMV)</span>
-              <span class="w-10 h-10 rounded-xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center text-lg">
+              <span class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center text-lg">
                 <i class="fa-solid fa-sack-dollar"></i>
               </span>
             </div>
@@ -158,7 +158,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 sm:p-7 rounded-3xl bg-surface border border-outline-variant/30 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
             <div class="space-y-3">
               <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center text-xl font-bold flex-shrink-0">
+                <div class="w-11 h-11 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center text-xl font-bold flex-shrink-0">
                   <i class="fa-solid fa-microphone-lines"></i>
                 </div>
                 <div>
@@ -276,7 +276,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <div class="p-6 sm:p-7 rounded-3xl bg-surface border border-outline-variant/30 shadow-sm flex flex-col justify-between gap-5 hover:shadow-md transition-shadow">
             <div class="space-y-3">
               <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center text-xl font-bold flex-shrink-0">
+                <div class="w-11 h-11 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center text-xl font-bold flex-shrink-0">
                   <i class="fa-solid fa-calendar-days"></i>
                 </div>
                 <div>

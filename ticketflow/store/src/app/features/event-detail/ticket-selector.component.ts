@@ -135,7 +135,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 
           <div class="text-right">
             <span class="text-xs text-inverse-on-surface/70 block">Total a pagar:</span>
-            <span class="text-xl sm:text-2xl font-bold text-tertiary font-mono">
+            <span class="text-xl sm:text-2xl font-bold text-secondary font-mono">
               \${{ totalPrice | number:'1.2-2' }} MXN
             </span>
           </div>
@@ -170,9 +170,9 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <!-- Success notification -->
         <div
           *ngIf="waitlistSuccessMessage()"
-          class="p-3.5 rounded-2xl bg-tertiary-container border border-tertiary/40 text-on-tertiary-container text-xs font-semibold flex items-center gap-2"
+          class="p-3.5 rounded-2xl bg-secondary-container border border-secondary/40 text-on-secondary-container text-xs font-semibold flex items-center gap-2"
         >
-          <i class="fa-solid fa-circle-check text-tertiary"></i>
+          <i class="fa-solid fa-circle-check text-secondary"></i>
           <span>{{ waitlistSuccessMessage() }}</span>
         </div>
 

@@ -194,22 +194,22 @@ import { AuthService } from '@ticketflow/data-access';
               <!-- If coupon applied -->
               <div
                 *ngIf="checkout.appliedCoupon()"
-                class="p-4 rounded-2xl bg-tertiary-container/50 border border-tertiary/40 flex items-center justify-between"
+                class="p-4 rounded-2xl bg-secondary-container/50 border border-secondary/40 flex items-center justify-between"
               >
                 <div>
                   <div class="flex flex-wrap items-center gap-2">
-                    <span class="font-mono font-bold text-sm text-on-tertiary-container uppercase">
+                    <span class="font-mono font-bold text-sm text-on-secondary-container uppercase">
                       {{ checkout.appliedCoupon()!.code }}
                     </span>
-                    <span class="text-xs font-bold text-on-tertiary-container"><i class="fa-solid fa-check mr-1"></i>Cupón Aplicado</span>
+                    <span class="text-xs font-bold text-on-secondary-container"><i class="fa-solid fa-check mr-1"></i>Cupón Aplicado</span>
                     <span
                       *ngIf="checkout.appliedCoupon()!.ticket_sku"
-                      class="text-[10px] font-mono font-bold bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded"
+                      class="text-[10px] font-mono font-bold bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded"
                     >
                       SKU: {{ checkout.appliedCoupon()!.ticket_sku }}
                     </span>
                   </div>
-                  <span class="text-xs text-on-tertiary-container/90 block mt-0.5">
+                  <span class="text-xs text-on-secondary-container/90 block mt-0.5">
                     Descuento obtenido: -\${{ checkout.discount() | number:'1.2-2' }} MXN
                   </span>
                 </div>
@@ -262,14 +262,14 @@ import { AuthService } from '@ticketflow/data-access';
                   <span class="font-mono font-bold text-inverse-on-surface">\${{ checkout.subtotal() | number:'1.2-2' }} MXN</span>
                 </div>
 
-                <div *ngIf="checkout.discount() > 0" class="flex items-center justify-between text-tertiary font-bold">
+                <div *ngIf="checkout.discount() > 0" class="flex items-center justify-between text-secondary font-bold">
                   <span>Descuento Cupón:</span>
                   <span class="font-mono">-\${{ checkout.discount() | number:'1.2-2' }} MXN</span>
                 </div>
 
                 <div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between">
                   <span class="font-bold text-sm text-inverse-on-surface">Total a Pagar:</span>
-                  <span class="text-2xl font-bold text-tertiary font-mono">
+                  <span class="text-2xl font-bold text-secondary font-mono">
                     \${{ checkout.total() | number:'1.2-2' }} MXN
                   </span>
                 </div>

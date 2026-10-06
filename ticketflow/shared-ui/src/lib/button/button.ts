@@ -44,7 +44,7 @@ export class ButtonComponent {
         'bg-secondary text-on-secondary hover:bg-secondary/90 focus:ring-secondary shadow-sm shadow-secondary/20',
       danger: 'bg-error text-on-error hover:bg-error/90 focus:ring-error shadow-sm',
       ghost: 'bg-transparent text-on-surface hover:bg-on-surface/10 focus:ring-primary',
-      accent: 'bg-tertiary text-on-tertiary hover:bg-tertiary/90 focus:ring-tertiary shadow-sm shadow-tertiary/20',
+      accent: 'bg-secondary text-on-secondary hover:bg-secondary/90 focus:ring-secondary shadow-sm shadow-secondary/20',
       outline: 'bg-transparent text-on-surface border border-outline hover:bg-on-surface/5 focus:ring-primary',
     };
 

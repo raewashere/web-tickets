@@ -24,15 +24,15 @@ import { RouterModule } from '@angular/router';
               La plataforma moderna y segura para compra directa de entradas a conciertos, festivales y espectáculos. Boletos 100% garantizados.
             </p>
             <div class="flex items-center gap-3 pt-2 text-xs text-inverse-on-surface/40">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-tertiary-container"></i> Pagos cifrados SSL</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-secondary"></i> Pagos cifrados SSL</span>
               <span>·</span>
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-tertiary"></i> PayPal Verified</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-secondary"></i> PayPal Verified</span>
             </div>
           </div>
 
           <!-- Col 2: Explorar -->
           <div class="space-y-3">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-tertiary">Explorar</h4>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-secondary">Explorar</h4>
             <ul class="space-y-2 text-xs sm:text-sm text-inverse-on-surface/50">
               <li><a routerLink="/search" class="hover:text-inverse-on-surface transition-colors">Todos los Conciertos</a></li>
               <li><a routerLink="/search" [queryParams]="{ type: 'festivales' }" class="hover:text-inverse-on-surface transition-colors">Festivales</a></li>

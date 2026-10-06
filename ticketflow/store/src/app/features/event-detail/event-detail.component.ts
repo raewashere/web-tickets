@@ -336,7 +336,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
             <!-- Guarantee Box -->
             <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-2 text-xs text-on-surface-variant shadow-sm">
               <div class="font-bold text-on-surface flex items-center gap-1.5">
-                <i class="fa-solid fa-shield-halved text-tertiary"></i>
+                <i class="fa-solid fa-shield-halved text-secondary"></i>
                 <span>Garantía BoletoCoqueto</span>
               </div>
               <p class="leading-relaxed">

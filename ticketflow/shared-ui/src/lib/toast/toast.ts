@@ -59,7 +59,7 @@ export class ToastService {
         *ngFor="let t of toastService.toasts()"
         class="pointer-events-auto flex items-start gap-3 p-4 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-0"
         [ngClass]="{
-          'bg-tertiary-container text-on-tertiary-container border-tertiary/40 shadow-tertiary/10': t.type === 'success',
+          'bg-emerald-100 text-emerald-950 dark:bg-emerald-950 dark:text-emerald-100 border-emerald-300 dark:border-emerald-800 shadow-emerald-500/10': t.type === 'success',
           'bg-error-container text-on-error-container border-error/40 shadow-error/10': t.type === 'error',
           'bg-primary-container text-on-primary-container border-primary/40 shadow-primary/10': t.type === 'info',
           'bg-secondary-container text-on-secondary-container border-secondary/40 shadow-secondary/10': t.type === 'warning'
@@ -67,7 +67,7 @@ export class ToastService {
       >
         <!-- Icon -->
         <div class="text-xl flex-shrink-0 mt-0.5" [ngClass]="{
-          'text-on-tertiary-container': t.type === 'success',
+          'text-emerald-700 dark:text-emerald-300': t.type === 'success',
           'text-error': t.type === 'error',
           'text-primary': t.type === 'info',
           'text-secondary': t.type === 'warning'

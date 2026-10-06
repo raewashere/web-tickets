@@ -84,10 +84,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="selectedRoleFilter.set('doorman')"
-            [class.bg-tertiary-container]="selectedRoleFilter() === 'doorman'"
-            [class.text-on-tertiary-container]="selectedRoleFilter() === 'doorman'"
-            [class.bg-tertiary-container/40]="selectedRoleFilter() !== 'doorman'"
-            [class.text-on-tertiary-container]="selectedRoleFilter() !== 'doorman'"
+            [class.bg-secondary-container]="selectedRoleFilter() === 'doorman'"
+            [class.text-on-secondary-container]="selectedRoleFilter() === 'doorman'"
+            [class.bg-secondary-container/40]="selectedRoleFilter() !== 'doorman'"
+            [class.text-on-secondary-container]="selectedRoleFilter() !== 'doorman'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap"
           >
             Doormen
@@ -177,10 +177,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                     type="button"
                     (click)="toggleRole(user, 'doorman')"
                     [disabled]="updatingKey() === user.id + '_doorman'"
-                    [class.bg-tertiary-container]="user.roles.includes('doorman')"
-                    [class.text-on-tertiary-container]="user.roles.includes('doorman')"
+                    [class.bg-secondary-container]="user.roles.includes('doorman')"
+                    [class.text-on-secondary-container]="user.roles.includes('doorman')"
                     [class.border]="user.roles.includes('doorman')"
-                    [class.border-tertiary/30]="user.roles.includes('doorman')"
+                    [class.border-secondary/30]="user.roles.includes('doorman')"
                     [class.bg-surface-variant/40]="!user.roles.includes('doorman')"
                     [class.text-on-surface/40]="!user.roles.includes('doorman')"
                     class="px-3 py-1 rounded-full text-xs font-bold transition disabled:opacity-50 inline-flex items-center gap-1.5"

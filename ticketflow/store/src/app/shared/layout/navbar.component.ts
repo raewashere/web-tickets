@@ -79,11 +79,11 @@ import { ThemeService } from '@ticketflow/shared-ui';
                     *ngIf="auth.avatarUrl()"
                     [src]="auth.avatarUrl()!"
                     [alt]="'Foto de perfil de ' + userName"
-                    class="w-6 h-6 rounded-full object-cover ring-1 ring-tertiary/50"
+                    class="w-6 h-6 rounded-full object-cover ring-1 ring-secondary/50"
                   />
                   <div
                     *ngIf="!auth.avatarUrl()"
-                    class="w-6 h-6 rounded-full bg-tertiary text-on-tertiary font-black flex items-center justify-center text-xs"
+                    class="w-6 h-6 rounded-full bg-secondary text-on-secondary font-black flex items-center justify-center text-xs"
                   >
                     {{ userInitial }}
                   </div>
@@ -111,7 +111,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
                   (click)="showMenu.set(false)"
                   class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold text-inverse-on-surface/80 hover:text-inverse-on-surface hover:bg-inverse-on-surface/5 transition-colors"
                 >
-                  <i class="fa-solid fa-ticket text-tertiary"></i>
+                  <i class="fa-solid fa-ticket text-secondary"></i>
                   <span>Mis Boletos Comprados</span>
                 </a>
 

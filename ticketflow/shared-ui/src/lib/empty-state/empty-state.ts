@@ -68,7 +68,7 @@ export class EmptyStateComponent {
     if (this.illustration === 'search') return 'fa-solid fa-magnifying-glass-chart text-primary';
     if (this.illustration === 'tickets') return 'fa-solid fa-ticket-simple text-primary';
     if (this.illustration === 'events') return 'fa-solid fa-calendar-xmark text-secondary';
-    if (this.illustration === 'wallet') return 'fa-solid fa-wallet text-tertiary';
+    if (this.illustration === 'wallet') return 'fa-solid fa-wallet text-secondary';
     return this.icon;
   }
 }

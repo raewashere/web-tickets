@@ -34,7 +34,7 @@ import {
       <div *ngIf="!isLoading() && order()" class="space-y-8 animate-fade-in">
         <!-- Success Hero Header -->
         <div class="text-center space-y-4">
-          <div class="inline-flex w-20 h-20 rounded-full bg-tertiary-container text-on-tertiary-container items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
+          <div class="inline-flex w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container items-center justify-center text-4xl shadow-inner mb-2 animate-bounce">
             <i class="fa-solid fa-check"></i>
           </div>
 

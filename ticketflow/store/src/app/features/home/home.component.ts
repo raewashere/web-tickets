@@ -32,7 +32,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
 
         <div class="max-w-5xl mx-auto text-center space-y-6 sm:space-y-8 relative z-10">
           <!-- Hero Badge -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-inverse-surface/60 border border-outline-variant/20 text-tertiary text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-inverse-surface/60 border border-outline-variant/20 text-secondary text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             <span>La nueva forma de vivir la música en vivo</span>
           </div>
@@ -178,7 +178,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
             </div>
 
             <div class="p-6 sm:p-7 rounded-2xl bg-inverse-on-surface/5 border border-outline-variant/10 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-tertiary/20 border border-tertiary/30 text-tertiary flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-xl bg-secondary/20 border border-secondary/30 text-secondary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-shield-halved"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Pagos Seguros vía PayPal</h3>

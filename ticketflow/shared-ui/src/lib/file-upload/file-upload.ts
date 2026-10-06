@@ -41,7 +41,7 @@ import { CommonModule } from '@angular/common';
       </ng-container>
     </div>
 
-    <p *ngIf="error" class="text-xs text-contrast mt-1">{{ error }}</p>
+    <p *ngIf="error" class="text-xs text-error mt-1">{{ error }}</p>
   `,
 })
 export class FileUploadComponent {
