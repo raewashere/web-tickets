@@ -13,29 +13,33 @@ TicketFlow es una **plataforma de venta de boletos online** para artistas indepe
 
 ---
 
-## 2. Cómo Navegar el Código
+## 2. Cómo Navegar el Código (Graphify First)
+
+> **Regla Graphify:** Antes de hacer búsquedas amplias (`grep`/`find`) en el repositorio, lee primero **`/home/rtorres/tickets/web-tickets/graphify-out/GRAPH_REPORT.md`** (y opcionalmente **`graphify-out/graph.json`**). Ahí están mapeados los *God Nodes*, las 8 comunidades funcionales y las aristas entre componentes Angular, Edge Functions y RPCs de PostgreSQL.
 
 ### Raíz del workspace
 
 ```
 /home/rtorres/tickets/web-tickets/
-└── ticketflow/              ← AQUI está el código
-    ├── apps/admin/           ← Portal del artista
-    ├── apps/store/           ← Tienda pública
-    ├── libs/data-access/     ← SupabaseService, AuthService
-    ├── libs/models/          ← Interfaces TypeScript
-    ├── libs/shared-ui/       ← Componentes UI compartidos
-    ├── supabase/             ← Migraciones SQL + Edge Functions
-    └── docs/                 ← Esta documentación
+├── graphify-out/            ← Grafo de conocimiento (GRAPH_REPORT.md + graph.json)
+├── docs/                    ← Documentación técnica, backlog y plantillas N8N
+└── ticketflow/              ← AQUÍ está el código del monorepo Nx
+    ├── apps/admin/           ← Portal del artista y doorman
+    ├── apps/backoffice/      ← Portal Super-Admin
+    ├── store/                ← Tienda pública (compradores e invitados)
+    ├── data-access/          ← @ticketflow/data-access (SupabaseService, AuthService)
+    ├── models/               ← @ticketflow/models (interfaces TS + database.types.ts)
+    ├── shared-ui/            ← @ticketflow/shared-ui (componentes UI compartidos)
+    └── supabase/             ← Migraciones SQL (001–022) + Edge Functions Deno
 ```
 
 ### Aliases de Path (TypeScript)
 
 | Alias | Ubicación real |
 |-------|----------------|
-| `@ticketflow/data-access` | `libs/data-access/src/index.ts` |
-| `@ticketflow/models` | `libs/models/src/index.ts` |
-| `@ticketflow/shared-ui` | `libs/shared-ui/src/index.ts` |
+| `@ticketflow/data-access` | `ticketflow/data-access/src/index.ts` |
+| `@ticketflow/models` | `ticketflow/models/src/index.ts` |
+| `@ticketflow/shared-ui` | `ticketflow/shared-ui/src/index.ts` |
 
 ---
 

@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-10-22T13:25:00-06:00",
+  "root": "/home/rtorres/tickets/web-tickets",
+  "workspace": "/home/rtorres/tickets/web-tickets/ticketflow",
+  "summary": {
+    "nodes_count": 32,
+    "edges_count": 48,
+    "communities_count": 8
+  },
+  "god_nodes": [
+    {
+      "id": "lib:data-access:supabase-auth",
+      "label": "SupabaseService & AuthService",
+      "path": "ticketflow/data-access/src/lib/",
+      "community": 0,
+      "degree": 64
+    },
+    {
+      "id": "db:table:orders",
+      "label": "orders (PostgreSQL Table)",
+      "path": "ticketflow/supabase/migrations/20250101000000_initial_schema.sql",
+      "community": 2,
+      "degree": 46
+    },
+    {
+      "id": "store:service:checkout",
+      "label": "CheckoutService",
+      "path": "ticketflow/store/src/app/features/checkout/checkout.service.ts",
+      "community": 2,
+      "degree": 38
+    },
+    {
+      "id": "db:rpc:create_order_atomic",
+      "label": "create_order_atomic & calculate_checkout_quote",
+      "path": "ticketflow/supabase/migrations/20250122000000_secure_checkout.sql",
+      "community": 2,
+      "degree": 34
+    },
+    {
+      "id": "db:rpc:super_admin_suite",
+      "label": "SuperAdmin RPCs (Migration 017)",
+      "path": "ticketflow/supabase/migrations/20250117000000_fix_super_admin_rpc_and_functions.sql",
+      "community": 6,
+      "degree": 31
+    }
+  ],
+  "nodes": [
+    { "id": "lib:data-access", "type": "library", "path": "ticketflow/data-access/src/index.ts", "community": 0 },
+    { "id": "lib:models", "type": "library", "path": "ticketflow/models/src/index.ts", "community": 0 },
+    { "id": "lib:shared-ui", "type": "library", "path": "ticketflow/shared-ui/src/index.ts", "community": 0 },
+    { "id": "store:app", "type": "app", "path": "ticketflow/store/src/app/app.routes.ts", "community": 1 },
+    { "id": "store:search", "type": "feature", "path": "ticketflow/store/src/app/features/search/search.service.ts", "community": 1 },
+    { "id": "store:event-detail", "type": "feature", "path": "ticketflow/store/src/app/features/events/event-detail.component.ts", "community": 1 },
+    { "id": "store:ticket-selector", "type": "component", "path": "ticketflow/store/src/app/features/events/ticket-selector.component.ts", "community": 1 },
+    { "id": "store:checkout-service", "type": "service", "path": "ticketflow/store/src/app/features/checkout/checkout.service.ts", "community": 2 },
+    { "id": "store:payment", "type": "component", "path": "ticketflow/store/src/app/features/checkout/payment.component.ts", "community": 2 },
+    { "id": "store:public-ticket", "type": "component", "path": "ticketflow/store/src/app/features/public-ticket/public-ticket.component.ts", "community": 2 },
+    { "id": "store:my-tickets", "type": "component", "path": "ticketflow/store/src/app/features/my-tickets/my-tickets.component.ts", "community": 3 },
+    { "id": "store:qr-utils", "type": "utility", "path": "ticketflow/store/src/app/shared/utils/qr.utils.ts", "community": 3 },
+    { "id": "admin:app", "type": "app", "path": "ticketflow/apps/admin/src/app/app.routes.ts", "community": 4 },
+    { "id": "admin:events", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/events/", "community": 4 },
+    { "id": "admin:coupons", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/coupons/", "community": 4 },
+    { "id": "admin:access-control", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/access-control/access-control.service.ts", "community": 5 },
+    { "id": "admin:event-staff", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/events/event-staff/event-staff.service.ts", "community": 5 },
+    { "id": "admin:refunds", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/refunds/refunds.service.ts", "community": 3 },
+    { "id": "admin:finances", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/finances/", "community": 6 },
+    { "id": "admin:super-admin", "type": "feature", "path": "ticketflow/apps/admin/src/app/features/super-admin/", "community": 6 },
+    { "id": "backoffice:app", "type": "app", "path": "ticketflow/apps/backoffice/src/app/app.routes.ts", "community": 6 },
+    { "id": "edge:apply-coupon", "type": "edge-function", "path": "ticketflow/supabase/functions/apply-coupon/index.ts", "community": 2 },
+    { "id": "edge:create-paypal-order", "type": "edge-function", "path": "ticketflow/supabase/functions/create-paypal-order/index.ts", "community": 2 },
+    { "id": "edge:create-order", "type": "edge-function", "path": "ticketflow/supabase/functions/create-order/index.ts", "community": 2 },
+    { "id": "edge:send-ticket-email", "type": "edge-function", "path": "ticketflow/supabase/functions/send-ticket-email/index.ts", "community": 2 },
+    { "id": "edge:send-staff-invite", "type": "edge-function", "path": "ticketflow/supabase/functions/send-staff-invite/index.ts", "community": 5 },
+    { "id": "db:rpc:reserve_tickets", "type": "sql-rpc", "path": "ticketflow/supabase/migrations/20250101000000_initial_schema.sql", "community": 1 },
+    { "id": "db:rpc:calculate_checkout_quote", "type": "sql-rpc", "path": "ticketflow/supabase/migrations/20250122000000_secure_checkout.sql", "community": 2 },
+    { "id": "db:rpc:create_order_atomic", "type": "sql-rpc", "path": "ticketflow/supabase/migrations/20250122000000_secure_checkout.sql", "community": 2 },
+    { "id": "db:rpc:get_order_by_access_token", "type": "sql-rpc", "path": "ticketflow/supabase/migrations/20250121000000_guest_checkout.sql", "community": 2 },
+    { "id": "db:rpc:validate_ticket_qr", "type": "sql-rpc", "path": "ticketflow/supabase/migrations/20250110000000_validate_with_doorman_auth.sql", "community": 5 },
+    { "id": "db:rpc:refunds", "type": "sql-rpc", "path": "ticketflow/supabase/migrations/20250114000000_refund_requests.sql", "community": 3 }
+  ],
+  "edges": [
+    { "source": "store:ticket-selector", "target": "db:rpc:reserve_tickets", "relation": "calls_rpc" },
+    { "source": "store:checkout-service", "target": "edge:apply-coupon", "relation": "http_post" },
+    { "source": "store:payment", "target": "edge:create-paypal-order", "relation": "http_post" },
+    { "source": "store:checkout-service", "target": "edge:create-order", "relation": "http_post" },
+    { "source": "edge:create-paypal-order", "target": "db:rpc:calculate_checkout_quote", "relation": "calls_rpc" },
+    { "source": "edge:create-order", "target": "db:rpc:calculate_checkout_quote", "relation": "calls_rpc" },
+    { "source": "edge:create-order", "target": "db:rpc:create_order_atomic", "relation": "calls_rpc" },
+    { "source": "edge:create-order", "target": "edge:send-ticket-email", "relation": "invokes_function" },
+    { "source": "store:public-ticket", "target": "db:rpc:get_order_by_access_token", "relation": "calls_rpc" },
+    { "source": "admin:access-control", "target": "db:rpc:validate_ticket_qr", "relation": "calls_rpc" },
+    { "source": "admin:event-staff", "target": "edge:send-staff-invite", "relation": "invokes_function" },
+    { "source": "store:my-tickets", "target": "db:rpc:refunds", "relation": "calls_rpc" },
+    { "source": "admin:refunds", "target": "db:rpc:refunds", "relation": "calls_rpc" }
+  ]
+}

@@ -14,6 +14,7 @@ const CORS_HEADERS = {
 interface OrderEmailPayload {
   orderId: string;
   recipientEmail?: string;
+  accessToken?: string;
 }
 
 serve(async (req: Request) => {
@@ -30,20 +31,14 @@ serve(async (req: Request) => {
 
   try {
     const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      });
-    }
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
 
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-    );
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
 
     const body = await req.json() as OrderEmailPayload;
-    const { orderId, recipientEmail } = body;
+    const { orderId, accessToken } = body;
 
     if (!orderId) {
       return new Response(JSON.stringify({ error: 'Missing orderId parameter.' }), {
@@ -66,8 +61,46 @@ serve(async (req: Request) => {
       });
     }
 
-    // 2. Fetch recipient email from auth.users if not provided directly
-    let targetEmail = recipientEmail;
+    // 2. Verify authorization: internal service_role, order's access_token, or authenticated owner/admin
+    const bearerToken = authHeader?.replace(/^Bearer\s+/i, '').trim() ?? '';
+    const isServiceRole = bearerToken !== '' && bearerToken === serviceRoleKey;
+    const hasValidAccessToken = Boolean(accessToken && order.access_token && accessToken === order.access_token);
+
+    if (!isServiceRole && !hasValidAccessToken) {
+      if (!authHeader) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        });
+      }
+      const supabaseAnon = createClient(supabaseUrl, anonKey, {
+        global: { headers: { Authorization: authHeader } },
+      });
+      const { data: { user: caller }, error: callerErr } = await supabaseAnon.auth.getUser();
+      if (callerErr || !caller) {
+        return new Response(JSON.stringify({ error: 'Invalid session token.' }), {
+          status: 401,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        });
+      }
+      if (order.customer_id !== caller.id) {
+        const { data: adminRole } = await supabaseAdmin
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', caller.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+        if (!adminRole) {
+          return new Response(JSON.stringify({ error: 'Forbidden' }), {
+            status: 403,
+            headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+          });
+        }
+      }
+    }
+
+    // 3. Resolve recipient email strictly from the order (prevents email spoofing/exfiltration)
+    let targetEmail: string | undefined = order.guest_email || undefined;
     if (!targetEmail && order.customer_id) {
       const { data: userData } = await supabaseAdmin.auth.admin.getUserById(order.customer_id);
       targetEmail = userData?.user?.email;
@@ -80,12 +113,15 @@ serve(async (req: Request) => {
       });
     }
 
-    const customerName = order.profiles?.display_name || targetEmail.split('@')[0];
+    const customerName = order.profiles?.display_name || order.guest_name || targetEmail.split('@')[0];
     const eventName = order.events?.name || 'Espectáculo';
     const venueName = order.events?.venues?.name || 'Recinto Confirmado';
     const eventDate = order.events?.event_date
       ? new Date(order.events.event_date).toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })
       : 'Fecha por confirmar';
+    const storeBaseUrl = Deno.env.get('STORE_BASE_URL') || 'https://tu-dominio.com';
+    const ticketUrl = `${storeBaseUrl}/ticket/${order.id}?token=${order.access_token}`;
+    const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=TICKETFLOW-AUTH-${order.id}`;
 
     // 3. Build Items HTML table
     const itemsHtml = (order.order_items || [])
@@ -191,10 +227,26 @@ serve(async (req: Request) => {
                       </tr>
                     </table>
 
+                    <!-- QR Code & Direct Ticket Link (works for both Guests and Registered Users) -->
+                    <div style="background-color: ${EMAIL_THEME.dark}; border-radius: 16px; padding: 24px; margin: 24px 0; text-align: center; border: 1px solid ${EMAIL_THEME.borderAccent};">
+                      <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: ${EMAIL_THEME.contrast};">
+                        Código QR Oficial de Acceso
+                      </p>
+                      <div style="display: inline-block; background-color: #ffffff; padding: 14px; border-radius: 16px;">
+                        <img src="${qrImageUrl}" alt="Código QR de acceso Orden ${order.id}" width="200" height="200" style="display: block; border: 0;" />
+                      </div>
+                      <p style="margin: 12px 0 16px 0; font-size: 11px; font-family: monospace; color: ${EMAIL_THEME.surface}; opacity: 0.75;">
+                        TICKETFLOW-AUTH-${order.id}
+                      </p>
+                      <a href="${ticketUrl}" target="_blank" style="display: inline-block; background-color: ${EMAIL_THEME.accent}; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 14px; padding: 12px 24px; border-radius: 999px;">
+                        Ver y Descargar Mi Boleto Digital
+                      </a>
+                    </div>
+
                     <!-- Instructions / CTA -->
                     <div style="background-color: ${EMAIL_THEME.primaryAlertBg}; border-radius: 16px; padding: 18px; margin: 24px 0; border: 1px solid ${EMAIL_THEME.borderAccent};">
                       <p style="margin: 0; font-size: 13px; color: ${EMAIL_THEME.surface}; line-height: 1.5;">
-                        📲 <strong>Instrucciones de Acceso:</strong> Puedes presentar tu código QR digital oficial directamente desde tu celular o imprimir tu comprobante entrando a la sección <strong>Mis Boletos</strong> en BoletoCoqueto.
+                        📲 <strong>Instrucciones de Acceso:</strong> Presenta el código QR de este correo o abre el enlace superior desde tu celular en la entrada del evento. No compartas este enlace ni tu código QR con terceros.
                       </p>
                     </div>
                   </td>

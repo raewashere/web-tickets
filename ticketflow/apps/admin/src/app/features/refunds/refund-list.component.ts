@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RefundsService } from './refunds.service';
+import { AuthService } from '@ticketflow/data-access';
 import type { RefundRequestWithRelations } from '@ticketflow/models';
 import { SpinnerComponent } from '@ticketflow/shared-ui';
 
@@ -269,7 +270,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
                 <!-- Actions -->
                 <td class="p-3.5 pr-5 text-right whitespace-nowrap">
-                  <div *ngIf="req.status === 'pending'" class="inline-flex items-center gap-1.5">
+                  <div *ngIf="req.status === 'pending' && auth.isAdmin()" class="inline-flex items-center gap-1.5">
                     <button
                       type="button"
                       (click)="openProcessModal(req, true)"
@@ -289,7 +290,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                   </div>
 
                   <button
-                    *ngIf="req.status !== 'pending'"
+                    *ngIf="req.status !== 'pending' || !auth.isAdmin()"
                     type="button"
                     (click)="openDetailModal(req)"
                     class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition"
@@ -488,6 +489,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
 })
 export class RefundListComponent implements OnInit {
   private readonly refundsService = inject(RefundsService);
+  readonly auth = inject(AuthService);
 
   readonly isLoading = signal(true);
   readonly requests = signal<RefundRequestWithRelations[]>([]);

@@ -356,6 +356,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
               eventName: c.eventName,
               amountMXN: this.checkout.total(),
               sessionId: c.sessionId,
+              couponId:  this.checkout.appliedCoupon()?.id ?? null,
               guestEmail: token ? null : gEmail.trim(),
               guestName:  token ? null : (gName.trim() || gEmail.trim()),
             }),

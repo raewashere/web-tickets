@@ -48,6 +48,7 @@ async function createPayPalOrder(
   accessToken: string,
   amountMXN: number,
   description: string,
+  sessionId: string,
 ): Promise<{ id: string; status: string }> {
   const res = await fetch(`${baseUrl}/v2/checkout/orders`, {
     method: 'POST',
@@ -61,6 +62,8 @@ async function createPayPalOrder(
       purchase_units: [
         {
           description,
+          // Binds the PayPal order to the checkout session; verified in create-order
+          custom_id: sessionId,
           amount: {
             currency_code: 'MXN',
             value: amountMXN.toFixed(2),
@@ -123,17 +126,17 @@ serve(async (req: Request) => {
 
     // -------------------------------------------------------------------------
     // 2. Parse and validate body
+    // amountMXN from the client is IGNORED — the amount is computed server-side.
     // -------------------------------------------------------------------------
     const body = await req.json() as {
       eventId:     string;
-      eventName:   string;
-      amountMXN:   number;
       sessionId:   string;
+      couponId?:   string | null;
       guestEmail?: string;   // Required when no Authorization header
       guestName?:  string;
     };
 
-    const { eventId, eventName, amountMXN, sessionId, guestEmail, guestName } = body;
+    const { eventId, sessionId, couponId, guestEmail, guestName } = body;
 
     // Must have a logged-in user OR a guest email
     if (!user && (!guestEmail || guestEmail.trim() === '')) {
@@ -143,28 +146,44 @@ serve(async (req: Request) => {
       );
     }
 
-    if (!eventId || !amountMXN || amountMXN <= 0 || !sessionId) {
+    if (!eventId || !sessionId) {
       return new Response(
-        JSON.stringify({ error: 'Payload inválido. Se requiere eventId, amountMXN > 0, sessionId.' }),
+        JSON.stringify({ error: 'Payload inválido. Se requiere eventId y sessionId.' }),
         { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
       );
     }
 
     // -------------------------------------------------------------------------
-    // 3. Verify the session has active (non-expired) locks for this event
+    // 3. Server-side quote: validates locks belong to the event, applies coupon
     // -------------------------------------------------------------------------
-    const { data: locks, error: locksErr } = await supabaseAdmin
-      .from('ticket_locks')
-      .select('id, quantity, locked_until, ticket_type_id')
-      .eq('session_id', sessionId)
-      .gt('locked_until', new Date().toISOString());
+    const { data: quote, error: quoteErr } = await supabaseAdmin.rpc('calculate_checkout_quote', {
+      p_session_id: sessionId,
+      p_event_id:   eventId,
+      p_coupon_id:  couponId ?? null,
+    });
 
-    if (locksErr || !locks || locks.length === 0) {
+    if (quoteErr || !quote) {
+      console.warn('calculate_checkout_quote error:', quoteErr);
       return new Response(
-        JSON.stringify({ error: 'No se encontraron reservas activas para esta sesión. Por favor reinicia el checkout.' }),
+        JSON.stringify({ error: 'No se encontraron reservas activas válidas para este evento. Por favor reinicia el checkout.' }),
         { status: 409, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
       );
     }
+
+    const amountMXN = Number((quote as { total: number }).total);
+
+    if (!(amountMXN > 0)) {
+      return new Response(
+        JSON.stringify({ error: 'Esta orden no requiere pago.' }),
+        { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+      );
+    }
+
+    const { data: eventRow } = await supabaseAdmin
+      .from('events')
+      .select('name')
+      .eq('id', eventId)
+      .maybeSingle();
 
     // -------------------------------------------------------------------------
     // 4. Get PayPal credentials
@@ -193,7 +212,8 @@ serve(async (req: Request) => {
       paypalBase,
       ppAccessToken,
       amountMXN,
-      `TicketFlow — ${eventName ?? 'Boletos'}`,
+      `TicketFlow — ${eventRow?.name ?? 'Boletos'}`.slice(0, 127),
+      sessionId,
     );
 
     // -------------------------------------------------------------------------

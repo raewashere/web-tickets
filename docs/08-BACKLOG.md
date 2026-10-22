@@ -21,7 +21,23 @@
 - [x] **Despliegue de la Store y Admin en Vercel**
   - **Completado:** Tanto la aplicación de Tienda (`store`) como el panel de Administración (`admin`) se encuentran desplegados y operativos en Vercel.
 
-- [ ] **PayPal: cambiar de Sandbox a producción**
+- [ ] **🔐 Seguridad del Checkout, RLS, Roles y Edge Functions (Migraciones 022 y 023) — código listo, pendiente de desplegar y probar**
+  - **Migración 022 (`20250122000000_secure_checkout.sql`):** `calculate_checkout_quote` en servidor (con restricción SKU y validación de evento), `create_order_atomic` restringido a `service_role` con `p_expected_total`, verificación PayPal pre/post captura y auto-refund en `create-order`.
+  - **Migración 023 (`20250123000000_security_rls_and_rpc_fixes.sql`):** bloqueo de auto-asignación de rol `admin` en `user_roles`, corrección del bypass anónimo `is_admin(NULL)` + revocación de `EXECUTE` a `anon` en RPCs administrativos, `SECURITY DEFINER` en `reserve_tickets` y `release_expired_locks` para invitados, RPC atómico `accept_staff_invitation` para porteros, endurecimiento de `validate_ticket_qr` (prefijo >= 8 chars + estado `refunded`), soporte de solicitud de reembolso para invitados (`p_access_token`) y aprobación de reembolsos exclusiva para Super-Admin (`process_refund_request`).
+  - **Edge Functions endurecidas:** `send-staff-invite` (valida JWT y propiedad del evento), `send-ticket-email` (canal principal en Resend directo con QR e hipervínculo público para invitados y registrados, sin spoofing de destinatario), `apply-coupon` (exige `sessionId` con reserva activa en `ticket_locks`).
+  - **Pendiente de despliegue:** `supabase db push`, `supabase functions deploy create-paypal-order create-order apply-coupon send-ticket-email send-staff-invite`, regenerar `database.types.ts`, desplegar Store/Admin en Vercel y correr prueba E2E en Sandbox.
+
+- [x] **Unificar el canal de correo en Resend directo (N8N opcional)**
+  - **Completado en código:** `create-order` invoca `send-ticket-email` (Resend) como canal principal para **todas** las órdenes (registrados e invitados), incluyendo imagen QR (`TICKETFLOW-AUTH-<order_id>`) y botón directo a `/ticket/:id?token=...`. El webhook N8N queda como integración secundaria opcional si se define `N8N_TICKET_WEBHOOK_URL`.
+
+- [x] **Reembolsos reales vía PayPal Refund API + Solicitud para Invitados**
+  - **Completado en código:** Creada Edge Function `process-refund` que valida rol Super-Admin, ejecuta el reembolso monetario en PayPal (`POST /v2/payments/captures/{id}/refund`) y llama a `process_refund_request`. Conectada en `RefundsService` (Admin) y `BackofficeService` (Backoffice). Agregado modal y banner de solicitud de reembolso para invitados en `public-ticket.component.ts`.
+
+- [ ] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación** para cobros asíncronos o cierres de navegador antes de `create-order`
+
+- [ ] **Desplegar Backoffice** en Vercel
+
+- [ ] **PayPal: cambiar de Sandbox a producción** *(bloqueado hasta desplegar y probar Migraciones 022 y 023 en Sandbox)*
   - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`
   - Reemplazar `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` con credenciales de producción
 

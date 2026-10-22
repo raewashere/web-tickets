@@ -150,6 +150,17 @@ export class EventStaffService {
     token: string,
     userId: string
   ): Promise<{ success: boolean; eventId?: string; error?: string }> {
+    // Primary path: atomic SECURITY DEFINER RPC (Migration 023)
+    const { data: rpcRes, error: rpcErr } = await this.supabase.rpc('accept_staff_invitation', {
+      p_token: token,
+    });
+
+    if (!rpcErr && rpcRes) {
+      const parsed = rpcRes as { success: boolean; eventId?: string; error?: string };
+      return parsed;
+    }
+
+    // Fallback path if RPC is not yet deployed
     const invite = await this.getInvitationByToken(token);
 
     if (!invite) {
@@ -164,7 +175,6 @@ export class EventStaffService {
       return { success: false, error: 'Esta invitación ha expirado.' };
     }
 
-    // Check if user already has an active assignment for another event
     const { data: activeAssignments } = await this.supabase
       .from('event_staff')
       .select('id, event_id, events(name)')
@@ -180,7 +190,6 @@ export class EventStaffService {
       };
     }
 
-    // 1. Assign 'doorman' role to user if not present
     const { data: roles } = await this.supabase
       .from('user_roles')
       .select('role')
@@ -191,7 +200,6 @@ export class EventStaffService {
       await this.supabase.from('user_roles').insert({ user_id: userId, role: 'doorman' });
     }
 
-    // 2. Upsert event_staff record
     const { error: staffErr } = await this.supabase
       .from('event_staff')
       .upsert(
@@ -209,7 +217,6 @@ export class EventStaffService {
       return { success: false, error: 'Error al registrar la asignación de personal.' };
     }
 
-    // 3. Mark invitation accepted
     await this.supabase
       .from('staff_invitations')
       .update({ status: 'accepted' })

@@ -4,13 +4,16 @@
 // Supports BOTH authenticated users and guests (guestEmail + guestName in body).
 //
 // Flow:
-//   1. Client sends { paypalOrderId, sessionId, eventId, couponId?,
-//                     guestEmail?, guestName? }
+//   1. Client sends { paypalOrderId?, sessionId, eventId, couponId?,
+//                     guestEmail?, guestName? }   (client `isFree` is ignored)
 //   2. We resolve caller: authenticated user (JWT) OR guest fields
-//   3. We capture the PayPal payment
-//   4. We call create_order_atomic() — atomic DB transaction
-//   5. [PLACEHOLDER] Dispatch N8N webhook with ticket data for email delivery
-//   6. Return created order + public ticketUrl
+//   3. Server-side quote via calculate_checkout_quote() (total, coupon, SKU)
+//   4. If total > 0: verify PayPal order (APPROVED, custom_id = sessionId,
+//      amount = total), capture it, and verify the captured amount
+//   5. We call create_order_atomic(p_expected_total) — atomic DB transaction;
+//      on failure the PayPal capture is auto-refunded
+//   6. Dispatch N8N webhook with ticket data for email delivery
+//   7. Return created order + public ticketUrl
 //
 // Environment variables required:
 //   PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_MODE
@@ -45,12 +48,45 @@ async function getPayPalAccessToken(baseUrl: string, clientId: string, secret: s
   return data.access_token as string;
 }
 
+interface PayPalAmount {
+  currency_code: string;
+  value: string;
+}
+
+interface PayPalCapture {
+  id: string;
+  status: string;
+  amount: PayPalAmount;
+}
+
+interface PayPalOrder {
+  id: string;
+  status: string;
+  purchase_units: Array<{
+    custom_id?: string;
+    amount?: PayPalAmount;
+    payments?: { captures?: PayPalCapture[] };
+  }>;
+}
+
+async function getPayPalOrder(
+  baseUrl: string,
+  accessToken: string,
+  paypalOrderId: string,
+): Promise<PayPalOrder> {
+  const res = await fetch(`${baseUrl}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!res.ok) throw new Error(`PayPal order lookup error: ${await res.text()}`);
+  return await res.json();
+}
+
 async function capturePayPalOrder(
   baseUrl: string,
   accessToken: string,
   paypalOrderId: string,
-): Promise<{ status: string; id: string; purchase_units: unknown[] }> {
-  const res = await fetch(`${baseUrl}/v2/checkout/orders/${paypalOrderId}/capture`, {
+): Promise<PayPalOrder> {
+  const res = await fetch(`${baseUrl}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}/capture`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -59,6 +95,38 @@ async function capturePayPalOrder(
   });
   if (!res.ok) throw new Error(`PayPal capture error: ${await res.text()}`);
   return await res.json();
+}
+
+async function refundPayPalCapture(
+  baseUrl: string,
+  accessToken: string,
+  captureId: string,
+): Promise<boolean> {
+  try {
+    const res = await fetch(`${baseUrl}/v2/payments/captures/${encodeURIComponent(captureId)}/refund`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        'PayPal-Request-Id': `refund-${captureId}`,
+      },
+      body: '{}',
+    });
+    if (!res.ok) {
+      console.error(`CRITICAL: PayPal auto-refund failed for capture ${captureId}: ${await res.text()}`);
+      return false;
+    }
+    console.log(`PayPal capture ${captureId} auto-refunded.`);
+    return true;
+  } catch (err) {
+    console.error(`CRITICAL: PayPal auto-refund error for capture ${captureId}:`, err);
+    return false;
+  }
+}
+
+function amountsMatch(paypalValue: string | undefined, expected: number): boolean {
+  if (paypalValue === undefined) return false;
+  return Math.abs(Number(paypalValue) - expected) < 0.01;
 }
 
 // ---------------------------------------------------------------------------
@@ -151,86 +219,119 @@ serve(async (req: Request) => {
 
     // -------------------------------------------------------------------------
     // 2. Parse body
+    // `isFree` from the client is IGNORED — the server decides based on the
+    // computed total (0 → courtesy, > 0 → PayPal capture required).
     // -------------------------------------------------------------------------
     const body = await req.json() as {
-      paypalOrderId:  string;
+      paypalOrderId?: string;
       sessionId:      string;
       eventId:        string;
       couponId?:      string | null;
-      isFree?:        boolean;    // true for courtesy orders (no PayPal capture)
       guestEmail?:    string;     // Required for guests
       guestName?:     string;
     };
 
-    const { paypalOrderId, sessionId, eventId, couponId, isFree, guestEmail, guestName } = body;
+    const { paypalOrderId, sessionId, eventId, couponId, guestEmail, guestName } = body;
+
+    const jsonResponse = (payload: unknown, status: number) =>
+      new Response(JSON.stringify(payload), {
+        status,
+        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+      });
 
     // Must have a logged-in user OR guest email
     if (!user && (!guestEmail || guestEmail.trim() === '')) {
-      return new Response(
-        JSON.stringify({ error: 'Se requiere autenticación o correo electrónico de invitado.' }),
-        { status: 401, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
-      );
+      return jsonResponse({ error: 'Se requiere autenticación o correo electrónico de invitado.' }, 401);
     }
 
-    if (!sessionId || !eventId || (!paypalOrderId && !isFree)) {
-      return new Response(
-        JSON.stringify({ error: 'Payload inválido.' }),
-        { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
-      );
+    if (!sessionId || !eventId) {
+      return jsonResponse({ error: 'Payload inválido.' }, 400);
     }
 
     // -------------------------------------------------------------------------
-    // 3. Verify locks still valid
+    // 3. Server-side quote (validates locks ↔ event, coupon, SKU restriction)
     // -------------------------------------------------------------------------
-    const { data: locks, error: locksErr } = await supabaseAdmin
-      .from('ticket_locks')
-      .select('id, quantity, locked_until, ticket_type_id')
-      .eq('session_id', sessionId)
-      .gt('locked_until', new Date().toISOString());
+    const { data: quote, error: quoteErr } = await supabaseAdmin.rpc('calculate_checkout_quote', {
+      p_session_id: sessionId,
+      p_event_id:   eventId,
+      p_coupon_id:  couponId ?? null,
+    });
 
-    if (locksErr || !locks || locks.length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'Las reservas han expirado. Por favor reinicia el proceso de compra.' }),
-        { status: 409, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
-      );
+    if (quoteErr || !quote) {
+      console.warn('calculate_checkout_quote error:', quoteErr);
+      return jsonResponse({ error: 'Las reservas han expirado o no son válidas. Por favor reinicia el proceso de compra.' }, 409);
     }
 
+    const expectedTotal = Number((quote as { total: number }).total);
+    const isFree = expectedTotal === 0;
+
     // -------------------------------------------------------------------------
-    // 4. Capture PayPal payment (skip for free/courtesy orders)
+    // 4. Verify + capture PayPal payment (only when the computed total > 0)
     // -------------------------------------------------------------------------
     let paymentReference = `FREE-${crypto.randomUUID()}`;
+    let captureId: string | null = null;
+    let paypalBase = '';
+    let ppAccessToken = '';
 
     if (!isFree) {
+      if (!paypalOrderId) {
+        return jsonResponse({ error: 'Esta orden requiere pago.' }, 402);
+      }
+
       const clientId     = Deno.env.get('PAYPAL_CLIENT_ID');
       const clientSecret = Deno.env.get('PAYPAL_CLIENT_SECRET');
       const mode         = Deno.env.get('PAYPAL_MODE') ?? 'sandbox';
 
       if (!clientId || !clientSecret) {
-        return new Response(
-          JSON.stringify({ error: 'Pasarela de pago no configurada.' }),
-          { status: 503, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
-        );
+        return jsonResponse({ error: 'Pasarela de pago no configurada.' }, 503);
       }
 
-      const paypalBase = mode === 'live'
+      paypalBase = mode === 'live'
         ? 'https://api-m.paypal.com'
         : 'https://api-m.sandbox.paypal.com';
 
-      const ppAccessToken = await getPayPalAccessToken(paypalBase, clientId, clientSecret);
-      const captureResult = await capturePayPalOrder(paypalBase, ppAccessToken, paypalOrderId);
+      ppAccessToken = await getPayPalAccessToken(paypalBase, clientId, clientSecret);
 
-      if (captureResult.status !== 'COMPLETED') {
-        return new Response(
-          JSON.stringify({ error: `Pago PayPal no completado: ${captureResult.status}` }),
-          { status: 402, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
-        );
+      // 4a. Verify BEFORE capturing: approved, bound to this session, right amount
+      const ppOrder = await getPayPalOrder(paypalBase, ppAccessToken, paypalOrderId);
+      const unit = ppOrder.purchase_units?.[0];
+
+      if (ppOrder.status !== 'APPROVED') {
+        return jsonResponse({ error: `Pago PayPal no aprobado: ${ppOrder.status}` }, 402);
+      }
+      if (unit?.custom_id !== sessionId) {
+        console.warn(`PayPal order ${paypalOrderId} custom_id mismatch for session ${sessionId}`);
+        return jsonResponse({ error: 'La orden de pago no corresponde a esta compra.' }, 400);
+      }
+      if (unit?.amount?.currency_code !== 'MXN' || !amountsMatch(unit?.amount?.value, expectedTotal)) {
+        console.warn(`PayPal amount mismatch: ${unit?.amount?.value} ${unit?.amount?.currency_code} vs ${expectedTotal} MXN`);
+        return jsonResponse({ error: 'El monto del pago no coincide con el total de la orden. Por favor reinicia el pago.' }, 409);
+      }
+
+      // 4b. Capture and verify the captured amount
+      const captureResult = await capturePayPalOrder(paypalBase, ppAccessToken, paypalOrderId);
+      const capture = captureResult.purchase_units?.[0]?.payments?.captures?.[0];
+      captureId = capture?.id ?? null;
+
+      if (captureResult.status !== 'COMPLETED' || capture?.status !== 'COMPLETED') {
+        return jsonResponse({ error: `Pago PayPal no completado: ${captureResult.status}` }, 402);
+      }
+
+      if (capture.amount?.currency_code !== 'MXN' || !amountsMatch(capture.amount?.value, expectedTotal)) {
+        console.error(`CRITICAL: captured amount ${capture.amount?.value} differs from expected ${expectedTotal}`);
+        const refunded = await refundPayPalCapture(paypalBase, ppAccessToken, capture.id);
+        return jsonResponse({
+          error: refunded
+            ? 'El monto cobrado no coincide con la orden. El pago fue reembolsado automáticamente.'
+            : 'El monto cobrado no coincide con la orden. Contacta a soporte para tu reembolso.',
+        }, 409);
       }
 
       paymentReference = captureResult.id;
     }
 
     // -------------------------------------------------------------------------
-    // 5. Call atomic DB function — create order + items + update stock + release locks
+    // 5. Call atomic DB function — re-validates total against amount charged
     // -------------------------------------------------------------------------
     const { data: orderResult, error: rpcErr } = await supabaseAdmin.rpc('create_order_atomic', {
       p_customer_id:       user?.id ?? null,
@@ -241,17 +342,25 @@ serve(async (req: Request) => {
       p_payment_reference: paymentReference,
       p_guest_email:       guestEmail ?? null,
       p_guest_name:        guestName  ?? null,
+      p_expected_total:    expectedTotal,
     });
 
     if (rpcErr) {
       console.error('create_order_atomic error:', rpcErr);
-      if (!isFree) {
-        console.error(`CRITICAL: PayPal capture ${paymentReference} succeeded but DB order failed. Needs manual refund.`);
+      let refunded = false;
+      if (captureId) {
+        refunded = await refundPayPalCapture(paypalBase, ppAccessToken, captureId);
+        if (!refunded) {
+          console.error(`CRITICAL: PayPal capture ${captureId} (order ${paymentReference}) succeeded but DB order failed and auto-refund failed. Needs manual refund.`);
+        }
       }
-      return new Response(
-        JSON.stringify({ error: rpcErr.message || 'Error al crear la orden.' }),
-        { status: 500, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
-      );
+      return jsonResponse({
+        error: captureId
+          ? (refunded
+              ? 'No se pudo completar la orden. Tu pago fue reembolsado automáticamente.'
+              : 'No se pudo completar la orden. Contacta a soporte para tu reembolso.')
+          : 'No se pudo completar la orden.',
+      }, 500);
     }
 
     // -------------------------------------------------------------------------
@@ -286,8 +395,22 @@ serve(async (req: Request) => {
       name:       item.ticket_types?.name ?? 'Localidad',
     }));
 
-    // Non-blocking dispatch — does not delay the HTTP response
-    dispatchN8NTicketWebhook({
+    // 6a. Primary transactional email channel: Resend via send-ticket-email (for BOTH guests and authenticated users)
+    if (order.id) {
+      try {
+        await supabaseAdmin.functions.invoke('send-ticket-email', {
+          body: {
+            orderId:     order.id,
+            accessToken: order.access_token,
+          },
+        });
+      } catch (emailErr) {
+        console.warn('send-ticket-email invocation warning:', emailErr);
+      }
+    }
+
+    // 6b. Optional secondary integration: N8N webhook (only fires if N8N_TICKET_WEBHOOK_URL is configured)
+    const n8nDispatch = dispatchN8NTicketWebhook({
       orderId:        order.id,
       accessToken:    order.access_token,
       recipientEmail,
@@ -304,15 +427,11 @@ serve(async (req: Request) => {
       qrImageUrl,
     });
 
-    // For authenticated users, also invoke the existing send-ticket-email function
-    if (user && order.id) {
-      try {
-        await supabaseAdmin.functions.invoke('send-ticket-email', {
-          body: { orderId: order.id, recipientEmail: user.email },
-        });
-      } catch (emailErr) {
-        console.warn('send-ticket-email invocation warning:', emailErr);
-      }
+    const edgeRuntime = (globalThis as { EdgeRuntime?: { waitUntil(p: Promise<unknown>): void } }).EdgeRuntime;
+    if (edgeRuntime?.waitUntil) {
+      edgeRuntime.waitUntil(n8nDispatch);
+    } else {
+      await n8nDispatch;
     }
 
     // -------------------------------------------------------------------------

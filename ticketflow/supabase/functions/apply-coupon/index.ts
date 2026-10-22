@@ -53,9 +53,10 @@ serve(async (req: Request) => {
       code: string;
       eventId: string;
       subtotal: number;
+      sessionId?: string;
       items?: CartItemInput[];
     };
-    const { code, eventId, subtotal, items } = body;
+    const { code, eventId, subtotal, sessionId, items } = body;
 
     if (!code || !eventId || subtotal === undefined || subtotal < 0) {
       return new Response(
@@ -72,6 +73,28 @@ serve(async (req: Request) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     );
 
+    // 3a. Anti-enumeration: require an active ticket reservation for this session
+    if (!sessionId || sessionId.trim().length < 8) {
+      return new Response(
+        JSON.stringify({ valid: false, message: 'Debes tener boletos reservados para aplicar un cupón.' }),
+        { status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+      );
+    }
+
+    const { data: activeLocks } = await supabaseAdmin
+      .from('ticket_locks')
+      .select('id')
+      .eq('session_id', sessionId.trim())
+      .gt('locked_until', new Date().toISOString())
+      .limit(1);
+
+    if (!activeLocks || activeLocks.length === 0) {
+      return new Response(
+        JSON.stringify({ valid: false, message: 'Tu reserva ha expirado. Selecciona tus boletos nuevamente.' }),
+        { status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+      );
+    }
+
     const { data: coupon, error: couponErr } = await supabaseAdmin
       .from('coupons')
       .select('*')
@@ -81,7 +104,7 @@ serve(async (req: Request) => {
 
     if (couponErr || !coupon) {
       return new Response(
-        JSON.stringify({ valid: false, message: 'Cupón no existe o no está activo.' }),
+        JSON.stringify({ valid: false, message: 'Cupón no válido o no disponible para este evento.' }),
         { status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
       );
     }

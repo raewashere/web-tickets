@@ -165,8 +165,9 @@ export class CheckoutService {
         headers,
         body: JSON.stringify({
           code,
-          eventId:  c.eventId,
-          subtotal: this.subtotal(),
+          eventId:   c.eventId,
+          sessionId: c.sessionId,
+          subtotal:  this.subtotal(),
           items: (c.items || []).map((i) => ({
             sku: i.sku,
             price: i.price,

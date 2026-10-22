@@ -31,10 +31,30 @@ serve(async (req: Request) => {
   }
 
   try {
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-    );
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: missing token.' }), {
+        status: 401,
+        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+
+    const supabaseAnon = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user: caller }, error: authErr } = await supabaseAnon.auth.getUser();
+    if (authErr || !caller) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: invalid session.' }), {
+        status: 401,
+        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
 
     const body = (await req.json()) as InviteStaffPayload;
     const { eventId, email, token } = body;
@@ -46,10 +66,10 @@ serve(async (req: Request) => {
       );
     }
 
-    // 1. Fetch event and inviter details
+    // 1. Fetch event and verify caller is the event's artist owner or a Super-Admin
     const { data: event, error: eventErr } = await supabaseAdmin
       .from('events')
-      .select('name, event_date, venues(name)')
+      .select('name, event_date, artist_id, artists(user_id), venues(name)')
       .eq('id', eventId)
       .single();
 
@@ -58,6 +78,39 @@ serve(async (req: Request) => {
         status: 404,
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
       });
+    }
+
+    const artistOwnerId = (event.artists as unknown as { user_id?: string })?.user_id;
+    if (artistOwnerId !== caller.id) {
+      const { data: adminRole } = await supabaseAdmin
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', caller.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (!adminRole) {
+        return new Response(
+          JSON.stringify({ error: 'Forbidden: only the event organizer or an admin can invite staff.' }),
+          { status: 403, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+        );
+      }
+    }
+
+    // Verify the invitation token actually exists in staff_invitations for this event & email
+    const { data: inviteRow } = await supabaseAdmin
+      .from('staff_invitations')
+      .select('id')
+      .eq('event_id', eventId)
+      .eq('email', email.trim().toLowerCase())
+      .eq('token', token)
+      .maybeSingle();
+
+    if (!inviteRow) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid staff invitation token.' }),
+        { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+      );
     }
 
     const eventName = event.name || 'Concierto';

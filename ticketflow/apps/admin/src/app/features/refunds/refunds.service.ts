@@ -21,24 +21,31 @@ export class RefundsService {
   }
 
   /**
-   * Approves or rejects a refund request atomically.
+   * Approves or rejects a refund request atomically (including PayPal refund execution via Edge Function).
    */
   async processRefund(
     requestId: string,
     approved: boolean,
     adminNotes?: string
-  ): Promise<{ success: boolean; error?: string; status?: string }> {
-    const { data, error } = await this.supabase.rpc('process_refund_request', {
-      p_request_id: requestId,
-      p_approved: approved,
-      p_admin_notes: adminNotes?.trim() || null,
+  ): Promise<{ success: boolean; error?: string; status?: string; paypalRefundId?: string | null }> {
+    const { data, error } = await this.supabase.functions.invoke('process-refund', {
+      body: {
+        requestId,
+        approved,
+        adminNotes: adminNotes?.trim() || null,
+      },
     });
 
     if (error) {
-      console.error('Error processing refund request:', error);
-      return { success: false, error: error.message };
+      console.error('Error invoking process-refund function:', error);
+      return { success: false, error: error.message || 'Error al procesar el reembolso.' };
     }
 
-    return data as { success: boolean; error?: string; status?: string };
+    return (data || { success: false, error: 'Respuesta vacía del servidor.' }) as {
+      success: boolean;
+      error?: string;
+      status?: string;
+      paypalRefundId?: string | null;
+    };
   }
 }

@@ -201,16 +201,18 @@ export class BackofficeService {
     return (data || []) as RefundRequestWithRelations[];
   }
 
-  /** Process refund request (Approve / Reject) */
+  /** Process refund request (Approve / Reject) with PayPal Refund API integration */
   async processRefundRequest(
     refundRequestId: string,
     status: 'approved' | 'rejected',
     notes?: string
   ): Promise<void> {
-    const { data, error } = await this.supabase.rpc('process_refund_request', {
-      p_request_id: refundRequestId,
-      p_approved: status === 'approved',
-      p_admin_notes: notes || null,
+    const { data, error } = await this.supabase.functions.invoke('process-refund', {
+      body: {
+        requestId: refundRequestId,
+        approved: status === 'approved',
+        adminNotes: notes || null,
+      },
     });
 
     if (error) {

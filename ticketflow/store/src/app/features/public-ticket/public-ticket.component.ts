@@ -3,9 +3,11 @@ import {
   OnInit,
   inject,
   signal,
+  computed,
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SupabaseService, AuthService } from '@ticketflow/data-access';
 import { generateQrDataUrl } from '../../shared/utils/qr.utils';
@@ -45,6 +47,14 @@ export interface PublicOrderData {
       name: string;
     } | null;
   }>;
+  refund_request?: {
+    id: string;
+    status: 'pending' | 'approved' | 'rejected';
+    reason: string;
+    admin_notes?: string | null;
+    created_at: string;
+    reviewed_at?: string | null;
+  } | null;
 }
 
 @Component({
@@ -52,6 +62,7 @@ export interface PublicOrderData {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule,
     ButtonComponent,
     BadgeComponent,
@@ -133,6 +144,35 @@ export interface PublicOrderData {
           </div>
         </div>
 
+        <!-- Refund Request Status Banner (if exists) -->
+        <div
+          *ngIf="order()!.refund_request"
+          class="p-4 rounded-2xl border text-xs space-y-1 print:hidden"
+          [ngClass]="{
+            'bg-amber-50 border-amber-200 text-amber-800': order()!.refund_request!.status === 'pending',
+            'bg-contrast/10 border-contrast/30 text-contrast': order()!.refund_request!.status === 'approved',
+            'bg-danger/10 border-danger/30 text-danger': order()!.refund_request!.status === 'rejected'
+          }"
+        >
+          <p class="font-bold flex items-center gap-1.5">
+            <i
+              class="fa-solid"
+              [ngClass]="{
+                'fa-clock': order()!.refund_request!.status === 'pending',
+                'fa-circle-check': order()!.refund_request!.status === 'approved',
+                'fa-circle-xmark': order()!.refund_request!.status === 'rejected'
+              }"
+            ></i>
+            <span *ngIf="order()!.refund_request!.status === 'pending'">Solicitud de reembolso en revisión por el equipo de BoletoCoqueto</span>
+            <span *ngIf="order()!.refund_request!.status === 'approved'">Reembolso aprobado y procesado</span>
+            <span *ngIf="order()!.refund_request!.status === 'rejected'">Solicitud de reembolso rechazada</span>
+          </p>
+          <p class="opacity-80">Motivo registrado: "{{ order()!.refund_request!.reason }}"</p>
+          <p *ngIf="order()!.refund_request!.admin_notes" class="font-semibold pt-1">
+            Respuesta de administración: {{ order()!.refund_request!.admin_notes }}
+          </p>
+        </div>
+
         <!-- Boarding Pass QR Card -->
         <div
           class="rounded-3xl border bg-white shadow-xl overflow-hidden print:shadow-none print:border-2"
@@ -145,7 +185,7 @@ export interface PublicOrderData {
           >
             <div>
               <span class="text-[10px] font-bold uppercase tracking-widest text-accent block">
-                {{ order()!.status === 'refunded' ? 'Boleto Invalidadas' : 'Pase Oficial de Entrada' }}
+                {{ order()!.status === 'refunded' ? 'Boleto Invalidado' : 'Pase Oficial de Entrada' }}
               </span>
               <span class="text-surface font-bold text-base leading-tight">
                 {{ order()!.event?.name || order()!.event?.title }}
@@ -247,7 +287,7 @@ export interface PublicOrderData {
             </div>
             <div>
               <h3 class="font-bold text-sm text-surface">¿Quieres guardar todos tus boletos en un solo lugar?</h3>
-              <p class="text-xs text-surface/80">Crea tu cuenta en TicketFlow para acceder a tus compras cuando quieras.</p>
+              <p class="text-xs text-surface/80">Crea tu cuenta en BoletoCoqueto para acceder a tus compras cuando quieras.</p>
             </div>
           </div>
           <div class="pt-1 flex justify-end">
@@ -273,6 +313,76 @@ export interface PublicOrderData {
             <i class="fa-solid fa-print"></i>
             <span>Imprimir / Descargar en PDF</span>
           </button>
+
+          <button
+            *ngIf="canRequestRefund()"
+            type="button"
+            (click)="openRefundModal()"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-danger/10 text-danger hover:bg-danger/20 border border-danger/30 font-bold text-xs transition-all"
+          >
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Solicitar Reembolso</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Refund Request Modal for Guest -->
+      <div
+        *ngIf="showRefundModal()"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in print:hidden"
+      >
+        <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-dark/10">
+          <button
+            type="button"
+            (click)="closeRefundModal()"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <div class="space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block bg-danger/10 text-danger border border-danger/30">
+              Solicitud Post-Venta
+            </span>
+            <h3 class="text-xl font-bold text-dark">Solicitar Reembolso</h3>
+            <p class="text-xs text-dark/60">
+              Orden #{{ order()!.id.substring(0, 8).toUpperCase() }} · Importe: <strong>\${{ order()!.total | number:'1.2-2' }} MXN</strong>
+            </p>
+          </div>
+
+          <div class="space-y-1.5 text-xs">
+            <label class="font-bold text-dark">Describe el motivo de tu solicitud:</label>
+            <textarea
+              [(ngModel)]="refundReason"
+              rows="3"
+              placeholder="Ej. Cambio de fecha, imprevisto médico, error en la compra..."
+              class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 text-dark text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none resize-none"
+            ></textarea>
+          </div>
+
+          <p *ngIf="refundError()" class="text-danger font-bold text-xs">
+            {{ refundError() }}
+          </p>
+
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-dark/10">
+            <button
+              type="button"
+              (click)="closeRefundModal()"
+              [disabled]="isSubmittingRefund()"
+              class="px-4 py-2 rounded-xl text-dark/70 font-bold text-xs hover:bg-dark/5 transition"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              (click)="submitRefundRequest()"
+              [disabled]="isSubmittingRefund()"
+              class="px-5 py-2 rounded-xl bg-danger hover:opacity-90 text-surface font-bold text-xs shadow-md transition flex items-center gap-2"
+            >
+              <tf-spinner *ngIf="isSubmittingRefund()" size="sm" color="surface"></tf-spinner>
+              <span>{{ isSubmittingRefund() ? 'Enviando...' : 'Enviar Solicitud' }}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -289,6 +399,20 @@ export class PublicTicketComponent implements OnInit {
   readonly order        = signal<PublicOrderData | null>(null);
   readonly qrDataUrl    = signal<string | null>(null);
 
+  // Guest Refund Modal state
+  private accessToken = '';
+  readonly showRefundModal    = signal(false);
+  readonly isSubmittingRefund = signal(false);
+  readonly refundError        = signal<string | null>(null);
+  refundReason = '';
+
+  readonly canRequestRefund = computed(() => {
+    const o = this.order();
+    if (!o || o.status !== 'confirmed' || o.refund_request) return false;
+    const evDate = o.event?.event_date ? new Date(o.event.event_date) : null;
+    return !evDate || evDate.getTime() > Date.now();
+  });
+
   async ngOnInit(): Promise<void> {
     const orderId = this.route.snapshot.paramMap.get('orderId');
     const token   = this.route.snapshot.queryParamMap.get('token');
@@ -299,6 +423,7 @@ export class PublicTicketComponent implements OnInit {
       return;
     }
 
+    this.accessToken = token;
     await this.loadPublicOrder(orderId, token);
   }
 
@@ -333,9 +458,61 @@ export class PublicTicketComponent implements OnInit {
     }
   }
 
+  openRefundModal(): void {
+    this.refundReason = '';
+    this.refundError.set(null);
+    this.showRefundModal.set(true);
+  }
+
+  closeRefundModal(): void {
+    this.showRefundModal.set(false);
+    this.refundError.set(null);
+  }
+
+  async submitRefundRequest(): Promise<void> {
+    const o = this.order();
+    if (!o) return;
+
+    const reason = this.refundReason.trim();
+    if (reason.length < 5) {
+      this.refundError.set('Por favor describe el motivo con al menos 5 caracteres.');
+      return;
+    }
+
+    this.isSubmittingRefund.set(true);
+    this.refundError.set(null);
+
+    try {
+      const { data, error } = await this.supabase.rpc('request_order_refund', {
+        p_order_id:     o.id,
+        p_reason:       reason,
+        p_access_token: this.accessToken,
+      });
+
+      if (error) {
+        this.refundError.set(error.message || 'Error al enviar la solicitud de reembolso.');
+        return;
+      }
+
+      const res = data as { success: boolean; error?: string };
+      if (!res?.success) {
+        this.refundError.set(res?.error || 'No fue posible registrar la solicitud.');
+        return;
+      }
+
+      this.closeRefundModal();
+      await this.loadPublicOrder(o.id, this.accessToken);
+    } catch (err: unknown) {
+      this.refundError.set(err instanceof Error ? err.message : 'Error inesperado al solicitar reembolso.');
+    } finally {
+      this.isSubmittingRefund.set(false);
+    }
+  }
+
   printPass(): void {
     if (isPlatformBrowser(this.platformId)) {
       window.print();
     }
   }
 }
+
