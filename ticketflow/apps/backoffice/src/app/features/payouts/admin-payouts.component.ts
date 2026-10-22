@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BackofficeService } from '../../services/backoffice.service';
 import type { AdminArtistFinancialItem } from '@ticketflow/models';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-admin-payouts',
@@ -331,6 +331,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 })
 export class AdminPayoutsComponent implements OnInit {
   private readonly backofficeService = inject(BackofficeService);
+  private readonly toast = inject(ToastService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
@@ -431,11 +432,15 @@ export class AdminPayoutsComponent implements OnInit {
         receipt_url: this.payoutForm.receipt_url,
       });
 
+      this.toast.success(
+        'Liquidación Registrada',
+        `Se registró el pago de $${Number(this.payoutForm.amount).toFixed(2)} MXN para ${artist.artist_name}.`
+      );
       this.closePayoutModal();
       await this.loadOverview();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al registrar liquidación.';
-      alert(msg);
+      this.toast.error('Error al Registrar Liquidación', msg);
     } finally {
       this.isSubmittingPayout.set(false);
     }

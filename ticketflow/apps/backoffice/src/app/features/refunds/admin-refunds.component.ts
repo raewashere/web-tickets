@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BackofficeService } from '../../services/backoffice.service';
 import type { RefundRequestWithRelations } from '@ticketflow/models';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-admin-refunds',
@@ -14,29 +14,29 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-on-secondary-container bg-secondary-container border border-secondary/20 px-3 py-1 rounded-full inline-block mb-2">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-on-secondary-container bg-secondary-container border border-secondary/20 px-3 py-1 rounded-full inline-block mb-2">
             Gestión Post-Venta Central
           </span>
-          <h1 class="text-2xl sm:text-3xl font-black text-on-surface tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
             Solicitudes de Reembolso Globales
           </h1>
-          <p class="text-xs sm:text-sm text-on-surface/60 mt-1">
-            Revisa y procesa las solicitudes de cancelación enviadas por los compradores de cualquier evento.
+          <p class="text-xs sm:text-sm text-on-surface-variant mt-1">
+            Revisa y procesa las solicitudes de cancelación enviadas por los compradores con devolución automática en PayPal.
           </p>
         </div>
 
         <button
           type="button"
           (click)="loadRefunds()"
-          class="px-4 py-2.5 rounded-xl bg-surface border border-outline-variant/30 hover:bg-surface-variant/40 text-on-surface font-bold text-xs shadow-xs transition flex items-center gap-2 self-start sm:self-auto"
+          class="px-4 py-2.5 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-variant/40 text-on-surface font-bold text-xs shadow-xs transition flex items-center gap-2 self-start sm:self-auto"
         >
-          <i class="fa-solid fa-arrows-rotate"></i>
+          <i class="fa-solid fa-arrows-rotate" [class.animate-spin]="isLoading()"></i>
           <span>Actualizar Lista</span>
         </button>
       </div>
 
       <!-- Filters & Search -->
-      <div class="p-4 rounded-2xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="p-4 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="w-full md:max-w-md relative">
           <input
             type="text"
@@ -44,7 +44,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             placeholder="Buscar por orden, cliente, evento o motivo..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-on-surface/40 text-xs"></i>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-on-surface-variant text-xs"></i>
         </div>
 
         <div class="flex items-center gap-2 w-full md:w-auto">
@@ -53,8 +53,8 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
             (click)="selectedFilter.set('all')"
             [class.bg-primary]="selectedFilter() === 'all'"
             [class.text-on-primary]="selectedFilter() === 'all'"
-            [class.bg-surface-variant/50]="selectedFilter() !== 'all'"
-            [class.text-on-surface/80]="selectedFilter() !== 'all'"
+            [class.bg-surface]="selectedFilter() !== 'all'"
+            [class.text-on-surface]="selectedFilter() !== 'all'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Todas ({{ refunds().length }})
@@ -62,10 +62,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="selectedFilter.set('pending')"
-            [class.bg-amber-500]="selectedFilter() === 'pending'"
-            [class.text-white]="selectedFilter() === 'pending'"
-            [class.bg-amber-500/10]="selectedFilter() !== 'pending'"
-            [class.text-amber-800]="selectedFilter() !== 'pending'"
+            [class.bg-primary]="selectedFilter() === 'pending'"
+            [class.text-on-primary]="selectedFilter() === 'pending'"
+            [class.bg-surface]="selectedFilter() !== 'pending'"
+            [class.text-on-surface]="selectedFilter() !== 'pending'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Pendientes ({{ pendingCount() }})
@@ -73,10 +73,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
           <button
             type="button"
             (click)="selectedFilter.set('approved')"
-            [class.bg-emerald-600]="selectedFilter() === 'approved'"
-            [class.text-white]="selectedFilter() === 'approved'"
-            [class.bg-emerald-500/10]="selectedFilter() !== 'approved'"
-            [class.text-emerald-700]="selectedFilter() !== 'approved'"
+            [class.bg-primary]="selectedFilter() === 'approved'"
+            [class.text-on-primary]="selectedFilter() === 'approved'"
+            [class.bg-surface]="selectedFilter() !== 'approved'"
+            [class.text-on-surface]="selectedFilter() !== 'approved'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Aprobadas
@@ -87,7 +87,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3">
         <tf-spinner size="lg"></tf-spinner>
-        <p class="text-xs text-on-surface/50">Cargando solicitudes de reembolso...</p>
+        <p class="text-xs text-on-surface-variant">Cargando solicitudes de reembolso...</p>
       </div>
 
       <!-- Error State -->
@@ -96,10 +96,10 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Refunds Table -->
-      <div *ngIf="!isLoading() && filteredRefunds().length > 0" class="bg-surface rounded-2xl border border-outline-variant/30 shadow-xs overflow-hidden">
+      <div *ngIf="!isLoading() && filteredRefunds().length > 0" class="bg-surface-container rounded-2xl border border-outline-variant/30 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-surface-variant/40 border-b border-outline-variant/20 text-on-surface/70 font-bold uppercase text-[10px] tracking-wider">
+            <thead class="bg-surface-variant/40 border-b border-outline-variant/20 text-on-surface-variant font-bold uppercase text-[10px] tracking-wider">
               <tr>
                 <th class="py-3.5 px-4 sm:px-6">Orden / Cliente</th>
                 <th class="py-3.5 px-4">Evento</th>
@@ -113,36 +113,39 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
               <tr *ngFor="let ref of filteredRefunds()" class="hover:bg-primary/[0.03] transition">
                 <td class="py-4 px-4 sm:px-6">
                   <div class="space-y-0.5">
-                    <span class="font-extrabold text-on-surface block">Orden #{{ ref.order_id.substring(0, 8) }}</span>
-                    <span class="text-xs text-on-surface/60">{{ ref.customer_name || ref.customer_email || 'Cliente' }}</span>
+                    <span class="font-bold font-mono text-on-surface block">Orden #{{ ref.order_id.substring(0, 8).toUpperCase() }}</span>
+                    <span class="text-xs text-on-surface-variant">{{ ref.customer_name || ref.customer_email || 'Cliente' }}</span>
                   </div>
                 </td>
-                <td class="py-4 px-4 font-semibold text-on-surface/80">
-                  <i class="fa-solid fa-calendar-days text-on-surface/40 mr-1.5"></i>
+                <td class="py-4 px-4 font-semibold text-on-surface">
+                  <i class="fa-solid fa-calendar-days text-primary mr-1.5"></i>
                   <span>{{ ref.event_name || 'Evento' }}</span>
                 </td>
-                <td class="py-4 px-4 text-right font-black font-mono text-primary">
+                <td class="py-4 px-4 text-right font-bold font-mono text-primary">
                   \${{ (ref.order_total || ref.amount) | number:'1.2-2' }} MXN
                 </td>
                 <td class="py-4 px-4 max-w-xs">
-                  <p class="text-xs text-on-surface/80 italic">"{{ ref.reason }}"</p>
-                  <span class="text-[10px] text-on-surface/40 font-mono block mt-0.5">
+                  <p class="text-xs text-on-surface italic">"{{ ref.reason }}"</p>
+                  <p *ngIf="ref.admin_notes" class="text-[11px] text-on-surface-variant mt-0.5">
+                    Nota Admin: {{ ref.admin_notes }}
+                  </p>
+                  <span class="text-[10px] text-on-surface-variant/70 font-mono block mt-0.5">
                     {{ ref.created_at | date:'dd/MM/yyyy HH:mm' }}
                   </span>
                 </td>
                 <td class="py-4 px-4 text-center">
                   <span
                     *ngIf="ref.status === 'pending'"
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-bold text-[11px]"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container border border-secondary/30 font-bold text-[11px]"
                   >
-                    <i class="fa-solid fa-clock text-amber-500"></i>
+                    <i class="fa-solid fa-clock"></i>
                     <span>Pendiente</span>
                   </span>
                   <span
                     *ngIf="ref.status === 'approved'"
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold text-[11px]"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-container text-on-tertiary-container border border-tertiary/30 font-bold text-[11px]"
                   >
-                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                    <i class="fa-solid fa-circle-check"></i>
                     <span>Aprobado</span>
                   </span>
                   <span
@@ -157,22 +160,22 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
                   <div *ngIf="ref.status === 'pending'" class="flex items-center justify-end gap-2">
                     <button
                       type="button"
-                      (click)="processRefund(ref, 'approved')"
+                      (click)="openProcessModal(ref, 'approved')"
                       [disabled]="processingId() === ref.id"
-                      class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition disabled:opacity-50"
+                      class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs shadow-xs transition disabled:opacity-50"
                     >
                       Aprobar
                     </button>
                     <button
                       type="button"
-                      (click)="processRefund(ref, 'rejected')"
+                      (click)="openProcessModal(ref, 'rejected')"
                       [disabled]="processingId() === ref.id"
-                      class="px-3 py-1.5 rounded-lg bg-error hover:bg-error/90 text-on-error font-bold text-xs shadow-xs transition disabled:opacity-50"
+                      class="px-3 py-1.5 rounded-lg bg-error-container hover:bg-error/20 text-on-error-container border border-error/30 font-bold text-xs shadow-xs transition disabled:opacity-50"
                     >
                       Rechazar
                     </button>
                   </div>
-                  <span *ngIf="ref.status !== 'pending'" class="text-xs text-on-surface/40 italic">
+                  <span *ngIf="ref.status !== 'pending'" class="text-xs text-on-surface-variant italic">
                     Procesado
                   </span>
                 </td>
@@ -183,23 +186,98 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="!isLoading() && filteredRefunds().length === 0" class="p-12 text-center bg-surface rounded-2xl border border-dashed border-outline-variant/40 space-y-2">
-        <span class="text-3xl block text-on-surface/30">
+      <div *ngIf="!isLoading() && filteredRefunds().length === 0" class="p-12 text-center bg-surface-container rounded-2xl border border-dashed border-outline-variant/40 space-y-2">
+        <span class="text-3xl block text-on-surface-variant/40">
           <i class="fa-solid fa-rotate-left"></i>
         </span>
         <h3 class="font-bold text-on-surface text-base">No hay solicitudes de reembolso</h3>
-        <p class="text-xs text-on-surface/50">No hay reembolsos coincidentes con tus criterios.</p>
+        <p class="text-xs text-on-surface-variant">No hay reembolsos coincidentes con tus criterios.</p>
+      </div>
+
+      <!-- M3 Confirmation Modal with Admin Notes -->
+      <div
+        *ngIf="activeModalRefund()"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      >
+        <div class="relative w-full max-w-md bg-surface-container-high rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-outline-variant/30">
+          <button
+            type="button"
+            (click)="closeProcessModal()"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center transition"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <div class="space-y-1">
+            <span
+              class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block"
+              [ngClass]="modalAction() === 'approved' ? 'bg-tertiary-container text-on-tertiary-container border border-tertiary/30' : 'bg-error-container text-on-error-container border border-error/30'"
+            >
+              {{ modalAction() === 'approved' ? 'Aprobación y Reembolso PayPal' : 'Rechazo de Solicitud' }}
+            </span>
+            <h3 class="text-xl font-bold text-on-surface">
+              {{ modalAction() === 'approved' ? '¿Confirmar Reembolso?' : '¿Rechazar Solicitud?' }}
+            </h3>
+            <p class="text-xs text-on-surface-variant">
+              Orden #{{ activeModalRefund()!.order_id.substring(0, 8).toUpperCase() }} · Importe: <strong class="text-on-surface font-mono">\${{ (activeModalRefund()!.order_total || activeModalRefund()!.amount) | number:'1.2-2' }} MXN</strong>
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-surface text-xs text-on-surface space-y-0.5 border border-outline-variant/20">
+            <span class="font-bold text-[10px] uppercase text-on-surface-variant block">Motivo del Cliente:</span>
+            <p class="italic">"{{ activeModalRefund()!.reason }}"</p>
+          </div>
+
+          <div class="space-y-1.5 text-xs">
+            <label class="font-bold text-on-surface">
+              {{ modalAction() === 'approved' ? 'Nota administrativa (opcional):' : 'Motivo del rechazo para el comprador (opcional):' }}
+            </label>
+            <textarea
+              [(ngModel)]="modalAdminNotes"
+              rows="2"
+              placeholder="Escribe una nota que verá el comprador en su boleto..."
+              class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none resize-none"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-outline-variant/20">
+            <button
+              type="button"
+              (click)="closeProcessModal()"
+              [disabled]="processingId() !== null"
+              class="px-4 py-2 rounded-xl text-on-surface-variant font-bold text-xs hover:bg-surface-variant transition"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              (click)="confirmProcessRefund()"
+              [disabled]="processingId() !== null"
+              class="px-5 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2"
+              [ngClass]="modalAction() === 'approved' ? 'bg-primary text-on-primary hover:bg-primary/90' : 'bg-error text-on-error hover:opacity-90'"
+            >
+              <tf-spinner *ngIf="processingId() !== null" size="sm" color="white"></tf-spinner>
+              <span>{{ processingId() !== null ? 'Procesando...' : (modalAction() === 'approved' ? 'Aprobar y Reembolsar' : 'Confirmar Rechazo') }}</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   `,
 })
 export class AdminRefundsComponent implements OnInit {
   private readonly backofficeService = inject(BackofficeService);
+  private readonly toast = inject(ToastService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly refunds = signal<RefundRequestWithRelations[]>([]);
   readonly processingId = signal<string | null>(null);
+
+  // Modal State
+  readonly activeModalRefund = signal<RefundRequestWithRelations | null>(null);
+  readonly modalAction = signal<'approved' | 'rejected'>('approved');
+  modalAdminNotes = '';
 
   searchQuery = '';
   readonly selectedFilter = signal<'all' | 'pending' | 'approved'>('all');
@@ -251,22 +329,37 @@ export class AdminRefundsComponent implements OnInit {
     }
   }
 
-  async processRefund(refund: RefundRequestWithRelations, action: 'approved' | 'rejected'): Promise<void> {
-    const orderIdShort = refund.order_id ? refund.order_id.substring(0, 8) : refund.id.substring(0, 8);
-    const confirmMsg = action === 'approved' 
-      ? `¿Confirmas la aprobación del reembolso de la orden #${orderIdShort}? Esto reincorporará el stock de boletos y anulará los QR.`
-      : `¿Deseas rechazar la solicitud de reembolso para la orden #${orderIdShort}?`;
+  openProcessModal(refund: RefundRequestWithRelations, action: 'approved' | 'rejected'): void {
+    this.activeModalRefund.set(refund);
+    this.modalAction.set(action);
+    this.modalAdminNotes = '';
+  }
 
-    if (!confirm(confirmMsg)) return;
+  closeProcessModal(): void {
+    this.activeModalRefund.set(null);
+    this.modalAdminNotes = '';
+  }
 
+  async confirmProcessRefund(): Promise<void> {
+    const refund = this.activeModalRefund();
+    if (!refund) return;
+
+    const action = this.modalAction();
     this.processingId.set(refund.id);
 
     try {
-      await this.backofficeService.processRefundRequest(refund.id, action);
+      await this.backofficeService.processRefundRequest(refund.id, action, this.modalAdminNotes);
+      this.toast.success(
+        action === 'approved' ? 'Reembolso Aprobado' : 'Solicitud Rechazada',
+        action === 'approved'
+          ? `Se procesó la devolución de la orden #${refund.order_id.substring(0, 8).toUpperCase()} y se restauró el stock.`
+          : `La solicitud de la orden #${refund.order_id.substring(0, 8).toUpperCase()} fue marcada como rechazada.`
+      );
+      this.closeProcessModal();
       await this.loadRefunds();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al procesar reembolso.';
-      alert(msg);
+      this.toast.error('Error al Procesar Reembolso', msg);
     } finally {
       this.processingId.set(null);
     }

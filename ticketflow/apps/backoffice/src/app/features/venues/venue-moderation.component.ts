@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BackofficeService } from '../../services/backoffice.service';
 import type { AdminVenueModerationItem } from '@ticketflow/models';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-venue-moderation',
@@ -214,6 +214,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
 })
 export class VenueModerationComponent implements OnInit {
   private readonly backofficeService = inject(BackofficeService);
+  private readonly toast = inject(ToastService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
@@ -226,6 +227,7 @@ export class VenueModerationComponent implements OnInit {
   readonly pendingCount = computed(
     () => this.venues().filter((v) => !v.verified).length
   );
+
   readonly verifiedCount = computed(
     () => this.venues().filter((v) => v.verified).length
   );
@@ -282,9 +284,13 @@ export class VenueModerationComponent implements OnInit {
           item.id === venue.id ? { ...item, verified: newStatus } : item
         )
       );
+      this.toast.success(
+        newStatus ? 'Recinto Verificado' : 'Verificación Revocada',
+        `El recinto "${venue.name}" ha sido actualizado.`
+      );
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al actualizar verificación.';
-      alert(msg);
+      this.toast.error('Error de Moderación', msg);
     } finally {
       this.updatingVenueId.set(null);
     }

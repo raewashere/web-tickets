@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ToastContainerComponent } from '@ticketflow/shared-ui';
 import { BackofficeSidebarComponent } from './backoffice-sidebar.component';
 import { BackofficeTopbarComponent } from './backoffice-topbar.component';
 
@@ -10,11 +11,13 @@ import { BackofficeTopbarComponent } from './backoffice-topbar.component';
   imports: [
     CommonModule,
     RouterModule,
+    ToastContainerComponent,
     BackofficeSidebarComponent,
     BackofficeTopbarComponent,
   ],
   template: `
     <div class="min-h-screen bg-surface text-on-surface flex">
+      <tf-toast-container></tf-toast-container>
       <!-- Sidebar -->
       <app-backoffice-sidebar
         [isOpen]="isSidebarOpen"

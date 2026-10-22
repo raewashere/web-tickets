@@ -20,18 +20,18 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full inline-block mb-2">
             Gestión de Post-Venta
           </span>
-          <h1 class="text-2xl sm:text-3xl font-bold text-dark tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
             Solicitudes de Reembolso
           </h1>
-          <p class="text-xs sm:text-sm text-dark/60 mt-1">
-            Revisa, aprueba o rechaza solicitudes de devolución de boletos con reintegro automático de stock y cancelación de accesos.
+          <p class="text-xs sm:text-sm text-on-surface-variant mt-1">
+            Revisa el estado de las solicitudes de devolución de boletos con reintegro automático de stock y cancelación de accesos.
           </p>
         </div>
 
         <button
           type="button"
           (click)="loadRefundRequests()"
-          class="px-4 py-2 rounded-xl bg-white border border-dark/10 hover:bg-dark/5 text-dark font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
+          class="px-4 py-2 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-variant text-on-surface font-bold text-xs shadow-sm transition flex items-center gap-2 self-start sm:self-auto"
         >
           <i class="fa-solid fa-rotate-right" [class.animate-spin]="isLoading()"></i>
           <span>Actualizar Lista</span>
@@ -42,10 +42,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
       <div
         *ngIf="feedbackMessage()"
         class="p-4 rounded-2xl flex items-center justify-between transition-all"
-        [ngClass]="feedbackType() === 'success' ? 'bg-contrast/10 border border-contrast/30 text-contrast' : 'bg-danger/10 border border-danger/30 text-danger'"
+        [ngClass]="feedbackType() === 'success' ? 'bg-tertiary-container border border-tertiary/30 text-on-tertiary-container' : 'bg-error-container border border-error/30 text-on-error-container'"
       >
         <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold">
-          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check text-contrast' : 'fa-solid fa-triangle-exclamation text-danger'"></i>
+          <i [class]="feedbackType() === 'success' ? 'fa-solid fa-circle-check' : 'fa-solid fa-triangle-exclamation text-error'"></i>
           <span>{{ feedbackMessage() }}</span>
         </div>
         <button
@@ -60,61 +60,61 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
       <!-- Stats Cards Row -->
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         <!-- Total -->
-        <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Total Solicitudes</span>
-          <p class="text-xl sm:text-2xl font-bold text-dark">{{ requests().length }}</p>
-          <span class="text-[10px] text-dark/40 font-medium">Histórico recibido</span>
+        <div class="p-4 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant block">Total Solicitudes</span>
+          <p class="text-xl sm:text-2xl font-bold text-on-surface">{{ requests().length }}</p>
+          <span class="text-[10px] text-on-surface-variant/80 font-medium">Histórico recibido</span>
         </div>
 
         <!-- Pending -->
-        <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/70 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-secondary-container/50 border border-secondary/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-on-secondary-container flex items-center justify-between">
             <span>Pendientes</span>
             <i class="fa-regular fa-clock text-xs"></i>
           </span>
-          <p class="text-xl sm:text-2xl font-bold text-amber-700">{{ countPending() }}</p>
-          <span class="text-[10px] text-amber-600/70 font-medium">Requieren resolución</span>
+          <p class="text-xl sm:text-2xl font-bold text-on-secondary-container">{{ countPending() }}</p>
+          <span class="text-[10px] text-on-secondary-container/80 font-medium">Requieren resolución</span>
         </div>
 
         <!-- Approved -->
-        <div class="p-4 rounded-2xl bg-contrast/10 border border-contrast/30 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-contrast flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-tertiary-container/60 border border-tertiary/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-on-tertiary-container flex items-center justify-between">
             <span>Aprobadas</span>
             <i class="fa-solid fa-circle-check text-xs"></i>
           </span>
-          <p class="text-xl sm:text-2xl font-bold text-contrast">{{ countApproved() }}</p>
-          <span class="text-[10px] text-contrast/70 font-medium">Stock restablecido</span>
+          <p class="text-xl sm:text-2xl font-bold text-on-tertiary-container">{{ countApproved() }}</p>
+          <span class="text-[10px] text-on-tertiary-container/80 font-medium">Stock restablecido</span>
         </div>
 
         <!-- Rejected -->
-        <div class="p-4 rounded-2xl bg-danger/10 border border-danger/30 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-danger flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-error-container/60 border border-error/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-on-error-container flex items-center justify-between">
             <span>Rechazadas</span>
             <i class="fa-solid fa-circle-xmark text-xs"></i>
           </span>
-          <p class="text-xl sm:text-2xl font-bold text-danger">{{ countRejected() }}</p>
-          <span class="text-[10px] text-danger/70 font-medium">Boletos vigentes</span>
+          <p class="text-xl sm:text-2xl font-bold text-on-error-container">{{ countRejected() }}</p>
+          <span class="text-[10px] text-on-error-container/80 font-medium">Boletos vigentes</span>
         </div>
 
         <!-- Total Refunded Amount -->
-        <div class="col-span-2 lg:col-span-1 p-4 rounded-2xl bg-white border border-dark/10 shadow-sm space-y-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-dark/50 block">Monto Reembolsado</span>
-          <p class="text-xl sm:text-2xl font-bold text-primary">\${{ totalRefundedAmount() | number:'1.2-2' }}</p>
-          <span class="text-[10px] text-dark/40 font-medium">MXN devueltos</span>
+        <div class="col-span-2 lg:col-span-1 p-4 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-sm space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant block">Monto Reembolsado</span>
+          <p class="text-xl sm:text-2xl font-bold text-primary font-mono">\${{ totalRefundedAmount() | number:'1.2-2' }}</p>
+          <span class="text-[10px] text-on-surface-variant/80 font-medium">MXN devueltos</span>
         </div>
       </div>
 
       <!-- Filters & Search Bar -->
-      <div class="p-4 rounded-2xl bg-white border border-dark/10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="p-4 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         <!-- Search Input -->
         <div class="w-full md:max-w-md relative">
           <input
             type="text"
             [(ngModel)]="searchQuery"
             placeholder="Buscar por cliente, correo, orden o evento..."
-            class="w-full pl-10 pr-4 py-2 rounded-xl border border-dark/20 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            class="w-full pl-10 pr-4 py-2 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <span class="absolute left-3.5 top-2.5 text-dark/40 text-sm">
+          <span class="absolute left-3.5 top-2.5 text-on-surface-variant text-sm">
             <i class="fa-solid fa-magnifying-glass"></i>
           </span>
         </div>
@@ -124,10 +124,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <button
             type="button"
             (click)="selectedFilter.set('all')"
-            [class.bg-dark]="selectedFilter() === 'all'"
-            [class.text-white]="selectedFilter() === 'all'"
-            [class.bg-dark/5]="selectedFilter() !== 'all'"
-            [class.text-dark]="selectedFilter() !== 'all'"
+            [class.bg-primary]="selectedFilter() === 'all'"
+            [class.text-on-primary]="selectedFilter() === 'all'"
+            [class.bg-surface]="selectedFilter() !== 'all'"
+            [class.text-on-surface]="selectedFilter() !== 'all'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Todas ({{ requests().length }})
@@ -135,23 +135,23 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <button
             type="button"
             (click)="selectedFilter.set('pending')"
-            [class.bg-dark]="selectedFilter() === 'pending'"
-            [class.text-white]="selectedFilter() === 'pending'"
-            [class.bg-dark/5]="selectedFilter() !== 'pending'"
-            [class.text-dark]="selectedFilter() !== 'pending'"
+            [class.bg-primary]="selectedFilter() === 'pending'"
+            [class.text-on-primary]="selectedFilter() === 'pending'"
+            [class.bg-surface]="selectedFilter() !== 'pending'"
+            [class.text-on-surface]="selectedFilter() !== 'pending'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
           >
             <span>Pendientes</span>
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span class="w-2 h-2 rounded-full bg-secondary"></span>
             <span>({{ countPending() }})</span>
           </button>
           <button
             type="button"
             (click)="selectedFilter.set('approved')"
-            [class.bg-dark]="selectedFilter() === 'approved'"
-            [class.text-white]="selectedFilter() === 'approved'"
-            [class.bg-dark/5]="selectedFilter() !== 'approved'"
-            [class.text-dark]="selectedFilter() !== 'approved'"
+            [class.bg-primary]="selectedFilter() === 'approved'"
+            [class.text-on-primary]="selectedFilter() === 'approved'"
+            [class.bg-surface]="selectedFilter() !== 'approved'"
+            [class.text-on-surface]="selectedFilter() !== 'approved'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Aprobadas ({{ countApproved() }})
@@ -159,10 +159,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <button
             type="button"
             (click)="selectedFilter.set('rejected')"
-            [class.bg-dark]="selectedFilter() === 'rejected'"
-            [class.text-white]="selectedFilter() === 'rejected'"
-            [class.bg-dark/5]="selectedFilter() !== 'rejected'"
-            [class.text-dark]="selectedFilter() !== 'rejected'"
+            [class.bg-primary]="selectedFilter() === 'rejected'"
+            [class.text-on-primary]="selectedFilter() === 'rejected'"
+            [class.bg-surface]="selectedFilter() !== 'rejected'"
+            [class.text-on-surface]="selectedFilter() !== 'rejected'"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition"
           >
             Rechazadas ({{ countRejected() }})
@@ -173,29 +173,29 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-20 flex flex-col items-center gap-3">
         <tf-spinner size="lg" color="primary"></tf-spinner>
-        <p class="text-xs sm:text-sm text-dark/60">Cargando solicitudes de reembolso...</p>
+        <p class="text-xs sm:text-sm text-on-surface-variant">Cargando solicitudes de reembolso...</p>
       </div>
 
       <!-- Empty State -->
       <div
         *ngIf="!isLoading() && filteredRequests().length === 0"
-        class="py-16 text-center rounded-2xl border border-dashed border-dark/20 bg-white p-8 space-y-3"
+        class="py-16 text-center rounded-2xl border border-dashed border-outline-variant/40 bg-surface-container p-8 space-y-3"
       >
-        <span class="text-4xl block text-dark/30">
+        <span class="text-4xl block text-on-surface-variant/40">
           <i class="fa-solid fa-money-bill-transfer"></i>
         </span>
-        <h3 class="text-base font-bold text-dark">No hay solicitudes para mostrar</h3>
-        <p class="text-xs text-dark/50 max-w-sm mx-auto">
+        <h3 class="text-base font-bold text-on-surface">No hay solicitudes para mostrar</h3>
+        <p class="text-xs text-on-surface-variant max-w-sm mx-auto">
           No se encontraron solicitudes de reembolso con los filtros de búsqueda actuales.
         </p>
       </div>
 
       <!-- Table of Refund Requests -->
-      <div *ngIf="!isLoading() && filteredRequests().length > 0" class="overflow-hidden rounded-2xl border border-dark/10 bg-white shadow-sm">
+      <div *ngIf="!isLoading() && filteredRequests().length > 0" class="overflow-hidden rounded-2xl border border-outline-variant/30 bg-surface-container shadow-sm">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
-              <tr class="bg-dark/5 border-b border-dark/10 font-bold text-dark uppercase tracking-wider text-[10px]">
+              <tr class="bg-surface-variant/50 border-b border-outline-variant/20 font-bold text-on-surface-variant uppercase tracking-wider text-[10px]">
                 <th class="p-3.5 pl-5">Orden / Solicitud</th>
                 <th class="p-3.5">Cliente</th>
                 <th class="p-3.5">Evento</th>
@@ -206,37 +206,37 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                 <th class="p-3.5 pr-5 text-right">Acciones</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-dark/5">
+            <tbody class="divide-y divide-outline-variant/20">
               <tr
                 *ngFor="let req of filteredRequests()"
-                class="hover:bg-dark/[0.02] transition-colors"
+                class="hover:bg-surface-variant/30 transition-colors"
               >
                 <!-- Order ID -->
                 <td class="p-3.5 pl-5 font-mono">
-                  <span class="font-bold text-dark">#{{ req.order_id.substring(0, 8).toUpperCase() }}</span>
-                  <span class="block text-[10px] text-dark/40">{{ req.id.substring(0, 8) }}</span>
+                  <span class="font-bold text-on-surface">#{{ req.order_id.substring(0, 8).toUpperCase() }}</span>
+                  <span class="block text-[10px] text-on-surface-variant">{{ req.id.substring(0, 8) }}</span>
                 </td>
 
                 <!-- Customer -->
                 <td class="p-3.5">
-                  <div class="font-bold text-dark">{{ req.customer_name || 'Cliente' }}</div>
-                  <div class="text-[11px] text-dark/50">{{ req.customer_email || 'Sin correo' }}</div>
+                  <div class="font-bold text-on-surface">{{ req.customer_name || 'Cliente' }}</div>
+                  <div class="text-[11px] text-on-surface-variant">{{ req.customer_email || 'Sin correo' }}</div>
                 </td>
 
                 <!-- Event -->
                 <td class="p-3.5">
-                  <div class="font-bold text-dark leading-tight">{{ req.event_name || 'Evento' }}</div>
-                  <div class="text-[10px] text-dark/50">{{ req.artist_name }} · {{ req.event_date | date:'shortDate' }}</div>
+                  <div class="font-bold text-on-surface leading-tight">{{ req.event_name || 'Evento' }}</div>
+                  <div class="text-[10px] text-on-surface-variant">{{ req.artist_name }} · {{ req.event_date | date:'shortDate' }}</div>
                 </td>
 
                 <!-- Amount -->
-                <td class="p-3.5 font-mono font-bold text-dark">
+                <td class="p-3.5 font-mono font-bold text-primary">
                   \${{ req.amount | number:'1.2-2' }} MXN
                 </td>
 
                 <!-- Reason -->
                 <td class="p-3.5 max-w-xs">
-                  <p class="truncate text-dark/70" [title]="req.reason">
+                  <p class="truncate text-on-surface-variant" [title]="req.reason">
                     {{ req.reason }}
                   </p>
                 </td>
@@ -245,36 +245,36 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                 <td class="p-3.5">
                   <span
                     *ngIf="req.status === 'pending'"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container border border-secondary/30"
                   >
                     <i class="fa-regular fa-clock text-[9px]"></i> Pendiente
                   </span>
                   <span
                     *ngIf="req.status === 'approved'"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-contrast/10 text-contrast border border-contrast/30"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-container text-on-tertiary-container border border-tertiary/30"
                   >
                     <i class="fa-solid fa-check text-[9px]"></i> Aprobada
                   </span>
                   <span
                     *ngIf="req.status === 'rejected'"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-danger/10 text-danger border border-danger/30"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-on-error-container border border-error/30"
                   >
                     <i class="fa-solid fa-xmark text-[9px]"></i> Rechazada
                   </span>
                 </td>
 
                 <!-- Date -->
-                <td class="p-3.5 text-dark/50 whitespace-nowrap">
+                <td class="p-3.5 text-on-surface-variant whitespace-nowrap">
                   {{ req.created_at | date:'short' }}
                 </td>
 
                 <!-- Actions -->
                 <td class="p-3.5 pr-5 text-right whitespace-nowrap">
-                  <div *ngIf="req.status === 'pending' && auth.isAdmin()" class="inline-flex items-center gap-1.5">
+                  <div *ngIf="req.status === 'pending' && auth.isAdmin()" class="inline-flex items-center gap-1.5 mr-1.5">
                     <button
                       type="button"
                       (click)="openProcessModal(req, true)"
-                      class="px-2.5 py-1 rounded-lg bg-contrast hover:opacity-90 text-surface font-bold text-[11px] shadow-sm transition"
+                      class="px-2.5 py-1 rounded-lg bg-primary hover:bg-primary/90 text-on-primary font-bold text-[11px] shadow-sm transition"
                       title="Aprobar Reembolso"
                     >
                       Aprobar
@@ -282,7 +282,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                     <button
                       type="button"
                       (click)="openProcessModal(req, false)"
-                      class="px-2.5 py-1 rounded-lg bg-danger/10 hover:bg-danger/20 text-danger border border-danger/30 font-bold text-[11px] transition"
+                      class="px-2.5 py-1 rounded-lg bg-error-container hover:bg-error/20 text-on-error-container border border-error/30 font-bold text-[11px] transition"
                       title="Rechazar Reembolso"
                     >
                       Rechazar
@@ -293,7 +293,7 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
                     *ngIf="req.status !== 'pending' || !auth.isAdmin()"
                     type="button"
                     (click)="openDetailModal(req)"
-                    class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition"
+                    class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-variant text-on-surface border border-outline-variant/30 font-bold text-[11px] transition"
                   >
                     Ver Detalles
                   </button>
@@ -309,11 +309,11 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
         *ngIf="activeModalRequest()"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
       >
-        <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-dark/10">
+        <div class="relative w-full max-w-md bg-surface-container-high rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-outline-variant/30">
           <button
             type="button"
             (click)="closeModal()"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center transition"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
@@ -322,67 +322,67 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
           <div class="space-y-1">
             <span
               class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block"
-              [ngClass]="modalIsApproval() ? 'bg-contrast/10 text-contrast border border-contrast/30' : 'bg-danger/10 text-danger border border-danger/30'"
+              [ngClass]="modalIsApproval() ? 'bg-tertiary-container text-on-tertiary-container border border-tertiary/30' : 'bg-error-container text-on-error-container border border-error/30'"
             >
               {{ modalIsApproval() ? 'Aprobación de Reembolso' : 'Rechazo de Reembolso' }}
             </span>
-            <h3 class="text-xl font-bold text-dark">
+            <h3 class="text-xl font-bold text-on-surface">
               {{ modalIsApproval() ? '¿Confirmar Aprobación?' : '¿Confirmar Rechazo?' }}
             </h3>
-            <p class="text-xs text-dark/60">
-              Orden #{{ activeModalRequest()!.order_id.substring(0, 8).toUpperCase() }} · Cliente: <strong>{{ activeModalRequest()!.customer_name }}</strong>
+            <p class="text-xs text-on-surface-variant">
+              Orden #{{ activeModalRequest()!.order_id.substring(0, 8).toUpperCase() }} · Cliente: <strong class="text-on-surface">{{ activeModalRequest()!.customer_name }}</strong>
             </p>
           </div>
 
           <!-- Alert summary -->
           <div
             class="p-3.5 rounded-2xl text-xs space-y-1"
-            [ngClass]="modalIsApproval() ? 'bg-contrast/10 border border-contrast/30 text-contrast' : 'bg-danger/10 border border-danger/30 text-danger'"
+            [ngClass]="modalIsApproval() ? 'bg-tertiary-container/60 border border-tertiary/30 text-on-tertiary-container' : 'bg-error-container/60 border border-error/30 text-on-error-container'"
           >
             <p class="font-bold flex items-center gap-1.5">
-              <i [class]="modalIsApproval() ? 'fa-solid fa-bolt text-contrast' : 'fa-solid fa-triangle-exclamation text-danger'"></i>
+              <i [class]="modalIsApproval() ? 'fa-solid fa-bolt' : 'fa-solid fa-triangle-exclamation'"></i>
               <span>{{ modalIsApproval() ? 'Al aprobar esta solicitud:' : 'Al rechazar esta solicitud:' }}</span>
             </p>
             <ul class="list-disc list-inside space-y-0.5 text-[11px]">
-              <li *ngIf="modalIsApproval()">El estado de la orden pasará a <strong>reembolsada</strong>.</li>
+              <li *ngIf="modalIsApproval()">Se reembolsará el pago en PayPal y la orden pasará a <strong>reembolsada</strong>.</li>
               <li *ngIf="modalIsApproval()">El stock de boletos se reintegrará automáticamente.</li>
               <li *ngIf="modalIsApproval()">Los códigos QR de acceso quedarán invalidados permanentemente.</li>
               <li *ngIf="!modalIsApproval()">La orden se mantendrá confirmada y los boletos válidos.</li>
-              <li *ngIf="!modalIsApproval()">El cliente verá la razón del rechazo en su panel.</li>
+              <li *ngIf="!modalIsApproval()">El cliente verá la razón del rechazo en su boleto.</li>
             </ul>
           </div>
 
           <!-- Customer Reason -->
-          <div class="p-3 rounded-xl bg-dark/5 text-xs text-dark/80 space-y-0.5">
-            <span class="font-bold text-[10px] uppercase text-dark/50 block">Motivo del Cliente:</span>
+          <div class="p-3 rounded-xl bg-surface text-xs text-on-surface space-y-0.5 border border-outline-variant/20">
+            <span class="font-bold text-[10px] uppercase text-on-surface-variant block">Motivo del Cliente:</span>
             <p class="italic">"{{ activeModalRequest()!.reason }}"</p>
           </div>
 
           <!-- Admin Notes -->
           <div class="space-y-1.5 text-xs">
-            <label class="font-bold text-dark">
-              {{ modalIsApproval() ? 'Nota administrativa interna (opcional):' : 'Motivo del rechazo para el cliente (opcional):' }}
+            <label class="font-bold text-on-surface">
+              {{ modalIsApproval() ? 'Nota administrativa (opcional):' : 'Motivo del rechazo para el cliente (opcional):' }}
             </label>
             <textarea
               [(ngModel)]="modalAdminNotes"
               rows="2"
               placeholder="Escribe notas adicionales o justificación..."
-              class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 text-dark text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none resize-none"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none resize-none"
             ></textarea>
           </div>
 
           <!-- Error Feedback -->
-          <p *ngIf="modalError()" class="text-danger font-bold text-xs">
+          <p *ngIf="modalError()" class="text-error font-bold text-xs">
             {{ modalError() }}
           </p>
 
           <!-- Actions -->
-          <div class="flex items-center justify-end gap-3 pt-2 border-t border-dark/10">
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-outline-variant/20">
             <button
               type="button"
               (click)="closeModal()"
               [disabled]="isProcessing()"
-              class="px-4 py-2 rounded-xl text-dark/70 font-bold text-xs hover:bg-dark/5 transition"
+              class="px-4 py-2 rounded-xl text-on-surface-variant font-bold text-xs hover:bg-surface-variant transition"
             >
               Cancelar
             </button>
@@ -390,10 +390,10 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
               type="button"
               (click)="confirmProcessRefund()"
               [disabled]="isProcessing()"
-              class="px-5 py-2 rounded-xl text-surface font-bold text-xs shadow-md transition flex items-center gap-2"
-              [ngClass]="modalIsApproval() ? 'bg-contrast hover:opacity-90' : 'bg-danger hover:opacity-90'"
+              class="px-5 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2"
+              [ngClass]="modalIsApproval() ? 'bg-primary text-on-primary hover:bg-primary/90' : 'bg-error text-on-error hover:opacity-90'"
             >
-              <tf-spinner *ngIf="isProcessing()" size="sm" color="surface"></tf-spinner>
+              <tf-spinner *ngIf="isProcessing()" size="sm" color="white"></tf-spinner>
               <span>{{ isProcessing() ? 'Procesando...' : (modalIsApproval() ? 'Aprobar y Devolver' : 'Rechazar Solicitud') }}</span>
             </button>
           </div>
@@ -405,11 +405,11 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
         *ngIf="detailModalRequest()"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
       >
-        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-dark/10">
+        <div class="relative w-full max-w-lg bg-surface-container-high rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-outline-variant/30">
           <button
             type="button"
             (click)="detailModalRequest.set(null)"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center transition"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
@@ -419,65 +419,65 @@ type RefundFilter = 'all' | 'pending' | 'approved' | 'rejected';
             <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-0.5 rounded-full inline-block">
               Detalle de Solicitud
             </span>
-            <h3 class="text-xl font-bold text-dark">
+            <h3 class="text-xl font-bold text-on-surface">
               Orden #{{ detailModalRequest()!.order_id.substring(0, 8).toUpperCase() }}
             </h3>
-            <p class="text-xs text-dark/60">
+            <p class="text-xs text-on-surface-variant">
               Solicitud ID: <span class="font-mono">{{ detailModalRequest()!.id }}</span>
             </p>
           </div>
 
           <!-- Info Grid -->
-          <div class="grid grid-cols-2 gap-3 text-xs bg-dark/5 p-4 rounded-2xl">
+          <div class="grid grid-cols-2 gap-3 text-xs bg-surface p-4 rounded-2xl border border-outline-variant/20">
             <div>
-              <span class="text-dark/50 text-[10px] uppercase font-bold block">Cliente</span>
-              <p class="font-bold text-dark">{{ detailModalRequest()!.customer_name }}</p>
-              <p class="text-dark/60 text-[11px]">{{ detailModalRequest()!.customer_email }}</p>
+              <span class="text-on-surface-variant text-[10px] uppercase font-bold block">Cliente</span>
+              <p class="font-bold text-on-surface">{{ detailModalRequest()!.customer_name }}</p>
+              <p class="text-on-surface-variant text-[11px]">{{ detailModalRequest()!.customer_email }}</p>
             </div>
             <div>
-              <span class="text-dark/50 text-[10px] uppercase font-bold block">Evento</span>
-              <p class="font-bold text-dark">{{ detailModalRequest()!.event_name }}</p>
-              <p class="text-dark/60 text-[11px]">{{ detailModalRequest()!.event_date | date:'mediumDate' }}</p>
+              <span class="text-on-surface-variant text-[10px] uppercase font-bold block">Evento</span>
+              <p class="font-bold text-on-surface">{{ detailModalRequest()!.event_name }}</p>
+              <p class="text-on-surface-variant text-[11px]">{{ detailModalRequest()!.event_date | date:'mediumDate' }}</p>
             </div>
             <div>
-              <span class="text-dark/50 text-[10px] uppercase font-bold block">Importe</span>
-              <p class="font-bold text-dark font-mono">\${{ detailModalRequest()!.amount | number:'1.2-2' }} MXN</p>
+              <span class="text-on-surface-variant text-[10px] uppercase font-bold block">Importe</span>
+              <p class="font-bold text-primary font-mono">\${{ detailModalRequest()!.amount | number:'1.2-2' }} MXN</p>
             </div>
             <div>
-              <span class="text-dark/50 text-[10px] uppercase font-bold block">Estado Actual</span>
+              <span class="text-on-surface-variant text-[10px] uppercase font-bold block">Estado Actual</span>
               <span
                 class="inline-flex items-center gap-1 font-bold text-[11px]"
-                [ngClass]="detailModalRequest()!.status === 'approved' ? 'text-contrast' : 'text-danger'"
+                [ngClass]="detailModalRequest()!.status === 'approved' ? 'text-primary' : (detailModalRequest()!.status === 'pending' ? 'text-secondary' : 'text-error')"
               >
-                <i [class]="detailModalRequest()!.status === 'approved' ? 'fa-solid fa-check text-[10px]' : 'fa-solid fa-xmark text-[10px]'"></i>
-                <span>{{ detailModalRequest()!.status === 'approved' ? 'Aprobada' : 'Rechazada' }}</span>
+                <i [class]="detailModalRequest()!.status === 'approved' ? 'fa-solid fa-check text-[10px]' : (detailModalRequest()!.status === 'pending' ? 'fa-regular fa-clock text-[10px]' : 'fa-solid fa-xmark text-[10px]')"></i>
+                <span>{{ detailModalRequest()!.status === 'approved' ? 'Aprobada' : (detailModalRequest()!.status === 'pending' ? 'Pendiente' : 'Rechazada') }}</span>
               </span>
             </div>
           </div>
 
           <!-- Reason & Notes -->
           <div class="space-y-3 text-xs">
-            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <span class="font-bold text-slate-500 text-[10px] uppercase block">Motivo enviado por el cliente:</span>
-              <p class="text-slate-800 mt-1">{{ detailModalRequest()!.reason }}</p>
-              <span class="text-[10px] text-slate-400 block mt-2">Enviado: {{ detailModalRequest()!.created_at | date:'medium' }}</span>
+            <div class="p-3 rounded-xl bg-surface border border-outline-variant/20">
+              <span class="font-bold text-on-surface-variant text-[10px] uppercase block">Motivo enviado por el cliente:</span>
+              <p class="text-on-surface mt-1">{{ detailModalRequest()!.reason }}</p>
+              <span class="text-[10px] text-on-surface-variant/80 block mt-2">Enviado: {{ detailModalRequest()!.created_at | date:'medium' }}</span>
             </div>
 
-            <div *ngIf="detailModalRequest()!.admin_notes" class="p-3 rounded-xl bg-amber-50 border border-amber-200">
-              <span class="font-bold text-amber-800 text-[10px] uppercase block">Respuesta / Notas del Administrador:</span>
-              <p class="text-amber-900 mt-1">{{ detailModalRequest()!.admin_notes }}</p>
-              <span *ngIf="detailModalRequest()!.reviewed_at" class="text-[10px] text-amber-700/70 block mt-2">
+            <div *ngIf="detailModalRequest()!.admin_notes" class="p-3 rounded-xl bg-secondary-container/40 border border-secondary/30">
+              <span class="font-bold text-on-secondary-container text-[10px] uppercase block">Respuesta / Notas del Administrador:</span>
+              <p class="text-on-surface mt-1">{{ detailModalRequest()!.admin_notes }}</p>
+              <span *ngIf="detailModalRequest()!.reviewed_at" class="text-[10px] text-on-surface-variant block mt-2">
                 Revisado: {{ detailModalRequest()!.reviewed_at | date:'medium' }}
               </span>
             </div>
           </div>
 
           <!-- Close -->
-          <div class="text-right pt-2 border-t border-dark/10">
+          <div class="text-right pt-2 border-t border-outline-variant/20">
             <button
               type="button"
               (click)="detailModalRequest.set(null)"
-              class="px-4 py-2 rounded-xl bg-dark text-white font-bold text-xs hover:bg-black transition"
+              class="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary/90 transition"
             >
               Cerrar
             </button>

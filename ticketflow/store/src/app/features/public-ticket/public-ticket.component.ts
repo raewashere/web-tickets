@@ -74,38 +74,48 @@ export interface PublicOrderData {
       <div class="flex items-center justify-between print:hidden">
         <a
           routerLink="/"
-          class="inline-flex items-center gap-2 text-xs font-bold text-dark/60 hover:text-primary transition-colors"
+          class="inline-flex items-center gap-2 text-xs font-bold text-on-surface-variant hover:text-primary transition-colors"
         >
           <i class="fa-solid fa-house"></i> Inicio BoletoCoqueto
         </a>
 
-        <button
-          *ngIf="order()?.status === 'confirmed'"
-          type="button"
-          (click)="printPass()"
-          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface hover:bg-dark/10 text-dark text-xs font-bold transition-colors border border-dark/10"
-        >
-          <i class="fa-solid fa-print"></i>
-          <span>Imprimir / Descargar PDF</span>
-        </button>
+        <div *ngIf="order()?.status === 'confirmed'" class="flex items-center gap-2">
+          <button
+            *ngIf="qrDataUrl()"
+            type="button"
+            (click)="downloadQrCode()"
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-colors border border-primary/20"
+          >
+            <i class="fa-solid fa-download"></i>
+            <span>Descargar QR (.png)</span>
+          </button>
+          <button
+            type="button"
+            (click)="printPass()"
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-variant text-on-surface text-xs font-bold transition-colors border border-outline-variant/30"
+          >
+            <i class="fa-solid fa-print"></i>
+            <span>Imprimir / PDF</span>
+          </button>
+        </div>
       </div>
 
       <!-- Loading State -->
       <div *ngIf="isLoading()" class="py-24 flex flex-col items-center justify-center gap-3 print:hidden">
         <tf-spinner size="lg" color="primary"></tf-spinner>
-        <p class="text-sm text-dark/60">Cargando pase de acceso y código QR...</p>
+        <p class="text-sm text-on-surface-variant">Cargando pase de acceso y código QR...</p>
       </div>
 
       <!-- Error / Invalid Token State -->
       <div
         *ngIf="!isLoading() && errorMessage()"
-        class="py-16 text-center space-y-4 rounded-3xl border border-dashed border-danger/20 p-8 bg-white shadow-sm print:hidden"
+        class="py-16 text-center space-y-4 rounded-3xl border border-dashed border-error/30 p-8 bg-surface-container shadow-sm print:hidden"
       >
-        <div class="w-16 h-16 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto text-2xl">
+        <div class="w-16 h-16 rounded-full bg-error-container text-on-error-container flex items-center justify-center mx-auto text-2xl">
           <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
-        <h2 class="text-xl font-bold text-dark">Acceso no válido o boleto expirado</h2>
-        <p class="text-xs sm:text-sm text-dark/60 max-w-md mx-auto">
+        <h2 class="text-xl font-bold text-on-surface">Acceso no válido o boleto expirado</h2>
+        <p class="text-xs sm:text-sm text-on-surface-variant max-w-md mx-auto">
           {{ errorMessage() }}
         </p>
         <a routerLink="/search">
@@ -118,13 +128,13 @@ export interface PublicOrderData {
         <!-- Event Header -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-xs text-dark/40 font-mono">
+            <p class="text-xs text-on-surface-variant font-mono">
               Pase Digital · Orden #{{ order()!.id.substring(0, 8).toUpperCase() }}
             </p>
-            <h1 class="text-2xl sm:text-3xl font-bold text-dark leading-tight">
+            <h1 class="text-2xl sm:text-3xl font-bold text-on-surface leading-tight">
               {{ order()!.event?.name || order()!.event?.title || 'Espectáculo en Vivo' }}
             </h1>
-            <p class="text-xs sm:text-sm text-dark/60 mt-1">
+            <p class="text-xs sm:text-sm text-on-surface-variant mt-1">
               <i class="fa-solid fa-location-dot text-primary mr-1"></i> {{ order()!.event?.venue?.name || 'Recinto Confirmado' }}
               &nbsp;·&nbsp;
               <i class="fa-regular fa-calendar text-primary mr-1"></i> {{ order()!.event?.event_date | date:'mediumDate' }}
@@ -137,7 +147,7 @@ export interface PublicOrderData {
             </tf-badge>
             <span
               *ngIf="order()!.status === 'refunded'"
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-danger/10 text-danger border border-danger/20"
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-error-container text-on-error-container border border-error/20"
             >
               Cancelado / Reembolsado
             </span>
@@ -149,9 +159,9 @@ export interface PublicOrderData {
           *ngIf="order()!.refund_request"
           class="p-4 rounded-2xl border text-xs space-y-1 print:hidden"
           [ngClass]="{
-            'bg-amber-50 border-amber-200 text-amber-800': order()!.refund_request!.status === 'pending',
-            'bg-contrast/10 border-contrast/30 text-contrast': order()!.refund_request!.status === 'approved',
-            'bg-danger/10 border-danger/30 text-danger': order()!.refund_request!.status === 'rejected'
+            'bg-secondary-container/60 border-secondary/30 text-on-surface': order()!.refund_request!.status === 'pending',
+            'bg-tertiary-container border-tertiary/30 text-on-tertiary-container': order()!.refund_request!.status === 'approved',
+            'bg-error-container border-error/30 text-on-error-container': order()!.refund_request!.status === 'rejected'
           }"
         >
           <p class="font-bold flex items-center gap-1.5">
@@ -167,7 +177,7 @@ export interface PublicOrderData {
             <span *ngIf="order()!.refund_request!.status === 'approved'">Reembolso aprobado y procesado</span>
             <span *ngIf="order()!.refund_request!.status === 'rejected'">Solicitud de reembolso rechazada</span>
           </p>
-          <p class="opacity-80">Motivo registrado: "{{ order()!.refund_request!.reason }}"</p>
+          <p class="opacity-85">Motivo registrado: "{{ order()!.refund_request!.reason }}"</p>
           <p *ngIf="order()!.refund_request!.admin_notes" class="font-semibold pt-1">
             Respuesta de administración: {{ order()!.refund_request!.admin_notes }}
           </p>
@@ -175,23 +185,23 @@ export interface PublicOrderData {
 
         <!-- Boarding Pass QR Card -->
         <div
-          class="rounded-3xl border bg-white shadow-xl overflow-hidden print:shadow-none print:border-2"
-          [ngClass]="order()!.status === 'refunded' ? 'border-danger/30' : 'border-dark/10 print:border-black'"
+          class="rounded-3xl border bg-surface-container shadow-xl overflow-hidden print:bg-white print:shadow-none print:border-2"
+          [ngClass]="order()!.status === 'refunded' ? 'border-error/30' : 'border-outline-variant/30 print:border-black'"
         >
           <!-- Header Banner -->
           <div
-            class="px-6 py-4 flex items-center justify-between text-surface"
-            [ngClass]="order()!.status === 'refunded' ? 'bg-danger/90' : 'bg-dark print:bg-black'"
+            class="px-6 py-4 flex items-center justify-between text-inverse-on-surface"
+            [ngClass]="order()!.status === 'refunded' ? 'bg-error text-on-error' : 'bg-inverse-surface print:bg-black'"
           >
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-accent block">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-tertiary block">
                 {{ order()!.status === 'refunded' ? 'Boleto Invalidado' : 'Pase Oficial de Entrada' }}
               </span>
-              <span class="text-surface font-bold text-base leading-tight">
+              <span class="font-bold text-base leading-tight">
                 {{ order()!.event?.name || order()!.event?.title }}
               </span>
             </div>
-            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban text-danger/80' : 'fa-ticket text-accent'"></i></span>
+            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban' : 'fa-ticket text-tertiary'"></i></span>
           </div>
 
           <!-- QR & Access Details -->
@@ -199,18 +209,18 @@ export interface PublicOrderData {
             <!-- Refunded Warning Banner -->
             <div
               *ngIf="order()!.status === 'refunded'"
-              class="w-full p-4 rounded-2xl bg-danger/5 border border-danger/20 text-danger text-center space-y-1"
+              class="w-full p-4 rounded-2xl bg-error-container border border-error/20 text-on-error-container text-center space-y-1"
             >
               <p class="font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-ban text-danger"></i> Pase Cancelado
+                <i class="fa-solid fa-ban"></i> Pase Cancelado
               </p>
-              <p class="text-[11px] text-danger/80">Esta orden fue reembolsada y el código QR se encuentra inhabilitado.</p>
+              <p class="text-[11px] opacity-85">Esta orden fue reembolsada y el código QR se encuentra inhabilitado.</p>
             </div>
 
-            <!-- QR Code -->
+            <!-- QR Code (kept bg-white for physical QR scanner contrast) -->
             <div
               *ngIf="order()!.status === 'confirmed'"
-              class="p-4 bg-white rounded-2xl border-2 border-dark/10 shadow-inner print:border-black"
+              class="p-4 bg-white rounded-2xl border-2 border-outline-variant/30 shadow-inner print:border-black"
             >
               <img
                 *ngIf="qrDataUrl()"
@@ -225,19 +235,19 @@ export interface PublicOrderData {
 
             <!-- Auth String -->
             <div class="text-center space-y-1">
-              <p class="font-mono text-xs text-dark/40 tracking-widest font-bold">
+              <p class="font-mono text-xs text-on-surface-variant tracking-widest font-bold">
                 AUTH: {{ order()!.id.substring(0, 16).toUpperCase() }}
               </p>
-              <p *ngIf="order()!.status === 'confirmed'" class="text-[10px] text-dark/50 print:text-black">
+              <p *ngIf="order()!.status === 'confirmed'" class="text-[10px] text-on-surface-variant/80 print:text-black">
                 Muestra este código QR desde tu pantalla o impreso en el control de acceso del recinto.
               </p>
             </div>
 
             <!-- Items Breakdown -->
-            <div class="w-full divide-y divide-dark/5 border-t border-dark/5 pt-4 text-xs">
+            <div class="w-full divide-y divide-outline-variant/20 border-t border-outline-variant/20 pt-4 text-xs">
               <div
                 *ngFor="let item of order()!.items"
-                class="py-2.5 flex items-center justify-between text-dark/80"
+                class="py-2.5 flex items-center justify-between text-on-surface"
               >
                 <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center print:bg-slate-200 print:text-black">
@@ -250,16 +260,16 @@ export interface PublicOrderData {
             </div>
 
             <!-- Financial Summary -->
-            <div class="w-full space-y-1 border-t border-dark/5 pt-3 text-xs">
-              <div class="flex justify-between text-dark/50">
+            <div class="w-full space-y-1 border-t border-outline-variant/20 pt-3 text-xs">
+              <div class="flex justify-between text-on-surface-variant">
                 <span>Subtotal</span>
                 <span class="font-mono">\${{ order()!.subtotal | number:'1.2-2' }}</span>
               </div>
-              <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-contrast font-bold">
+              <div *ngIf="order()!.discount_amount > 0" class="flex justify-between text-primary font-bold">
                 <span>Descuento</span>
                 <span class="font-mono">-\${{ order()!.discount_amount | number:'1.2-2' }}</span>
               </div>
-              <div class="flex justify-between font-bold text-dark text-sm pt-1 border-t border-dark/5">
+              <div class="flex justify-between font-bold text-on-surface text-sm pt-1 border-t border-outline-variant/20">
                 <span>Total Pagado</span>
                 <span class="font-mono text-primary print:text-black">\${{ order()!.total | number:'1.2-2' }} MXN</span>
               </div>
@@ -267,34 +277,34 @@ export interface PublicOrderData {
           </div>
 
           <!-- Holder Footer Strip -->
-          <div class="px-6 py-4 bg-surface border-t border-dark/10 flex items-center justify-between text-xs text-dark/70 print:bg-slate-100">
+          <div class="px-6 py-4 bg-surface border-t border-outline-variant/20 flex items-center justify-between text-xs text-on-surface-variant print:bg-slate-100">
             <div>
-              <span class="font-bold text-dark block">Titular / Comprador</span>
+              <span class="font-bold text-on-surface block">Titular / Comprador</span>
               <span>{{ order()!.guest_name || order()!.guest_email || 'Invitado' }}</span>
             </div>
             <div class="text-right">
-              <span class="font-bold text-dark block">Fecha de Compra</span>
+              <span class="font-bold text-on-surface block">Fecha de Compra</span>
               <span>{{ order()!.created_at | date:'short' }}</span>
             </div>
           </div>
         </div>
 
         <!-- Account Conversion Banner for Guest -->
-        <div *ngIf="!auth.user()" class="p-6 rounded-3xl bg-gradient-to-r from-primary via-primary to-accent text-surface shadow-lg space-y-3 print:hidden">
+        <div *ngIf="!auth.user()" class="p-6 rounded-3xl bg-gradient-to-r from-primary via-primary to-secondary text-on-primary shadow-lg space-y-3 print:hidden">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl shrink-0">
-              <i class="fa-solid fa-user-plus text-surface"></i>
+              <i class="fa-solid fa-user-plus text-on-primary"></i>
             </div>
             <div>
-              <h3 class="font-bold text-sm text-surface">¿Quieres guardar todos tus boletos en un solo lugar?</h3>
-              <p class="text-xs text-surface/80">Crea tu cuenta en BoletoCoqueto para acceder a tus compras cuando quieras.</p>
+              <h3 class="font-bold text-sm text-on-primary">¿Quieres guardar todos tus boletos en un solo lugar?</h3>
+              <p class="text-xs text-on-primary/80">Crea tu cuenta en BoletoCoqueto para acceder a tus compras cuando quieras.</p>
             </div>
           </div>
           <div class="pt-1 flex justify-end">
             <a routerLink="/register">
               <button
                 type="button"
-                class="px-4 py-2 rounded-xl bg-dark hover:bg-black text-surface font-bold text-xs shadow-md transition-colors"
+                class="px-4 py-2 rounded-xl bg-inverse-surface hover:opacity-90 text-inverse-on-surface font-bold text-xs shadow-md transition-colors"
               >
                 Crear Cuenta Gratis <i class="fa-solid fa-arrow-right ml-1"></i>
               </button>
@@ -305,10 +315,20 @@ export interface PublicOrderData {
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden pt-2">
           <button
+            *ngIf="order()!.status === 'confirmed' && qrDataUrl()"
+            type="button"
+            (click)="downloadQrCode()"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-primary text-on-primary hover:bg-primary/90 font-bold text-xs transition-all shadow-md"
+          >
+            <i class="fa-solid fa-download"></i>
+            <span>Descargar Imagen QR (.png)</span>
+          </button>
+
+          <button
             *ngIf="order()!.status === 'confirmed'"
             type="button"
             (click)="printPass()"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-dark text-surface hover:bg-dark/90 font-bold text-xs transition-all shadow-md"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-surface-container text-on-surface hover:bg-surface-variant border border-outline-variant/30 font-bold text-xs transition-all shadow-sm"
           >
             <i class="fa-solid fa-print"></i>
             <span>Imprimir / Descargar en PDF</span>
@@ -318,7 +338,7 @@ export interface PublicOrderData {
             *ngIf="canRequestRefund()"
             type="button"
             (click)="openRefundModal()"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-danger/10 text-danger hover:bg-danger/20 border border-danger/30 font-bold text-xs transition-all"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-error-container text-on-error-container hover:bg-error/20 border border-error/30 font-bold text-xs transition-all"
           >
             <i class="fa-solid fa-rotate-left"></i>
             <span>Solicitar Reembolso</span>
@@ -331,45 +351,45 @@ export interface PublicOrderData {
         *ngIf="showRefundModal()"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in print:hidden"
       >
-        <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-dark/10">
+        <div class="relative w-full max-w-md bg-surface-container-high rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-outline-variant/30">
           <button
             type="button"
             (click)="closeRefundModal()"
-            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-dark/5 text-dark/50 font-bold flex items-center justify-center transition"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-surface-variant text-on-surface-variant font-bold flex items-center justify-center transition"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
 
           <div class="space-y-1">
-            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block bg-danger/10 text-danger border border-danger/30">
+            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block bg-error-container text-on-error-container border border-error/30">
               Solicitud Post-Venta
             </span>
-            <h3 class="text-xl font-bold text-dark">Solicitar Reembolso</h3>
-            <p class="text-xs text-dark/60">
-              Orden #{{ order()!.id.substring(0, 8).toUpperCase() }} · Importe: <strong>\${{ order()!.total | number:'1.2-2' }} MXN</strong>
+            <h3 class="text-xl font-bold text-on-surface">Solicitar Reembolso</h3>
+            <p class="text-xs text-on-surface-variant">
+              Orden #{{ order()!.id.substring(0, 8).toUpperCase() }} · Importe: <strong class="text-on-surface">\${{ order()!.total | number:'1.2-2' }} MXN</strong>
             </p>
           </div>
 
           <div class="space-y-1.5 text-xs">
-            <label class="font-bold text-dark">Describe el motivo de tu solicitud:</label>
+            <label class="font-bold text-on-surface">Describe el motivo de tu solicitud:</label>
             <textarea
               [(ngModel)]="refundReason"
               rows="3"
               placeholder="Ej. Cambio de fecha, imprevisto médico, error en la compra..."
-              class="w-full px-3.5 py-2.5 rounded-xl border border-dark/20 text-dark text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none resize-none"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none resize-none"
             ></textarea>
           </div>
 
-          <p *ngIf="refundError()" class="text-danger font-bold text-xs">
+          <p *ngIf="refundError()" class="text-error font-bold text-xs">
             {{ refundError() }}
           </p>
 
-          <div class="flex items-center justify-end gap-3 pt-2 border-t border-dark/10">
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-outline-variant/20">
             <button
               type="button"
               (click)="closeRefundModal()"
               [disabled]="isSubmittingRefund()"
-              class="px-4 py-2 rounded-xl text-dark/70 font-bold text-xs hover:bg-dark/5 transition"
+              class="px-4 py-2 rounded-xl text-on-surface-variant font-bold text-xs hover:bg-surface-variant transition"
             >
               Cancelar
             </button>
@@ -377,9 +397,9 @@ export interface PublicOrderData {
               type="button"
               (click)="submitRefundRequest()"
               [disabled]="isSubmittingRefund()"
-              class="px-5 py-2 rounded-xl bg-danger hover:opacity-90 text-surface font-bold text-xs shadow-md transition flex items-center gap-2"
+              class="px-5 py-2 rounded-xl bg-error hover:opacity-90 text-on-error font-bold text-xs shadow-md transition flex items-center gap-2"
             >
-              <tf-spinner *ngIf="isSubmittingRefund()" size="sm" color="surface"></tf-spinner>
+              <tf-spinner *ngIf="isSubmittingRefund()" size="sm" color="white"></tf-spinner>
               <span>{{ isSubmittingRefund() ? 'Enviando...' : 'Enviar Solicitud' }}</span>
             </button>
           </div>
@@ -507,6 +527,19 @@ export class PublicTicketComponent implements OnInit {
     } finally {
       this.isSubmittingRefund.set(false);
     }
+  }
+
+  downloadQrCode(): void {
+    const dataUrl = this.qrDataUrl();
+    const o = this.order();
+    if (!dataUrl || !o || !isPlatformBrowser(this.platformId)) return;
+
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `boleto-qr-${o.id.substring(0, 8).toUpperCase()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   printPass(): void {

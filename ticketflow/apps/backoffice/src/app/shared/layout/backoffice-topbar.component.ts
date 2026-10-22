@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@ticketflow/data-access';
+import { ThemeService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-backoffice-topbar',
@@ -24,14 +25,25 @@ import { AuthService } from '@ticketflow/data-access';
 
         <div class="flex items-center gap-2">
           <span class="inline-block w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
-          <h2 class="text-sm sm:text-base font-black tracking-tight text-inverse-on-surface uppercase">
+          <h2 class="text-sm sm:text-base font-bold tracking-tight text-inverse-on-surface uppercase">
             Plataforma Global Backoffice
           </h2>
         </div>
       </div>
 
       <!-- Right controls -->
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
+        <!-- Theme Toggle Button -->
+        <button
+          type="button"
+          (click)="theme.toggle()"
+          class="w-9 h-9 rounded-xl bg-inverse-on-surface/5 hover:bg-inverse-on-surface/15 border border-outline-variant/20 flex items-center justify-center text-inverse-on-surface transition-colors"
+          [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+          [title]="theme.isDark() ? 'Modo Claro' : 'Modo Oscuro'"
+        >
+          <i class="fa-solid text-sm" [ngClass]="theme.isDark() ? 'fa-sun text-tertiary' : 'fa-moon'"></i>
+        </button>
+
         <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-inverse-on-surface/5 border border-outline-variant/20">
           <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container font-bold text-xs flex items-center justify-center border border-primary/30 overflow-hidden">
             <img
@@ -52,6 +64,7 @@ import { AuthService } from '@ticketflow/data-access';
 })
 export class BackofficeTopbarComponent {
   readonly auth = inject(AuthService);
+  readonly theme = inject(ThemeService);
 
   @Output() toggleSidebar = new EventEmitter<void>();
 

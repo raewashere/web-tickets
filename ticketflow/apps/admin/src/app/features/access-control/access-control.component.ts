@@ -24,6 +24,7 @@ import {
   ButtonComponent,
   CardComponent,
   SpinnerComponent,
+  ToastService,
 } from '@ticketflow/shared-ui';
 
 declare global {
@@ -325,6 +326,7 @@ export class AccessControlComponent implements OnInit, OnDestroy {
   private readonly accessControl = inject(AccessControlService);
   private readonly route = inject(ActivatedRoute);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly toast = inject(ToastService);
   readonly auth = inject(AuthService);
 
   protected readonly Math = Math;
@@ -434,7 +436,10 @@ export class AccessControlComponent implements OnInit, OnDestroy {
       }, 100);
     } catch (err) {
       console.error('Camera access error:', err);
-      alert('No se pudo acceder a la cámara. Por favor permite los permisos o ingresa el código manual.');
+      this.toast.error(
+        'Permiso de Cámara Requerido',
+        'No se pudo acceder a la cámara. Permite los permisos en tu navegador o ingresa el código manual.'
+      );
     }
   }
 
@@ -464,6 +469,11 @@ export class AccessControlComponent implements OnInit, OnDestroy {
       } catch (e) {
         console.warn('BarcodeDetector initialization warning:', e);
       }
+    } else {
+      this.toast.info(
+        'Lector Nativo no Disponible',
+        'Tu navegador no soporta BarcodeDetector nativo. Usa Chrome en Android/Desktop o ingresa el código manualmente.'
+      );
     }
 
     this.scanIntervalId = setInterval(async () => {

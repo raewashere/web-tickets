@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BackofficeService } from '../../services/backoffice.service';
 import type { SuperAdminUserItem, RoleType } from '@ticketflow/models';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-user-management',
@@ -220,16 +220,56 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
         <h3 class="font-bold text-on-surface text-base">No se encontraron usuarios</h3>
         <p class="text-xs text-on-surface/50">Ajusta los términos de búsqueda o filtros.</p>
       </div>
+
+      <!-- Confirmation Modal for Super Admin Role Assignment/Revocation -->
+      <div
+        *ngIf="pendingAdminChange()"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      >
+        <div class="relative w-full max-w-md bg-surface-container-high rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl border border-outline-variant/30">
+          <div class="space-y-2">
+            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full inline-block bg-error-container text-on-error-container border border-error/30">
+              Permiso Crítico de Seguridad
+            </span>
+            <h3 class="text-xl font-bold text-on-surface">
+              {{ pendingAdminChange()!.shouldHave ? '¿Otorgar rol Super Admin?' : '¿Revocar rol Super Admin?' }}
+            </h3>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Estás a punto de {{ pendingAdminChange()!.shouldHave ? 'otorgar acceso total de Super Administrador a' : 'retirar los privilegios de Super Administrador a' }}
+              <strong class="text-on-surface">{{ pendingAdminChange()!.user.email }}</strong>.
+            </p>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-2 border-t border-outline-variant/20">
+            <button
+              type="button"
+              (click)="pendingAdminChange.set(null)"
+              class="px-4 py-2 rounded-xl text-on-surface-variant font-bold text-xs hover:bg-surface-variant transition"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              (click)="confirmAdminRoleChange()"
+              class="px-5 py-2 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs shadow-md transition"
+            >
+              Confirmar Cambio
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `,
 })
 export class UserManagementComponent implements OnInit {
   private readonly backofficeService = inject(BackofficeService);
+  private readonly toast = inject(ToastService);
 
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly users = signal<SuperAdminUserItem[]>([]);
   readonly updatingKey = signal<string | null>(null);
+  readonly pendingAdminChange = signal<{ user: SuperAdminUserItem; shouldHave: boolean } | null>(null);
 
   searchQuery = '';
   readonly selectedRoleFilter = signal<string>('all');
@@ -276,6 +316,23 @@ export class UserManagementComponent implements OnInit {
   async toggleRole(user: SuperAdminUserItem, role: RoleType): Promise<void> {
     const hasRole = user.roles.includes(role);
     const shouldHave = !hasRole;
+
+    if (role === 'admin') {
+      this.pendingAdminChange.set({ user, shouldHave });
+      return;
+    }
+
+    await this.executeRoleChange(user, role, shouldHave);
+  }
+
+  async confirmAdminRoleChange(): Promise<void> {
+    const pending = this.pendingAdminChange();
+    if (!pending) return;
+    this.pendingAdminChange.set(null);
+    await this.executeRoleChange(pending.user, 'admin', pending.shouldHave);
+  }
+
+  private async executeRoleChange(user: SuperAdminUserItem, role: RoleType, shouldHave: boolean): Promise<void> {
     const key = `${user.id}_${role}`;
     this.updatingKey.set(key);
 
@@ -290,9 +347,13 @@ export class UserManagementComponent implements OnInit {
           return { ...u, roles: updatedRoles };
         })
       );
+      this.toast.success(
+        'Rol Actualizado',
+        `Se ${shouldHave ? 'asignó' : 'revocó'} el rol "${role}" para ${user.email}.`
+      );
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al actualizar el rol.';
-      alert(msg);
+      this.toast.error('Error al Actualizar Rol', msg);
     } finally {
       this.updatingKey.set(null);
     }
