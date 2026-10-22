@@ -36,7 +36,7 @@ import { ThemeService } from '@ticketflow/shared-ui';
         <!-- Theme Toggle Button -->
         <button
           type="button"
-          (click)="theme.toggle()"
+          (click)="theme.toggleTheme()"
           class="w-9 h-9 rounded-xl bg-inverse-on-surface/5 hover:bg-inverse-on-surface/15 border border-outline-variant/20 flex items-center justify-center text-inverse-on-surface transition-colors"
           [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
           [title]="theme.isDark() ? 'Modo Claro' : 'Modo Oscuro'"

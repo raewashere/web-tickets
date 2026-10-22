@@ -52,6 +52,10 @@ export class ThemeService {
     this.setTheme(next);
   }
 
+  toggle(): void {
+    this.toggleTheme();
+  }
+
   private applyTheme(): void {
     if (typeof window === 'undefined') return;
     const root = this.document.documentElement;
