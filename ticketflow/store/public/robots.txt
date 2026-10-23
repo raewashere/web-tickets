@@ -2,5 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /checkout/
 Disallow: /my-tickets/
+Disallow: /ticket/
+Disallow: /thank-you
+Disallow: /gracias
 
-Sitemap: https://ticketflow.app/sitemap.xml
+Sitemap: https://boletocoqueto.app/sitemap.xml

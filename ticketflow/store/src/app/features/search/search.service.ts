@@ -60,7 +60,30 @@ export class SearchService {
     }
 
     if (params.eventTypeId) {
-      query = query.eq('event_type_id', params.eventTypeId);
+      const isUuid =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+          params.eventTypeId
+        );
+      if (isUuid) {
+        query = query.eq('event_type_id', params.eventTypeId);
+      } else {
+        try {
+          const { data: matchedType } = await this.supabase
+            .from('event_types')
+            .select('id')
+            .ilike('name', `%${params.eventTypeId}%`)
+            .limit(1)
+            .maybeSingle();
+
+          if (matchedType?.id) {
+            query = query.eq('event_type_id', matchedType.id);
+          } else {
+            query = query.ilike('name', `%${params.eventTypeId}%`);
+          }
+        } catch {
+          query = query.ilike('name', `%${params.eventTypeId}%`);
+        }
+      }
     }
 
     if (params.dateFrom) {

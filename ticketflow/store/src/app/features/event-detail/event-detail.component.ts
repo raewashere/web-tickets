@@ -337,10 +337,10 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
             <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-2 text-xs text-on-surface-variant shadow-sm">
               <div class="font-bold text-on-surface flex items-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-secondary"></i>
-                <span>Garantía BoletoCoqueto</span>
+                <span>Garantía Oficial BoletoCoqueto</span>
               </div>
               <p class="leading-relaxed">
-                Tus boletos son emitidos al instante con código QR único. Cuentas con 100% de reembolso garantizado en caso de cancelación del espectáculo.
+                Emisión al instante con código QR antifraude único, compra rápida sin necesidad de crear cuenta y 100% de reembolso garantizado si el espectáculo se cancela.
               </p>
             </div>
           </div>
@@ -407,7 +407,7 @@ export class EventDetailComponent implements OnInit {
   getShareUrl(platform: 'whatsapp' | 'twitter' | 'facebook'): string {
     if (typeof window === 'undefined' || !this.event()) return '#';
     const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(`¡Boletos para ${this.event()!.name}!`);
+    const text = encodeURIComponent(`¡Boletos oficiales para ${this.event()!.name} en BoletoCoqueto!`);
     switch (platform) {
       case 'whatsapp': return `https://api.whatsapp.com/send?text=${text}%20${url}`;
       case 'twitter': return `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
@@ -453,12 +453,89 @@ export class EventDetailComponent implements OnInit {
         currency: 'MXN',
       });
 
+      const venueName = data.venues?.name || 'Recinto por confirmar';
+      const artistName = data.artists?.name;
+      const canonicalEventUrl = `https://boletocoqueto.app/events/${data.id}`;
+
       // Update dynamic SEO tags
       this.seoService.updateTags({
-        title: `Boletos para ${data.name} — ${data.venues?.name || 'Recinto'}`,
-        description: `Compra boletos oficiales para ${data.name}${data.artists?.name ? ' con ' + data.artists.name : ''}. Acceso digital con código QR garantizado.`,
+        title: `Boletos para ${data.name}${artistName ? ' (' + artistName + ')' : ''} — ${venueName}`,
+        description: `Compra boletos oficiales para ${data.name}${artistName ? ' con ' + artistName : ''} en ${venueName}. Entradas digitales con código QR al instante, sin crear cuenta y pago protegido con PayPal.`,
+        keywords: `${data.name}, boletos ${data.name}, ${artistName || 'concierto'}, ${venueName}, ${data.event_types?.name || 'música en vivo'}, BoletoCoqueto`,
         image: data.flyer_url || undefined,
+        type: 'event',
+        canonicalUrl: canonicalEventUrl,
       });
+
+      // Inject Schema.org MusicEvent JSON-LD for Google Rich Snippets
+      const activeTickets = (data.ticket_types || []).filter((t) => t.is_active);
+      const offers = activeTickets.map((t) => ({
+        '@type': 'Offer',
+        name: t.name,
+        price: Number(t.price).toFixed(2),
+        priceCurrency: 'MXN',
+        availability:
+          t.available_quantity > 0
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/SoldOut',
+        url: canonicalEventUrl,
+        validFrom: data.created_at || data.event_date,
+      }));
+
+      const locationSchema: Record<string, unknown> = {
+        '@type': 'Place',
+        name: venueName,
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'MX',
+          name: venueName,
+        },
+      };
+
+      if (data.venues?.latitude && data.venues?.longitude) {
+        locationSchema['geo'] = {
+          '@type': 'GeoCoordinates',
+          latitude: data.venues.latitude,
+          longitude: data.venues.longitude,
+        };
+      }
+
+      const eventJsonLd: Record<string, unknown> = {
+        '@context': 'https://schema.org',
+        '@type': 'MusicEvent',
+        name: data.name,
+        description:
+          data.description ||
+          `Concierto en vivo: ${data.name}${artistName ? ' con ' + artistName : ''} en ${venueName}.`,
+        startDate: data.event_date,
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        url: canonicalEventUrl,
+        location: locationSchema,
+        organizer: {
+          '@type': 'Organization',
+          name: artistName || 'BoletoCoqueto',
+          url: 'https://boletocoqueto.app',
+        },
+      };
+
+      if (data.flyer_url) {
+        eventJsonLd['image'] = [data.flyer_url];
+      }
+
+      if (artistName) {
+        eventJsonLd['performer'] = {
+          '@type': 'PerformingGroup',
+          name: artistName,
+          ...(data.artists?.photo_url ? { image: data.artists.photo_url } : {}),
+        };
+      }
+
+      if (offers.length > 0) {
+        eventJsonLd['offers'] = offers;
+      }
+
+      this.seoService.setJsonLd(eventJsonLd);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al cargar el evento';
       this.errorMessage.set(msg);

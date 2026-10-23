@@ -34,7 +34,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
           <!-- Hero Badge -->
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-inverse-surface/60 border border-outline-variant/20 text-secondary text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>La nueva forma de vivir la música en vivo</span>
+            <span>Directo del artista a tus manos · Sin cargos sorpresa</span>
           </div>
 
           <!-- Hero Headline -->
@@ -47,7 +47,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
 
           <!-- Hero Subtitle -->
           <p class="text-sm sm:text-lg text-inverse-on-surface/70 max-w-2xl mx-auto font-normal leading-relaxed">
-            Compra entradas oficiales directamente de los artistas y recintos. Acceso inmediato con código QR y pagos protegidos por PayPal.
+            Compra entradas 100% oficiales en menos de un minuto, incluso sin crear cuenta. Recibe tu código QR al instante en tu celular y paga protegido con PayPal.
           </p>
 
           <!-- Central Search Bar -->
@@ -60,14 +60,14 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
                 type="text"
                 [(ngModel)]="searchQuery"
                 name="heroSearch"
-                placeholder="Busca por artista, concierto, ciudad o recinto..."
+                placeholder="Busca por artista, concierto, festival o recinto..."
                 class="w-full bg-transparent text-on-surface placeholder-on-surface/40 text-xs sm:text-sm font-medium focus:outline-none px-2"
               />
               <button
                 type="submit"
                 class="flex-shrink-0 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-on-primary font-bold text-xs sm:text-sm transition-all shadow-md shadow-primary/25"
               >
-                Buscar
+                Buscar Boletos
               </button>
             </div>
           </form>
@@ -98,15 +98,15 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
           <div>
             <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider">
               <i class="fa-solid fa-ticket"></i>
-              <span>Cartelera Oficial</span>
+              <span>Cartelera Oficial en Vivo</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-bold text-on-surface tracking-tight mt-1">
-              Próximos Espectáculos
+              Próximos Conciertos y Espectáculos
             </h2>
           </div>
 
           <a routerLink="/search" class="text-xs sm:text-sm font-bold text-primary hover:text-primary/80 flex items-center gap-1">
-            <span>Ver toda la cartelera</span>
+            <span>Explorar toda la cartelera</span>
             <i class="fa-solid fa-arrow-right text-xs"></i>
           </a>
         </div>
@@ -137,9 +137,9 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
           <span class="text-5xl block mb-2 text-on-surface/20">
             <i class="fa-solid fa-masks-theater"></i>
           </span>
-          <h3 class="text-lg font-bold text-on-surface">No hay eventos publicados por el momento</h3>
+          <h3 class="text-lg font-bold text-on-surface">Estamos afinando los próximos shows</h3>
           <p class="text-xs sm:text-sm text-on-surface/50 max-w-md mx-auto mt-1">
-            Muy pronto se publicarán nuevas fechas de conciertos y festivales. ¡Vuelve a consultar!
+            Muy pronto se anunciarán nuevas fechas de conciertos y festivales. ¡Vuelve a revisar la cartelera!
           </p>
         </div>
       </section>
@@ -149,10 +149,10 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
         <div class="rounded-3xl bg-inverse-surface text-inverse-on-surface p-8 sm:p-14 border border-outline-variant/20 shadow-xl">
           <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-inverse-on-surface">
-              ¿Por qué elegir BoletoCoqueto?
+              ¿Por qué comprar en BoletoCoqueto?
             </h2>
             <p class="text-xs sm:text-sm text-inverse-on-surface/60">
-              Diseñado para fanáticos de la música y creadores de espectáculos.
+              Pensado para que disfrutes el show desde el primer clic, sin filas virtuales ni letras chiquitas.
             </p>
           </div>
 
@@ -161,9 +161,9 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
               <div class="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 text-primary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-ticket"></i>
               </div>
-              <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Boletos 100% Oficiales</h3>
+              <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Trato Directo y Sin Clonaciones</h3>
               <p class="text-xs sm:text-sm text-inverse-on-surface/60 leading-relaxed">
-                Sin intermediarios ni riesgo de clonación. Cada boleto se genera directamente desde la cuenta oficial del artista.
+                Cada boleto se emite directamente desde la cuenta oficial del artista o productor. Cero reventa y autenticidad verificada con código QR único.
               </p>
             </div>
 
@@ -171,9 +171,9 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
               <div class="w-12 h-12 rounded-xl bg-secondary/20 border border-secondary/30 text-secondary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-bolt"></i>
               </div>
-              <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Acceso Rápido en tu Móvil</h3>
+              <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Compra en 1 Minuto, Sin Cuenta</h3>
               <p class="text-xs sm:text-sm text-inverse-on-surface/60 leading-relaxed">
-                Tus boletos digitales con código QR único listos para escanear en el acceso del recinto desde tu celular.
+                ¿Tienes prisa? Elige tus entradas, ingresa tu correo y recibe tus pases digitales al instante en tu celular sin registros forzosos.
               </p>
             </div>
 
@@ -181,9 +181,9 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
               <div class="w-12 h-12 rounded-xl bg-secondary/20 border border-secondary/30 text-secondary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-shield-halved"></i>
               </div>
-              <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Pagos Seguros vía PayPal</h3>
+              <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Garantía Blindada con PayPal</h3>
               <p class="text-xs sm:text-sm text-inverse-on-surface/60 leading-relaxed">
-                Paga de forma protegida con PayPal, tarjeta de crédito o débito con la garantía de protección al comprador.
+                Paga seguro con tarjeta de débito, crédito o PayPal. Tu compra cuenta con 100% de reembolso garantizado si el evento se cancela.
               </p>
             </div>
           </div>
@@ -194,12 +194,12 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="rounded-3xl bg-gradient-to-r from-inverse-surface via-inverse-surface/90 to-inverse-surface text-inverse-on-surface p-8 sm:p-12 border border-secondary/20 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
           <div class="space-y-2 text-center md:text-left">
-            <span class="text-xs font-bold uppercase tracking-wider text-secondary">Para Músicos & Productores</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-secondary">Para Bandas, Músicos & Productores</span>
             <h3 class="text-2xl sm:text-3xl font-bold text-inverse-on-surface tracking-tight">
-              ¿Organizas conciertos o festivales?
+              ¿Organizas conciertos, shows o festivales?
             </h3>
             <p class="text-xs sm:text-sm text-inverse-on-surface/70 max-w-xl">
-              Crea tu perfil de artista, publica tus fechas, gestiona aforos y vende boletos con comisiones transparentes.
+              Publica tus fechas en minutos, controla tu acceso con escaneo QR en tiempo real, conecta tu propio Meta Pixel y vende con comisiones transparentes.
             </p>
           </div>
 
@@ -208,7 +208,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
               type="button"
               class="px-6 py-3.5 rounded-xl bg-secondary hover:bg-secondary/90 text-on-secondary font-bold text-xs sm:text-sm transition-all shadow-lg shadow-secondary/25 flex items-center gap-2"
             >
-              <span>Comenzar a Vender Boletos</span>
+              <span>Publicar mi Evento</span>
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </a>

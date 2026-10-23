@@ -6,8 +6,11 @@ export const appRoutes: Route[] = [
     path: '',
     pathMatch: 'full',
     data: {
-      title: 'Boletos para Conciertos y Festivales en Vivo',
-      description: 'Descubre los mejores conciertos, festivales y espectáculos. Compra tus entradas oficiales con código QR 100% garantizado en BoletoCoqueto.',
+      title: 'Boletos Oficiales para Conciertos y Festivales Sin Intermediarios',
+      description:
+        'Descubre los mejores conciertos, festivales y espectáculos en vivo. Compra tus entradas directo del artista en menos de 1 minuto, sin crear cuenta y con código QR garantizado.',
+      keywords:
+        'boletos para conciertos, festivales en vivo, entradas oficiales QR, BoletoCoqueto, música en vivo sin intermediarios',
     },
     loadComponent: () =>
       import('./features/home/home.component').then(
@@ -18,7 +21,8 @@ export const appRoutes: Route[] = [
     path: 'login',
     data: {
       title: 'Iniciar Sesión',
-      description: 'Accede a tu cuenta de BoletoCoqueto para consultar tus boletos adquiridos y gestionar tus compras.',
+      description:
+        'Accede a tu cuenta de BoletoCoqueto para consultar tus boletos digitales con código QR, listas de espera y gestionar tus compras.',
     },
     loadComponent: () =>
       import('./features/auth/login/login.component').then(
@@ -28,8 +32,9 @@ export const appRoutes: Route[] = [
   {
     path: 'register',
     data: {
-      title: 'Crear Cuenta',
-      description: 'Únete a BoletoCoqueto y compra boletos para tus conciertos favoritos en segundos.',
+      title: 'Crear Cuenta Gratis',
+      description:
+        'Únete a BoletoCoqueto para llevar el control de tus entradas digitales, alertas de listas de espera y próximos conciertos en un solo lugar.',
     },
     loadComponent: () =>
       import('./features/auth/register/register.component').then(
@@ -39,8 +44,11 @@ export const appRoutes: Route[] = [
   {
     path: 'search',
     data: {
-      title: 'Cartelera de Conciertos y Eventos',
-      description: 'Explora la cartelera completa de conciertos, festivales y shows en vivo. Filtra por artista, categoría y fecha.',
+      title: 'Cartelera de Conciertos, Festivales y Shows en Vivo',
+      description:
+        'Explora la cartelera oficial de conciertos, festivales y eventos en vivo. Filtra por artista, género musical o fecha y asegura tus entradas con código QR.',
+      keywords:
+        'cartelera de conciertos, próximos eventos, festivales de música, boletos de rock, teatro y comedia, agenda de conciertos',
     },
     loadComponent: () =>
       import('./features/search/search-results.component').then(
@@ -50,8 +58,9 @@ export const appRoutes: Route[] = [
   {
     path: 'events/:id',
     data: {
-      title: 'Detalles del Evento y Boletos',
-      description: 'Conoce fecha, recinto, artistas y compra tus boletos oficiales para este concierto en BoletoCoqueto.',
+      title: 'Boletos Oficiales y Detalles del Concierto',
+      description:
+        'Consulta fecha, horarios, mapa del recinto, perfil del artista y adquiere tus entradas oficiales con código QR en BoletoCoqueto.',
     },
     loadComponent: () =>
       import('./features/event-detail/event-detail.component').then(
@@ -65,8 +74,10 @@ export const appRoutes: Route[] = [
         path: '',
         pathMatch: 'full',
         data: {
-          title: 'Carrito de Compra',
-          description: 'Revisa tu selección de boletos y aplica cupones de descuento antes de continuar al pago.',
+          title: 'Resumen de Reserva y Carrito',
+          description:
+            'Revisa tus boletos reservados, aplica cupones de descuento y completa tus datos de entrega rápida sin necesidad de registro.',
+          noindex: true,
         },
         loadComponent: () =>
           import('./features/checkout/cart-summary.component').then(
@@ -76,8 +87,10 @@ export const appRoutes: Route[] = [
       {
         path: 'payment',
         data: {
-          title: 'Pago Seguro',
-          description: 'Completa tu compra de boletos mediante pago seguro y cifrado con PayPal.',
+          title: 'Pago Seguro con PayPal',
+          description:
+            'Finaliza la compra de tus entradas con protección al comprador y cifrado bancario SSL vía PayPal.',
+          noindex: true,
         },
         loadComponent: () =>
           import('./features/checkout/payment.component').then(
@@ -88,7 +101,9 @@ export const appRoutes: Route[] = [
         path: 'confirmation/:orderId',
         data: {
           title: 'Confirmación de Orden',
-          description: '¡Tu orden ha sido procesada! Revisa el resumen de tu compra y tus boletos asignados.',
+          description:
+            '¡Tu compra está lista! Consulta el resumen de tu orden y descarga tus boletos digitales con código QR.',
+          noindex: true,
         },
         loadComponent: () =>
           import('./features/checkout/order-confirmation.component').then(
@@ -100,8 +115,10 @@ export const appRoutes: Route[] = [
   {
     path: 'ticket/:orderId',
     data: {
-      title: 'Pase Digital y Entrada con Código QR',
-      description: 'Consulta tu pase de acceso digital y código QR oficial para el recinto.',
+      title: 'Pase Digital y Código QR de Acceso',
+      description:
+        'Consulta y descarga tu pase digital oficial con código QR de alta seguridad para el acceso al recinto.',
+      noindex: true,
     },
     loadComponent: () =>
       import('./features/public-ticket/public-ticket.component').then(
@@ -116,8 +133,10 @@ export const appRoutes: Route[] = [
         path: '',
         pathMatch: 'full',
         data: {
-          title: 'Mis Boletos Adquiridos',
-          description: 'Consulta tus órdenes y entradas digitales con código QR para tus próximos eventos.',
+          title: 'Mis Boletos y Listas de Espera',
+          description:
+            'Administra tus órdenes, descarga tus códigos QR de acceso y consulta el estado de tus listas de espera.',
+          noindex: true,
         },
         loadComponent: () =>
           import('./features/my-tickets/my-tickets.component').then(
@@ -127,8 +146,10 @@ export const appRoutes: Route[] = [
       {
         path: ':orderId',
         data: {
-          title: 'Boleto Digital y Acceso QR',
-          description: 'Muestra tu código QR digital desde tu dispositivo para acceder al recinto.',
+          title: 'Detalle de Boleto Digital y Acceso QR',
+          description:
+            'Muestra tu código QR digital desde tu celular en la entrada del recinto.',
+          noindex: true,
         },
         loadComponent: () =>
           import('./features/my-tickets/ticket-detail.component').then(
@@ -140,8 +161,10 @@ export const appRoutes: Route[] = [
   {
     path: 'thank-you',
     data: {
-      title: '¡Muchas Gracias por tu Compra!',
-      description: 'Agradecemos tu preferencia. Tus entradas han sido generadas y están listas para usarse.',
+      title: '¡Gracias por tu Compra!',
+      description:
+        'Tus entradas oficiales han sido emitidas con éxito. Prepara tu código QR y disfruta del espectáculo.',
+      noindex: true,
     },
     loadComponent: () =>
       import('./features/thank-you/thank-you.component').then(
@@ -155,8 +178,9 @@ export const appRoutes: Route[] = [
   {
     path: 'privacy',
     data: {
-      title: 'Política de Privacidad',
-      description: 'Conoce cómo protegemos tus datos personales y garantizamos la seguridad de tus transacciones en BoletoCoqueto.',
+      title: 'Política de Privacidad y Garantía del Comprador',
+      description:
+        'Conoce cómo protegemos tus datos personales, el ejercicio de derechos ARCO y nuestra Garantía de Reembolso del 100% en BoletoCoqueto.',
     },
     loadComponent: () =>
       import('./features/privacy-policy/privacy-policy.component').then(
@@ -170,8 +194,10 @@ export const appRoutes: Route[] = [
   {
     path: '**',
     data: {
-      title: '404 — Página no encontrada',
-      description: 'La página o concierto que buscas no existe o ha cambiado de ubicación.',
+      title: '404 — Página fuera de cartelera',
+      description:
+        'La página o concierto que buscas no está disponible o ha cambiado de dirección.',
+      noindex: true,
     },
     loadComponent: () =>
       import('./features/not-found/not-found.component').then(

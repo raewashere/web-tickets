@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchService, SearchFilterParams, SearchResult } from './search.service';
 import { FilterPanelComponent } from './filter-panel.component';
 import { EventCardComponent, StoreEventItem } from '../../shared/ui/event-card.component';
+import { SeoService } from '../../core/services/seo.service';
 import type { EventType } from '@ticketflow/models';
 import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
 
@@ -264,18 +265,18 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
       <!-- Mobile Filter Drawer Backdrop & Modal -->
       <div
         *ngIf="isMobileFilterOpen()"
-        class="fixed inset-0 z-[9999] bg-dark/70 backdrop-blur-sm lg:hidden flex justify-end transition-opacity"
+        class="fixed inset-0 z-[9999] bg-inverse-surface/75 backdrop-blur-sm lg:hidden flex justify-end transition-opacity"
       >
-        <div class="w-full max-w-xs sm:max-w-sm bg-white h-full overflow-y-auto p-6 space-y-6 shadow-2xl flex flex-col justify-between">
+        <div class="w-full max-w-xs sm:max-w-sm bg-surface text-on-surface h-full overflow-y-auto p-6 space-y-6 shadow-2xl flex flex-col justify-between border-l border-outline-variant/30">
           <div class="space-y-6">
-            <div class="flex items-center justify-between pb-4 border-b border-dark/10">
-              <h3 class="font-bold text-lg text-dark flex items-center gap-2">
+            <div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+              <h3 class="font-bold text-lg text-on-surface flex items-center gap-2">
                 <i class="fa-solid fa-sliders text-primary"></i> Filtros
               </h3>
               <button
                 type="button"
                 (click)="isMobileFilterOpen.set(false)"
-                class="w-8 h-8 rounded-full bg-surface text-dark/60 flex items-center justify-center text-sm"
+                class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center text-sm"
               >
                 <i class="fa-solid fa-xmark"></i>
               </button>
@@ -288,11 +289,11 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
             ></store-filter-panel>
           </div>
 
-          <div class="pt-4 border-t border-dark/10">
+          <div class="pt-4 border-t border-outline-variant/30">
             <button
               type="button"
               (click)="isMobileFilterOpen.set(false)"
-              class="w-full py-3.5 rounded-2xl bg-accent text-dark font-bold text-xs uppercase tracking-wider shadow-lg shadow-accent/20"
+              class="w-full py-3.5 rounded-2xl bg-primary text-on-primary font-bold text-xs uppercase tracking-wider shadow-lg shadow-primary/20"
             >
               Ver Espectáculos
             </button>
@@ -306,6 +307,7 @@ export class SearchResultsComponent implements OnInit {
   private readonly searchService = inject(SearchService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly seoService = inject(SeoService);
 
   readonly isMobileFilterOpen = signal(false);
   readonly isLoading = signal(true);
@@ -346,8 +348,39 @@ export class SearchResultsComponent implements OnInit {
         page: params['page'] ? Number(params['page']) : 1,
       };
       this.searchQuery = this.currentParams.query || '';
+      this.updateSearchSeo();
       await this.executeSearch();
     });
+  }
+
+  private updateSearchSeo(): void {
+    const q = this.currentParams.query;
+    const typeParam = this.currentParams.eventTypeId;
+    const matchedCategory = typeParam
+      ? this.eventTypes().find(
+          (t) =>
+            t.id === typeParam ||
+            t.name.toLowerCase().includes(typeParam.toLowerCase())
+        )
+      : undefined;
+
+    if (q) {
+      this.seoService.updateTags({
+        title: `Boletos para "${q}" — Cartelera en Vivo`,
+        description: `Encuentra boletos oficiales para "${q}" en BoletoCoqueto. Compra directo del artista sin crear cuenta y recibe tu código QR al instante.`,
+      });
+    } else if (matchedCategory) {
+      this.seoService.updateTags({
+        title: `Boletos de ${matchedCategory.name} — Cartelera Oficial`,
+        description: `Explora los próximos eventos y conciertos de ${matchedCategory.name}. Entradas 100% oficiales con código QR y garantía PayPal en BoletoCoqueto.`,
+      });
+    } else {
+      this.seoService.updateTags({
+        title: 'Cartelera de Conciertos, Festivales y Shows en Vivo',
+        description:
+          'Explora la cartelera oficial de conciertos, festivales y eventos en vivo. Filtra por artista, género musical o fecha y asegura tus entradas con código QR.',
+      });
+    }
   }
 
   private async executeSearch(): Promise<void> {

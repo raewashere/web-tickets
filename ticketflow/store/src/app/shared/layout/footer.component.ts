@@ -21,21 +21,23 @@ import { RouterModule } from '@angular/router';
               </span>
             </div>
             <p class="text-xs sm:text-sm text-inverse-on-surface/50 max-w-sm leading-relaxed">
-              La plataforma moderna y segura para compra directa de entradas a conciertos, festivales y espectáculos. Boletos 100% garantizados.
+              Boletos 100% oficiales directo de tus artistas favoritos, sin intermediarios ni cargos sorpresa. Compra en 1 minuto sin crear cuenta y recibe tu acceso QR al instante.
             </p>
-            <div class="flex items-center gap-3 pt-2 text-xs text-inverse-on-surface/40">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-secondary"></i> Pagos cifrados SSL</span>
+            <div class="flex flex-wrap items-center gap-3 pt-2 text-xs text-inverse-on-surface/40">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-secondary"></i> Cifrado SSL 256-bit</span>
               <span>·</span>
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-secondary"></i> PayPal Verified</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-secondary"></i> Protección PayPal</span>
+              <span>·</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-qrcode text-secondary"></i> QR Antifraude</span>
             </div>
           </div>
 
           <!-- Col 2: Explorar -->
           <div class="space-y-3">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-secondary">Explorar</h4>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-secondary">Explorar Cartelera</h4>
             <ul class="space-y-2 text-xs sm:text-sm text-inverse-on-surface/50">
               <li><a routerLink="/search" class="hover:text-inverse-on-surface transition-colors">Todos los Conciertos</a></li>
-              <li><a routerLink="/search" [queryParams]="{ type: 'festivales' }" class="hover:text-inverse-on-surface transition-colors">Festivales</a></li>
+              <li><a routerLink="/search" [queryParams]="{ type: 'festival' }" class="hover:text-inverse-on-surface transition-colors">Festivales en Vivo</a></li>
               <li><a routerLink="/search" [queryParams]="{ type: 'teatro' }" class="hover:text-inverse-on-surface transition-colors">Teatro & Comedia</a></li>
               <li><a routerLink="/search" [queryParams]="{ type: 'rock' }" class="hover:text-inverse-on-surface transition-colors">Rock & Alternativo</a></li>
             </ul>
@@ -45,19 +47,19 @@ import { RouterModule } from '@angular/router';
           <div class="space-y-3">
             <h4 class="text-xs font-bold uppercase tracking-wider text-secondary">Creadores & Soporte</h4>
             <ul class="space-y-2 text-xs sm:text-sm text-inverse-on-surface/50">
-              <li><a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-inverse-on-surface transition-colors">Portal de Artistas</a></li>
+              <li><a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-inverse-on-surface transition-colors">Portal para Artistas</a></li>
               <li><a routerLink="/my-tickets" class="hover:text-inverse-on-surface transition-colors">Consultar Mis Boletos</a></li>
-              <li><span class="text-inverse-on-surface/30">soporte&#64;boletocoqueto.app</span></li>
+              <li><a href="mailto:soporte@boletocoqueto.app" class="hover:text-inverse-on-surface transition-colors text-inverse-on-surface/40">soporte&#64;boletocoqueto.app</a></li>
             </ul>
           </div>
         </div>
 
         <!-- Bottom Copyright -->
         <div class="pt-8 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-inverse-on-surface/30">
-          <p>© 2026 BoletoCoqueto Technologies Inc. Todos los derechos reservados.</p>
+          <p>© 2026 BoletoCoqueto. Todos los derechos reservados. Hecho para la música en vivo.</p>
           <div class="flex items-center gap-4">
-            <a routerLink="/privacy" class="hover:text-inverse-on-surface/60 transition-colors">Política de Privacidad</a>
-            <a routerLink="/thank-you" class="hover:text-inverse-on-surface/60 transition-colors">Garantía del Comprador</a>
+            <a routerLink="/privacy" class="hover:text-inverse-on-surface/60 transition-colors">Aviso de Privacidad</a>
+            <a routerLink="/privacy" fragment="garantia" class="hover:text-inverse-on-surface/60 transition-colors">Garantía del Comprador</a>
           </div>
         </div>
       </div>
