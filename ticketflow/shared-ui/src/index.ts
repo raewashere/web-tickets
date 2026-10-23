@@ -14,3 +14,10 @@ export { ThemeService } from './lib/theme/theme.service';
 export type { ThemeMode } from './lib/theme/theme.service';
 export { EmptyStateComponent } from './lib/empty-state/empty-state';
 export type { EmptyStateIllustration } from './lib/empty-state/empty-state';
+export { BrandLogoComponent } from './lib/brand-logo/brand-logo';
+export type {
+  BrandLogoVariant,
+  BrandLogoSize,
+  BrandLogoTheme,
+} from './lib/brand-logo/brand-logo';
+

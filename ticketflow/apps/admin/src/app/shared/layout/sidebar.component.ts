@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@ticketflow/data-access';
+import { BrandLogoComponent } from '@ticketflow/shared-ui';
 
 interface NavItem {
   label: string;
@@ -13,7 +14,7 @@ interface NavItem {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BrandLogoComponent],
   template: `
     <!-- Mobile Backdrop -->
     <div
@@ -29,16 +30,10 @@ interface NavItem {
       [class.-translate-x-full]="!isOpen"
     >
       <!-- Brand Header -->
-      <div class="flex items-center justify-between h-16 px-6 border-b border-outline-variant/20">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-black text-xl shadow-sm border border-primary/30">
-            BC
-          </div>
-          <div>
-            <h1 class="font-bold text-lg tracking-tight text-inverse-on-surface leading-none">BoletoCoqueto</h1>
-            <span class="text-[10px] uppercase font-bold tracking-widest text-secondary">Artist Portal</span>
-          </div>
-        </div>
+      <div class="flex items-center justify-between h-16 px-5 border-b border-outline-variant/20">
+        <a routerLink="/dashboard" class="flex items-center">
+          <tf-brand-logo size="sm" theme="dark" badge="Aliado Creativo"></tf-brand-logo>
+        </a>
 
         <button
           type="button"

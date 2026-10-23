@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '@ticketflow/data-access';
-import { SpinnerComponent } from '@ticketflow/shared-ui';
+import { SpinnerComponent, BrandLogoComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-register',
@@ -18,14 +18,15 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
     ReactiveFormsModule,
     RouterModule,
     SpinnerComponent,
+    BrandLogoComponent,
   ],
   template: `
     <div class="min-h-[80vh] flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-surface">
       <div class="max-w-md w-full space-y-6">
         <!-- Header -->
         <div class="text-center space-y-2">
-          <div class="inline-flex w-12 h-12 rounded-2xl bg-primary text-on-primary items-center justify-center shadow-lg shadow-primary/20 mb-1">
-            <i class="fa-solid fa-ticket text-xl"></i>
+          <div class="flex justify-center mb-2">
+            <tf-brand-logo variant="mark-only" size="lg" [verified]="true"></tf-brand-logo>
           </div>
           <h2 class="text-2xl sm:text-3xl font-bold text-on-surface tracking-tight">
             Crea tu Cuenta en BoletoCoqueto

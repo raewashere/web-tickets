@@ -3,21 +3,24 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseService, AuthService } from '@ticketflow/data-access';
+import { BrandLogoComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-backoffice-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BrandLogoComponent],
   template: `
     <div class="min-h-screen bg-inverse-surface flex items-center justify-center p-4">
       <div class="w-full max-w-md bg-surface border border-outline-variant/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-on-surface">
         <!-- Logo and Header -->
         <div class="text-center space-y-2">
-          <div class="w-14 h-14 rounded-2xl bg-primary-container text-on-primary-container font-black text-2xl flex items-center justify-center mx-auto shadow-lg border border-primary/30">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <h1 class="text-2xl font-black text-on-surface tracking-tight">BoletoCoqueto Backoffice</h1>
-          <p class="text-xs text-on-surface-variant">Acceso exclusivo para Super Administradores</p>
+          <tf-brand-logo
+            variant="stacked"
+            size="lg"
+            badge="Global Backoffice"
+            subtitle="Acceso exclusivo para Super Administradores"
+            [verified]="true"
+          ></tf-brand-logo>
         </div>
 
         <!-- Error message -->

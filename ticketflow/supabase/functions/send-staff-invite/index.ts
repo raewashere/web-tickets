@@ -122,59 +122,62 @@ serve(async (req: Request) => {
     const adminAppUrl = Deno.env.get('ADMIN_APP_URL') || 'https://ticketflow-admin.vercel.app';
     const inviteUrl = `${adminAppUrl}/staff-invite?token=${token}`;
 
-    // 2. Build HTML Template
+    // 2. Build HTML Template (BoletoCoqueto Electric Fiesta M3 Theme)
     const htmlContent = `
       <!DOCTYPE html>
-      <html lang="es">
+      <html lang="es-MX">
       <head>
         <meta charset="UTF-8">
-        <title>Invitación al Personal de Control de Admisión — TicketFlow</title>
+        <title>Invitación al Control de Admisión — BoletoCoqueto</title>
       </head>
-      <body style="margin: 0; padding: 0; background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f8fafc;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f172a; padding: 40px 15px;">
+      <body style="margin: 0; padding: 0; background-color: #160E1A; font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #FEFAFF;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #160E1A; padding: 40px 15px;">
           <tr>
             <td align="center">
-              <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #1e293b; border-radius: 24px; overflow: hidden; border: 1px solid #334155;">
+              <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #211626; border-radius: 24px; overflow: hidden; border: 1px solid #423649;">
                 <tr>
-                  <td style="background-color: #090d16; padding: 30px; text-align: center; border-bottom: 1px solid #334155;">
-                    <span style="display: inline-block; background-color: rgba(6, 182, 212, 0.2); color: #22d3ee; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 5px 12px; border-radius: 999px; margin-bottom: 12px;">
-                      🛡️ Control de Admisión
+                  <td style="background: linear-gradient(135deg, #3C0650 0%, #540D6E 60%, #EE4266 100%); padding: 32px 30px; text-align: center; border-bottom: 1px solid #423649;">
+                    <div style="font-size: 22px; font-weight: 900; letter-spacing: -0.5px; color: #FEFAFF; margin-bottom: 10px;">
+                      Boleto<span style="color: #FFD23F;">Coqueto</span> <span style="color: #FFD23F;">✦</span>
+                    </div>
+                    <span style="display: inline-block; background-color: rgba(255, 210, 63, 0.18); color: #FFD23F; border: 1px solid rgba(255, 210, 63, 0.4); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;">
+                      🛡️ Aliado de Acceso Oficial
                     </span>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 900; color: #ffffff;">Invitación de Validación de Accesos</h1>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 900; color: #FFFFFF;">Invitación de Validación de Boletos</h1>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 30px;">
-                    <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6; margin-top: 0;">
-                      Has sido invitado como <strong>personal oficial de control de acceso</strong> para validar los boletos y códigos QR en el siguiente espectáculo:
+                  <td style="padding: 32px 30px;">
+                    <p style="font-size: 15px; color: #EEE4F4; line-height: 1.6; margin-top: 0;">
+                      ¡Hola! Has sido invitado como parte del <strong>equipo oficial de control de acceso</strong> para dar la bienvenida al público y escanear los códigos QR en:
                     </p>
 
-                    <div style="background-color: #0f172a; border-radius: 16px; padding: 20px; border: 1px solid #334155; margin: 20px 0;">
-                      <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 800; color: #f8fafc;">${eventName}</h2>
-                      <p style="margin: 4px 0; font-size: 13px; color: #94a3b8;">📍 <strong>Lugar:</strong> ${venueName}</p>
-                      <p style="margin: 4px 0; font-size: 13px; color: #94a3b8;">📅 <strong>Fecha:</strong> ${eventDate}</p>
+                    <div style="background-color: #160E1A; border-radius: 16px; padding: 20px; border: 1px solid #423649; margin: 22px 0;">
+                      <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 800; color: #FFD23F;">${eventName}</h2>
+                      <p style="margin: 4px 0; font-size: 13px; color: #D1C6D9;">📍 <strong>Recinto:</strong> ${venueName}</p>
+                      <p style="margin: 4px 0; font-size: 13px; color: #D1C6D9;">📅 <strong>Fecha:</strong> ${eventDate}</p>
                     </div>
 
-                    <p style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
-                      Haz clic en el siguiente botón para aceptar la invitación y acceder a la herramienta de escaneo:
+                    <p style="font-size: 13px; color: #D1C6D9; line-height: 1.5;">
+                      Haz clic en el siguiente botón para activar tu acceso como validador y abrir el escáner en vivo:
                     </p>
 
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="${inviteUrl}" style="display: inline-block; background-color: #06b6d4; color: #020617; font-size: 14px; font-weight: 900; padding: 14px 28px; border-radius: 14px; text-decoration: none; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.4);">
-                        ✓ Aceptar Invitación de Acceso
+                      <a href="${inviteUrl}" style="display: inline-block; background-color: #EE4266; color: #FFFFFF; font-size: 14px; font-weight: 800; padding: 14px 28px; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 14px rgba(238, 66, 102, 0.4);">
+                        ✓ Activar Mi Acceso de Staff
                       </a>
                     </div>
 
-                    <p style="font-size: 11px; color: #64748b; line-height: 1.4;">
-                      Si el botón no funciona, copia y pega este enlace en tu navegador:<br>
-                      <a href="${inviteUrl}" style="color: #38bdf8; word-break: break-all;">${inviteUrl}</a>
+                    <p style="font-size: 11px; color: #93869A; line-height: 1.4;">
+                      Si el botón no abre directamente, copia y pega este enlace seguro en tu navegador:<br>
+                      <a href="${inviteUrl}" style="color: #FFD23F; word-break: break-all;">${inviteUrl}</a>
                     </p>
                   </td>
                 </tr>
                 <tr>
-                  <td style="background-color: #090d16; padding: 20px 30px; text-align: center; border-top: 1px solid #334155;">
-                    <p style="margin: 0; font-size: 11px; color: #64748b;">
-                      © 2026 TicketFlow Technologies Inc.
+                  <td style="background-color: #160E1A; padding: 20px 30px; text-align: center; border-top: 1px solid #423649;">
+                    <p style="margin: 0; font-size: 11px; color: #93869A;">
+                      © 2026 BoletoCoqueto · Tu aliado creativo en música en vivo · boletocoqueto.com
                     </p>
                   </td>
                 </tr>

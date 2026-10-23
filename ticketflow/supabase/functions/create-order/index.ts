@@ -248,6 +248,37 @@ serve(async (req: Request) => {
       return jsonResponse({ error: 'Payload inválido.' }, 400);
     }
 
+    const storeBaseUrl =
+      Deno.env.get('STORE_APP_URL') ??
+      Deno.env.get('STORE_BASE_URL') ??
+      'https://boletocoqueto.com';
+
+    // -------------------------------------------------------------------------
+    // 2b. Idempotency check: if paypalOrderId was already processed (e.g. by
+    //     paypal-webhook or a retry), return the existing order immediately.
+    // -------------------------------------------------------------------------
+    if (paypalOrderId) {
+      const { data: existingOrder } = await supabaseAdmin
+        .from('orders')
+        .select('*')
+        .eq('payment_provider', 'paypal')
+        .eq('payment_reference', paypalOrderId)
+        .maybeSingle();
+
+      if (existingOrder) {
+        const existingTicketUrl = `${storeBaseUrl.replace(/\/$/, '')}/ticket/${existingOrder.id}?token=${existingOrder.access_token}`;
+        return jsonResponse(
+          {
+            order: existingOrder,
+            ticketUrl: existingTicketUrl,
+            isGuest: !user,
+            idempotent: true,
+          },
+          200,
+        );
+      }
+    }
+
     // -------------------------------------------------------------------------
     // 3. Server-side quote (validates locks ↔ event, coupon, SKU restriction)
     // -------------------------------------------------------------------------
@@ -292,11 +323,11 @@ serve(async (req: Request) => {
 
       ppAccessToken = await getPayPalAccessToken(paypalBase, clientId, clientSecret);
 
-      // 4a. Verify BEFORE capturing: approved, bound to this session, right amount
+      // 4a. Verify BEFORE capturing: approved (or already completed), bound to this session, right amount
       const ppOrder = await getPayPalOrder(paypalBase, ppAccessToken, paypalOrderId);
       const unit = ppOrder.purchase_units?.[0];
 
-      if (ppOrder.status !== 'APPROVED') {
+      if (ppOrder.status !== 'APPROVED' && ppOrder.status !== 'COMPLETED') {
         return jsonResponse({ error: `Pago PayPal no aprobado: ${ppOrder.status}` }, 402);
       }
       if (unit?.custom_id !== sessionId) {
@@ -308,8 +339,12 @@ serve(async (req: Request) => {
         return jsonResponse({ error: 'El monto del pago no coincide con el total de la orden. Por favor reinicia el pago.' }, 409);
       }
 
-      // 4b. Capture and verify the captured amount
-      const captureResult = await capturePayPalOrder(paypalBase, ppAccessToken, paypalOrderId);
+      // 4b. Capture (or reuse capture if already COMPLETED) and verify the captured amount
+      const captureResult =
+        ppOrder.status === 'COMPLETED'
+          ? ppOrder
+          : await capturePayPalOrder(paypalBase, ppAccessToken, paypalOrderId);
+
       const capture = captureResult.purchase_units?.[0]?.payments?.captures?.[0];
       captureId = capture?.id ?? null;
 
@@ -320,6 +355,18 @@ serve(async (req: Request) => {
       if (capture.amount?.currency_code !== 'MXN' || !amountsMatch(capture.amount?.value, expectedTotal)) {
         console.error(`CRITICAL: captured amount ${capture.amount?.value} differs from expected ${expectedTotal}`);
         const refunded = await refundPayPalCapture(paypalBase, ppAccessToken, capture.id);
+
+        await supabaseAdmin
+          .from('paypal_payment_intents')
+          .update({
+            paypal_capture_id: capture.id,
+            captured_amount:   Number(capture.amount?.value ?? 0),
+            status:            refunded ? 'auto_refunded' : 'needs_manual_refund',
+            error_message:     `Captured amount ${capture.amount?.value} differs from expected ${expectedTotal}`,
+            updated_at:        new Date().toISOString(),
+          })
+          .eq('paypal_order_id', paypalOrderId);
+
         return jsonResponse({
           error: refunded
             ? 'El monto cobrado no coincide con la orden. El pago fue reembolsado automáticamente.'
@@ -346,12 +393,48 @@ serve(async (req: Request) => {
     });
 
     if (rpcErr) {
+      // Check if paypal-webhook concurrently created the order while we were capturing
+      if (paypalOrderId) {
+        const { data: concurrentOrder } = await supabaseAdmin
+          .from('orders')
+          .select('*')
+          .eq('payment_provider', 'paypal')
+          .eq('payment_reference', paypalOrderId)
+          .maybeSingle();
+
+        if (concurrentOrder) {
+          const concurrentTicketUrl = `${storeBaseUrl.replace(/\/$/, '')}/ticket/${concurrentOrder.id}?token=${concurrentOrder.access_token}`;
+          return jsonResponse(
+            {
+              order: concurrentOrder,
+              ticketUrl: concurrentTicketUrl,
+              isGuest: !user,
+              reconciledWithWebhook: true,
+            },
+            200,
+          );
+        }
+      }
+
       console.error('create_order_atomic error:', rpcErr);
       let refunded = false;
       if (captureId) {
         refunded = await refundPayPalCapture(paypalBase, ppAccessToken, captureId);
         if (!refunded) {
           console.error(`CRITICAL: PayPal capture ${captureId} (order ${paymentReference}) succeeded but DB order failed and auto-refund failed. Needs manual refund.`);
+        }
+
+        if (paypalOrderId) {
+          await supabaseAdmin
+            .from('paypal_payment_intents')
+            .update({
+              paypal_capture_id: captureId,
+              captured_amount:   expectedTotal,
+              status:            refunded ? 'auto_refunded' : 'needs_manual_refund',
+              error_message:     rpcErr.message,
+              updated_at:        new Date().toISOString(),
+            })
+            .eq('paypal_order_id', paypalOrderId);
         }
       }
       return jsonResponse({
@@ -364,9 +447,7 @@ serve(async (req: Request) => {
     }
 
     // -------------------------------------------------------------------------
-    // 6. Dispatch N8N ticket webhook (fire-and-forget — non-blocking)
-    //    • Guests:        PRIMARY ticket delivery via email
-    //    • Auth users:    supplemental notification (send-ticket-email is also called)
+    // 6. Update reconciliation ledger & dispatch ticket email / webhook
     // -------------------------------------------------------------------------
     const order = orderResult as {
       id:            string;
@@ -375,10 +456,23 @@ serve(async (req: Request) => {
       guest_name?:   string;
     };
 
+    if (paypalOrderId) {
+      await supabaseAdmin
+        .from('paypal_payment_intents')
+        .update({
+          paypal_capture_id: captureId,
+          captured_amount:   expectedTotal,
+          order_id:          order.id,
+          status:            'completed',
+          error_message:     null,
+          updated_at:        new Date().toISOString(),
+        })
+        .eq('paypal_order_id', paypalOrderId);
+    }
+
     const recipientEmail = user?.email ?? guestEmail ?? '';
     const recipientName  = guestName ?? user?.email ?? 'Cliente';
-    const storeBaseUrl   = Deno.env.get('STORE_BASE_URL') ?? 'https://tu-dominio.com';
-    const ticketUrl      = `${storeBaseUrl}/ticket/${order.id}?token=${order.access_token}`;
+    const ticketUrl      = `${storeBaseUrl.replace(/\/$/, '')}/ticket/${order.id}?token=${order.access_token}`;
     const qrImageUrl     = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=TICKETFLOW-AUTH-${order.id}`;
 
     // Query full order details for rich webhook payload

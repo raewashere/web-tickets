@@ -205,16 +205,41 @@ serve(async (req: Request) => {
       : 'https://api-m.sandbox.paypal.com';
 
     // -------------------------------------------------------------------------
-    // 5. Create PayPal order
+    // 5. Create PayPal order & record reconciliation intent
     // -------------------------------------------------------------------------
     const ppAccessToken = await getPayPalAccessToken(paypalBase, clientId, clientSecret);
     const ppOrder = await createPayPalOrder(
       paypalBase,
       ppAccessToken,
       amountMXN,
-      `TicketFlow — ${eventRow?.name ?? 'Boletos'}`.slice(0, 127),
+      `BoletoCoqueto — ${eventRow?.name ?? 'Boletos'}`.slice(0, 127),
       sessionId,
     );
+
+    // Record intent in paypal_payment_intents for asynchronous webhook reconciliation
+    const { error: intentErr } = await supabaseAdmin
+      .from('paypal_payment_intents')
+      .upsert(
+        {
+          paypal_order_id: ppOrder.id,
+          session_id:      sessionId,
+          event_id:        eventId,
+          coupon_id:       couponId ?? null,
+          customer_id:     user?.id ?? null,
+          guest_email:     guestEmail?.trim() ?? null,
+          guest_name:      guestName?.trim() ?? null,
+          expected_total:  amountMXN,
+          currency:        'MXN',
+          status:          'created',
+          updated_at:      new Date().toISOString(),
+        },
+        { onConflict: 'paypal_order_id' },
+      );
+
+    if (intentErr) {
+      // Non-blocking warning if migration 024 hasn't been applied yet
+      console.warn('paypal_payment_intents upsert warning:', intentErr.message);
+    }
 
     // -------------------------------------------------------------------------
     // 6. Return PayPal orderID (client will render PayPal buttons and capture)

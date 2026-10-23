@@ -1,25 +1,26 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { BrandLogoComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BrandLogoComponent],
   template: `
     <footer class="bg-inverse-surface text-inverse-on-surface/70 border-t border-outline-variant/20 pt-16 pb-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
           <!-- Col 1: Brand -->
           <div class="space-y-4 md:col-span-2">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary via-secondary to-tertiary flex items-center justify-center shadow-md shadow-primary/30">
-                <i class="fa-solid fa-ticket text-on-primary text-sm"></i>
-              </div>
-              <span class="text-xl sm:text-2xl font-bold tracking-tight text-inverse-on-surface flex items-center">
-                Boleto<span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-tertiary ml-0.5">Coqueto</span>
-              </span>
-            </div>
+            <a routerLink="/" class="inline-block" aria-label="BoletoCoqueto Inicio">
+              <tf-brand-logo
+                size="md"
+                theme="dark"
+                subtitle="Tu aliado en música en vivo"
+                [verified]="true"
+              ></tf-brand-logo>
+            </a>
             <p class="text-xs sm:text-sm text-inverse-on-surface/50 max-w-sm leading-relaxed">
               Boletos 100% oficiales directo de tus artistas favoritos, sin intermediarios ni cargos sorpresa. Compra en 1 minuto sin crear cuenta y recibe tu acceso QR al instante.
             </p>

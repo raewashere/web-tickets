@@ -12,12 +12,12 @@ import { MyTicketsService } from './my-tickets.service';
 import { AuthService } from '@ticketflow/data-access';
 import type { OrderWithRelations, RefundRequest } from '@ticketflow/models';
 import { generateQrDataUrl } from '../../shared/utils/qr.utils';
-import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/shared-ui';
+import { ButtonComponent, BadgeComponent, SpinnerComponent, BrandLogoComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-ticket-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ButtonComponent, BadgeComponent, SpinnerComponent],
+  imports: [CommonModule, FormsModule, RouterModule, ButtonComponent, BadgeComponent, SpinnerComponent, BrandLogoComponent],
   template: `
     <div class="max-w-2xl mx-auto px-4 sm:px-6 py-10 space-y-8 print:py-0 print:px-0 print:max-w-full">
 
@@ -161,7 +161,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
         >
           <!-- Dark header strip -->
           <div
-            class="px-6 py-4 flex items-center justify-between text-inverse-on-surface"
+            class="px-6 py-4 flex items-center justify-between gap-4 text-inverse-on-surface"
             [ngClass]="order()!.status === 'refunded' ? 'bg-error text-on-error' : 'bg-inverse-surface print:bg-black'"
           >
             <div>
@@ -172,7 +172,14 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/s
                 {{ order()!.events?.name }}
               </span>
             </div>
-            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban' : 'fa-ticket text-tertiary'"></i></span>
+            <span *ngIf="order()!.status === 'refunded'" class="text-2xl"><i class="fa-solid fa-ban"></i></span>
+            <tf-brand-logo
+              *ngIf="order()!.status !== 'refunded'"
+              size="xs"
+              theme="dark"
+              [verified]="true"
+              [interactive]="false"
+            ></tf-brand-logo>
           </div>
 
           <!-- QR area -->

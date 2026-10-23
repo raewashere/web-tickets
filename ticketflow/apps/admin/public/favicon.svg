@@ -1,0 +1,32 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bc-bg" x1="4" y1="60" x2="60" y2="4" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3C0650" />
+      <stop offset="52%" stop-color="#540D6E" />
+      <stop offset="100%" stop-color="#EE4266" />
+    </linearGradient>
+    <linearGradient id="bc-ticket" x1="12" y1="14" x2="52" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFF5FA" />
+    </linearGradient>
+    <linearGradient id="bc-stroke" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFD23F" stop-opacity="0.85" />
+      <stop offset="50%" stop-color="#EE4266" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.25" />
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="58" height="58" rx="16" fill="url(#bc-bg)" stroke="url(#bc-stroke)" stroke-width="2.5" />
+  <path d="M50 10.5C50 13.2 51.3 14.5 54 14.5C51.3 14.5 50 15.8 50 18.5C50 15.8 48.7 14.5 46 14.5C48.7 14.5 50 13.2 50 10.5Z" fill="#FFD23F" />
+  <g transform="rotate(-10 32 33)">
+    <path d="M14 22C14 19.7909 15.7909 18 18 18H46C48.2091 18 50 19.7909 50 22V28.5C47.5147 28.5 45.5 30.5147 45.5 33C45.5 35.4853 47.5147 37.5 50 37.5V44C50 46.2091 48.2091 48 46 48H18C15.7909 48 14 46.2091 14 44V37.5C16.4853 37.5 18.5 35.4853 18.5 33C18.5 30.5147 16.4853 28.5 14 28.5V22Z" transform="translate(1.5, 2.5)" fill="#2A0238" fill-opacity="0.45" />
+    <path d="M14 22C14 19.7909 15.7909 18 18 18H46C48.2091 18 50 19.7909 50 22V28.5C47.5147 28.5 45.5 30.5147 45.5 33C45.5 35.4853 47.5147 37.5 50 37.5V44C50 46.2091 48.2091 48 46 48H18C15.7909 48 14 46.2091 14 44V37.5C16.4853 37.5 18.5 35.4853 18.5 33C18.5 30.5147 16.4853 28.5 14 28.5V22Z" fill="url(#bc-ticket)" stroke="#FFD23F" stroke-width="1.5" />
+    <line x1="39.5" y1="20.5" x2="39.5" y2="45.5" stroke="#EE4266" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2.5 3.5" stroke-opacity="0.65" />
+    <path d="M23.5 26C23.5 28 24.4 28.9 26.4 28.9C24.4 28.9 23.5 29.8 23.5 31.8C23.5 29.8 22.6 28.9 20.6 28.9C22.6 28.9 23.5 28 23.5 26Z" fill="#EE4266" />
+    <path d="M29.8 29.5C30.8 27.6 33.2 27.6 34.2 29.5" stroke="#540D6E" stroke-width="2.4" stroke-linecap="round" />
+    <path d="M34.2 29.2L35.6 28.1" stroke="#540D6E" stroke-width="2" stroke-linecap="round" />
+    <circle cx="35" cy="33" r="2" fill="#EE4266" fill-opacity="0.45" />
+    <circle cx="20.5" cy="33" r="2" fill="#EE4266" fill-opacity="0.45" />
+    <path d="M23 35.2C25.2 38.8 30.5 38.8 32.8 35.2" stroke="#540D6E" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="43.5" y1="25" x2="43.5" y2="41" stroke="#540D6E" stroke-width="2" stroke-linecap="round" stroke-opacity="0.45" />
+  </g>
+</svg>

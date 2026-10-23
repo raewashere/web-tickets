@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SupabaseService, AuthService } from '@ticketflow/data-access';
 import { generateQrDataUrl } from '../../shared/utils/qr.utils';
-import { ButtonComponent, BadgeComponent, SpinnerComponent } from '@ticketflow/shared-ui';
+import { ButtonComponent, BadgeComponent, SpinnerComponent, BrandLogoComponent } from '@ticketflow/shared-ui';
 
 export interface PublicOrderData {
   id: string;
@@ -67,6 +67,7 @@ export interface PublicOrderData {
     ButtonComponent,
     BadgeComponent,
     SpinnerComponent,
+    BrandLogoComponent,
   ],
   template: `
     <div class="max-w-2xl mx-auto px-4 sm:px-6 py-10 space-y-8 print:py-0 print:px-0 print:max-w-full">
@@ -190,7 +191,7 @@ export interface PublicOrderData {
         >
           <!-- Header Banner -->
           <div
-            class="px-6 py-4 flex items-center justify-between text-inverse-on-surface"
+            class="px-6 py-4 flex items-center justify-between gap-4 text-inverse-on-surface"
             [ngClass]="order()!.status === 'refunded' ? 'bg-error text-on-error' : 'bg-inverse-surface print:bg-black'"
           >
             <div>
@@ -201,7 +202,14 @@ export interface PublicOrderData {
                 {{ order()!.event?.name || order()!.event?.title }}
               </span>
             </div>
-            <span class="text-2xl"><i class="fa-solid" [ngClass]="order()!.status === 'refunded' ? 'fa-ban' : 'fa-ticket text-tertiary'"></i></span>
+            <span *ngIf="order()!.status === 'refunded'" class="text-2xl"><i class="fa-solid fa-ban"></i></span>
+            <tf-brand-logo
+              *ngIf="order()!.status !== 'refunded'"
+              size="xs"
+              theme="dark"
+              [verified]="true"
+              [interactive]="false"
+            ></tf-brand-logo>
           </div>
 
           <!-- QR & Access Details -->

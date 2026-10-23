@@ -236,7 +236,7 @@ serve(async (req: Request) => {
                         <img src="${qrImageUrl}" alt="Código QR de acceso Orden ${order.id}" width="200" height="200" style="display: block; border: 0;" />
                       </div>
                       <p style="margin: 12px 0 16px 0; font-size: 11px; font-family: monospace; color: ${EMAIL_THEME.surface}; opacity: 0.75;">
-                        TICKETFLOW-AUTH-${order.id}
+                        BOLETOCOQUETO-PASS-${order.id.substring(0, 8).toUpperCase()}
                       </p>
                       <a href="${ticketUrl}" target="_blank" style="display: inline-block; background-color: ${EMAIL_THEME.accent}; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 14px; padding: 12px 24px; border-radius: 999px;">
                         Ver y Descargar Mi Boleto Digital
@@ -256,8 +256,8 @@ serve(async (req: Request) => {
                 <tr>
                   <td style="background-color: ${EMAIL_THEME.headerBg}; padding: 20px 30px; text-align: center; border-top: 1px solid ${EMAIL_THEME.border};">
                     <p style="margin: 0; font-size: 11px; color: ${EMAIL_THEME.surface}; opacity: 0.6; line-height: 1.5;">
-                      © 2026 BoletoCoqueto Technologies Inc. Todos los derechos reservados.<br>
-                      Este es un correo automático de confirmación de compra y emisión de entradas.
+                      © 2026 BoletoCoqueto · Tu entrada directa a la música en vivo · boletocoqueto.com<br>
+                      Boleto digital protegido con código QR antifraude y respaldo PayPal.
                     </p>
                   </td>
                 </tr>

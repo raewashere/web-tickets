@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '@ticketflow/data-access';
-import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shared-ui';
+import { ButtonComponent, InputComponent, BrandLogoComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +19,7 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
     RouterModule,
     ButtonComponent,
     InputComponent,
+    BrandLogoComponent,
   ],
 
   template: `
@@ -30,11 +31,13 @@ import { ButtonComponent, CardComponent, InputComponent } from '@ticketflow/shar
       <div class="w-full max-w-md relative z-10">
         <!-- Logo & Header -->
         <div class="text-center mb-8">
-          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-container text-on-primary-container border border-primary/30 font-bold text-2xl mb-4 shadow-lg shadow-primary/20">
-            BC
-          </div>
-          <h1 class="text-3xl font-bold text-inverse-on-surface tracking-tight">BoletoCoqueto</h1>
-          <p class="text-inverse-on-surface/60 text-sm mt-1">Portal de Artistas y Organizadores</p>
+          <tf-brand-logo
+            variant="stacked"
+            size="lg"
+            theme="dark"
+            badge="Aliado Creativo · Artistas"
+            [verified]="true"
+          ></tf-brand-logo>
         </div>
 
         <!-- Login Card -->

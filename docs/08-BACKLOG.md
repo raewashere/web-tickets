@@ -42,7 +42,19 @@
   - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`.
   - Reemplazar `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` con credenciales Live de PayPal y actualizar el Client ID en el frontend.
 
-- [ ] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación** para cobros asíncronos o cierres de navegador antes de `create-order`.
+- [x] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación (Código listo)**
+  - **Implementado en código:** Migración 024 (`20250124000000_paypal_webhook_reconciliation.sql`) con tablas `paypal_payment_intents` y `paypal_webhook_events` + RPC `get_paypal_reconciliation_report`, actualización de `create-paypal-order` y `create-order` (idempotente), y nueva Edge Function `paypal-webhook`.
+  - **📌 Pasos por hacer (Despliegue en Supabase & PayPal):**
+    - [ ] **Paso 1 (SQL):** Ejecutar el contenido de `ticketflow/supabase/migrations/20250124000000_paypal_webhook_reconciliation.sql` en el **SQL Editor** de Supabase (o mediante `npx supabase db push`).
+    - [ ] **Paso 2 (Edge Functions):** Desplegar las funciones actualizadas en Supabase:
+      `npx supabase functions deploy create-paypal-order create-order paypal-webhook --no-verify-jwt`
+    - [ ] **Paso 3 (PayPal Dashboard):** En PayPal Developer Dashboard (`Apps & Credentials → Webhooks`), registrar el URL `https://kevgwhiosnyemaftbjqs.supabase.co/functions/v1/paypal-webhook` y suscribir los eventos:
+      - `Checkout order approved` (`CHECKOUT.ORDER.APPROVED`)
+      - `Payment capture completed` (`PAYMENT.CAPTURE.COMPLETED`)
+      - `Payment capture denied` (`PAYMENT.CAPTURE.DENIED`)
+      - `Payment capture refunded` (`PAYMENT.CAPTURE.REFUNDED`)
+      - `Payment capture reversed` (`PAYMENT.CAPTURE.REVERSED`)
+    - [ ] **Paso 4 (Secret Opcional):** Copiar el `Webhook ID` generado por PayPal y guardarlo en Supabase Secrets como `PAYPAL_WEBHOOK_ID`.
 
 ---
 
@@ -71,19 +83,17 @@
 - [x] **[M9] Perfil de artista con biografía y galería multi-fotos**
   - **Completado:** Migración SQL 012 (`gallery_urls`), carga y gestión de múltiples fotos en Admin (`artist-form` y `artist-detail`), y visualización interactiva con lightbox en la tienda (`event-detail` y `search-results`).
 
-- [x] **[M10] SEO, Sitemap XML, 404 personalizado, Página de Gracias, Política de Privacidad y Textos Alt**
-  - **Completado:** Servicio `SeoService` con títulos y meta descripciones dinámicas por ruta en español, página 404 personalizada (`not-found`), página de agradecimiento (`thank-you`), página legal de política de privacidad (`privacy-policy`), `sitemap.xml`, `robots.txt`, y textos `alt` descriptivos en todas las imágenes.
+- [x] **[M10] SEO Avanzado (`boletocoqueto.com`), JSON-LD `MusicEvent`, Sitemap XML, Copy de Conversión, 404 y Política de Privacidad / Garantía**
+  - **Completado:** Servicio `SeoService` con canonicals dinámicos (`https://boletocoqueto.com`), directivas `noindex` en rutas transaccionales, limpieza de OpenGraph/Twitter Cards, inyección dinámica de `Schema.org/MusicEvent` JSON-LD en eventos, SEO dinámico en búsquedas/categorías, copy optimizado en Home/Footer, sección de Garantía del Comprador (`#garantia`), `sitemap.xml` y `robots.txt` actualizados a `boletocoqueto.com`.
 
 - [x] **Fix contador de boletos (stepper layout)**
   - **Completado:** Se rediseñó el componente `ticket-selector.component.ts` en layout vertical apilado para evitar desbordes visuales en columnas angostas.
 
+- [x] **Mapa interactivo del recinto sin API Key (`VenueMapComponent` con Leaflet / OpenStreetMap)**
+  - **Completado:** `VenueMapComponent` utiliza Leaflet + OpenStreetMap cargado dinámicamente sin requerir `VITE_GOOGLE_MAPS_API_KEY`, incluyendo pin interactivo y enlace directo a "Cómo llegar" en Google Maps.
+
 - [ ] **Prueba end-to-end de compra, correo QR y reembolso en PayPal Sandbox**
   - Seleccionar boletos → reservar → carrito → cupón → pagar → recibir correo Resend → ver/descargar QR → solicitar reembolso → aprobar en Backoffice.
-
-- [ ] **Google Maps API Key para el mapa del recinto**
-  - `VenueMapComponent` requiere `VITE_GOOGLE_MAPS_API_KEY`. Sin la key, el mapa no carga.
-  - Obtener key en Google Cloud Console → Maps JavaScript API → habilitar.
-  - Agregar en `.env` de Admin y Store, y en Vercel → Settings → Environment Variables.
 
 - [ ] **Probar upload de archivos (Storage) en producción**
   - Verificar que los 3 buckets funcionan correctamente:
@@ -177,11 +187,11 @@
 | Categoría | Total | Completado | Pendiente |
 |-----------|-------|-----------|-----------|
 | P0 — Blockers & Producción | 8 | 6 | 2 (PayPal Live, Webhook PayPal) |
-| P1 — Alta prioridad | 12 | 9 | 3 (Prueba E2E Sandbox, Google Maps Key, Prueba Storage) |
+| P1 — Alta prioridad | 12 | 10 | 2 (Prueba E2E Sandbox, Prueba Storage) |
 | P2 — Media prioridad | 4 | 2 | 2 (Verificar fetch Admin, Google OAuth Prod URI) |
 | P3 — Super Admin, Backoffice & UX M3 | 7 | 7 | 0 |
 | P4 — Roadmap | 11 | 0 | 11 |
-| **Total** | **42** | **24** | **18** |
+| **Total** | **42** | **25** | **17** |
 
 ---
 

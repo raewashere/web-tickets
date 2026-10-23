@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import type { EventWithRelations, TicketType, Artist } from '@ticketflow/models';
+import { BrandLogoComponent } from '@ticketflow/shared-ui';
 
 export type StoreEventItem = EventWithRelations & {
   ticket_types?: TicketType[];
@@ -10,7 +11,7 @@ export type StoreEventItem = EventWithRelations & {
 @Component({
   selector: 'store-event-card',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BrandLogoComponent],
   template: `
     <div
       class="group rounded-3xl border border-outline-variant/30 bg-surface hover:border-secondary/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-sm"
@@ -24,9 +25,8 @@ export type StoreEventItem = EventWithRelations & {
             [alt]="event.name"
             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
-          <div *ngIf="!event.flyer_url" class="w-full h-full flex flex-col items-center justify-center text-on-surface-variant/30 bg-surface-container">
-            <i class="fa-solid fa-guitar text-4xl mb-1"></i>
-            <span class="text-xs font-bold text-on-surface-variant/50">BoletoCoqueto Live</span>
+          <div *ngIf="!event.flyer_url" class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-inverse-surface via-primary/80 to-secondary/60 p-4">
+            <tf-brand-logo variant="stacked" size="sm" theme="dark" badge="LIVE"></tf-brand-logo>
           </div>
 
           <!-- Date Overlay Box -->

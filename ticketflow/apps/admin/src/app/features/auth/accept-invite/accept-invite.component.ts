@@ -9,6 +9,7 @@ import {
   CardComponent,
   BadgeComponent,
   SpinnerComponent,
+  BrandLogoComponent,
 } from '@ticketflow/shared-ui';
 
 @Component({
@@ -21,13 +22,17 @@ import {
     CardComponent,
     BadgeComponent,
     SpinnerComponent,
+    BrandLogoComponent,
   ],
   template: `
     <div class="min-h-screen bg-surface flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div class="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-2">
-        <i class="fa-solid fa-ticket text-4xl text-primary block mb-2"></i>
-        <h1 class="text-2xl font-bold text-dark tracking-tight">BoletoCoqueto</h1>
-        <p class="text-xs text-dark/60 font-medium">Invitación al Control de Admisión</p>
+      <div class="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <tf-brand-logo
+          variant="stacked"
+          size="lg"
+          badge="Control de Admisión"
+          [verified]="true"
+        ></tf-brand-logo>
       </div>
 
       <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
