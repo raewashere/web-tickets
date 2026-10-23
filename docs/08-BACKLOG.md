@@ -108,9 +108,23 @@
   - Revisar en DevTools (F12 → Network) qué endpoint falla.
   - Comprobar si extensiones del navegador interfieren (Brave Shields, adblockers).
 
-- [ ] **Google OAuth en producción**
-  - Agregar dominio de producción en Google Cloud Console → OAuth 2.0 → Authorized redirect URIs:
-    - `https://kevgwhiosnyemaftbjqs.supabase.co/auth/v1/callback`
+- [ ] **Google OAuth y Supabase Auth URL Configuration para `boletocoqueto.com`**
+  - **1. Supabase Dashboard (`Authentication → URL Configuration`):**
+    - Cambiar **Site URL** a `https://boletocoqueto.com`
+    - Agregar en **Redirect URLs**:
+      - `https://boletocoqueto.com/**`
+      - `https://www.boletocoqueto.com/**`
+      - *(Más subdominios de `admin` / `backoffice` si aplica, conservando las URLs `.vercel.app`)*
+  - **2. Google Cloud Console (`APIs & Services → Credentials → OAuth 2.0 Client ID`):**
+    - Agregar en **Authorized JavaScript origins**:
+      - `https://boletocoqueto.com`
+      - `https://www.boletocoqueto.com`
+      - `https://kevgwhiosnyemaftbjqs.supabase.co`
+    - Confirmar en **Authorized redirect URIs**:
+      - `https://kevgwhiosnyemaftbjqs.supabase.co/auth/v1/callback`
+    - En **OAuth Consent Screen (Branding / Audience)**:
+      - Agregar `boletocoqueto.com` y `supabase.co` en **Authorized domains**.
+      - Verificar que **Publishing status** esté en **"In production"** (para no restringir el login solo a correos de prueba).
 
 ---
 
