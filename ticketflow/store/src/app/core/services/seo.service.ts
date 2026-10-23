@@ -22,7 +22,7 @@ export class SeoService {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly doc = inject(DOCUMENT);
 
-  private readonly siteUrl = 'https://boletocoqueto.app';
+  private readonly siteUrl = 'https://boletocoqueto.com';
   private readonly defaultTitle =
     'BoletoCoqueto — Tus Conciertos y Festivales Favoritos, Sin Intermediarios';
   private readonly defaultDescription =

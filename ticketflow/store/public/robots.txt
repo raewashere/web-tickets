@@ -6,4 +6,4 @@ Disallow: /ticket/
 Disallow: /thank-you
 Disallow: /gracias
 
-Sitemap: https://boletocoqueto.app/sitemap.xml
+Sitemap: https://boletocoqueto.com/sitemap.xml

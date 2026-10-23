@@ -49,7 +49,7 @@ import { RouterModule } from '@angular/router';
             <ul class="space-y-2 text-xs sm:text-sm text-inverse-on-surface/50">
               <li><a href="https://ticketflow-admin.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-inverse-on-surface transition-colors">Portal para Artistas</a></li>
               <li><a routerLink="/my-tickets" class="hover:text-inverse-on-surface transition-colors">Consultar Mis Boletos</a></li>
-              <li><a href="mailto:soporte@boletocoqueto.app" class="hover:text-inverse-on-surface transition-colors text-inverse-on-surface/40">soporte&#64;boletocoqueto.app</a></li>
+              <li><a href="mailto:soporte@boletocoqueto.com" class="hover:text-inverse-on-surface transition-colors text-inverse-on-surface/40">soporte&#64;boletocoqueto.com</a></li>
             </ul>
           </div>
         </div>

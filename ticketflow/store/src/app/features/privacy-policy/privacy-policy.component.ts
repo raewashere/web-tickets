@@ -98,7 +98,7 @@ import { RouterModule } from '@angular/router';
           </p>
           <p class="text-sm">
             Para ejercer tus derechos ARCO o resolver dudas sobre tu compra, escríbenos a:
-            <a href="mailto:privacidad@boletocoqueto.app" class="font-bold text-primary hover:underline">privacidad&#64;boletocoqueto.app</a>.
+            <a href="mailto:privacidad@boletocoqueto.com" class="font-bold text-primary hover:underline">privacidad&#64;boletocoqueto.com</a>.
           </p>
         </section>
 

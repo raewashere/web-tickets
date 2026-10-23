@@ -455,7 +455,7 @@ export class EventDetailComponent implements OnInit {
 
       const venueName = data.venues?.name || 'Recinto por confirmar';
       const artistName = data.artists?.name;
-      const canonicalEventUrl = `https://boletocoqueto.app/events/${data.id}`;
+      const canonicalEventUrl = `https://boletocoqueto.com/events/${data.id}`;
 
       // Update dynamic SEO tags
       this.seoService.updateTags({
@@ -515,7 +515,7 @@ export class EventDetailComponent implements OnInit {
         organizer: {
           '@type': 'Organization',
           name: artistName || 'BoletoCoqueto',
-          url: 'https://boletocoqueto.app',
+          url: 'https://boletocoqueto.com',
         },
       };
 
