@@ -8,10 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SupabaseService, AuthService } from '@ticketflow/data-access';
 import type { OrderWithRelations } from '@ticketflow/models';
-import {
-  ButtonComponent,
-  SpinnerComponent,
-} from '@ticketflow/shared-ui';
+import { SpinnerComponent } from '@ticketflow/shared-ui';
 
 @Component({
   selector: 'store-order-confirmation',
@@ -19,7 +16,6 @@ import {
   imports: [
     CommonModule,
     RouterModule,
-    ButtonComponent,
     SpinnerComponent,
   ],
   template: `

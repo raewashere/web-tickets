@@ -475,7 +475,7 @@ export class EventDetailComponent implements OnInit {
         price: Number(t.price).toFixed(2),
         priceCurrency: 'MXN',
         availability:
-          t.available_quantity > 0
+          t.available > 0
             ? 'https://schema.org/InStock'
             : 'https://schema.org/SoldOut',
         url: canonicalEventUrl,
