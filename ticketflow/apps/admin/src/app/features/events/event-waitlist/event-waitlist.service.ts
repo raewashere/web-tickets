@@ -23,24 +23,45 @@ export class EventWaitlistService {
   }
 
   /**
-   * Triggers notification batch for top pending users on the waitlist.
+   * Triggers notification batch for top pending users on the waitlist
+   * via the notify-waitlist Edge Function (updates DB status + sends Resend emails).
    */
   async notifyWaitlist(
     eventId: string,
     ticketTypeId: string | null = null,
     limit: number = 10
-  ): Promise<{ id: string; email: string; ticket_type_name: string; created_at: string; notified_at: string }[]> {
-    const { data, error } = await this.supabase.rpc('notify_event_waitlist', {
-      p_event_id: eventId,
-      p_ticket_type_id: ticketTypeId || null,
-      p_limit: limit,
+  ): Promise<{
+    notified: { id: string; email: string; ticket_type_name: string; created_at: string; notified_at: string }[];
+    emailsSent: number;
+    emailStatus: string;
+  }> {
+    const { data, error } = await this.supabase.functions.invoke('notify-waitlist', {
+      body: {
+        eventId,
+        ticketTypeId: ticketTypeId || null,
+        limit,
+      },
     });
 
     if (error) {
-      console.error('Error notifying waitlist:', error);
-      throw error;
+      console.error('Error invoking notify-waitlist function:', error);
+      throw new Error(error.message || 'No se pudo procesar el envío de notificaciones a la lista de espera.');
     }
 
-    return (data || []) as { id: string; email: string; ticket_type_name: string; created_at: string; notified_at: string }[];
+    if (data?.error) {
+      throw new Error(data.error);
+    }
+
+    return {
+      notified: (data?.notified || []) as {
+        id: string;
+        email: string;
+        ticket_type_name: string;
+        created_at: string;
+        notified_at: string;
+      }[],
+      emailsSent: Number(data?.emailsSent ?? 0),
+      emailStatus: String(data?.emailStatus ?? 'sent'),
+    };
   }
 }

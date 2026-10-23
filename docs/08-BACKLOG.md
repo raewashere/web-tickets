@@ -1,7 +1,7 @@
 # 08 — Backlog & TODO List
 
-> **Última actualización:** 08 de septiembre de 2026
-> **Estado MVP:** Ciclo completo funcional ✅ — En proceso de mejoras post-MVP
+> **Última actualización:** 22 de octubre de 2026
+> **Estado MVP:** Ciclo completo funcional y endurecido en Producción ✅ — En fase de validación final y mejoras post-MVP
 >
 > Este documento es el **backlog maestro** del proyecto. Contiene todas las tareas pendientes organizadas por prioridad.
 > El detalle técnico de implementación de las mejoras está en [`07-MEJORAS-POST-MVP.md`](./07-MEJORAS-POST-MVP.md).
@@ -32,18 +32,17 @@
 - [x] **Reembolsos reales vía PayPal Refund API + Solicitud para Invitados + Notificación Resend**
   - **Completado y desplegado:** Edge Function `process-refund` desplegada; valida rol Super-Admin, ejecuta el reembolso monetario en PayPal (`POST /v2/payments/captures/{id}/refund`), actualiza el estado atómico vía `process_refund_request` y envía correo de resolución vía Resend. Conectada en `RefundsService` (Admin) y `BackofficeService` (Backoffice). Agregado modal y banner de solicitud de reembolso para invitados en `public-ticket.component.ts`.
 
-- [ ] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación** para cobros asíncronos o cierres de navegador antes de `create-order`
+- [x] **Desplegar Backoffice en Vercel**
+  - **Completado:** Aplicación `apps/backoffice` compilada y desplegada en Vercel con soporte completo de Modo Oscuro/Claro M3 y `ToastService`.
 
-- [ ] **Desplegar Backoffice** en Vercel
+- [x] **Dominio Oficial & Verificación DNS en Resend API**
+  - **Completado:** Dominio verificado en Resend (`DKIM`, `SPF`, `MX`, `DMARC`) y secrets configurados en Supabase Edge Functions (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `STORE_APP_URL` y `ADMIN_APP_URL`).
 
-- [ ] **PayPal: cambiar de Sandbox a producción** *(bloqueado hasta desplegar y probar Migraciones 022 y 023 en Sandbox)*
-  - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`
-  - Reemplazar `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` con credenciales de producción
+- [ ] **PayPal: cambiar de Sandbox a producción** *(después de correr la prueba E2E en Sandbox)*
+  - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`.
+  - Reemplazar `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` con credenciales Live de PayPal y actualizar el Client ID en el frontend.
 
-- [ ] **Dominio Oficial & Servicio Transaccional de Correo (Resend API)**
-  - Contratación de dominio oficial (ej. `ticketflow.app`) en registrador DNS (Cloudflare / Namecheap / GoDaddy)
-  - Registro de dominio en Resend.com y configuración de registros DNS (SPF, DKIM, DMARC)
-  - Configuración de `RESEND_API_KEY` y `STORE_BASE_URL` en Supabase Edge Functions Secrets
+- [ ] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación** para cobros asíncronos o cierres de navegador antes de `create-order`.
 
 ---
 
@@ -51,24 +50,20 @@
 
 > Bugs o carencias que el usuario final percibe de inmediato.
 
-- [x] **[M3] QR realmente escaneable por cámara**
-  - **Completado:** Se integró la librería `qrcode` con nivel de corrección H y renderizado HD asíncrono en `ticket-detail` y `my-tickets`.
+- [x] **[M3] QR realmente escaneable por cámara + Descarga nativa `.png`**
+  - **Completado:** Se integró la librería `qrcode` con nivel de corrección H y renderizado HD asíncrono en `ticket-detail`, `my-tickets` y `public-ticket`, más botón de descarga directa de imagen `.png` para móviles.
 
-- [x] **Guest Checkout (Compra sin Cuenta) & Entrega de Boletos vía N8N**
-  - **Estado:** ✅ Completado (Fases 1, 2, 3 y 4 completadas)
-  - **Fase 1 (BD):** Migración 021 (`orders.customer_id` NULLABLE, `guest_email`, `guest_name`, `access_token`, RLS token policy, RPC `get_order_by_access_token`).
-  - **Fase 2 (Edge Functions):** `create-paypal-order` y `create-order` adaptados con auth opcional + dispatcher placeholder N8N.
-  - **Fase 3 (Store UI):** Formulario e insumos de invitado en checkout (`guestEmail`/`guestName`), validaciones en `CheckoutService`, `PublicTicketComponent` y ruta pública `/ticket/:orderId` con token.
-  - **Fase 4 (N8N Workflow):** Webhook dispatcher enriquecido en `create-order`, plantilla HTML responsiva (`docs/n8n/ticket-email-template.html`) y JSON de flujo exportable N8N (`docs/n8n/ticketflow-n8n-workflow.json`).
+- [x] **Guest Checkout (Compra sin Cuenta) & Entrega de Boletos vía Resend / N8N**
+  - **Estado:** ✅ Completado (Fases 1, 2, 3 y 4 completadas + desbloqueo de navegación a `/checkout` en `event-detail.component.ts`).
 
 - [x] **[M5] Fix redirect a login al intentar comprar**
-  - **Completado:** Se corrigió la URL en `event-detail.component.ts` a `/events/:id`.
+  - **Completado:** Se corrigió la URL en `event-detail.component.ts` y se permitió el paso directo a `/checkout` para invitados sin sesión.
 
 - [x] **[M6] Buscador busca por nombre del artista**
   - **Completado:** Actualizado `search.service.ts` para buscar tanto por nombre de evento como por nombre de artista; creada migración SQL 008.
 
-- [x] **[M4] Foto de perfil de Gmail en topbar (Admin y Store)**
-  - **Completado:** Agregada señal `avatarUrl` en `AuthService` y actualizada la interfaz en `topbar.component.ts` y `navbar.component.ts`.
+- [x] **[M4] Foto de perfil de Gmail en topbar (Admin, Store y Backoffice)**
+  - **Completado:** Agregada señal `avatarUrl` en `AuthService` y actualizada la interfaz en `topbar.component.ts`, `navbar.component.ts` y `backoffice-topbar.component.ts`.
 
 - [x] **[M8] Cupones por SKU + Fix visibilidad de eventos en tienda**
   - **Completado:** Migración SQL 011, selector dinámico en admin, cálculo por SKU en Edge Function y atomic order, y fix de filtros de fechas en tienda.
@@ -82,19 +77,19 @@
 - [x] **Fix contador de boletos (stepper layout)**
   - **Completado:** Se rediseñó el componente `ticket-selector.component.ts` en layout vertical apilado para evitar desbordes visuales en columnas angostas.
 
+- [ ] **Prueba end-to-end de compra, correo QR y reembolso en PayPal Sandbox**
+  - Seleccionar boletos → reservar → carrito → cupón → pagar → recibir correo Resend → ver/descargar QR → solicitar reembolso → aprobar en Backoffice.
+
 - [ ] **Google Maps API Key para el mapa del recinto**
   - `VenueMapComponent` requiere `VITE_GOOGLE_MAPS_API_KEY`. Sin la key, el mapa no carga.
-  - Obtener key en Google Cloud Console → Maps JavaScript API → habilitar
-  - Agregar en `.env` de Admin y Store, y en Vercel → Settings → Environment Variables
+  - Obtener key en Google Cloud Console → Maps JavaScript API → habilitar.
+  - Agregar en `.env` de Admin y Store, y en Vercel → Settings → Environment Variables.
 
 - [ ] **Probar upload de archivos (Storage) en producción**
   - Verificar que los 3 buckets funcionan correctamente:
     - [ ] `artist-photos` — foto de perfil del artista
     - [ ] `event-flyers` — flyer del evento
     - [ ] `venue-maps` — mapa del recinto
-
-- [ ] **Prueba end-to-end de compra con PayPal Sandbox**
-  - Seleccionar boletos → reservar → carrito → cupón → pagar → confirmación → ver QR en "Mis Boletos"
 
 ---
 
@@ -109,9 +104,9 @@
   - **Completado:** Creada migración SQL 007 (`validate_doors_open`) y adaptado `access-control.service` y `access-control.component` con estado `doors_not_open`.
 
 - [ ] **Verificar `Failed to fetch` en Admin desplegado**
-  - Revisar env vars `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` en Vercel → Settings → Redeploy
-  - Revisar en DevTools (F12 → Network) qué endpoint falla
-  - Comprobar si extensiones del navegador interfieren (Brave Shields, adblockers)
+  - Revisar env vars `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` en Vercel → Settings → Redeploy.
+  - Revisar en DevTools (F12 → Network) qué endpoint falla.
+  - Comprobar si extensiones del navegador interfieren (Brave Shields, adblockers).
 
 - [ ] **Google OAuth en producción**
   - Agregar dominio de producción en Google Cloud Console → OAuth 2.0 → Authorized redirect URIs:
@@ -119,32 +114,30 @@
 
 ---
 
-## 🔵 P3 — Mejoras Planificadas
-
-> Features acordadas en la sesión de mejoras. Tienen diseño técnico completo en el doc `07`.
-
 ## 🔵 P3 — Mejoras Planificadas & Módulos Avanzados
 
 > Features estratégicas para la escalabilidad, administración central y operación financiera de la plataforma.
 
 - [x] **[M7] Rol "Control de Admisión" (doorman)**
-  - **Completado:** Implementadas migraciones SQL 009 y 010, guards de navegación (`doormanGuard`, `artistRoleGuard`), componentes `EventStaffComponent` y `AcceptInviteComponent`, servicio `EventStaffService`, filtrado de menú en `SidebarComponent`, modo doorman en `AccessControlComponent`, tipos en `@ticketflow/models` y Edge Function `send-staff-invite`.
+  - **Completado:** Implementadas migraciones SQL 009, 010 y 023 (`accept_staff_invitation`), guards de navegación (`doormanGuard`, `artistRoleGuard`), componentes `EventStaffComponent` y `AcceptInviteComponent`, servicio `EventStaffService`, filtrado de menú en `SidebarComponent`, modo doorman en `AccessControlComponent`, tipos en `@ticketflow/models` y Edge Function `send-staff-invite`.
 
-- [x] **1. Módulo de Super-Admin Central**
-  - **Completado:** Migración SQL 013 con RPCs `get_all_users_with_roles`, `admin_set_user_role`, `admin_toggle_venue_verification` y `get_global_platform_metrics`. Implementadas las vistas `VenueModerationComponent`, `UserManagementComponent`, `SuperAdminDashboardComponent`, servicio `SuperAdminService`, `superAdminGuard` y navegación dedicada en `SidebarComponent`.
+- [x] **1. Módulo de Super-Admin Central y App Backoffice Independiente**
+  - **Completado:** Migración SQL 013 y 017 con RPCs `get_all_users_with_roles`, `admin_set_user_role`, `admin_toggle_venue_verification` y `get_global_platform_metrics`. App dedicada `apps/backoffice` con `ToastContainerComponent`, selector de Modo Oscuro/Claro, modales M3 de confirmación para roles y reembolsos con `admin_notes`.
 
 - [x] **2. Gestión de Solicitudes de Reembolso (Post-Venta)**
-  - **Completado:** Migración SQL 014 con tabla `refund_requests` y RPCs `request_order_refund`, `process_refund_request` y `get_all_refund_requests`. Flujo del cliente en la tienda (`my-tickets.component.ts` y `ticket-detail.component.ts`) con modal interactivo de motivos, banners de estado y anulación de QR si reembolsado. Panel completo de administración (`refund-list.component.ts`, `refunds.service.ts`, `refunds.routes.ts`) con filtros, tarjetas de métricas y aprobación/rechazo atómico que reincorpora stock y anula boletos.
+  - **Completado:** Migraciones SQL 014 y 023 + Edge Function `process-refund` con PayPal Refund API y notificación Resend. Flujo del cliente en tienda (`my-tickets`, `ticket-detail`, `public-ticket`) y aprobación exclusiva por Super-Admin en Backoffice/Admin.
 
-- [x] **3. Waitlist / Lista de Espera para Eventos Agotados**
-  - **Completado:** Migración SQL 015 con tabla `waitlist` (cola FIFO, RLS y RPCs `join_event_waitlist`, `get_event_waitlist`, `notify_event_waitlist` y `get_my_waitlist`). Formulario interactivo de suscripción en la tienda (`ticket-selector.component.ts`) ante localidades agotadas. Pestaña de gestión de suscripciones para el comprador en *Mis Boletos* (`my-tickets.component.ts`). Tarjeta de gestión de cola y disparador de notificaciones por lote para el organizador en el detalle del evento en Admin (`event-waitlist.component.ts`).
+- [x] **3. Waitlist / Lista de Espera para Eventos Agotados + Envío de Correos Resend (`notify-waitlist`)**
+  - **Completado:** Migración SQL 015 con tabla `waitlist` (cola FIFO, RLS y RPCs `join_event_waitlist`, `get_event_waitlist`, `notify_event_waitlist` y `get_my_waitlist`) + Edge Function `notify-waitlist` que procesa el lote FIFO y envía correos prioritarios en batch vía Resend (`https://api.resend.com/emails/batch`) con flyer del evento y botón directo a `/events/:eventId`. Modal y tabla en `event-waitlist.component.ts` actualizados a Modo Oscuro/Claro M3 con `ToastService`.
 
 - [x] **4. Facturación y Control de Pagos a Artistas (Payouts & Liquidaciones)**
+  - **Completado:** Migraciones 016 y 020 con retención del 20% de comisión, configuración de CLABE/RFC y registro de liquidaciones.
+
 - [x] **[M15] Meta Pixel por Artista**
   - **Completado:** Migración SQL 019 (`meta_pixel_id`), `MetaPixelService` dinámico en Store para disparar `ViewContent`, `InitiateCheckout` y `Purchase`, y sección "Marketing Digital" en el perfil de artista en Admin.
 
-- [x] **[UX-1 a UX-11] Suite Completa de Mejoras de Experiencia de Usuario**
-  - **Completado:** Skeletons animadas (`tf-skeleton`), sistema global de notificaciones Toast (`tf-toast-container`), animación de confetti Canvas y resumen en Thank You page, timer con advertencias de expiración en checkout, barra de compartir en redes sociales, drawer slide-over de filtros en móvil, Modo Oscuro (`ThemeService`), vista previa del QR con candado previo al pago, gráfica SVG interactiva de ventas en Dashboard de Artista, componente ilustrado de estado vacío (`tf-empty-state`) y transiciones de navegación fluidas (`withViewTransitions`).
+- [x] **[UX-1 a UX-12] Suite Completa de Mejoras de Experiencia de Usuario y M3 Dark/Light Mode**
+  - **Completado:** Skeletons animadas (`tf-skeleton`), sistema global de notificaciones Toast (`tf-toast-container`) en las 3 apps, animación de confetti Canvas y enlace a boleto de invitado en Thank You page, timer con advertencias de expiración en checkout, barra de compartir en redes sociales, drawer slide-over de filtros en móvil, Modo Oscuro/Claro M3 homologado en `store`, `admin` (`finances`, `refund-list`, `access-control`, `event-waitlist`) y `backoffice`, aviso de compatibilidad `BarcodeDetector` en escáner QR, descarga nativa de QR en `.png`, gráfica SVG interactiva de ventas y transiciones de navegación fluidas (`withViewTransitions`).
 
 ---
 
@@ -152,7 +145,7 @@
 
 > Ideas y mejoras para versiones posteriores. Sin diseño técnico detallado aún.
 
-- [ ] Integración automatizada con PayPal Payouts API para dispersión masiva de pagos
+- [ ] Integración automatizada con PayPal Payouts API para dispersión masiva de pagos a artistas
 - [ ] PWA / Capacitor para app móvil nativa para iOS y Android
 - [ ] Seat map con selección de asiento individual y zonas interactivas
 - [ ] Series / eventos recurrentes (un template → múltiples fechas)
@@ -169,30 +162,33 @@
 
 | Categoría | Total | Completado | Pendiente |
 |-----------|-------|-----------|-----------|
-| P0 — Blockers & Producción | 4 | 3 | 1 (PayPal Live) |
-| P1 — Alta prioridad | 9 | 8 | 1 (Webhook N8N Email) |
-| P2 — Media prioridad | 4 | 2 | 2 |
-| P3 — Super Admin & Módulos Avanzados | 5 | 5 | 0 |
-| P4 — Roadmap | 10 | 0 | 10 |
-| **Total** | **32** | **18** | **14** |
+| P0 — Blockers & Producción | 8 | 6 | 2 (PayPal Live, Webhook PayPal) |
+| P1 — Alta prioridad | 12 | 9 | 3 (Prueba E2E Sandbox, Google Maps Key, Prueba Storage) |
+| P2 — Media prioridad | 4 | 2 | 2 (Verificar fetch Admin, Google OAuth Prod URI) |
+| P3 — Super Admin, Backoffice & UX M3 | 7 | 7 | 0 |
+| P4 — Roadmap | 11 | 0 | 11 |
+| **Total** | **42** | **24** | **18** |
 
 ---
 
 ## ✅ Completado (historial)
 
-- [x] Monorepo Nx 23 + Angular 22 + TailwindCSS configurado
-- [x] Schema completo de base de datos (6 migraciones aplicadas)
+- [x] Monorepo Nx 23 + Angular 22 + TailwindCSS configurado (3 apps: `store`, `admin`, `backoffice`)
+- [x] Schema completo de base de datos (23 migraciones aplicadas en Supabase)
 - [x] Auth con Google OAuth (Admin + Store)
 - [x] CRUD completo de Venues con mapa
-- [x] CRUD completo de Artist Profile con foto
+- [x] CRUD completo de Artist Profile con foto, galería multi-fotos y Meta Pixel
 - [x] CRUD completo de Events con flyer y publicación
-- [x] CRUD completo de Ticket Types con comisiones
-- [x] CRUD completo de Cupones (cortesía, porcentaje, fijo)
-- [x] Dashboard Admin con métricas en vivo
-- [x] Sistema de reserva de boletos (locks de 15 min)
-- [x] Checkout completo con PayPal SDK
-- [x] Confirmación de orden y "Mis Boletos"
-- [x] Control de Acceso con BarcodeDetector (cámara)
-- [x] Storage buckets + RLS para fotos y flyers
-- [x] 4 Edge Functions desplegadas (PayPal orders, capture, coupons, ticket email)
-- [x] Admin App desplegada en Vercel (`ticketflow-admin.vercel.app`)
+- [x] CRUD completo de Ticket Types con comisiones y límite de aforo por Venue
+- [x] CRUD completo de Cupones (cortesía, porcentaje, fijo y por SKU)
+- [x] Dashboard Admin con métricas en vivo y gráfica SVG
+- [x] Sistema de reserva de boletos (locks de 15 min + `pg_cron`) para usuarios e invitados
+- [x] Checkout endurecido con cotización en servidor (`calculate_checkout_quote`) y PayPal SDK
+- [x] Confirmación de orden, "Mis Boletos", Pase Público para Invitados (`/ticket/:id?token=...`) y descarga `.png` de QR
+- [x] Control de Acceso con `BarcodeDetector` (cámara) + Rol Doorman (`accept_staff_invitation`)
+- [x] Reembolsos reales con PayPal Captures Refund API (`process-refund`) + notificación Resend
+- [x] Homologación de Modo Oscuro/Claro M3 y `ToastService` en `store`, `admin` y `backoffice`
+- [x] 6 Edge Functions desplegadas (`create-paypal-order`, `create-order`, `apply-coupon`, `send-ticket-email`, `send-staff-invite`, `process-refund`)
+- [x] Dominio oficial verificado en Resend y Secrets configurados en Supabase
+- [x] Las 3 aplicaciones (`store`, `admin`, `backoffice`) desplegadas en Vercel
+

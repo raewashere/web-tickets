@@ -131,19 +131,19 @@
 
 ---
 
-## ⚡ Surprising & Critical Cross-Boundary Connections
-*High-impact edges discovered across frontend, Edge Functions, and PostgreSQL RLS/RPC boundaries:*
+## ⚡ Surprising & Critical Cross-Boundary Connections (Resolved & Deployed ✅)
+*High-impact edges discovered across frontend, Edge Functions, and PostgreSQL RLS/RPC boundaries — all remediated and deployed in Migrations 022 & 023 and the 6 Edge Functions:*
 
-1. **`is_admin(NULL)` $\rightarrow$ `SECURITY DEFINER` Privilege Bypass (`20250117000000_fix_super_admin_rpc_and_functions.sql#L15`)**:
-   - Because `is_admin` runs as `SECURITY DEFINER`, `current_user` inside the function is `'postgres'`. Combined with `GRANT EXECUTE ... TO anon` (lines 349–361), any anonymous call where `auth.uid()` is `NULL` satisfies `current_user IN ('postgres', ...) AND p_user_id IS NULL` and returns `TRUE`, exposing Super-Admin RPCs to unauthenticated callers.
-2. **`user_roles` INSERT Policy $\rightarrow$ Self-Promotion to `admin` (`20250105000000_fix_user_roles_rls.sql#L7-L10`)**:
-   - The RLS policy `"Users can insert own roles"` checks `user_id = auth.uid()` without restricting `role`, allowing any logged-in user to insert `('admin')` for themselves.
-3. **Guest Storefront (`anon`) $\rightarrow$ `reserve_tickets` RLS Block (`20250101000000_initial_schema.sql#L413`)**:
-   - `reserve_tickets` is `SECURITY INVOKER` (missing `SECURITY DEFINER`), while `ticket_locks` INSERT policy requires `auth.uid() IS NOT NULL` and `ticket_types` UPDATE policy requires artist/admin ownership. Unauthenticated guests cannot reserve tickets unless `reserve_tickets` runs as `SECURITY DEFINER`.
-4. **`accept-invite.component.ts` $\rightarrow$ `staff_invitations` UPDATE RLS Block (`20250109000000_doorman_role.sql#L96`)**:
-   - Invited doormen updating `staff_invitations.status = 'accepted'` are blocked by RLS because only the event's artist or admin has `UPDATE` permissions on `staff_invitations`.
-5. **`create-order` Dual Email Dispatch (`create-order/index.ts#L397-L430`)**:
-   - Authenticated buyers trigger both the N8N webhook (`dispatchN8NTicketWebhook`) and the `send-ticket-email` Edge Function, whereas `send-ticket-email` lacks the QR image and public token URL.
+1. **[RESOLVED ✅] `is_admin(NULL)` $\rightarrow$ `SECURITY DEFINER` Privilege Bypass (`20250123000000_security_rls_and_rpc_fixes.sql`)**:
+   - Fixed `is_admin()` to return `FALSE` whenever `p_user_id IS NULL` and revoked `EXECUTE` from `anon` on all administrative RPCs.
+2. **[RESOLVED ✅] `user_roles` INSERT Policy $\rightarrow$ Self-Promotion to `admin` (`20250123000000_security_rls_and_rpc_fixes.sql`)**:
+   - Restricted `"Users can insert own roles"` policy to `user_id = auth.uid() AND role = 'artist'`, preventing self-escalation to `admin`.
+3. **[RESOLVED ✅] Guest Storefront (`anon`) $\rightarrow$ `reserve_tickets` RLS & Checkout Flow (`20250123000000_security_rls_and_rpc_fixes.sql` + `event-detail.component.ts`)**:
+   - Elevated `reserve_tickets` and `release_expired_locks` to `SECURITY DEFINER` with input validation, and removed the forced `/login` redirect in `EventDetailComponent.onCheckoutRequested()`.
+4. **[RESOLVED ✅] `accept-invite.component.ts` $\rightarrow$ `staff_invitations` UPDATE RLS (`20250123000000_security_rls_and_rpc_fixes.sql`)**:
+   - Replaced direct table updates with atomic `accept_staff_invitation(p_token)` `SECURITY DEFINER` RPC.
+5. **[RESOLVED ✅] Centralized Resend Email & PayPal Refund Pipeline (`create-order`, `send-ticket-email`, `process-refund`)**:
+   - Centralized transactional ticket delivery (`send-ticket-email`), doorman invitations (`send-staff-invite`), and Super-Admin refund resolution emails (`process-refund`) in Resend, with N8N kept as an optional secondary webhook.
 
 ---
 
