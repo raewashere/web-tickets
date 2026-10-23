@@ -281,7 +281,10 @@ serve(async (req: Request) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: Deno.env.get('EMAIL_FROM') || 'BoletoCoqueto <onboarding@resend.dev>',
+          from:
+            Deno.env.get('RESEND_FROM_EMAIL') ||
+            Deno.env.get('EMAIL_FROM') ||
+            'BoletoCoqueto <onboarding@resend.dev>',
           to: [targetEmail],
           subject: `🎟️ Tus Boletos para ${eventName} — Orden #${order.id.substring(0, 8).toUpperCase()}`,
           html: htmlEmail,

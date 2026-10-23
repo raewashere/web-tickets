@@ -192,7 +192,10 @@ serve(async (req: Request) => {
     let emailError: string | null = null;
 
     if (resendApiKey) {
-      const fromEmail = Deno.env.get('EMAIL_FROM') || 'TicketFlow <onboarding@resend.dev>';
+      const fromEmail =
+        Deno.env.get('RESEND_FROM_EMAIL') ||
+        Deno.env.get('EMAIL_FROM') ||
+        'BoletoCoqueto <onboarding@resend.dev>';
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
