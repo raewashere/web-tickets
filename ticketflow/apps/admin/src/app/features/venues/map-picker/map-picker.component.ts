@@ -207,8 +207,55 @@ export class MapPickerComponent implements OnInit, AfterViewInit, OnChanges, OnD
       maxZoom: 19,
     }).addTo(this.map);
 
+    // Fix default Leaflet icon paths
+    try {
+      const LAny = L as any;
+      if (LAny.Icon?.Default?.mergeOptions) {
+        LAny.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+          shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        });
+      }
+    } catch {
+      // ignore
+    }
+
+    // Draggable custom pin marker
+    const markerOptions: Record<string, unknown> = { draggable: true };
+    try {
+      const LAny = L as any;
+      if (typeof LAny.divIcon === 'function') {
+        markerOptions['icon'] = LAny.divIcon({
+          className: 'tf-leaflet-marker-pin',
+          html: `
+            <div style="
+              width: 32px;
+              height: 32px;
+              background-color: #540D6E;
+              border: 2.5px solid #FFFFFF;
+              border-radius: 50% 50% 50% 0;
+              transform: rotate(-45deg);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+              cursor: pointer;
+            ">
+              <i class="fa-solid fa-location-dot" style="transform: rotate(45deg); color: #FFFFFF; font-size: 14px;"></i>
+            </div>
+          `,
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32],
+        });
+      }
+    } catch {
+      // fallback to default
+    }
+
     // Draggable marker
-    this.marker = L.marker([centerLat, centerLng], { draggable: true }).addTo(this.map);
+    this.marker = L.marker([centerLat, centerLng], markerOptions).addTo(this.map);
 
     // Click on map → move marker
     this.map.on('click', (e: LeafletEvent) => {

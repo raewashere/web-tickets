@@ -131,15 +131,19 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                       ({{ event()!.venue_configurations!.capacity | number }} pers.)
                     </span>
                   </p>
+                  <p *ngIf="event()!.address" class="text-xs text-on-surface-variant flex items-start gap-1.5 pt-1">
+                    <i class="fa-solid fa-map-pin text-primary mt-0.5"></i>
+                    <span>{{ event()!.address }}</span>
+                  </p>
                 </div>
               </div>
 
               <!-- Interactive Venue Map (Leaflet/OSM — no API key) -->
-              <div *ngIf="event()!.venues?.latitude && event()!.venues?.longitude" class="pt-3">
+              <div *ngIf="(event()!.latitude || event()!.venues?.latitude) && (event()!.longitude || event()!.venues?.longitude)" class="pt-3">
                 <store-venue-map
-                  [lat]="event()!.venues!.latitude!"
-                  [lng]="event()!.venues!.longitude!"
-                  [venueName]="event()!.venues!.name"
+                  [lat]="event()!.latitude ?? event()!.venues!.latitude!"
+                  [lng]="event()!.longitude ?? event()!.venues!.longitude!"
+                  [venueName]="event()!.address || event()!.venues!.name"
                 ></store-venue-map>
               </div>
 

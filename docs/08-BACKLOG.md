@@ -1,6 +1,6 @@
 # 08 — Backlog & TODO List
 
-> **Última actualización:** 22 de octubre de 2026
+> **Última actualización:** 25 de octubre de 2026
 > **Estado MVP:** Ciclo completo funcional y endurecido en Producción ✅ — En fase de validación final y mejoras post-MVP
 >
 > Este documento es el **backlog maestro** del proyecto. Contiene todas las tareas pendientes organizadas por prioridad.
@@ -45,9 +45,11 @@
 - [x] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación (Código listo)**
   - **Implementado en código:** Migración 024 (`20250124000000_paypal_webhook_reconciliation.sql`) con tablas `paypal_payment_intents` y `paypal_webhook_events` + RPC `get_paypal_reconciliation_report`, actualización de `create-paypal-order` y `create-order` (idempotente), y nueva Edge Function `paypal-webhook`.
   - **📌 Pasos por hacer (Despliegue en Supabase & PayPal):**
-    - [ ] **Paso 1 (SQL):** Ejecutar el contenido de `ticketflow/supabase/migrations/20250124000000_paypal_webhook_reconciliation.sql` en el **SQL Editor** de Supabase (o mediante `npx supabase db push`).
-    - [ ] **Paso 2 (Edge Functions):** Desplegar las funciones actualizadas en Supabase:
-      `npx supabase functions deploy create-paypal-order create-order paypal-webhook --no-verify-jwt`
+    - [ ] **Paso 1 (SQL):** Ejecutar el contenido de `ticketflow/supabase/migrations/20250124000000_paypal_webhook_reconciliation.sql` en el **SQL Editor** de Supabase (o mediante `cd ticketflow && npx supabase db push`).
+    - [ ] **Paso 2 (Edge Functions):** Desplegar las funciones actualizadas en Supabase (ejecutar desde `ticketflow`):
+      ```bash
+      cd ticketflow && npx supabase functions deploy create-paypal-order create-order paypal-webhook --no-verify-jwt
+      ```
     - [ ] **Paso 3 (PayPal Dashboard):** En PayPal Developer Dashboard (`Apps & Credentials → Webhooks`), registrar el URL `https://kevgwhiosnyemaftbjqs.supabase.co/functions/v1/paypal-webhook` y suscribir los eventos:
       - `Checkout order approved` (`CHECKOUT.ORDER.APPROVED`)
       - `Payment capture completed` (`PAYMENT.CAPTURE.COMPLETED`)
@@ -91,6 +93,19 @@
 
 - [x] **Mapa interactivo del recinto sin API Key (`VenueMapComponent` con Leaflet / OpenStreetMap)**
   - **Completado:** `VenueMapComponent` utiliza Leaflet + OpenStreetMap cargado dinámicamente sin requerir `VITE_GOOGLE_MAPS_API_KEY`, incluyendo pin interactivo y enlace directo a "Cómo llegar" en Google Maps.
+
+- [x] **Dirección física y geolocalización de eventos y sedes para búsqueda y navegación**
+  - **Completado:** 
+    - Migración SQL `20250125000000_add_event_address_and_maps.sql` agregando `address`, `latitude` y `longitude` a `events` y `address` a `venues` con índices y actualización de `search_published_events` para búsqueda sobre direcciones.
+    - Modelos y DTOs en `@ticketflow/models`, `EventsService` y `VenuesService`.
+    - Componente interactivo `event-address-picker.component.ts` integrado en el formulario de eventos (`event-form.component.ts`) con sincronización automática con la sede seleccionada, presets de ciudades (CDMX, GDL, MTY, etc.), geolocalización GPS y mapa Leaflet/OSM.
+    - Campos de dirección y enlaces directos a Google Maps en `venue-form`, `venue-detail`, `venue-picker`, `event-detail` (Admin y Store) y `event-list`.
+
+- [x] **Fix icono de marcador en Leaflet (`MapPickerComponent` & `VenueMapComponent`)**
+  - **Completado:** Solución al bug de Leaflet que producía un error 404 al buscar `marker-icon.png` relativo a la raíz del sitio web:
+    - Se implementó un pin vectorial personalizado SVG/CSS (`L.divIcon`) con la identidad de TicketFlow (morado `#540D6E`, borde blanco, sombra e ícono FontAwesome), sin dependencias HTTP a imágenes estáticas.
+    - Se configuró `L.Icon.Default.mergeOptions` con CDN oficial de unpkg como fallback resiliente.
+    - Corregido tanto en el selector interactivo de Admin (`MapPickerComponent`) como en el mapa de la tienda (`VenueMapComponent`).
 
 - [ ] **Prueba end-to-end de compra, correo QR y reembolso en PayPal Sandbox**
   - Seleccionar boletos → reservar → carrito → cupón → pagar → recibir correo Resend → ver/descargar QR → solicitar reembolso → aprobar en Backoffice.
@@ -187,22 +202,23 @@
 | Categoría | Total | Completado | Pendiente |
 |-----------|-------|-----------|-----------|
 | P0 — Blockers & Producción | 8 | 6 | 2 (PayPal Live, Webhook PayPal) |
-| P1 — Alta prioridad | 12 | 10 | 2 (Prueba E2E Sandbox, Prueba Storage) |
+| P1 — Alta prioridad | 14 | 12 | 2 (Prueba E2E Sandbox, Prueba Storage) |
 | P2 — Media prioridad | 4 | 2 | 2 (Verificar fetch Admin, Google OAuth Prod URI) |
 | P3 — Super Admin, Backoffice & UX M3 | 7 | 7 | 0 |
 | P4 — Roadmap | 11 | 0 | 11 |
-| **Total** | **42** | **25** | **17** |
+| **Total** | **44** | **27** | **17** |
 
 ---
 
 ## ✅ Completado (historial)
 
 - [x] Monorepo Nx 23 + Angular 22 + TailwindCSS configurado (3 apps: `store`, `admin`, `backoffice`)
-- [x] Schema completo de base de datos (23 migraciones aplicadas en Supabase)
+- [x] Schema completo de base de datos (24 migraciones preparadas/aplicadas en Supabase)
 - [x] Auth con Google OAuth (Admin + Store)
-- [x] CRUD completo de Venues con mapa
+- [x] CRUD completo de Venues con dirección física y mapa interactivo
 - [x] CRUD completo de Artist Profile con foto, galería multi-fotos y Meta Pixel
-- [x] CRUD completo de Events con flyer y publicación
+- [x] CRUD completo de Events con dirección física, geolocalización, sincronización de sede y publicación
+- [x] Corrección visual de Leaflet: pin personalizado vectorial `L.divIcon` morado TicketFlow y fallback CDN
 - [x] CRUD completo de Ticket Types con comisiones y límite de aforo por Venue
 - [x] CRUD completo de Cupones (cortesía, porcentaje, fijo y por SKU)
 - [x] Dashboard Admin con métricas en vivo y gráfica SVG

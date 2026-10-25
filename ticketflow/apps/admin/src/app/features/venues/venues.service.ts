@@ -13,6 +13,7 @@ export interface UpsertVenueDto {
   longitude?: number | null;
   map_url?: string | null;
   verified?: boolean;
+  address?: string | null;
 }
 
 export interface UpsertVenueConfigDto {
@@ -102,6 +103,7 @@ export class VenuesService {
         longitude: dto.longitude !== undefined ? dto.longitude : null,
         map_url: mapUrl || null,
         verified: dto.verified || false,
+        address: dto.address?.trim() || null,
         created_by: userId || null,
         updated_by: userId || null,
       })
@@ -138,6 +140,10 @@ export class VenuesService {
       map_url: mapUrl || null,
       updated_by: userId || null,
     };
+
+    if (dto.address !== undefined) {
+      updatePayload['address'] = dto.address?.trim() || null;
+    }
 
     if (dto.verified !== undefined) {
       updatePayload['verified'] = dto.verified;

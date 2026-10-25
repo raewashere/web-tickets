@@ -179,7 +179,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
 
               <!-- Venue Details -->
               <div class="p-4 rounded-2xl bg-primary/10 border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div class="space-y-0.5">
+                <div class="space-y-1">
                   <span class="text-xs text-primary font-bold uppercase tracking-wider">Recinto & Aforo</span>
                   <div class="flex items-center gap-2">
                     <span class="font-bold text-dark text-base">{{ event()!.venues?.name || 'Recinto no asignado' }}</span>
@@ -193,16 +193,20 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                       · Aforo: {{ event()!.venue_configurations!.capacity | number }} personas
                     </span>
                   </p>
+                  <p *ngIf="event()!.address" class="text-xs text-dark/80 flex items-start gap-1.5 pt-0.5">
+                    <i class="fa-solid fa-map-pin text-primary mt-0.5 text-[11px]"></i>
+                    <span><strong>Dirección:</strong> {{ event()!.address }}</span>
+                  </p>
                 </div>
 
-                <div *ngIf="event()!.venues?.latitude && event()!.venues?.longitude">
+                <div>
                   <a
-                    [href]="'https://www.google.com/maps?q=' + event()!.venues!.latitude + ',' + event()!.venues!.longitude"
+                    [href]="getGoogleMapsLink()"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface border border-dark/10 text-xs font-bold text-dark hover:bg-dark/5 transition-colors"
                   >
-                    <i class="fa-solid fa-map-location-dot"></i>
+                    <i class="fa-solid fa-map-location-dot text-primary"></i>
                     <span>Google Maps</span>
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -372,6 +376,24 @@ export class EventDetailComponent implements OnInit {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  getGoogleMapsLink(): string {
+    const ev = this.event();
+    if (!ev) return 'https://www.google.com/maps';
+    if (ev.latitude && ev.longitude) {
+      return `https://www.google.com/maps?q=${ev.latitude},${ev.longitude}`;
+    }
+    if (ev.venues?.latitude && ev.venues?.longitude) {
+      return `https://www.google.com/maps?q=${ev.venues.latitude},${ev.venues.longitude}`;
+    }
+    if (ev.address) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.address)}`;
+    }
+    if (ev.venues?.name) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venues.name)}`;
+    }
+    return 'https://www.google.com/maps';
   }
 
   getStatusLabel(status?: EventStatus): string {

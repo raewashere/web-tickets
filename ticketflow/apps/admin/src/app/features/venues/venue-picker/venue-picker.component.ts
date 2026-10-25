@@ -84,6 +84,10 @@ import {
                   <i class="fa-solid fa-check mr-1 text-[10px]"></i> Verificada
                 </tf-badge>
               </div>
+              <p *ngIf="venue.address" class="text-xs text-dark/70 flex items-center gap-1 truncate">
+                <i class="fa-solid fa-map-pin text-primary text-[10px]"></i>
+                <span>{{ venue.address }}</span>
+              </p>
               <p class="text-xs text-dark/50 flex items-center gap-1.5 flex-wrap">
                 <span>{{ venue.venue_configurations.length }} configuraciones de aforo disponibles</span>
                 <span *ngIf="venue.latitude && venue.longitude" class="flex items-center gap-1">
@@ -99,8 +103,20 @@ import {
         </div>
 
         <!-- No results -->
-        <div *ngIf="!isLoading() && venues().length === 0" class="p-6 text-center text-dark/50 text-xs border border-dashed border-dark/20 rounded-xl">
+        <div *ngIf="!isLoading() && venues().length === 0" class="p-6 text-center text-dark/50 text-xs border border-dashed border-dark/20 rounded-xl space-y-2">
           <span>No se encontraron sedes coincidentes.</span>
+          <div>
+            <a routerLink="/venues/new" target="_blank" class="text-primary font-bold hover:underline inline-flex items-center gap-1">
+              <i class="fa-solid fa-plus text-[10px]"></i> Registrar nueva sede con dirección
+            </a>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading() && venues().length > 0" class="flex items-center justify-between text-xs px-1 text-dark/60">
+          <span>¿No encuentras el recinto?</span>
+          <a routerLink="/venues/new" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-1">
+            <i class="fa-solid fa-plus text-[10px]"></i> Registrar nueva sede
+          </a>
         </div>
       </div>
 
@@ -115,6 +131,10 @@ import {
               </tf-badge>
             </div>
             <h4 class="text-base font-extrabold text-dark mt-0.5">{{ selectedVenue()!.name }}</h4>
+            <p *ngIf="selectedVenue()!.address" class="text-xs text-dark/70 flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-map-pin text-primary text-[11px]"></i>
+              <span>{{ selectedVenue()!.address }}</span>
+            </p>
             <p *ngIf="selectedVenue()!.latitude && selectedVenue()!.longitude" class="text-xs text-dark/60 flex items-center gap-1 mt-0.5">
               <i class="fa-solid fa-location-dot text-primary text-[11px]"></i>
               <span>{{ selectedVenue()!.latitude }}, {{ selectedVenue()!.longitude }}</span>

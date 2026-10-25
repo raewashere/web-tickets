@@ -89,6 +89,14 @@ import {
           <!-- Location Details Card -->
           <tf-card title="Ubicación y Datos">
             <div class="space-y-4 text-sm text-dark/80">
+              <div *ngIf="venue()!.address" class="space-y-1">
+                <span class="text-xs font-bold text-dark uppercase tracking-wider">Dirección:</span>
+                <p class="text-xs text-dark/80 flex items-start gap-1.5">
+                  <i class="fa-solid fa-map-pin text-primary mt-0.5"></i>
+                  <span>{{ venue()!.address }}</span>
+                </p>
+              </div>
+
               <div *ngIf="venue()!.latitude && venue()!.longitude" class="space-y-2">
                 <div class="flex items-center justify-between text-xs text-dark/60">
                   <span>Coordenadas GPS:</span>

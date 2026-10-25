@@ -16,6 +16,7 @@ import { EventsService, UpsertEventDto } from '../events.service';
 import { ArtistsService } from '../../artists/artists.service';
 import { AuthService } from '@ticketflow/data-access';
 import { VenuePickerComponent } from '../../venues/venue-picker/venue-picker.component';
+import { EventAddressPickerComponent, EventCoordinates } from '../event-address-picker/event-address-picker.component';
 import type {
   EventType,
   EventStatus,
@@ -42,6 +43,7 @@ import {
     FileUploadComponent,
     SpinnerComponent,
     VenuePickerComponent,
+    EventAddressPickerComponent,
   ],
   template: `
     <div class="max-w-4xl mx-auto space-y-6">
@@ -264,7 +266,22 @@ import {
           </p>
         </tf-card>
 
-        <!-- 4. Flyer Upload -->
+        <!-- 4. Event Location & Venue Address -->
+        <tf-card
+          title="Dirección y Ubicación del Evento"
+          subtitle="Indica la dirección del recinto y afina la posición en el mapa para facilitar la llegada de tus asistentes"
+        >
+          <app-event-address-picker
+            [initialAddress]="eventForm.get('address')?.value"
+            [initialLat]="eventForm.get('latitude')?.value"
+            [initialLng]="eventForm.get('longitude')?.value"
+            [selectedVenue]="selectedVenueData()"
+            (addressChange)="onAddressChanged($event)"
+            (coordinatesChange)="onCoordinatesChanged($event)"
+          ></app-event-address-picker>
+        </tf-card>
+
+        <!-- 5. Flyer Upload -->
         <tf-card title="Afiche / Flyer del Evento" subtitle="Imagen oficial para la cartelera y venta de boletos">
           <div class="space-y-4">
             <tf-file-upload
@@ -359,6 +376,7 @@ export class EventFormComponent implements OnInit {
   readonly errorMessage = signal<string | null>(null);
   readonly isEditMode = signal(false);
   readonly previewFlyerUrl = signal<string | null>(null);
+  readonly selectedVenueData = signal<VenueWithConfigurations | null>(null);
 
   readonly eventTypes = signal<EventType[]>([]);
   readonly durationPresets = [60, 90, 120, 180, 240];
@@ -372,6 +390,9 @@ export class EventFormComponent implements OnInit {
     event_type_id: [null, [Validators.required]],
     venue_id: [null, [Validators.required]],
     venue_configuration_id: [null, [Validators.required]],
+    address: ['', [Validators.maxLength(300)]],
+    latitude: [null as number | null],
+    longitude: [null as number | null],
     event_date: ['', [Validators.required]],
     doors_open: [''],
     duration_minutes: [120, [Validators.required, Validators.min(15), Validators.max(1440)]],
@@ -429,11 +450,18 @@ export class EventFormComponent implements OnInit {
       event_type_id: event.event_type_id,
       venue_id: event.venue_id,
       venue_configuration_id: event.venue_configuration_id,
+      address: event.address || (event.venues ? (event.venues as unknown as { address?: string }).address : '') || '',
+      latitude: event.latitude ?? (event.venues ? event.venues.latitude : null),
+      longitude: event.longitude ?? (event.venues ? event.venues.longitude : null),
       event_date: event.event_date ? this.formatDatetimeForInput(event.event_date) : '',
       doors_open: event.doors_open ? this.formatDatetimeForInput(event.doors_open) : '',
       duration_minutes: event.duration_minutes || 120,
       shared: event.shared,
     });
+
+    if (event.venues) {
+      this.selectedVenueData.set(event.venues as unknown as VenueWithConfigurations);
+    }
 
     if (event.flyer_url) {
       this.previewFlyerUrl.set(event.flyer_url);
@@ -452,8 +480,26 @@ export class EventFormComponent implements OnInit {
   }
 
   onVenueSelected(venue: VenueWithConfigurations): void {
+    this.selectedVenueData.set(venue);
     this.eventForm.patchValue({ venue_id: venue.id });
     this.eventForm.get('venue_id')?.markAsDirty();
+
+    const currentAddress = this.eventForm.get('address')?.value;
+    if (!currentAddress || !currentAddress.trim()) {
+      const suggestedAddress = venue.address || venue.name;
+      this.eventForm.patchValue({ address: suggestedAddress });
+      this.eventForm.get('address')?.markAsDirty();
+    }
+
+    const currentLat = this.eventForm.get('latitude')?.value;
+    if ((currentLat === null || currentLat === undefined) && venue.latitude && venue.longitude) {
+      this.eventForm.patchValue({
+        latitude: venue.latitude,
+        longitude: venue.longitude,
+      });
+      this.eventForm.get('latitude')?.markAsDirty();
+      this.eventForm.get('longitude')?.markAsDirty();
+    }
   }
 
   onConfigSelected(config: VenueConfiguration): void {
@@ -461,7 +507,22 @@ export class EventFormComponent implements OnInit {
     this.eventForm.get('venue_configuration_id')?.markAsDirty();
   }
 
+  onAddressChanged(addr: string): void {
+    this.eventForm.patchValue({ address: addr });
+    this.eventForm.get('address')?.markAsDirty();
+  }
+
+  onCoordinatesChanged(coords: EventCoordinates | null): void {
+    this.eventForm.patchValue({
+      latitude: coords ? coords.lat : null,
+      longitude: coords ? coords.lng : null,
+    });
+    this.eventForm.get('latitude')?.markAsDirty();
+    this.eventForm.get('longitude')?.markAsDirty();
+  }
+
   onVenueCleared(): void {
+    this.selectedVenueData.set(null);
     this.eventForm.patchValue({
       venue_id: null,
       venue_configuration_id: null,
@@ -501,6 +562,9 @@ export class EventFormComponent implements OnInit {
       event_type_id: val.event_type_id,
       venue_id: val.venue_id,
       venue_configuration_id: val.venue_configuration_id,
+      address: val.address?.trim() || null,
+      latitude: val.latitude !== null && val.latitude !== '' && val.latitude !== undefined ? Number(val.latitude) : null,
+      longitude: val.longitude !== null && val.longitude !== '' && val.longitude !== undefined ? Number(val.longitude) : null,
       event_date: new Date(val.event_date).toISOString(),
       doors_open: val.doors_open ? new Date(val.doors_open).toISOString() : null,
       duration_minutes: val.duration_minutes ? Number(val.duration_minutes) : 120,

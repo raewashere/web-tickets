@@ -24,7 +24,7 @@ interface LeafletMap {
 interface LeafletStatic {
   map: (el: HTMLElement, opts?: object) => LeafletMap;
   tileLayer: (url: string, opts?: object) => { addTo: (m: LeafletMap) => void };
-  marker: (latlng: [number, number]) => {
+  marker: (latlng: [number, number], opts?: object) => {
     addTo: (m: LeafletMap) => { bindPopup: (html: string) => { openPopup: () => void } };
   };
 }
@@ -127,7 +127,52 @@ export class VenueMapComponent implements OnInit, AfterViewInit, OnDestroy {
       maxZoom: 19,
     }).addTo(this.map);
 
-    L.marker([this.lat, this.lng])
+    // Fix default Leaflet icon paths
+    try {
+      const LAny = L as any;
+      if (LAny.Icon?.Default?.mergeOptions) {
+        LAny.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+          shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        });
+      }
+    } catch {
+      // ignore
+    }
+
+    const markerOptions: Record<string, unknown> = {};
+    try {
+      const LAny = L as any;
+      if (typeof LAny.divIcon === 'function') {
+        markerOptions['icon'] = LAny.divIcon({
+          className: 'tf-store-marker-pin',
+          html: `
+            <div style="
+              width: 32px;
+              height: 32px;
+              background-color: #540D6E;
+              border: 2.5px solid #FFFFFF;
+              border-radius: 50% 50% 50% 0;
+              transform: rotate(-45deg);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            ">
+              <i class="fa-solid fa-location-dot" style="transform: rotate(45deg); color: #FFFFFF; font-size: 14px;"></i>
+            </div>
+          `,
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32],
+        });
+      }
+    } catch {
+      // fallback
+    }
+
+    L.marker([this.lat, this.lng], markerOptions)
       .addTo(this.map)
       .bindPopup(`<strong>${this.venueName ?? 'Recinto'}</strong>`)
       .openPopup();

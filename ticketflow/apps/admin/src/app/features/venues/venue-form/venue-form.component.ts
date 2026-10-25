@@ -119,6 +119,22 @@ interface CityPreset {
               </p>
             </div>
 
+            <!-- Address -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
+                Dirección de la Sede o Recinto
+              </label>
+              <input
+                type="text"
+                formControlName="address"
+                placeholder="Ej. Dakota s/n, Nápoles, Benito Juárez, 03810 Ciudad de México, CDMX"
+                class="w-full px-4 py-2.5 rounded-xl border border-dark/20 bg-surface text-dark placeholder-dark/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+              />
+              <p class="text-xs text-dark/50 mt-1">
+                Dirección física para ubicar el recinto y que los asistentes puedan encontrarlo fácilmente.
+              </p>
+            </div>
+
             <!-- Verified Toggle (Only shown for privileged users or when editing) -->
             <div *ngIf="canManageVerification()" class="flex items-center gap-3 p-3.5 rounded-xl bg-primary/10 border border-primary/20">
               <input
@@ -239,6 +255,7 @@ export class VenueFormComponent implements OnInit {
 
   venueForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(150)]],
+    address: ['', [Validators.maxLength(300)]],
     latitude: [null],
     longitude: [null],
     verified: [false],
@@ -282,6 +299,7 @@ export class VenueFormComponent implements OnInit {
 
       this.venueForm.patchValue({
         name: venue.name,
+        address: venue.address || '',
         latitude: venue.latitude,
         longitude: venue.longitude,
         verified: venue.verified,
@@ -340,6 +358,7 @@ export class VenueFormComponent implements OnInit {
 
     const dto: UpsertVenueDto = {
       name: val.name,
+      address: val.address?.trim() || null,
       latitude: val.latitude !== null && val.latitude !== '' ? Number(val.latitude) : null,
       longitude: val.longitude !== null && val.longitude !== '' ? Number(val.longitude) : null,
       map_url: this.previewMapUrl(),

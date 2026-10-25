@@ -50,12 +50,12 @@ export class SearchService {
 
         if (matchingArtists && matchingArtists.length > 0) {
           const artistConditions = matchingArtists.map((a) => `artist_id.eq.${a.id}`).join(',');
-          query = query.or(`name.ilike.%${q}%,${artistConditions}`);
+          query = query.or(`name.ilike.%${q}%,address.ilike.%${q}%,description.ilike.%${q}%,${artistConditions}`);
         } else {
-          query = query.ilike('name', `%${q}%`);
+          query = query.or(`name.ilike.%${q}%,address.ilike.%${q}%,description.ilike.%${q}%`);
         }
       } catch {
-        query = query.ilike('name', `%${q}%`);
+        query = query.or(`name.ilike.%${q}%,address.ilike.%${q}%`);
       }
     }
 

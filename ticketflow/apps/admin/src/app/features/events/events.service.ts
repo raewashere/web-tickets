@@ -23,6 +23,9 @@ export interface UpsertEventDto {
   duration_minutes?: number | null;
   shared?: boolean;
   status?: EventStatus;
+  address?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export interface EventDetailWithAll extends EventWithRelations {
@@ -40,7 +43,7 @@ export class EventsService {
   async getMyEvents(artistId?: string, statusFilter?: string): Promise<EventWithRelations[]> {
     let query = this.supabase
       .from('events')
-      .select('*, artists(id, name, photo_url), event_types(*), venues(id, name, latitude, longitude, map_url, verified), venue_configurations(id, name, capacity)')
+      .select('*, artists(id, name, photo_url), event_types(*), venues(id, name, latitude, longitude, map_url, verified, address), venue_configurations(id, name, capacity)')
       .order('event_date', { ascending: false });
 
     if (artistId) {
@@ -67,7 +70,7 @@ export class EventsService {
   async getEvent(id: string): Promise<EventDetailWithAll | null> {
     const { data, error } = await this.supabase
       .from('events')
-      .select('*, artists(id, name, photo_url), event_types(*), venues(id, name, latitude, longitude, map_url, verified), venue_configurations(id, name, capacity), ticket_types(*), coupons(*)')
+      .select('*, artists(id, name, photo_url), event_types(*), venues(id, name, latitude, longitude, map_url, verified, address), venue_configurations(id, name, capacity), ticket_types(*), coupons(*)')
       .eq('id', id)
       .maybeSingle();
 
@@ -120,6 +123,9 @@ export class EventsService {
         event_type_id: dto.event_type_id,
         venue_id: dto.venue_id,
         venue_configuration_id: dto.venue_configuration_id,
+        address: dto.address?.trim() || null,
+        latitude: dto.latitude ?? null,
+        longitude: dto.longitude ?? null,
         event_date: dto.event_date,
         doors_open: dto.doors_open || null,
         shared: dto.shared || false,
@@ -167,6 +173,9 @@ export class EventsService {
     if (dto.doors_open !== undefined) updatePayload['doors_open'] = dto.doors_open || null;
     if (dto.shared !== undefined) updatePayload['shared'] = dto.shared;
     if (dto.status !== undefined) updatePayload['status'] = dto.status;
+    if (dto.address !== undefined) updatePayload['address'] = dto.address?.trim() || null;
+    if (dto.latitude !== undefined) updatePayload['latitude'] = dto.latitude;
+    if (dto.longitude !== undefined) updatePayload['longitude'] = dto.longitude;
 
     const { data, error } = await this.supabase
       .from('events')

@@ -26,7 +26,7 @@ export interface EventWithRelations extends Event {
   event_types: EventType | null;
   venues: Pick<
     Venue,
-    'id' | 'name' | 'latitude' | 'longitude' | 'map_url' | 'verified'
+    'id' | 'name' | 'latitude' | 'longitude' | 'map_url' | 'verified' | 'address'
   > | null;
   venue_configurations: Pick<VenueConfiguration, 'id' | 'name' | 'capacity'> | null;
 }

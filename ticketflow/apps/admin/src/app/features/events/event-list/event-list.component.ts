@@ -104,7 +104,7 @@ import {
           <input
             type="text"
             [(ngModel)]="searchQuery"
-            placeholder="Buscar por nombre..."
+            placeholder="Buscar por nombre, recinto o dirección..."
             class="w-full pl-9 pr-4 py-2 rounded-xl border border-dark/20 bg-surface text-dark placeholder-dark/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-xs transition-all shadow-sm"
           />
         </div>
@@ -186,6 +186,10 @@ import {
                     <i class="fa-solid fa-check text-[10px]"></i>
                   </tf-badge>
                 </div>
+                <p *ngIf="ev.address" class="text-[11px] text-dark/70 truncate flex items-center gap-1">
+                  <i class="fa-solid fa-map-pin text-primary text-[10px]"></i>
+                  <span [title]="ev.address">{{ ev.address }}</span>
+                </p>
                 <div class="text-[11px] text-dark/60 flex items-center justify-between">
                   <span>Aforo: {{ ev.venue_configurations?.name || 'Estándar' }}</span>
                   <span *ngIf="ev.venue_configurations?.capacity">
@@ -263,7 +267,12 @@ export class EventListComponent implements OnInit {
     }
     const q = this.searchQuery.trim().toLowerCase();
     if (q) {
-      list = list.filter((e) => e.name.toLowerCase().includes(q));
+      list = list.filter((e) =>
+        e.name.toLowerCase().includes(q) ||
+        (e.address && e.address.toLowerCase().includes(q)) ||
+        (e.venues?.name && e.venues.name.toLowerCase().includes(q)) ||
+        (e.venues?.address && e.venues.address.toLowerCase().includes(q))
+      );
     }
     return list;
   });

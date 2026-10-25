@@ -68,6 +68,7 @@ export interface Venue {
   longitude: number | null;
   map_url: string | null;
   verified: boolean;
+  address?: string | null;
   created_at: string;
   created_by: string | null;
   updated_at: string;
@@ -101,6 +102,9 @@ export interface Event {
   duration_minutes: number | null;
   shared: boolean;
   status: EventStatus;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
   created_at: string;
   created_by: string | null;
   updated_at: string;
