@@ -18,6 +18,9 @@ CREATE INDEX IF NOT EXISTS idx_events_address ON events USING gin(to_tsvector('s
 CREATE INDEX IF NOT EXISTS idx_venues_address ON venues USING gin(to_tsvector('spanish', coalesce(address, '')));
 
 -- 4. Update search_published_events function to also search by event address and venue address
+-- NOTE: Postgres requires dropping the function first when changing the OUT parameters / return table signature
+DROP FUNCTION IF EXISTS search_published_events(TEXT, UUID, TIMESTAMPTZ, TIMESTAMPTZ, TEXT, INT, INT);
+
 CREATE OR REPLACE FUNCTION search_published_events(
   p_query      TEXT DEFAULT NULL,
   p_type_id    UUID DEFAULT NULL,
