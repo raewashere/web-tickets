@@ -42,14 +42,11 @@
   - En Supabase → Edge Functions → Secrets: cambiar `PAYPAL_MODE` a `live`.
   - Reemplazar `PAYPAL_CLIENT_ID` y `PAYPAL_CLIENT_SECRET` con credenciales Live de PayPal y actualizar el Client ID en el frontend.
 
-- [x] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación (Código listo)**
-  - **Implementado en código:** Migración 024 (`20250124000000_paypal_webhook_reconciliation.sql`) con tablas `paypal_payment_intents` y `paypal_webhook_events` + RPC `get_paypal_reconciliation_report`, actualización de `create-paypal-order` y `create-order` (idempotente), y nueva Edge Function `paypal-webhook`.
-  - **📌 Pasos por hacer (Despliegue en Supabase & PayPal):**
-    - [ ] **Paso 1 (SQL):** Ejecutar el contenido de `ticketflow/supabase/migrations/20250124000000_paypal_webhook_reconciliation.sql` en el **SQL Editor** de Supabase (o mediante `cd ticketflow && npx supabase db push`).
-    - [ ] **Paso 2 (Edge Functions):** Desplegar las funciones actualizadas en Supabase (ejecutar desde `ticketflow`):
-      ```bash
-      cd ticketflow && npx supabase functions deploy create-paypal-order create-order paypal-webhook --no-verify-jwt
-      ```
+- [x] **Webhook de PayPal (`PAYMENT.CAPTURE.*`) y tabla de reconciliación**
+  - **Implementado y desplegado:** Migración 024 (`20250124000000_paypal_webhook_reconciliation.sql`) con tablas `paypal_payment_intents` y `paypal_webhook_events` + RPC `get_paypal_reconciliation_report`.
+  - [x] **Paso 1 (SQL):** Ejecutado y sincronizado en Supabase.
+  - [x] **Paso 2 (Edge Functions):** `create-paypal-order`, `create-order` y `paypal-webhook` desplegadas en Supabase.
+  - **📌 Pasos restantes en PayPal Dashboard:**
     - [ ] **Paso 3 (PayPal Dashboard):** En PayPal Developer Dashboard (`Apps & Credentials → Webhooks`), registrar el URL `https://kevgwhiosnyemaftbjqs.supabase.co/functions/v1/paypal-webhook` y suscribir los eventos:
       - `Checkout order approved` (`CHECKOUT.ORDER.APPROVED`)
       - `Payment capture completed` (`PAYMENT.CAPTURE.COMPLETED`)
@@ -110,11 +107,11 @@
 - [ ] **Prueba end-to-end de compra, correo QR y reembolso en PayPal Sandbox**
   - Seleccionar boletos → reservar → carrito → cupón → pagar → recibir correo Resend → ver/descargar QR → solicitar reembolso → aprobar en Backoffice.
 
-- [ ] **Probar upload de archivos (Storage) en producción**
-  - Verificar que los 3 buckets funcionan correctamente:
-    - [ ] `artist-photos` — foto de perfil del artista
-    - [ ] `event-flyers` — flyer del evento
-    - [ ] `venue-maps` — mapa del recinto
+- [x] **Probar upload de archivos (Storage) en producción**
+  - **Completado:** Verificada la subida y persistencia de archivos en los 3 buckets de Supabase Storage:
+    - [x] `artist-photos` — foto de perfil del artista
+    - [x] `event-flyers` — flyer del evento
+    - [x] `venue-maps` — mapa del recinto
 
 ---
 
@@ -133,23 +130,10 @@
   - Revisar en DevTools (F12 → Network) qué endpoint falla.
   - Comprobar si extensiones del navegador interfieren (Brave Shields, adblockers).
 
-- [ ] **Google OAuth y Supabase Auth URL Configuration para `boletocoqueto.com`**
-  - **1. Supabase Dashboard (`Authentication → URL Configuration`):**
-    - Cambiar **Site URL** a `https://boletocoqueto.com`
-    - Agregar en **Redirect URLs**:
-      - `https://boletocoqueto.com/**`
-      - `https://www.boletocoqueto.com/**`
-      - *(Más subdominios de `admin` / `backoffice` si aplica, conservando las URLs `.vercel.app`)*
-  - **2. Google Cloud Console (`APIs & Services → Credentials → OAuth 2.0 Client ID`):**
-    - Agregar en **Authorized JavaScript origins**:
-      - `https://boletocoqueto.com`
-      - `https://www.boletocoqueto.com`
-      - `https://kevgwhiosnyemaftbjqs.supabase.co`
-    - Confirmar en **Authorized redirect URIs**:
-      - `https://kevgwhiosnyemaftbjqs.supabase.co/auth/v1/callback`
-    - En **OAuth Consent Screen (Branding / Audience)**:
-      - Agregar `boletocoqueto.com` y `supabase.co` en **Authorized domains**.
-      - Verificar que **Publishing status** esté en **"In production"** (para no restringir el login solo a correos de prueba).
+- [x] **Google OAuth y Supabase Auth URL Configuration para `boletocoqueto.com`**
+  - **Completado:** 
+    - **Supabase Dashboard (`Authentication → URL Configuration`):** Site URL establecido en `https://boletocoqueto.com` y Redirect URLs configuradas (`https://boletocoqueto.com/**`, `https://www.boletocoqueto.com/**`, conservando URLs de Vercel).
+    - **Google Cloud Console (`APIs & Services → Credentials → OAuth 2.0 Client ID`):** JavaScript origins y Authorized redirect URIs (`https://kevgwhiosnyemaftbjqs.supabase.co/auth/v1/callback`) actualizados, con dominios autorizados `boletocoqueto.com` y `supabase.co` en OAuth Consent Screen en modo "In production".
 
 ---
 
@@ -202,19 +186,21 @@
 | Categoría | Total | Completado | Pendiente |
 |-----------|-------|-----------|-----------|
 | P0 — Blockers & Producción | 8 | 6 | 2 (PayPal Live, Webhook PayPal) |
-| P1 — Alta prioridad | 14 | 12 | 2 (Prueba E2E Sandbox, Prueba Storage) |
-| P2 — Media prioridad | 4 | 2 | 2 (Verificar fetch Admin, Google OAuth Prod URI) |
+| P1 — Alta prioridad | 14 | 13 | 1 (Prueba E2E Sandbox) |
+| P2 — Media prioridad | 4 | 3 | 1 (Verificar fetch Admin) |
 | P3 — Super Admin, Backoffice & UX M3 | 7 | 7 | 0 |
 | P4 — Roadmap | 11 | 0 | 11 |
-| **Total** | **44** | **27** | **17** |
+| **Total** | **44** | **29** | **15** |
 
 ---
 
 ## ✅ Completado (historial)
 
 - [x] Monorepo Nx 23 + Angular 22 + TailwindCSS configurado (3 apps: `store`, `admin`, `backoffice`)
-- [x] Schema completo de base de datos (24 migraciones preparadas/aplicadas en Supabase)
+- [x] Schema completo de base de datos (25 migraciones aplicadas y sincronizadas en Supabase)
 - [x] Auth con Google OAuth (Admin + Store)
+- [x] Configuración de URLs de redirección y Google OAuth para el dominio oficial `boletocoqueto.com`
+- [x] Verificación de upload y persistencia en los 3 buckets de Supabase Storage (`artist-photos`, `event-flyers`, `venue-maps`)
 - [x] CRUD completo de Venues con dirección física y mapa interactivo
 - [x] CRUD completo de Artist Profile con foto, galería multi-fotos y Meta Pixel
 - [x] CRUD completo de Events con dirección física, geolocalización, sincronización de sede y publicación
@@ -228,7 +214,7 @@
 - [x] Control de Acceso con `BarcodeDetector` (cámara) + Rol Doorman (`accept_staff_invitation`)
 - [x] Reembolsos reales con PayPal Captures Refund API (`process-refund`) + notificación Resend
 - [x] Homologación de Modo Oscuro/Claro M3 y `ToastService` en `store`, `admin` y `backoffice`
-- [x] 6 Edge Functions desplegadas (`create-paypal-order`, `create-order`, `apply-coupon`, `send-ticket-email`, `send-staff-invite`, `process-refund`)
+- [x] 8 Edge Functions desplegadas (`create-paypal-order`, `create-order`, `apply-coupon`, `send-ticket-email`, `send-staff-invite`, `process-refund`, `notify-waitlist`, `paypal-webhook`)
 - [x] Dominio oficial verificado en Resend y Secrets configurados en Supabase
 - [x] Las 3 aplicaciones (`store`, `admin`, `backoffice`) desplegadas en Vercel
 
