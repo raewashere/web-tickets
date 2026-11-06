@@ -16,7 +16,7 @@ interface CouponRow {
   event_id: string | null;
   ticket_sku: string | null;
   code: string;
-  type: 'courtesy' | 'percentage' | 'fixed';
+  type: 'courtesy' | 'percentage' | 'fixed' | 'bogo';
   value: number | null;
   max_uses: number | null;
   uses_count: number;
@@ -176,6 +176,42 @@ serve(async (req: Request) => {
     } else if (coupon.type === 'fixed') {
       const flat = Number(coupon.value) || 0;
       discountAmount = Math.min(eligibleSubtotal, flat);
+    } else if (coupon.type === 'bogo') {
+      // 2x1: one free ticket per pair of the same ticket type.
+      // Computed from server-side locks (never trusts client prices/quantities).
+      const { data: locks } = await supabaseAdmin
+        .from('ticket_locks')
+        .select('quantity, ticket_type_id, ticket_types(price, sku)')
+        .eq('session_id', sessionId.trim())
+        .gt('locked_until', new Date().toISOString());
+
+      const targetSku = coupon.ticket_sku?.trim().toUpperCase() || null;
+      const perType = new Map<string, { price: number; qty: number }>();
+      for (const l of (locks ?? []) as Array<{
+        quantity: number;
+        ticket_type_id: string;
+        ticket_types: { price: number; sku: string } | null;
+      }>) {
+        const tt = l.ticket_types;
+        if (!tt) continue;
+        if (targetSku && (tt.sku || '').trim().toUpperCase() !== targetSku) continue;
+        const cur = perType.get(l.ticket_type_id) ?? { price: Number(tt.price), qty: 0 };
+        cur.qty += Number(l.quantity);
+        perType.set(l.ticket_type_id, cur);
+      }
+      for (const { price, qty } of perType.values()) {
+        discountAmount += Math.floor(qty / 2) * price;
+      }
+
+      if (discountAmount <= 0) {
+        return new Response(
+          JSON.stringify({
+            valid: false,
+            message: 'La promoción 2x1 requiere al menos 2 boletos del mismo tipo.',
+          }),
+          { status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } },
+        );
+      }
     }
 
     // 8. Return validated coupon + discount

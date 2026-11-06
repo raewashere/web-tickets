@@ -161,7 +161,7 @@ import {
             <div class="text-center">
               <span class="text-[10px] uppercase font-bold text-dark/50 block">Descuento</span>
               <span class="font-mono font-bold text-base text-contrast">
-                {{ c.value ? (c.type === 'percentage' ? c.value + '%' : '$' + c.value + ' MXN') : '100% Cortesía' }}
+                {{ c.type === 'bogo' ? '2x1' : c.value ? (c.type === 'percentage' ? c.value + '%' : '$' + c.value + ' MXN') : '100% Cortesía' }}
               </span>
             </div>
 
@@ -287,6 +287,8 @@ export class CouponListComponent implements OnInit {
         return 'Monto Fijo';
       case 'courtesy':
         return 'Cortesía (100%)';
+      case 'bogo':
+        return 'Oferta 2x1';
       default:
         return type;
     }

@@ -308,7 +308,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                   </p>
                 </div>
                 <div class="text-right text-xs font-bold text-dark">
-                  {{ c.value ? c.value + (c.type === 'percentage' ? '%' : ' MXN') : 'Cortesía' }}
+                  {{ c.type === 'bogo' ? '2x1' : c.value ? c.value + (c.type === 'percentage' ? '%' : ' MXN') : 'Cortesía' }}
                 </div>
               </div>
             </div>

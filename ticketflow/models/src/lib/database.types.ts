@@ -2,7 +2,7 @@
 
 export type RoleType = 'admin' | 'artist' | 'customer' | 'doorman';
 export type EventStatus = 'draft' | 'published' | 'cancelled' | 'completed';
-export type CouponType = 'courtesy' | 'percentage' | 'fixed';
+export type CouponType = 'courtesy' | 'percentage' | 'fixed' | 'bogo';
 export type OrderStatus = 'pending' | 'confirmed' | 'cancelled' | 'refunded';
 
 export interface ArtistType {

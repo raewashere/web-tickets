@@ -115,11 +115,21 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
                 <option value="percentage">Porcentaje (%)</option>
                 <option value="fixed">Monto Fijo ($ MXN)</option>
                 <option value="courtesy">Cortesía Total (100%)</option>
+                <option value="bogo">Oferta 2x1</option>
               </select>
             </div>
 
+            <!-- 2x1 explanation -->
+            <div
+              *ngIf="couponForm.get('type')?.value === 'bogo'"
+              class="p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs text-dark flex items-start gap-2"
+            >
+              <i class="fa-solid fa-gift text-primary mt-0.5"></i>
+              <span>Por cada 2 boletos del mismo tipo, 1 es gratis (ej. 4 boletos → paga 2).</span>
+            </div>
+
             <!-- Value (conditional) -->
-            <div *ngIf="couponForm.get('type')?.value !== 'courtesy'">
+            <div *ngIf="couponForm.get('type')?.value !== 'courtesy' && couponForm.get('type')?.value !== 'bogo'">
               <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5">
                 {{ couponForm.get('type')?.value === 'percentage' ? 'Porcentaje (%) *' : 'Monto Fijo ($ MXN) *' }}
               </label>
@@ -350,7 +360,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
 
   onTypeChange(): void {
     const type = this.couponForm.get('type')?.value;
-    if (type === 'courtesy') {
+    if (type === 'courtesy' || type === 'bogo') {
       this.couponForm.get('value')?.clearValidators();
       this.couponForm.get('value')?.setValue(null);
     } else if (type === 'percentage') {
@@ -406,7 +416,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
             ticket_sku: ticketSku,
             code: val.code,
             type: val.type as CouponType,
-            value: val.type === 'courtesy' ? null : Number(val.value),
+            value: val.type === 'courtesy' || val.type === 'bogo' ? null : Number(val.value),
             max_uses: val.max_uses ? Number(val.max_uses) : null,
             valid_from: new Date(val.valid_from).toISOString(),
             valid_until: val.valid_until ? new Date(val.valid_until).toISOString() : null,
@@ -426,7 +436,7 @@ export class CouponFormComponent implements OnInit, OnChanges {
             ticket_sku: ticketSku,
             code: val.code,
             type: val.type as CouponType,
-            value: val.type === 'courtesy' ? null : Number(val.value),
+            value: val.type === 'courtesy' || val.type === 'bogo' ? null : Number(val.value),
             max_uses: val.max_uses ? Number(val.max_uses) : null,
             valid_from: new Date(val.valid_from).toISOString(),
             valid_until: val.valid_until ? new Date(val.valid_until).toISOString() : null,

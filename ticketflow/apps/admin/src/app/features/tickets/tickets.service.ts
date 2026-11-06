@@ -314,7 +314,7 @@ export class TicketsService {
         ticket_sku: dto.ticket_sku?.trim().toUpperCase() || null,
         code: codeClean,
         type: dto.type,
-        value: dto.type === 'courtesy' ? null : (dto.value !== undefined ? Number(dto.value) : null),
+        value: dto.type === 'courtesy' || dto.type === 'bogo' ? null : (dto.value !== undefined ? Number(dto.value) : null),
         max_uses: dto.max_uses ? Number(dto.max_uses) : null,
         uses_count: 0,
         valid_from: dto.valid_from || new Date().toISOString(),

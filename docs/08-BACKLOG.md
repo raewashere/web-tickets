@@ -162,6 +162,11 @@
 - [x] **[UX-1 a UX-12] Suite Completa de Mejoras de Experiencia de Usuario y M3 Dark/Light Mode**
   - **Completado:** Skeletons animadas (`tf-skeleton`), sistema global de notificaciones Toast (`tf-toast-container`) en las 3 apps, animación de confetti Canvas y enlace a boleto de invitado en Thank You page, timer con advertencias de expiración en checkout, barra de compartir en redes sociales, drawer slide-over de filtros en móvil, Modo Oscuro/Claro M3 homologado en `store`, `admin` (`finances`, `refund-list`, `access-control`, `event-waitlist`) y `backoffice`, aviso de compatibilidad `BarcodeDetector` en escáner QR, descarga nativa de QR en `.png`, gráfica SVG interactiva de ventas y transiciones de navegación fluidas (`withViewTransitions`).
 
+- [ ] **[M16] Ofertas 2x1 desde el portal Admin** *(código listo — falta desplegar)*
+  - Nuevo tipo de cupón `bogo` (Oferta 2x1): por cada 2 boletos del mismo tipo, 1 gratis; respeta restricción por SKU.
+  - Migración `20250126000000_coupon_bogo_2x1.sql` (enum + `calculate_checkout_quote`), Edge Function `apply-coupon` y formulario/listado de cupones en Admin.
+  - **Pendiente:** `supabase db push` + `supabase functions deploy apply-coupon` + redeploy de Admin.
+
 ---
 
 ## ⚪ P4 — Roadmap Futuro
