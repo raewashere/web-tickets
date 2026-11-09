@@ -49,7 +49,7 @@ import { SkeletonComponent, EmptyStateComponent } from '@ticketflow/shared-ui';
               placeholder="Buscar por artista, evento o recinto..."
               class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-on-surface placeholder:text-on-surface-variant/50 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary shadow-sm transition-all"
             />
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/50 text-sm">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary text-sm">
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
             <button

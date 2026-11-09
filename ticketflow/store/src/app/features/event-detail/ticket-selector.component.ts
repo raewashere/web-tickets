@@ -25,7 +25,7 @@ import { SpinnerComponent } from '@ticketflow/shared-ui';
     <div class="space-y-6">
       <div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
         <h3 class="text-base sm:text-lg font-bold text-on-surface flex items-center gap-2">
-          <i class="fa-solid fa-ticket text-primary"></i> Selecciona tus Boletos
+          <i class="fa-solid fa-ticket text-secondary"></i> Selecciona tus Boletos
         </h3>
         <span class="text-xs text-on-surface-variant font-medium">
           Máx. 10 boletos

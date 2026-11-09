@@ -24,28 +24,28 @@ import { ToastService } from '@ticketflow/shared-ui';
       [class.border-danger\/30]="isUrgent()"
       [class.shadow-\[0_0_15px_rgba\(192\,57\,43\,0\.25\)\]]="isUrgent()"
       [class.animate-pulse]="isUrgent()"
-      [class.bg-primary\/5]="!isUrgent()"
-      [class.text-dark]="!isUrgent()"
-      [class.border-primary\/20]="!isUrgent()"
-      [class.shadow-\[0_0_10px_rgba\(78\,10\,11\,0\.1\)\]]="!isUrgent()"
+      [class.bg-secondary\/15]="!isUrgent()"
+      [class.text-on-surface]="!isUrgent()"
+      [class.border-secondary\/30]="!isUrgent()"
+      [class.shadow-\[0_0_10px_rgba\(188\,150\,230\,0\.15\)\]]="!isUrgent()"
     >
       <span class="relative flex h-2.5 w-2.5">
         <span
           class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
           [class.bg-danger]="isUrgent()"
-          [class.bg-accent]="!isUrgent()"
+          [class.bg-secondary]="!isUrgent()"
         ></span>
         <span
           class="relative inline-flex rounded-full h-2.5 w-2.5"
           [class.bg-danger]="isUrgent()"
-          [class.bg-primary]="!isUrgent()"
+          [class.bg-secondary]="!isUrgent()"
         ></span>
       </span>
       <span class="font-sans font-semibold">Tus boletos están reservados por:</span>
       <span
         class="font-bold text-sm tracking-tight"
         [class.text-danger]="isUrgent()"
-        [class.text-primary]="!isUrgent()"
+        [class.text-secondary]="!isUrgent()"
       >
         {{ formattedTime() }}
       </span>

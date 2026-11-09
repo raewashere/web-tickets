@@ -194,3 +194,10 @@ html.dark header {
   background-color: rgb(var(--md-surface)) !important;
   border-color: rgb(var(--md-outline-variant) / 0.2) !important;
 }
+
+/* QR Code scannable surface — must preserve pure white background in dark mode for physical optical camera scanners */
+.bg-qr-surface,
+html.dark .bg-qr-surface {
+  background-color: #FFFFFF !important;
+  color: #111111 !important;
+}

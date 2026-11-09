@@ -38,7 +38,7 @@ declare global { interface Window { L?: LeafletStatic; } }
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-bold text-dark flex items-center gap-2">
-          <i class="fa-solid fa-map-location-dot text-primary"></i> Ubicación del Recinto
+          <i class="fa-solid fa-map-location-dot text-secondary"></i> Ubicación del Recinto
         </h3>
         <a
           *ngIf="lat && lng"

@@ -225,10 +225,10 @@ export interface PublicOrderData {
               <p class="text-[11px] opacity-85">Esta orden fue reembolsada y el código QR se encuentra inhabilitado.</p>
             </div>
 
-            <!-- QR Code (kept bg-white for physical QR scanner contrast) -->
+            <!-- QR Code (kept bg-qr-surface for physical QR scanner contrast) -->
             <div
               *ngIf="order()!.status === 'confirmed'"
-              class="p-4 bg-white rounded-2xl border-2 border-outline-variant/30 shadow-inner print:border-black"
+              class="p-4 bg-qr-surface rounded-2xl border-2 border-outline-variant/30 shadow-inner print:border-black"
             >
               <img
                 *ngIf="qrDataUrl()"
@@ -258,7 +258,7 @@ export interface PublicOrderData {
                 class="py-2.5 flex items-center justify-between text-on-surface"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center print:bg-slate-200 print:text-black">
+                  <span class="w-6 h-6 rounded-lg bg-secondary/15 text-secondary border border-secondary/30 font-bold text-xs flex items-center justify-center print:bg-slate-200 print:text-black">
                     {{ item.quantity }}
                   </span>
                   <span class="font-semibold">{{ item.ticket_type?.name || 'Localidad' }}</span>

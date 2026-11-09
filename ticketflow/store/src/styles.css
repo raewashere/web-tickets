@@ -171,3 +171,10 @@ html.dark input::placeholder,
 html.dark textarea::placeholder {
   color: rgb(var(--md-on-surface) / 0.45) !important;
 }
+
+/* QR Code scannable surface — must preserve pure white background in dark mode for physical optical camera scanners */
+.bg-qr-surface,
+html.dark .bg-qr-surface {
+  background-color: #FFFFFF !important;
+  color: #111111 !important;
+}

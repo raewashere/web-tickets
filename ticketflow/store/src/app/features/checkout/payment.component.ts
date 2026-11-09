@@ -223,7 +223,7 @@ interface PayPalButtonsOptions {
           <div class="p-6 rounded-3xl border border-outline-variant/30 bg-surface shadow-sm space-y-3 relative overflow-hidden">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
-                <i class="fa-solid fa-qrcode text-primary"></i> Vista Previa del QR
+                <i class="fa-solid fa-qrcode text-secondary"></i> Vista Previa del QR
               </span>
               <span class="text-[10px] font-bold uppercase tracking-wider text-on-secondary-container bg-secondary-container px-2 py-0.5 rounded-full flex items-center gap-1">
                 <i class="fa-solid fa-lock text-[9px]"></i> Bloqueado

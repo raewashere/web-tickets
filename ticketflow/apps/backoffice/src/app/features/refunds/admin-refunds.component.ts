@@ -44,7 +44,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
             placeholder="Buscar por orden, cliente, evento o motivo..."
             class="w-full pl-10 pr-4 py-2 rounded-xl border border-outline-variant/40 bg-surface text-on-surface text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-on-surface-variant text-xs"></i>
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-secondary text-xs"></i>
         </div>
 
         <div class="flex items-center gap-2 w-full md:w-auto">
@@ -118,7 +118,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                   </div>
                 </td>
                 <td class="py-4 px-4 font-semibold text-on-surface">
-                  <i class="fa-solid fa-calendar-days text-primary mr-1.5"></i>
+                  <i class="fa-solid fa-calendar-days text-secondary mr-1.5"></i>
                   <span>{{ ref.event_name || 'Evento' }}</span>
                 </td>
                 <td class="py-4 px-4 text-right font-bold font-mono text-primary">

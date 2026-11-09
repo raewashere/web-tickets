@@ -193,10 +193,10 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent, BrandLogoComponent }
               <p class="text-[11px] opacity-80">No es válido para el acceso al recinto.</p>
             </div>
 
-            <!-- QR canvas image (kept bg-white for physical QR scanner contrast) -->
+            <!-- QR canvas image (kept bg-qr-surface for physical QR scanner contrast) -->
             <div
               *ngIf="order()!.status === 'confirmed'"
-              class="p-4 bg-white rounded-2xl border-2 border-outline-variant/30 shadow-inner print:border-black"
+              class="p-4 bg-qr-surface rounded-2xl border-2 border-outline-variant/30 shadow-inner print:border-black"
             >
               <img
                 *ngIf="qrDataUrl()"
@@ -225,7 +225,7 @@ import { ButtonComponent, BadgeComponent, SpinnerComponent, BrandLogoComponent }
                 class="py-2.5 flex items-center justify-between text-on-surface"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center print:bg-gray-200 print:text-black">
+                  <span class="w-6 h-6 rounded-lg bg-secondary/15 text-secondary border border-secondary/30 font-bold text-xs flex items-center justify-center print:bg-gray-200 print:text-black">
                     {{ item.quantity }}
                   </span>
                   <span class="font-semibold">{{ item.ticket_types?.name }}</span>

@@ -132,7 +132,7 @@ import { SpinnerComponent, ToastService } from '@ticketflow/shared-ui';
                     </span>
                   </p>
                   <p *ngIf="event()!.address" class="text-xs text-on-surface-variant flex items-start gap-1.5 pt-1">
-                    <i class="fa-solid fa-map-pin text-primary mt-0.5"></i>
+                    <i class="fa-solid fa-map-pin text-secondary mt-0.5"></i>
                     <span>{{ event()!.address }}</span>
                   </p>
                 </div>

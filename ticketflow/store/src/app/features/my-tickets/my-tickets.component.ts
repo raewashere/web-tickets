@@ -390,7 +390,7 @@ import {
           </div>
 
           <!-- QR Code — generado localmente sin dependencia externa (fondo blanco para lectura óptica) -->
-          <div class="p-4 bg-white rounded-2xl border border-outline-variant/30 shadow-inner flex flex-col items-center justify-center space-y-2">
+          <div class="p-4 bg-qr-surface rounded-2xl border border-outline-variant/30 shadow-inner flex flex-col items-center justify-center space-y-2">
             <img
               *ngIf="qrDataUrl()"
               [src]="qrDataUrl()"
@@ -400,7 +400,7 @@ import {
             <div *ngIf="!qrDataUrl()" class="w-56 h-56 flex items-center justify-center">
               <tf-spinner size="md" color="primary"></tf-spinner>
             </div>
-            <span class="font-mono text-[10px] text-slate-600 tracking-widest font-bold">
+            <span class="font-mono text-[10px] text-black/70 tracking-widest font-bold">
               AUTH: {{ selectedOrderForQr()!.id.substring(0, 16).toUpperCase() }}
             </span>
           </div>

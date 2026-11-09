@@ -89,7 +89,7 @@ import { AuthService } from '@ticketflow/data-access';
             <div class="p-6 sm:p-7 rounded-3xl border border-outline-variant/30 bg-surface shadow-sm space-y-4">
               <div class="flex items-center justify-between">
                 <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
-                  <i class="fa-solid fa-user-check text-primary"></i> Datos de Entrega de Boletos
+                  <i class="fa-solid fa-user-check text-secondary"></i> Datos de Entrega de Boletos
                 </h3>
                 <span
                   *ngIf="auth.user()"
@@ -188,7 +188,7 @@ import { AuthService } from '@ticketflow/data-access';
             <!-- Coupon Code Section -->
             <div class="p-6 sm:p-7 rounded-3xl border border-outline-variant/30 bg-surface shadow-sm space-y-4">
               <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
-                <i class="fa-solid fa-tag text-primary"></i> Código Promocional o Cortesía
+                <i class="fa-solid fa-tag text-secondary"></i> Código Promocional o Cortesía
               </h3>
 
               <!-- If coupon applied -->
