@@ -151,7 +151,7 @@ export class VenueMapComponent implements OnInit, AfterViewInit, OnDestroy {
             <div style="
               width: 32px;
               height: 32px;
-              background-color: #540D6E;
+              background-color: #210B2C;
               border: 2.5px solid #FFFFFF;
               border-radius: 50% 50% 50% 0;
               transform: rotate(-45deg);

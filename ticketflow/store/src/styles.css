@@ -8,40 +8,40 @@
   :root {
     /* ======================================================================
        BOLETOCOQUETO — Material Design 3 Light Scheme
-       Palette:
-         Primary   #540D6E  — Violeta profundo
-         Secondary #EE4266  — Rosa coral vibrante
-         Tertiary  #FFD23F  — Amarillo dorado vibrante
+       Palette (3 Colores):
+         Dominante:  #210B2C — Berenjena profundo / Violeta noche
+         Secundario: #BC96E6 — Lavanda / Lila radiante
+         Acentos:    #FFD166 — Amarillo ámbar dorado
        ====================================================================== */
 
-    /* Primary family — deep violet */
-    --md-primary:              84 13 110;      /* #540D6E */
+    /* Primary family — Dominante (#210B2C) */
+    --md-primary:              33 11 44;       /* #210B2C (Dominante) */
     --md-on-primary:           255 255 255;    /* #FFFFFF */
-    --md-primary-container:    240 210 255;    /* #F0D2FF */
-    --md-on-primary-container: 45 0 65;        /* #2D0041 */
+    --md-primary-container:    237 225 248;    /* #EDE1F8 (Tono lila suave) */
+    --md-on-primary-container: 33 11 44;       /* #210B2C */
 
-    /* Secondary family — rose/coral */
-    --md-secondary:            238 66 102;     /* #EE4266 */
-    --md-on-secondary:         255 255 255;    /* #FFFFFF */
-    --md-secondary-container:  255 220 228;    /* #FFDCE4 */
-    --md-on-secondary-container: 74 0 25;      /* #4A0019 */
+    /* Secondary family — Secundario (#BC96E6) */
+    --md-secondary:            188 150 230;    /* #BC96E6 (Secundario — Lavanda) */
+    --md-on-secondary:         33 11 44;       /* #210B2C */
+    --md-secondary-container:  244 236 253;    /* #F4ECFD */
+    --md-on-secondary-container: 45 15 60;     /* #2D0F3C */
 
-    /* Tertiary family — golden yellow */
-    --md-tertiary:             255 210 63;     /* #FFD23F */
-    --md-on-tertiary:          33 0 52;        /* #210034 (alto contraste sobre amarillo) */
-    --md-tertiary-container:   255 238 179;    /* #FFEEB3 */
+    /* Tertiary family — Acentos (#FFD166) */
+    --md-tertiary:             255 209 102;    /* #FFD166 (Acentos — Ámbar dorado) */
+    --md-on-tertiary:          33 11 44;       /* #210B2C (Alto contraste) */
+    --md-tertiary-container:   255 243 204;    /* #FFF3CC */
     --md-on-tertiary-container: 56 42 0;       /* #382A00 */
 
     /* Surface family — with subtle violet tint */
-    --md-surface:              254 250 255;    /* #FEFAFF */
-    --md-on-surface:           31 22 36;       /* #1F1624 */
-    --md-surface-variant:      238 228 244;    /* #EEE4F4 */
-    --md-on-surface-variant:   77 65 84;       /* #4D4154 */
-    --md-surface-container:    245 237 250;    /* #F5EDFA */
-    --md-surface-container-high: 239 230 245; /* #EFE6F5 */
-    --md-surface-container-low: 250 244 253;  /* #FAF4FD */
-    --md-inverse-surface:      33 1 36;        /* #210124 (Berenjena noche profundo) */
-    --md-inverse-on-surface:   254 250 255;    /* #FEFAFF */
+    --md-surface:              253 250 255;    /* #FDFAFF */
+    --md-on-surface:           33 11 44;       /* #210B2C */
+    --md-surface-variant:      240 232 247;    /* #F0E8F7 */
+    --md-on-surface-variant:   75 60 85;       /* #4B3C55 */
+    --md-surface-container:    246 240 252;    /* #F6F0FC */
+    --md-surface-container-high: 240 233 248;  /* #F0E9F8 */
+    --md-surface-container-low: 250 246 254;   /* #FAF6FE */
+    --md-inverse-surface:      33 11 44;       /* #210B2C (Dominante profundo para Navbar/Hero) */
+    --md-inverse-on-surface:   253 250 255;    /* #FDFAFF */
 
     /* Error */
     --md-error:                179 38 30;      /* #B3261E */
@@ -50,41 +50,41 @@
     --md-on-error-container:   65 14 11;       /* #410E0B */
 
     /* Outline */
-    --md-outline:              126 113 133;    /* #7E7185 */
-    --md-outline-variant:      209 198 217;    /* #D1C6D9 */
+    --md-outline:              130 115 140;    /* #82738C */
+    --md-outline-variant:      212 200 224;    /* #D4C8E0 */
   }
 
   html.dark {
     color-scheme: dark;
 
     /* Primary family — dark scheme */
-    --md-primary:              215 168 255;    /* #D7A8FF */
-    --md-on-primary:           60 0 85;        /* #3C0055 */
-    --md-primary-container:    84 13 110;      /* #540D6E */
-    --md-on-primary-container: 240 210 255;    /* #F0D2FF */
+    --md-primary:              188 150 230;    /* #BC96E6 (Lila secundario ilumina acciones) */
+    --md-on-primary:           33 11 44;       /* #210B2C */
+    --md-primary-container:    55 20 72;       /* #371448 */
+    --md-on-primary-container: 237 225 248;    /* #EDE1F8 */
 
     /* Secondary family — dark scheme */
-    --md-secondary:            255 178 194;    /* #FFB2C2 */
-    --md-on-secondary:         92 0 31;        /* #5C001F */
-    --md-secondary-container:  168 18 63;      /* #A8123F */
-    --md-on-secondary-container: 255 216 224;  /* #FFD8E0 */
+    --md-secondary:            188 150 230;    /* #BC96E6 */
+    --md-on-secondary:         33 11 44;       /* #210B2C */
+    --md-secondary-container:  55 20 72;       /* #371448 */
+    --md-on-secondary-container: 244 236 253;  /* #F4ECFD */
 
     /* Tertiary family — dark scheme */
-    --md-tertiary:             255 210 63;     /* #FFD23F */
+    --md-tertiary:             255 209 102;    /* #FFD166 */
     --md-on-tertiary:          46 34 0;        /* #2E2200 */
     --md-tertiary-container:   92 70 0;        /* #5C4600 */
-    --md-on-tertiary-container: 255 238 179;   /* #FFEEB3 */
+    --md-on-tertiary-container: 255 243 204;   /* #FFF3CC */
 
     /* Surface family — dark scheme */
-    --md-surface:              22 14 26;       /* #160E1A */
-    --md-on-surface:           238 228 244;    /* #EEE4F4 */
-    --md-surface-variant:      66 54 73;       /* #423649 */
-    --md-on-surface-variant:   209 198 217;    /* #D1C6D9 */
-    --md-surface-container:    33 22 38;       /* #211626 */
-    --md-surface-container-high: 44 31 50;    /* #2C1F32 */
-    --md-surface-container-low: 27 18 32;     /* #1B1220 */
-    --md-inverse-surface:      238 228 244;    /* #EEE4F4 */
-    --md-inverse-on-surface:   33 1 36;        /* #210124 */
+    --md-surface:              19 7 26;        /* #13071A */
+    --md-on-surface:           240 232 247;    /* #F0E8F7 */
+    --md-surface-variant:      48 25 62;       /* #30193E */
+    --md-on-surface-variant:   212 200 224;    /* #D4C8E0 */
+    --md-surface-container:    27 12 36;       /* #1B0C24 */
+    --md-surface-container-high: 38 18 50;     /* #261232 */
+    --md-surface-container-low: 23 9 31;       /* #17091F */
+    --md-inverse-surface:      15 5 20;        /* #0F0514 */
+    --md-inverse-on-surface:   253 250 255;    /* #FDFAFF */
 
     /* Error — dark scheme */
     --md-error:                242 184 181;    /* #F2B8B5 */
@@ -93,8 +93,8 @@
     --md-on-error-container:   249 222 220;    /* #F9DEDC */
 
     /* Outline — dark scheme */
-    --md-outline:              147 134 154;    /* #93869A */
-    --md-outline-variant:      66 54 73;       /* #423649 */
+    --md-outline:              140 120 155;    /* #8C789B */
+    --md-outline-variant:      58 35 75;       /* #3A234B */
   }
 
   html.dark body {

@@ -12,45 +12,45 @@ Este documento define el sistema de diseño visual de **BoletoCoqueto**. Es la f
 
 El sistema de colores sigue la especificación **Material Design 3 (M3)**, con tres familias de color (Primary, Secondary, Tertiary) y sus roles semánticos completos. Todas las variables están definidas como CSS custom properties en `:root` (esquema claro) y `html.dark` (esquema oscuro) en cada `styles.css`.
 
-### Paleta Seed
+### Paleta (3 Colores)
 
 | Rol Semántico | Color Base | Hex |
 |---------------|-----------|-----|
-| Primary seed  | Violeta profundo | `#540D6E` |
-| Secondary seed | Rosa coral vibrante | `#EE4266` |
-| Tertiary seed | Amarillo dorado vibrante | `#FFD23F` |
+| Dominante (Primary seed)  | Berenjena profundo / Violeta noche | `#210B2C` |
+| Secundario (Secondary seed) | Lavanda / Lila radiante | `#BC96E6` |
+| Acentos (Tertiary seed) | Amarillo ámbar dorado | `#FFD166` |
 
 ### Tokens M3 — Esquema Claro (`:root`)
 
 | CSS Variable | RGB | Hex | Tailwind Class | Uso |
 |---|---|---|---|---|
-| `--md-primary` | `84 13 110` | `#540D6E` | `primary` | Botones primarios, enlaces activos, elementos de marca |
+| `--md-primary` | `33 11 44` | `#210B2C` | `primary` | Dominante: Botones primarios, enlaces activos, elementos de marca |
 | `--md-on-primary` | `255 255 255` | `#FFFFFF` | `on-primary` | Texto/iconos sobre fondo `primary` |
-| `--md-primary-container` | `240 210 255` | `#F0D2FF` | `primary-container` | Fondos de chips/badges con tono primario |
-| `--md-on-primary-container` | `45 0 65` | `#2D0041` | `on-primary-container` | Texto sobre `primary-container` |
-| `--md-secondary` | `238 66 102` | `#EE4266` | `secondary` | Rosa coral, acciones secundarias, acentos vivos |
-| `--md-on-secondary` | `255 255 255` | `#FFFFFF` | `on-secondary` | Texto sobre `secondary` |
-| `--md-secondary-container` | `255 220 228` | `#FFDCE4` | `secondary-container` | Fondos de elementos secundarios suaves |
-| `--md-on-secondary-container` | `74 0 25` | `#4A0019` | `on-secondary-container` | Texto sobre `secondary-container` |
-| `--md-tertiary` | `255 210 63` | `#FFD23F` | `tertiary` | Amarillo dorado, CTA destacados, badges de alerta/oro |
-| `--md-on-tertiary` | `33 0 52` | `#210034` | `on-tertiary` | Texto de alto contraste sobre fondo `tertiary` |
-| `--md-tertiary-container` | `255 238 179` | `#FFEEB3` | `tertiary-container` | Fondos de elementos positivos/dorados |
+| `--md-primary-container` | `237 225 248` | `#EDE1F8` | `primary-container` | Fondos de chips/badges con tono primario |
+| `--md-on-primary-container` | `33 11 44` | `#210B2C` | `on-primary-container` | Texto sobre `primary-container` |
+| `--md-secondary` | `188 150 230` | `#BC96E6` | `secondary` | Secundario: Lavanda/lila, acciones secundarias |
+| `--md-on-secondary` | `33 11 44` | `#210B2C` | `on-secondary` | Texto sobre `secondary` |
+| `--md-secondary-container` | `244 236 253` | `#F4ECFD` | `secondary-container` | Fondos de elementos secundarios suaves |
+| `--md-on-secondary-container` | `45 15 60` | `#2D0F3C` | `on-secondary-container` | Texto sobre `secondary-container` |
+| `--md-tertiary` | `255 209 102` | `#FFD166` | `tertiary` | Acentos: Amarillo ámbar dorado, CTA destacados, badges de alerta/oro |
+| `--md-on-tertiary` | `33 11 44` | `#210B2C` | `on-tertiary` | Texto de alto contraste sobre fondo `tertiary` |
+| `--md-tertiary-container` | `255 243 204` | `#FFF3CC` | `tertiary-container` | Fondos de elementos positivos/dorados |
 | `--md-on-tertiary-container` | `56 42 0` | `#382A00` | `on-tertiary-container` | Texto sobre `tertiary-container` |
-| `--md-surface` | `254 250 255` | `#FEFAFF` | `surface` | Fondo de página, fondos de tarjeta |
-| `--md-on-surface` | `31 22 36` | `#1F1624` | `on-surface` | Texto principal sobre superficie clara |
-| `--md-surface-variant` | `238 228 244` | `#EEE4F4` | `surface-variant` | Fondo de inputs, áreas secundarias |
-| `--md-on-surface-variant` | `77 65 84` | `#4D4154` | `on-surface-variant` | Texto secundario sobre superficie variante |
-| `--md-surface-container` | `245 237 250` | `#F5EDFA` | `surface-container` | Fondos de tarjetas y contenedores |
-| `--md-surface-container-high` | `239 230 245` | `#EFE6F5` | `surface-container-high` | Fondos elevados, drawer, modal |
-| `--md-surface-container-low` | `250 244 253` | `#FAF4FD` | `surface-container-low` | Fondos suaves |
-| `--md-inverse-surface` | `33 1 36` | `#210124` | `inverse-surface` | Navbar, Footer, Hero, Sidebar (fondos oscuros) |
-| `--md-inverse-on-surface` | `254 250 255` | `#FEFAFF` | `inverse-on-surface` | Texto sobre `inverse-surface` |
+| `--md-surface` | `253 250 255` | `#FDFAFF` | `surface` | Fondo de página, fondos de tarjeta |
+| `--md-on-surface` | `33 11 44` | `#210B2C` | `on-surface` | Texto principal sobre superficie clara |
+| `--md-surface-variant` | `240 232 247` | `#F0E8F7` | `surface-variant` | Fondo de inputs, áreas secundarias |
+| `--md-on-surface-variant` | `75 60 85` | `#4B3C55` | `on-surface-variant` | Texto secundario sobre superficie variante |
+| `--md-surface-container` | `246 240 252` | `#F6F0FC` | `surface-container` | Fondos de tarjetas y contenedores |
+| `--md-surface-container-high` | `240 233 248` | `#F0E9F8` | `surface-container-high` | Fondos elevados, drawer, modal |
+| `--md-surface-container-low` | `250 246 254` | `#FAF6FE` | `surface-container-low` | Fondos suaves |
+| `--md-inverse-surface` | `33 11 44` | `#210B2C` | `inverse-surface` | Navbar, Footer, Hero, Sidebar (fondos oscuros) |
+| `--md-inverse-on-surface` | `253 250 255` | `#FDFAFF` | `inverse-on-surface` | Texto sobre `inverse-surface` |
 | `--md-error` | `179 38 30` | `#B3261E` | `error` | Errores, acciones destructivas |
 | `--md-on-error` | `255 255 255` | `#FFFFFF` | `on-error` | Texto sobre `error` |
 | `--md-error-container` | `249 222 220` | `#F9DEDC` | `error-container` | Fondos de mensajes de error |
 | `--md-on-error-container` | `65 14 11` | `#410E0B` | `on-error-container` | Texto sobre `error-container` |
-| `--md-outline` | `126 113 133` | `#7E7185` | `outline` | Bordes, divisores |
-| `--md-outline-variant` | `209 198 217` | `#D1C6D9` | `outline-variant` | Bordes sutiles |
+| `--md-outline` | `130 115 140` | `#82738C` | `outline` | Bordes, divisores |
+| `--md-outline-variant` | `212 200 224` | `#D4C8E0` | `outline-variant` | Bordes sutiles |
 
 ### Tokens M3 — Esquema Oscuro (`html.dark`)
 
@@ -62,9 +62,9 @@ Los siguientes aliases mantienen compatibilidad con código existente:
 
 | Alias Tailwind | Apunta a | Razón |
 |---|---|---|
-| `accent` | `secondary` (`#EE4266`) | El "acento" anterior mapea al rosa coral secundario |
-| `dark` | `inverse-surface` (`#210124`) | El fondo oscuro = inverse-surface |
-| `contrast` | `tertiary` (`#FFD23F`) | El contraste brillante = amarillo dorado terciario |
+| `accent` | `tertiary` (`#FFD166`) | Mapea al acento ámbar dorado |
+| `dark` | `inverse-surface` (`#210B2C`) | El fondo oscuro = dominante inverse-surface |
+| `contrast` | `tertiary` (`#FFD166`) | El contraste brillante = amarillo dorado terciario |
 | `danger` | `error` (`#B3261E`) | Renombrado al estándar M3 |
 
 ### Configuración en `tailwind.config.js`

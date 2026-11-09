@@ -136,11 +136,11 @@ serve(async (req: Request) => {
             <td align="center">
               <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #211626; border-radius: 24px; overflow: hidden; border: 1px solid #423649;">
                 <tr>
-                  <td style="background: linear-gradient(135deg, #3C0650 0%, #540D6E 60%, #EE4266 100%); padding: 32px 30px; text-align: center; border-bottom: 1px solid #423649;">
+                  <td style="background: linear-gradient(135deg, #13071A 0%, #210B2C 60%, #BC96E6 100%); padding: 32px 30px; text-align: center; border-bottom: 1px solid #423649;">
                     <div style="font-size: 22px; font-weight: 900; letter-spacing: -0.5px; color: #FEFAFF; margin-bottom: 10px;">
-                      Boleto<span style="color: #FFD23F;">Coqueto</span> <span style="color: #FFD23F;">✦</span>
+                      Boleto<span style="color: #FFD166;">Coqueto</span> <span style="color: #FFD166;">✦</span>
                     </div>
-                    <span style="display: inline-block; background-color: rgba(255, 210, 63, 0.18); color: #FFD23F; border: 1px solid rgba(255, 210, 63, 0.4); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;">
+                    <span style="display: inline-block; background-color: rgba(255, 209, 102, 0.18); color: #FFD166; border: 1px solid rgba(255, 209, 102, 0.4); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;">
                       🛡️ Aliado de Acceso Oficial
                     </span>
                     <h1 style="margin: 0; font-size: 22px; font-weight: 900; color: #FFFFFF;">Invitación de Validación de Boletos</h1>
@@ -153,7 +153,7 @@ serve(async (req: Request) => {
                     </p>
 
                     <div style="background-color: #160E1A; border-radius: 16px; padding: 20px; border: 1px solid #423649; margin: 22px 0;">
-                      <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 800; color: #FFD23F;">${eventName}</h2>
+                      <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 800; color: #FFD166;">${eventName}</h2>
                       <p style="margin: 4px 0; font-size: 13px; color: #D1C6D9;">📍 <strong>Recinto:</strong> ${venueName}</p>
                       <p style="margin: 4px 0; font-size: 13px; color: #D1C6D9;">📅 <strong>Fecha:</strong> ${eventDate}</p>
                     </div>
@@ -163,14 +163,14 @@ serve(async (req: Request) => {
                     </p>
 
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="${inviteUrl}" style="display: inline-block; background-color: #EE4266; color: #FFFFFF; font-size: 14px; font-weight: 800; padding: 14px 28px; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 14px rgba(238, 66, 102, 0.4);">
+                      <a href="${inviteUrl}" style="display: inline-block; background-color: #BC96E6; color: #210B2C; font-size: 14px; font-weight: 800; padding: 14px 28px; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 14px rgba(188, 150, 230, 0.4);">
                         ✓ Activar Mi Acceso de Staff
                       </a>
                     </div>
 
                     <p style="font-size: 11px; color: #93869A; line-height: 1.4;">
                       Si el botón no abre directamente, copia y pega este enlace seguro en tu navegador:<br>
-                      <a href="${inviteUrl}" style="color: #FFD23F; word-break: break-all;">${inviteUrl}</a>
+                      <a href="${inviteUrl}" style="color: #FFD166; word-break: break-all;">${inviteUrl}</a>
                     </p>
                   </td>
                 </tr>

@@ -42,7 +42,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
         <!-- Resplandor ambiental cálido (Lúdico / Audaz) -->
         <div
           *ngIf="theme !== 'mono'"
-          class="absolute -inset-0.5 rounded-[28%] bg-gradient-to-tr from-[#540D6E] via-[#EE4266] to-[#FFD23F] opacity-40 blur-xs transition-opacity duration-300"
+          class="absolute -inset-0.5 rounded-[28%] bg-gradient-to-tr from-[#210B2C] via-[#BC96E6] to-[#FFD166] opacity-40 blur-xs transition-opacity duration-300"
           [ngClass]="interactive ? 'group-hover/logo:opacity-75' : ''"
         ></div>
 
@@ -56,23 +56,23 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
           aria-label="Isotipo BoletoCoqueto"
         >
           <defs>
-            <!-- Gradiente Base Sólido: Violeta Profundo (#540D6E) a Coral Vibrante (#EE4266) -->
+            <!-- Gradiente Base Sólido: Dominante (#210B2C) a Secundario (#BC96E6) -->
             <linearGradient [attr.id]="gradId + '-bg'" x1="4" y1="60" x2="60" y2="4" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" [attr.stop-color]="theme === 'mono' ? 'currentColor' : '#3C0650'" />
-              <stop offset="52%" [attr.stop-color]="theme === 'mono' ? 'currentColor' : '#540D6E'" />
-              <stop offset="100%" [attr.stop-color]="theme === 'mono' ? 'currentColor' : '#EE4266'" />
+              <stop offset="0%" [attr.stop-color]="theme === 'mono' ? 'currentColor' : '#13071A'" />
+              <stop offset="52%" [attr.stop-color]="theme === 'mono' ? 'currentColor' : '#210B2C'" />
+              <stop offset="100%" [attr.stop-color]="theme === 'mono' ? 'currentColor' : '#BC96E6'" />
             </linearGradient>
 
             <!-- Gradiente del Boleto Interior: Blanco Cálido a Crema Dorado -->
             <linearGradient [attr.id]="gradId + '-ticket'" x1="12" y1="14" x2="52" y2="50" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#FFFFFF" />
-              <stop offset="100%" stop-color="#FFF5FA" />
+              <stop offset="100%" stop-color="#FFFDF5" />
             </linearGradient>
 
-            <!-- Borde Protector Dorado/Coral (Seguridad & Solidez) -->
+            <!-- Borde Protector Dorado/Lavanda (Seguridad & Solidez) -->
             <linearGradient [attr.id]="gradId + '-stroke'" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#FFD23F" stop-opacity="0.85" />
-              <stop offset="50%" stop-color="#EE4266" stop-opacity="0.5" />
+              <stop offset="0%" stop-color="#FFD166" stop-opacity="0.85" />
+              <stop offset="50%" stop-color="#BC96E6" stop-opacity="0.5" />
               <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.25" />
             </linearGradient>
           </defs>
@@ -89,10 +89,10 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
             stroke-width="2.5"
           />
 
-          <!-- Destello Coqueto Superior Derecho (Estrella de 4 puntas dorada #FFD23F) -->
+          <!-- Destello Coqueto Superior Derecho (Estrella de 4 puntas dorada #FFD166) -->
           <path
             d="M50 10.5C50 13.2 51.3 14.5 54 14.5C51.3 14.5 50 15.8 50 18.5C50 15.8 48.7 14.5 46 14.5C48.7 14.5 50 13.2 50 10.5Z"
-            [attr.fill]="theme === 'mono' ? 'currentColor' : '#FFD23F'"
+            [attr.fill]="theme === 'mono' ? 'currentColor' : '#FFD166'"
             class="origin-center transition-transform duration-300"
             [ngClass]="interactive ? 'group-hover/logo:scale-125 group-hover/logo:rotate-12' : ''"
           />
@@ -104,7 +104,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
               *ngIf="theme !== 'mono'"
               d="M14 22C14 19.7909 15.7909 18 18 18H46C48.2091 18 50 19.7909 50 22V28.5C47.5147 28.5 45.5 30.5147 45.5 33C45.5 35.4853 47.5147 37.5 50 37.5V44C50 46.2091 48.2091 48 46 48H18C15.7909 48 14 46.2091 14 44V37.5C16.4853 37.5 18.5 35.4853 18.5 33C18.5 30.5147 16.4853 28.5 14 28.5V22Z"
               transform="translate(1.5, 2.5)"
-              fill="#2A0238"
+              fill="#13071A"
               fill-opacity="0.45"
             />
 
@@ -112,7 +112,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
             <path
               d="M14 22C14 19.7909 15.7909 18 18 18H46C48.2091 18 50 19.7909 50 22V28.5C47.5147 28.5 45.5 30.5147 45.5 33C45.5 35.4853 47.5147 37.5 50 37.5V44C50 46.2091 48.2091 48 46 48H18C15.7909 48 14 46.2091 14 44V37.5C16.4853 37.5 18.5 35.4853 18.5 33C18.5 30.5147 16.4853 28.5 14 28.5V22Z"
               [attr.fill]="theme === 'mono' ? 'none' : 'url(#' + gradId + '-ticket)'"
-              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#FFD23F'"
+              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#FFD166'"
               [attr.stroke-width]="theme === 'mono' ? '2.5' : '1.5'"
             />
 
@@ -122,7 +122,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
               y1="20.5"
               x2="39.5"
               y2="45.5"
-              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#EE4266'"
+              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#BC96E6'"
               stroke-width="1.8"
               stroke-linecap="round"
               stroke-dasharray="2.5 3.5"
@@ -130,23 +130,23 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
             />
 
             <!-- Expresión "Coqueta & Cercana": Ojo Estrella + Ojo Guiñando + Sonrisa Audaz -->
-            <!-- Ojo izquierdo: Estrella chispeante en Coral (#EE4266) -->
+            <!-- Ojo izquierdo: Estrella chispeante en Secundario (#BC96E6) -->
             <path
               d="M23.5 26C23.5 28 24.4 28.9 26.4 28.9C24.4 28.9 23.5 29.8 23.5 31.8C23.5 29.8 22.6 28.9 20.6 28.9C22.6 28.9 23.5 28 23.5 26Z"
-              [attr.fill]="theme === 'mono' ? 'currentColor' : '#EE4266'"
+              [attr.fill]="theme === 'mono' ? 'currentColor' : '#BC96E6'"
             />
 
-            <!-- Ojo derecho: Guiño cómplice (arco audaz en Violeta #540D6E) -->
+            <!-- Ojo derecho: Guiño cómplice (arco audaz en Dominante #210B2C) -->
             <path
               d="M29.8 29.5C30.8 27.6 33.2 27.6 34.2 29.5"
-              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#540D6E'"
+              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#210B2C'"
               stroke-width="2.4"
               stroke-linecap="round"
             />
             <!-- Pestaña coqueta lateral en el guiño -->
             <path
               d="M34.2 29.2L35.6 28.1"
-              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#540D6E'"
+              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#210B2C'"
               stroke-width="2"
               stroke-linecap="round"
             />
@@ -157,7 +157,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
               cx="35"
               cy="33"
               r="2"
-              fill="#EE4266"
+              fill="#BC96E6"
               fill-opacity="0.45"
             />
             <circle
@@ -165,14 +165,14 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
               cx="20.5"
               cy="33"
               r="2"
-              fill="#EE4266"
+              fill="#BC96E6"
               fill-opacity="0.45"
             />
 
             <!-- Sonrisa cálida y confiada -->
             <path
               d="M23 35.2C25.2 38.8 30.5 38.8 32.8 35.2"
-              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#540D6E'"
+              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#210B2C'"
               stroke-width="2.5"
               stroke-linecap="round"
             />
@@ -183,7 +183,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
               y1="25"
               x2="43.5"
               y2="41"
-              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#540D6E'"
+              [attr.stroke]="theme === 'mono' ? 'currentColor' : '#210B2C'"
               stroke-width="2"
               stroke-linecap="round"
               stroke-opacity="0.45"
@@ -192,7 +192,7 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
 
           <!-- Sello de Respaldo / Seguridad opcional en la esquina inferior derecha -->
           <g *ngIf="verified && theme !== 'mono'">
-            <circle cx="51" cy="51" r="8" fill="#10B981" stroke="#210124" stroke-width="2" />
+            <circle cx="51" cy="51" r="8" fill="#10B981" stroke="#210B2C" stroke-width="2" />
             <path
               d="M47.8 51.2L50 53.4L54.5 48.9"
               stroke="#FFFFFF"
@@ -216,13 +216,13 @@ export type BrandLogoTheme = 'auto' | 'dark' | 'light' | 'mono';
             [ngClass]="
               theme === 'mono'
                 ? 'font-black ml-0.5'
-                : 'text-transparent bg-clip-text bg-gradient-to-r from-[#EE4266] via-[#FF758F] to-[#FFD23F] font-black ml-0.5'
+                : 'text-transparent bg-clip-text bg-gradient-to-r from-[#BC96E6] via-[#D8B4F8] to-[#FFD166] font-black ml-0.5'
             "
           >Coqueto</span>
           <!-- Punto chispeante final que refuerza el guiño de marca -->
           <span
             *ngIf="theme !== 'mono'"
-            class="inline-block w-1.5 h-1.5 rounded-full bg-[#FFD23F] ml-0.5 self-start mt-1 shadow-xs"
+            class="inline-block w-1.5 h-1.5 rounded-full bg-[#FFD166] ml-0.5 self-start mt-1 shadow-xs"
             aria-hidden="true"
           ></span>
         </div>
@@ -337,7 +337,7 @@ export class BrandLogoComponent {
       case 'dark':
         return 'text-inverse-on-surface';
       case 'light':
-        return 'text-[#1F1624]';
+        return 'text-[#210B2C]';
       case 'mono':
         return 'text-current';
       default:
@@ -350,7 +350,7 @@ export class BrandLogoComponent {
       case 'dark':
         return 'text-inverse-on-surface/65';
       case 'light':
-        return 'text-[#4D4154]';
+        return 'text-[#4B3C55]';
       case 'mono':
         return 'text-current opacity-80';
       default:
@@ -363,8 +363,8 @@ export class BrandLogoComponent {
       return 'border-current text-current';
     }
     if (this.theme === 'dark') {
-      return 'bg-secondary/20 text-[#FFD23F] border-secondary/40';
+      return 'bg-secondary/20 text-[#FFD166] border-secondary/40';
     }
-    return 'bg-primary/10 text-primary border-primary/25 dark:bg-secondary/20 dark:text-[#FFD23F] dark:border-secondary/40';
+    return 'bg-primary/10 text-primary border-primary/25 dark:bg-secondary/20 dark:text-[#FFD166] dark:border-secondary/40';
   }
 }
