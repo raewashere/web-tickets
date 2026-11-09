@@ -89,7 +89,7 @@ import {
           </div>
 
           <p class="text-[11px] text-dark/60 bg-dark/5 p-3 rounded-xl leading-relaxed flex items-start gap-2">
-            <i class="fa-solid fa-circle-info text-dark/40 mt-0.5 flex-shrink-0"></i>
+            <i class="fa-solid fa-circle-info text-secondary mt-0.5 flex-shrink-0"></i>
             <span>Al invitar al validador, se generará un enlace único. La persona podrá registrarse o iniciar sesión con Google/Correo para aceptar y acceder inmediatamente a la pantalla de escaneo de este evento.</span>
           </p>
         </form>
@@ -124,7 +124,7 @@ import {
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="text-sm font-bold text-dark">Validadores Activos</span>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-contrast/10 text-contrast font-bold">
+                <span class="text-xs px-2 py-0.5 rounded-full bg-secondary/20 text-secondary font-bold">
                   {{ staffList().length }}
                 </span>
               </div>
@@ -164,7 +164,7 @@ import {
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="text-sm font-bold text-dark">Invitaciones Pendientes</span>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">
+                <span class="text-xs px-2 py-0.5 rounded-full bg-tertiary/20 text-tertiary font-bold">
                   {{ pendingInvitations().length }}
                 </span>
               </div>
@@ -188,7 +188,7 @@ import {
                     (click)="copyInviteLink(inv.token)"
                     class="px-2.5 py-1 rounded-lg bg-dark/5 hover:bg-dark/10 text-dark font-bold text-[11px] transition-colors flex items-center gap-1"
                   >
-                    <i class="fa-regular fa-copy"></i> Copiar Enlace
+                    <i class="fa-regular fa-copy text-secondary"></i> Copiar Enlace
                   </button>
                   <button
                     type="button"

@@ -123,7 +123,7 @@ import {
           <!-- Left: Code & Type -->
           <div class="space-y-1.5 flex-1">
             <div class="flex items-center gap-2.5">
-              <span class="font-mono font-bold text-base text-dark uppercase px-2.5 py-1 rounded-lg bg-accent/20 border border-accent/40">
+              <span class="font-mono font-bold text-base text-dark uppercase px-2.5 py-1 rounded-lg bg-secondary/15 border border-secondary/30">
                 {{ c.code }}
               </span>
 
@@ -137,7 +137,7 @@ import {
 
               <span
                 *ngIf="c.ticket_sku"
-                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"
+                class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-secondary/15 text-secondary border border-secondary/30 flex items-center gap-1"
               >
                 <i class="fa-solid fa-ticket text-[10px]"></i> SKU: {{ c.ticket_sku }}
               </span>
@@ -181,7 +181,7 @@ import {
               class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors text-xs flex items-center gap-1 font-semibold"
               title="Copiar código"
             >
-              <i class="fa-regular fa-copy"></i> Copiar
+              <i class="fa-regular fa-copy text-secondary"></i> Copiar
             </button>
             <button
               type="button"
@@ -189,7 +189,7 @@ import {
               class="p-2 rounded-xl text-dark/70 hover:text-dark hover:bg-dark/10 transition-colors text-xs"
               title="Editar Cupón"
             >
-              <i class="fa-solid fa-pen-to-square"></i>
+              <i class="fa-solid fa-pen-to-square text-secondary"></i>
             </button>
             <button
               type="button"
@@ -206,7 +206,7 @@ import {
       <!-- Empty State -->
       <tf-card *ngIf="!isLoading() && coupons().length === 0">
         <div class="py-12 text-center text-dark/60">
-          <div class="text-5xl mb-3 text-dark/30">
+          <div class="text-5xl mb-3 text-secondary">
             <i class="fa-solid fa-tags"></i>
           </div>
           <h3 class="text-lg font-bold text-dark">No hay cupones registrados</h3>

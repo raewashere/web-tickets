@@ -178,9 +178,9 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
               </div>
 
               <!-- Venue Details -->
-              <div class="p-4 rounded-2xl bg-primary/10 border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="p-4 rounded-2xl bg-secondary/15 border border-secondary/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div class="space-y-1">
-                  <span class="text-xs text-primary font-bold uppercase tracking-wider">Recinto & Aforo</span>
+                  <span class="text-xs text-secondary font-bold uppercase tracking-wider">Recinto & Aforo</span>
                   <div class="flex items-center gap-2">
                     <span class="font-bold text-dark text-base">{{ event()!.venues?.name || 'Recinto no asignado' }}</span>
                     <tf-badge *ngIf="event()!.venues?.verified" variant="primary">
@@ -194,7 +194,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                     </span>
                   </p>
                   <p *ngIf="event()!.address" class="text-xs text-dark/80 flex items-start gap-1.5 pt-0.5">
-                    <i class="fa-solid fa-map-pin text-primary mt-0.5 text-[11px]"></i>
+                    <i class="fa-solid fa-map-pin text-secondary mt-0.5 text-[11px]"></i>
                     <span><strong>Dirección:</strong> {{ event()!.address }}</span>
                   </p>
                 </div>
@@ -206,7 +206,7 @@ import { EventWaitlistComponent } from '../event-waitlist/event-waitlist.compone
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface border border-dark/10 text-xs font-bold text-dark hover:bg-dark/5 transition-colors"
                   >
-                    <i class="fa-solid fa-map-location-dot text-primary"></i>
+                    <i class="fa-solid fa-map-location-dot text-secondary"></i>
                     <span>Google Maps</span>
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

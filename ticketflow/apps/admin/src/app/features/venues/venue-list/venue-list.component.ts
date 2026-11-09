@@ -73,7 +73,7 @@ import {
       <!-- Search & Filter Bar -->
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="relative w-full sm:max-w-md">
-          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-dark/40 text-sm">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-secondary text-sm">
             <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <input
@@ -124,9 +124,9 @@ import {
                 [alt]="venue.name"
                 class="w-full h-full object-cover object-center"
               />
-              <div *ngIf="!venue.map_url" class="text-center text-dark/30">
-                <span class="text-4xl block"><i class="fa-solid fa-landmark"></i></span>
-                <span class="text-xs font-medium mt-1 block">Sin plano subido</span>
+              <div *ngIf="!venue.map_url" class="text-center text-secondary">
+                <span class="text-4xl block opacity-90"><i class="fa-solid fa-landmark"></i></span>
+                <span class="text-xs font-semibold mt-1 block text-dark/70">Sin plano subido</span>
               </div>
 
               <!-- Badge Top Right -->

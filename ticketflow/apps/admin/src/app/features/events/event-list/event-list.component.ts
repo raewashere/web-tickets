@@ -98,7 +98,7 @@ import {
 
         <!-- Search Input -->
         <div class="relative w-full md:max-w-xs">
-          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-dark/40 text-sm">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-secondary text-sm">
             <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <input
@@ -142,9 +142,9 @@ import {
                 [alt]="ev.name"
                 class="w-full h-full object-cover object-center"
               />
-              <div *ngIf="!ev.flyer_url" class="text-center text-dark/30">
-                <span class="text-5xl block"><i class="fa-solid fa-palette"></i></span>
-                <span class="text-xs font-semibold mt-1 block">Sin afiche promocional</span>
+              <div *ngIf="!ev.flyer_url" class="text-center text-secondary">
+                <span class="text-5xl block opacity-90"><i class="fa-solid fa-palette"></i></span>
+                <span class="text-xs font-semibold mt-1 block text-dark/70">Sin afiche promocional</span>
               </div>
 
               <!-- Status Badge on Flyer -->
@@ -156,7 +156,7 @@ import {
 
               <!-- Category Pill -->
               <div *ngIf="ev.event_types" class="absolute bottom-3 left-3">
-                <span class="px-2.5 py-1 rounded-md bg-dark/80 backdrop-blur-sm text-surface text-[10px] font-bold uppercase tracking-wider">
+                <span class="px-2.5 py-1 rounded-md bg-dark/80 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider">
                   {{ ev.event_types.name }}
                 </span>
               </div>
@@ -171,7 +171,7 @@ import {
 
                 <!-- Date & Time -->
                 <p class="text-xs font-semibold text-dark/80 mt-1 flex items-center gap-1.5">
-                  <i class="fa-regular fa-calendar text-dark/50"></i>
+                  <i class="fa-regular fa-calendar text-secondary"></i>
                   <span>{{ ev.event_date | date:'mediumDate' }} · {{ ev.event_date | date:'shortTime' }} hrs</span>
                 </p>
               </div>
@@ -180,14 +180,14 @@ import {
               <div class="p-2.5 rounded-xl bg-dark/5 border border-dark/10 space-y-1 text-xs">
                 <div class="flex items-center justify-between text-dark">
                   <span class="font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-location-dot text-dark/50"></i> {{ ev.venues?.name || 'Recinto no definido' }}
+                    <i class="fa-solid fa-location-dot text-secondary"></i> {{ ev.venues?.name || 'Recinto no definido' }}
                   </span>
                   <tf-badge *ngIf="ev.venues?.verified" variant="primary">
                     <i class="fa-solid fa-check text-[10px]"></i>
                   </tf-badge>
                 </div>
                 <p *ngIf="ev.address" class="text-[11px] text-dark/70 truncate flex items-center gap-1">
-                  <i class="fa-solid fa-map-pin text-primary text-[10px]"></i>
+                  <i class="fa-solid fa-map-pin text-secondary text-[10px]"></i>
                   <span [title]="ev.address">{{ ev.address }}</span>
                 </p>
                 <div class="text-[11px] text-dark/60 flex items-center justify-between">

@@ -149,23 +149,23 @@ declare global {
 
                   <!-- Camera target overlay box -->
                   <div *ngIf="isCameraActive()" class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div class="w-56 h-56 border-2 border-primary rounded-3xl relative shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] animate-pulse">
-                      <div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-primary"></div>
-                      <div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-primary"></div>
-                      <div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-primary"></div>
-                      <div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-primary"></div>
+                    <div class="w-56 h-56 border-2 border-secondary rounded-3xl relative shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] animate-pulse">
+                      <div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-tertiary"></div>
+                      <div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-tertiary"></div>
+                      <div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-tertiary"></div>
+                      <div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-tertiary"></div>
                     </div>
                   </div>
 
                   <!-- Camera inactive state -->
-                  <div *ngIf="!isCameraActive()" class="text-center p-6 space-y-3 text-surface/70">
-                    <span class="text-4xl block opacity-60">
+                  <div *ngIf="!isCameraActive()" class="text-center p-6 space-y-3 text-white">
+                    <span class="text-4xl block text-secondary opacity-90">
                       <i class="fa-solid fa-camera"></i>
                     </span>
-                    <p class="text-xs">La cámara está apagada o no se han concedido permisos.</p>
+                    <p class="text-xs text-white/80">La cámara está apagada o no se han concedido permisos.</p>
                     <tf-button
                       type="button"
-                      variant="primary"
+                      variant="accent"
                       size="sm"
                       (click)="startCamera()"
                     >
@@ -190,7 +190,7 @@ declare global {
                       type="button"
                       *ngIf="!isCameraActive()"
                       (click)="startCamera()"
-                      class="px-3 py-1.5 rounded-xl bg-primary text-surface hover:bg-primary/90 text-xs font-bold transition-colors flex items-center gap-1.5"
+                      class="px-3 py-1.5 rounded-xl bg-secondary text-on-secondary hover:bg-secondary/90 text-xs font-bold transition-colors flex items-center gap-1.5"
                     >
                       <i class="fa-solid fa-play text-xs"></i>
                       <span>Iniciar Cámara</span>

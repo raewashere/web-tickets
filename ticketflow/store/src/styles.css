@@ -52,6 +52,9 @@
     /* Outline */
     --md-outline:              130 115 140;    /* #82738C */
     --md-outline-variant:      212 200 224;    /* #D4C8E0 */
+
+    /* Legacy Dark Text/Element Anchor (Light Scheme: #210B2C) */
+    --md-dark:                 33 11 44;       /* #210B2C */
   }
 
   html.dark {
@@ -95,6 +98,9 @@
     /* Outline — dark scheme */
     --md-outline:              140 120 155;    /* #8C789B */
     --md-outline-variant:      58 35 75;       /* #3A234B */
+
+    /* Legacy Dark Text/Element Anchor (Dark Scheme: High contrast light #F0E8F7) */
+    --md-dark:                 240 232 247;    /* #F0E8F7 */
   }
 
   html.dark body {
@@ -103,7 +109,11 @@
   }
 }
 
-
+/* Input and placeholder legibility rules */
+input::placeholder,
+textarea::placeholder {
+  color: rgb(var(--md-dark) / 0.45) !important;
+}
 
 /* Global Dynamic Dark Mode Rules for Store */
 html.dark .bg-surface,
@@ -129,9 +139,13 @@ html.dark .text-slate-700 {
   color: rgb(var(--md-on-surface)) !important;
 }
 
-html.dark .text-dark\/70,
-html.dark .text-dark\/60,
-html.dark .text-dark\/50,
+html.dark .text-dark\/80 { color: rgb(var(--md-on-surface) / 0.85) !important; }
+html.dark .text-dark\/70 { color: rgb(var(--md-on-surface) / 0.75) !important; }
+html.dark .text-dark\/60 { color: rgb(var(--md-on-surface) / 0.65) !important; }
+html.dark .text-dark\/50 { color: rgb(var(--md-on-surface) / 0.55) !important; }
+html.dark .text-dark\/40 { color: rgb(var(--md-on-surface) / 0.45) !important; }
+html.dark .text-dark\/30 { color: rgb(var(--md-on-surface) / 0.4) !important; }
+
 html.dark .text-slate-600,
 html.dark .text-slate-500 {
   color: rgb(var(--md-on-surface) / 0.7) !important;
@@ -150,5 +164,10 @@ html.dark select,
 html.dark textarea {
   background-color: rgb(var(--md-surface-container-high)) !important;
   color: rgb(var(--md-on-surface)) !important;
-  border-color: rgb(var(--md-outline-variant)) !important;
+  border-color: rgb(var(--md-outline-variant) / 0.5) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: rgb(var(--md-on-surface) / 0.45) !important;
 }

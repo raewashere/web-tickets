@@ -52,7 +52,7 @@ module.exports = {
 
         /* ── Legacy aliases (keep backward-compat for any remaining refs) ─ */
         accent:   'rgb(var(--md-tertiary) / <alpha-value>)',
-        dark:     'rgb(var(--md-inverse-surface) / <alpha-value>)',
+        dark:     'rgb(var(--md-dark) / <alpha-value>)',
         contrast: 'rgb(var(--md-tertiary) / <alpha-value>)',
         danger:   'rgb(var(--md-error) / <alpha-value>)',
       },

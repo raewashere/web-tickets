@@ -122,9 +122,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
             <!-- 2x1 explanation -->
             <div
               *ngIf="couponForm.get('type')?.value === 'bogo'"
-              class="p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs text-dark flex items-start gap-2"
+              class="p-3 rounded-xl bg-secondary/15 border border-secondary/30 text-xs text-dark flex items-start gap-2"
             >
-              <i class="fa-solid fa-gift text-primary mt-0.5"></i>
+              <i class="fa-solid fa-gift text-secondary mt-0.5"></i>
               <span>Por cada 2 boletos del mismo tipo, 1 es gratis (ej. 4 boletos → paga 2).</span>
             </div>
 
@@ -148,7 +148,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
           <!-- Ticket Type / SKU association -->
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-dark mb-1.5 flex items-center gap-1.5">
-              <i class="fa-solid fa-ticket text-primary"></i> Aplicar a Tipo de Boleto (por SKU)
+              <i class="fa-solid fa-ticket text-secondary"></i> Aplicar a Tipo de Boleto (por SKU)
             </label>
             <select
               formControlName="ticket_sku"
