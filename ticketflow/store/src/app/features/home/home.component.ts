@@ -158,7 +158,7 @@ import { SkeletonComponent } from '@ticketflow/shared-ui';
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div class="p-6 sm:p-7 rounded-2xl bg-inverse-on-surface/5 border border-outline-variant/10 space-y-3">
-              <div class="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 text-primary flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-xl bg-secondary/20 border border-secondary/30 text-secondary flex items-center justify-center text-xl">
                 <i class="fa-solid fa-ticket"></i>
               </div>
               <h3 class="text-base sm:text-lg font-bold text-inverse-on-surface">Trato Directo y Sin Clonaciones</h3>
